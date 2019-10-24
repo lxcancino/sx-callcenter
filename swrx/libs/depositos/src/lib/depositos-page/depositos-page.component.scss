@@ -1,0 +1,24 @@
+.depositos-panel {
+  height: 99%;
+  border: 3px solid peru;
+  padding: 1px;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto;
+}
+
+.mat-card {
+  margin: 6px;
+  grid-column: span 1;
+  grid-row: 1 / 2;
+  mat-card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    button {
+      margin-left: auto;
+      // align-self: center;
+    }
+  }
+}

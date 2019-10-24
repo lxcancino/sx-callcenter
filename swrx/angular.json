@@ -1,0 +1,270 @@
+{
+  "version": 1,
+  "projects": {
+    "callcenter": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss",
+          "changeDetection": "OnPush",
+          "skipTests": true
+        }
+      },
+      "root": "apps/callcenter",
+      "sourceRoot": "apps/callcenter/src",
+      "prefix": "swrx",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/callcenter",
+            "index": "apps/callcenter/src/index.html",
+            "main": "apps/callcenter/src/main.ts",
+            "polyfills": "apps/callcenter/src/polyfills.ts",
+            "tsConfig": "apps/callcenter/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "apps/callcenter/src/favicon.ico",
+              "apps/callcenter/src/assets"
+            ],
+            "styles": [
+              "apps/callcenter/src/theme.scss",
+              "apps/callcenter/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/callcenter/src/environments/environment.ts",
+                  "with": "apps/callcenter/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "callcenter:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "callcenter:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "callcenter:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/callcenter/tsconfig.app.json",
+              "apps/callcenter/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/callcenter/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/callcenter/jest.config.js",
+            "tsConfig": "apps/callcenter/tsconfig.spec.json",
+            "setupFile": "apps/callcenter/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "callcenter-e2e": {
+      "root": "apps/callcenter-e2e",
+      "sourceRoot": "apps/callcenter-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/callcenter-e2e/cypress.json",
+            "tsConfig": "apps/callcenter-e2e/tsconfig.e2e.json",
+            "devServerTarget": "callcenter:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "callcenter:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/callcenter-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/callcenter-e2e/**"]
+          }
+        }
+      }
+    },
+    "depositos": {
+      "projectType": "library",
+      "root": "libs/depositos",
+      "sourceRoot": "libs/depositos/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/depositos/tsconfig.lib.json",
+              "libs/depositos/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/depositos/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/depositos/jest.config.js",
+            "tsConfig": "libs/depositos/tsconfig.spec.json",
+            "setupFile": "libs/depositos/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "clientes": {
+      "projectType": "library",
+      "root": "libs/clientes",
+      "sourceRoot": "libs/clientes/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/clientes/tsconfig.lib.json",
+              "libs/clientes/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/clientes/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/clientes/jest.config.js",
+            "tsConfig": "libs/clientes/tsconfig.spec.json",
+            "setupFile": "libs/clientes/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "ui-core": {
+      "projectType": "library",
+      "root": "libs/ui-core",
+      "sourceRoot": "libs/ui-core/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ui-core/tsconfig.lib.json",
+              "libs/ui-core/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/ui-core/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/ui-core/jest.config.js",
+            "tsConfig": "libs/ui-core/tsconfig.spec.json",
+            "setupFile": "libs/ui-core/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "notifications": {
+      "projectType": "library",
+      "root": "libs/notifications",
+      "sourceRoot": "libs/notifications/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/notifications/tsconfig.lib.json",
+              "libs/notifications/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/notifications/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/notifications/jest.config.js",
+            "tsConfig": "libs/notifications/tsconfig.spec.json",
+            "setupFile": "libs/notifications/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "callcenter"
+}

@@ -1,0 +1,30 @@
+{
+  "npmScope": "swrx",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "callcenter-e2e": {
+      "tags": []
+    },
+    "callcenter": {
+      "tags": []
+    },
+    "ui-core": {
+      "tags": []
+    },
+    "depositos": {
+      "tags": []
+    },
+    "clientes": {
+      "tags": []
+    },
+    "notifications": {
+      "tags": []
+    }
+  }
+}

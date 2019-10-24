@@ -1,0 +1,48 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="toogle.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1 class="mat-title">{{ title }}</h1>
+  <div class="site-nav">
+    <a
+      class="active"
+      mat-button
+      [routerLink]="'/pedidos'"
+      routerLinkActive="router-link-active"
+    >
+      <fa-icon icon="shopping-cart"></fa-icon>
+      <span>Pedidos</span>
+    </a>
+    <a
+      mat-button
+      [routerLink]="'/depositos'"
+      routerLinkActive="router-link-active"
+    >
+      <fa-icon icon="hand-holding-usd"></fa-icon>
+      <span>Depositos</span>
+    </a>
+    <a
+      mat-button
+      [routerLink]="'/clientes'"
+      routerLinkActive="router-link-active"
+    >
+      <fa-icon icon="users"></fa-icon>
+      <span>Clientes</span>
+    </a>
+    <a
+      mat-button
+      [routerLink]="'/productos'"
+      routerLinkActive="router-link-active"
+    >
+      <fa-icon icon="layer-group"></fa-icon>
+      <span>Productos</span>
+    </a>
+  </div>
+  <!-- <button mat-icon-button>
+    <fa-icon icon="bell"></fa-icon>
+  </button> -->
+  <swrx-notification-btn></swrx-notification-btn>
+  <button mat-icon-button (click)="toogle.emit()">
+    <fa-icon icon="cogs"></fa-icon>
+  </button>
+</mat-toolbar>
