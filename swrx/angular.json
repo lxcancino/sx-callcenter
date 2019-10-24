@@ -264,6 +264,10 @@
     },
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:ngrx": {
+      "facade": true,
+      "syntax": "creators"
     }
   },
   "defaultProject": "callcenter"

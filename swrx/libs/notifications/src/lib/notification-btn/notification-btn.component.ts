@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'swrx-notification-btn',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./notification-btn.component.scss']
 })
 export class NotificationBtnComponent implements OnInit {
+  constructor(private router: Router) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  show() {
+    console.log('Show notifications ');
+    this.router.navigateByUrl('/notifications');
   }
-
 }

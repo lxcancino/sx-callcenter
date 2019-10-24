@@ -14,6 +14,15 @@ import {
   MatListModule,
   MatButtonModule
 } from '@angular/material';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { DataPersistence } from '@nrwl/angular';
+
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 const routes: Route[] = [
   {
@@ -34,9 +43,24 @@ const routes: Route[] = [
     MatListModule,
     MatButtonModule,
     NotificationsModule,
-    LayoutModule
+    LayoutModule,
+    StoreModule.forRoot(
+      {},
+      {
+        metaReducers: !environment.production ? [] : [],
+        runtimeChecks: {
+          strictActionImmutability: true,
+          strictStateImmutability: true
+        }
+      }
+    ),
+    EffectsModule.forRoot([]),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreRouterConnectingModule.forRoot(),
+    AngularFireModule.initializeApp(environment.firebase, 'swrx-callcemter'),
+    AngularFirestoreModule
   ],
-  providers: [],
+  providers: [DataPersistence],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
