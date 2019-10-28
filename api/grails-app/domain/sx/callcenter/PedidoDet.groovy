@@ -1,6 +1,6 @@
 package sx.callcenter
 
-class VentaCallCenterDet {
+class PedidoDet {
 
     String  id
 

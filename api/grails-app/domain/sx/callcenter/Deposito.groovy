@@ -1,6 +1,6 @@
 package sx.callcenter
 
-class AutorizacionDeDeposito {
+class Deposito {
 
     String	id
 

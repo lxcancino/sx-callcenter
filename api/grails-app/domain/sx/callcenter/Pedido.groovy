@@ -1,6 +1,6 @@
 package sx.callcenter
 
-class VentaCallCenter {
+class Pedido {
 
     String id
 
@@ -79,7 +79,7 @@ class VentaCallCenter {
 
     String usoDeCfdi
 
-    List<VentaCallCenterDet> partidas = []
+    List<PedidoDet> partidas = []
 
     String folio
 
