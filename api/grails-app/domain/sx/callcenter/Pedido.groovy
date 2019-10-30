@@ -95,6 +95,8 @@ class Pedido {
 
     Boolean surtido = false
 
+    static hasMany =[partidas:PedidoDet]
+
     static constraints = {
         nombre nullable: true
         tipo  inList:['CON','COD','CRE','PSF','INE','OTR','ACF','ANT','AND']

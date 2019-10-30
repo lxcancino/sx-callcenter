@@ -8,7 +8,7 @@ class PedidoDet {
 
     String   sucursal
 
-    Venta   venta
+    Pedido pedido
 
     BigDecimal  cantidad = 0.0
 
@@ -53,7 +53,10 @@ class PedidoDet {
     // InstruccionCorte corte
 
     Date dateCreated
+    
     Date lastUpdated
+
+  
 
     static constraints = {
         comentario nullable: true
