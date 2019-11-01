@@ -10,6 +10,7 @@ class PedidoDet {
 
     Pedido  pedido
 
+
     BigDecimal  cantidad = 0.0
 
     BigDecimal  precio = 0.0
@@ -51,9 +52,12 @@ class PedidoDet {
     // InstruccionCorte corte
 
     Date dateCreated
+    
     Date lastUpdated
 
+
     static belongsTo = [pedido: Pedido]
+
 
     static constraints = {
         comentario nullable: true
