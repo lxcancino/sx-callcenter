@@ -1,8 +1,6 @@
 package sx.tesoreria
 
-
 import sx.sat.BancoSat
-
 
 class Banco {
 

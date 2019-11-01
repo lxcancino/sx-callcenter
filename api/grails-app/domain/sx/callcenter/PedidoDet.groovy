@@ -8,7 +8,7 @@ class PedidoDet {
 
     String   sucursal
 
-    Venta   venta
+    Pedido  pedido
 
     BigDecimal  cantidad = 0.0
 
@@ -34,8 +34,6 @@ class PedidoDet {
 
     String  comentario
 
-    // Boolean conVale = false
-
     BigDecimal  precioLista = 0.0
 
     BigDecimal  precioOriginal = 0.0
@@ -54,6 +52,8 @@ class PedidoDet {
 
     Date dateCreated
     Date lastUpdated
+
+    static belongsTo = [pedido: Pedido]
 
     static constraints = {
         comentario nullable: true

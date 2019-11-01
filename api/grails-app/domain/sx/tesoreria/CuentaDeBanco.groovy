@@ -1,6 +1,9 @@
 package sx.tesoreria
 
+
+
 import sx.sat.BancoSat
+
 
 class CuentaDeBanco {
 
@@ -16,7 +19,7 @@ class CuentaDeBanco {
 
     String tipo
 
-    Currency moneda
+    String moneda = 'MXN'
 
     Boolean activo = true
 

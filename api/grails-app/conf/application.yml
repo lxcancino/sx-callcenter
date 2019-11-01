@@ -2,7 +2,7 @@
 grails:
     profile: rest-api
     codegen:
-        defaultPackage: sx.compras
+        defaultPackage: sx.callcenter
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events

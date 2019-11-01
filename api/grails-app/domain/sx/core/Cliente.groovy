@@ -3,55 +3,34 @@ package sx.core
 import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
 
-@ToString(includes = 'nombre,clave',includeNames=true,includePackage=false)
-@EqualsAndHashCode(includes='nombre,rfc')
+@ToString(includes = 'nombre, rfc', includeNames=true, includePackage=false)
+@EqualsAndHashCode(includes='nombre, rfc')
 class Cliente {
 
-    static  auditable=true
-
-    String	id
-
+    String id
+    String nombre
+    String rfc
     String clave
-
-    Boolean	activo	 = true
-
-    String	rfc
-
-    String	nombre
-
+    Boolean activo = true
     String email
+    Boolean	permiteCheque = false
+    BigDecimal chequeDevuelto = 0
+    Boolean juridico = false
 
-    Boolean	permiteCheque	 = false
-
-    BigDecimal	chequeDevuelto	 = 0
-
-    Boolean	juridico	 = false
-
-    Long	folioRFC	 = 1
-
-    Long	formaDePago	 = 1
-
-    Long	sw2
-
-    Sucursal	sucursal
-
-    Vendedor	vendedor
-
+    Long folioRFC = 1
+    Long formaDePago = 1
+    Long sw2
+    Sucursal sucursal
+    Vendedor vendedor
     Direccion direccion
-
+    
     Date dateCreated
-
     Date lastUpdated
-
     String createUser
-
     String updateUser
 
     Set<ComunicacionEmpresa> medios = []
 
-    // ClienteCredito credito
-
-    // Transient properties
     Set telefonos
     String fax
     String cfdiMail

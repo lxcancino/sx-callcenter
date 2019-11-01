@@ -40,20 +40,11 @@ class Pedido {
 
     String  formaDePago
 
-    Currency moneda = Currency.getInstance('MXN')
+    String moneda = 'MXN'
 
     BigDecimal  tipoDeCambio = 1
 
     BigDecimal  kilos = 0
-
-  
-    // Boolean vale = false
-
-    // Sucursal sucursalVale
-
-    // String  clasificacionVale = 'SIN_VALE'
-
-    // Date    impreso
 
     String  comprador
 
@@ -64,11 +55,9 @@ class Pedido {
     Date fecha
 
     Date dateCreated
-
     Date lastUpdated
 
     String createUser
-
     String updateUser
 
     String envio
@@ -105,8 +94,7 @@ class Pedido {
         comentario nullable:true
         comprador nullable:true
         sucursalVenta nullable:true
-        //sucursalVale nullable:true
-        //clasificacionVale inList: ['SIN_VALE','ENVIA_SUCURSAL','PASA_CAMIONETA','RECOGE_CLIENTE','EXISTENCIA_VENTA','VALE']
+        
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
         cfdiMail nullable: true
@@ -120,6 +108,8 @@ class Pedido {
         ventaIne nullable: true
         noFacturable nullable: true
     }
+
+    static hasMany =[partidas: PedidoDet]
     
      static mapping = {
         partidas cascade: "all-delete-orphan"

@@ -1,9 +1,6 @@
 package sx.sat
 
-import grails.rest.*
 
-
-//@Resource(uri='/api/sat/bancos', formats=['json'])
 class BancoSat {
 
     String id
