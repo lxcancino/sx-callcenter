@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Alta de Deposito / Transferencia</h2>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <div class="create-cliente-form" [formGroup]="form">
+    <swrx-cliente-field formControlName="cliente"></swrx-cliente-field>
+    <swrx-banco-field formControlName="banco"></swrx-banco-field>
+    <mat-form-field class="fecha">
+      <input matInput [matDatepicker]="fechaDP" formControlName="fecha" />
+      <mat-datepicker-toggle matSuffix [for]="fechaDP"></mat-datepicker-toggle>
+      <mat-datepicker #fechaDP></mat-datepicker>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>
+    CANCELAR
+  </button>
+  <button mat-button tabindex="-1" (click)="submit()" [disabled]="form.invalid">
+    SALVAR
+  </button>
+</mat-dialog-actions>

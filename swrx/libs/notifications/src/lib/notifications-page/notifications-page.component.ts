@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../services/notification.service';
 import { Observable } from 'rxjs';
+import { NotificationsFacade } from '../+state/notifications.facade';
 
 @Component({
   selector: 'swrx-notifications-page',
@@ -9,17 +10,13 @@ import { Observable } from 'rxjs';
 })
 export class NotificationsPageComponent implements OnInit {
   notifications$: Observable<any[]>;
-  constructor(private service: NotificationService) {}
+  constructor(private facade: NotificationsFacade) {}
 
   ngOnInit() {
-    this.notifications$ = this.service.fetchNotifications();
+    this.notifications$ = this.facade.allNotifications$;
   }
 
-  fetchData() {
-    this.service.fetchNotifications();
-  }
+  fetchData() {}
 
-  addNotification() {
-    this.service.addNotification();
-  }
+  addNotification() {}
 }

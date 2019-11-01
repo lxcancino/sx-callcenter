@@ -4,26 +4,30 @@ import {
   AngularFirestore,
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Notification } from '../+state/notification.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
-  private collection: AngularFirestoreCollection<any>;
+  private collection: AngularFirestoreCollection<Notification>;
 
   constructor(private afs: AngularFirestore) {
-    this.collection = this.afs.collection('notifications');
-
+    // this.collection = this.afs.collection<Notification>('notifications');
     /*
     this.collection.stateChanges().subscribe(dca => {
       console.log('stateChanges: ', dca);
     });
     */
-
+    /*
     this.collection.snapshotChanges().subscribe(dca => {
       console.log('snapshotChanges: ', dca);
     });
+    */
     /*
 
     this.collection.snapshotChanges()
@@ -33,16 +37,24 @@ export class NotificationService {
     */
   }
 
-  fetchNotifications(): Observable<any[]> {
-    return this.afs.collection('notifications').valueChanges();
+  getAllNotificationsAsStateChantes() {
+    return this.afs.collection<Notification>('notifications').stateChanges();
   }
 
-  addNotification() {
-    const n = {
-      message: `Notification ${Math.floor(Math.random() * 24)}`,
-      user: 'rcancino',
-      time: new Date().toISOString()
-    };
-    this.afs.collection('notifications').add(n);
+  fetchNotifications(): Observable<Notification[]> {
+    return this.afs
+      .collection('notifications')
+      .stateChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as Notification;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
   }
+
+  addNotification(n: Notification) {}
 }

@@ -1,0 +1,16 @@
+.create-cliente-form {
+  display: grid;
+  grid-template-columns: repeat(5, fr);
+  grid-auto-flow: row;
+}
+swrx-cliente-field {
+  grid-column: 1/3;
+}
+swrx-banco-field {
+  grid-column: 1/2;
+}
+
+.fecha {
+  grid-column: 1/2;
+  width: 120px;
+}

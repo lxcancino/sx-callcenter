@@ -7,7 +7,7 @@ import { StoreModule, Store } from '@ngrx/store';
 
 import { NxModule } from '@nrwl/angular';
 
-import { NotificationsEntity } from './notifications.models';
+import { Notification } from './notification.models';
 import { NotificationsEffects } from './notifications.effects';
 import { NotificationsFacade } from './notifications.facade';
 
@@ -30,8 +30,8 @@ describe('NotificationsFacade', () => {
   const createNotificationsEntity = (id: string, name = '') =>
     ({
       id,
-      name: name || `name-${id}`
-    } as NotificationsEntity);
+      message: name || `name-${id}`
+    } as Notification);
 
   beforeEach(() => {});
 

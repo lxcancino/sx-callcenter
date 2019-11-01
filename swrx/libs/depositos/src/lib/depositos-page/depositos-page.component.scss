@@ -12,13 +12,15 @@
   margin: 6px;
   grid-column: span 1;
   grid-row: 1 / 2;
+  padding: 10px;
+  overflow: scroll;
   mat-card-header {
     display: flex;
     flex-direction: row;
     align-items: baseline;
-    button {
+    swrx-deposito-create-btn {
       margin-left: auto;
-      // align-self: center;
+      align-self: top;
     }
   }
 }

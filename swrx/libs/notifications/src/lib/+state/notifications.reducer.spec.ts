@@ -1,4 +1,4 @@
-import { Notification } from './notifications.models';
+import { Notification } from './notification.models';
 import * as NotificationsActions from './notifications.actions';
 import {
   NotificationsState,

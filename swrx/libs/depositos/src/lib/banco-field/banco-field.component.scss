@@ -1,0 +1,28 @@
+.banco-panel {
+  display: flex;
+  width: 100%;
+  // border: 3px solid pink;
+}
+
+.mat-form-field {
+  flex-basis: 70%;
+
+}
+
+.descripcion {
+ text-overflow: ellipsis;
+ padding: 0 10px 0 10px;
+ font-size: 14px;
+}
+
+.mat-option {
+  height: 36px;
+  line-height: 36px;
+  font-size: 16px;
+}
+.custom {
+  height: 36px;
+  line-height: 36px;
+  font-size: 16px;
+}
+

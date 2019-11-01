@@ -19,7 +19,8 @@
       "@swrx/ui-core": ["libs/ui-core/src/index.ts"],
       "@swrx/depositos": ["libs/depositos/src/index.ts"],
       "@swrx/clientes": ["libs/clientes/src/index.ts"],
-      "@swrx/notifications": ["libs/notifications/src/index.ts"]
+      "@swrx/notifications": ["libs/notifications/src/index.ts"],
+      "@swrx/core-form-ui": ["libs/core-form-ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

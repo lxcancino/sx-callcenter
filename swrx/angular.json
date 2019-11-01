@@ -252,6 +252,37 @@
           "styleext": "scss"
         }
       }
+    },
+    "core-form-ui": {
+      "projectType": "library",
+      "root": "libs/core-form-ui",
+      "sourceRoot": "libs/core-form-ui/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/core-form-ui/tsconfig.lib.json",
+              "libs/core-form-ui/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/core-form-ui/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/core-form-ui/jest.config.js",
+            "tsConfig": "libs/core-form-ui/tsconfig.spec.json",
+            "setupFile": "libs/core-form-ui/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

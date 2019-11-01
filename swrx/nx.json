@@ -25,6 +25,9 @@
     },
     "notifications": {
       "tags": []
+    },
+    "core-form-ui": {
+      "tags": []
     }
   }
 }

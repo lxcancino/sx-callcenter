@@ -1,0 +1,24 @@
+<div class="banco-panel">
+  <mat-form-field>
+    <mat-label>Banco</mat-label>
+    <mat-select
+      [placeholder]="placeholder"
+      [panelClass]="{ custom: true }"
+      (selectionChange)="onSelection($event)"
+      [compareWith]="compareWith"
+      [value]="selected"
+    >
+      <mat-option *ngFor="let b of bancos" [value]="b">
+        {{ b.nombreCorto }}
+      </mat-option>
+    </mat-select>
+    <mat-error>
+      Debe seleccionar un banco
+    </mat-error>
+  </mat-form-field>
+  <div class="descripcion">
+    <p>
+      {{ selected?.razonSocial }}
+    </p>
+  </div>
+</div>

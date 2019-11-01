@@ -2,7 +2,7 @@
  * Interface for the 'Notifications' data
  */
 export interface Notification {
-  id: string | number;
+  id: string;
   message: string;
   createUser?: string;
   targetUser?: string;

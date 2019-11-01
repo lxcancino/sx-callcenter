@@ -2,7 +2,7 @@ import { createReducer, on, Action } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import * as NotificationsActions from './notifications.actions';
-import { Notification } from './notifications.models';
+import { Notification } from './notification.models';
 
 export const NOTIFICATIONS_FEATURE_KEY = 'notifications';
 
@@ -42,7 +42,16 @@ const notificationsReducer = createReducer(
   on(NotificationsActions.loadNotificationsFailure, (state, { error }) => ({
     ...state,
     error
-  }))
+  })),
+  on(NotificationsActions.addManyNotifications, (state, { notifications }) =>
+    notificationsAdapter.addAll(notifications, { ...state })
+  ),
+  on(NotificationsActions.upsertNotification, (state, { notification }) =>
+    notificationsAdapter.upsertOne(notification, { ...state })
+  ),
+  on(NotificationsActions.removeNotification, (state, { id }) =>
+    notificationsAdapter.removeOne(id, { ...state })
+  )
 );
 
 export function reducer(state: NotificationsState | undefined, action: Action) {
