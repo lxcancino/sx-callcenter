@@ -111,7 +111,6 @@ class Pedido {
         noFacturable nullable: true
     }
 
-    static hasMany =[partidas: PedidoDet]
     
      static mapping = {
         partidas cascade: "all-delete-orphan"

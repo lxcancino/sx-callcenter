@@ -2,31 +2,23 @@
  * Interface for the 'Depositos' data
  */
 export interface DepositosEntity {
-  id: number; // Primary ID: string;
-}
-
-export interface DepositoDto {
-  id?: number;
+  id?: string; // Primary ID: string;
+  sucursal?: string;
+  cliente: any;
   nombre: string;
-  banco: { id: string; nombre: string; descripcion: string };
-  cuentaDeBanco: { id: string; numero: string; descripcion: string };
+  rfc: string;
+  banco: any;
+  cuenta: any;
   fecha: string;
   fechaDeposito: string;
-  referencia?: string;
-  importes: DepositoImportes;
+  transferencia: boolean;
+  importes?: DepositoImportes;
   total: number;
-  comentario?: string;
-  sucursal?: string;
-  cobro?: string;
-  cancelacion?: { fecha: string; comentario: string };
-  dateCreated?: string;
-  lastUpdated?: string;
-  createUser?: string;
-  updateUser?: string;
+  autorizacion?: any;
 }
 
 export interface DepositoImportes {
   efectivo: number;
   cheque: number;
-  transferencia: number;
+  tarjeta: number;
 }

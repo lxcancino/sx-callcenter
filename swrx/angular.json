@@ -253,28 +253,28 @@
         }
       }
     },
-    "core-form-ui": {
+    "form-utils": {
       "projectType": "library",
-      "root": "libs/core-form-ui",
-      "sourceRoot": "libs/core-form-ui/src",
+      "root": "libs/form-utils",
+      "sourceRoot": "libs/form-utils/src",
       "prefix": "swrx",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "libs/core-form-ui/tsconfig.lib.json",
-              "libs/core-form-ui/tsconfig.spec.json"
+              "libs/form-utils/tsconfig.lib.json",
+              "libs/form-utils/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/core-form-ui/**"]
+            "exclude": ["**/node_modules/**", "!libs/form-utils/**"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/core-form-ui/jest.config.js",
-            "tsConfig": "libs/core-form-ui/tsconfig.spec.json",
-            "setupFile": "libs/core-form-ui/src/test-setup.ts"
+            "jestConfig": "libs/form-utils/jest.config.js",
+            "tsConfig": "libs/form-utils/tsconfig.spec.json",
+            "setupFile": "libs/form-utils/src/test-setup.ts"
           }
         }
       },
@@ -299,6 +299,11 @@
     "@nrwl/angular:ngrx": {
       "facade": true,
       "syntax": "creators"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss",
+      "changeDetection": "OnPush",
+      "skipTests": true
     }
   },
   "defaultProject": "callcenter"

@@ -1,21 +1,48 @@
-<h2 mat-dialog-title>Alta de Deposito / Transferencia</h2>
+<div class="header">
+  <h2 mat-dialog-title>Alta de {{ tipo }}</h2>
+</div>
 <mat-divider></mat-divider>
 <mat-dialog-content>
   <div class="create-cliente-form" [formGroup]="form">
     <swrx-cliente-field formControlName="cliente"></swrx-cliente-field>
+    <swrx-cuenta-field formControlName="cuenta"></swrx-cuenta-field>
     <swrx-banco-field formControlName="banco"></swrx-banco-field>
-    <mat-form-field class="fecha">
-      <input matInput [matDatepicker]="fechaDP" formControlName="fecha" />
-      <mat-datepicker-toggle matSuffix [for]="fechaDP"></mat-datepicker-toggle>
-      <mat-datepicker #fechaDP></mat-datepicker>
-    </mat-form-field>
+    <div class="row">
+      <swrx-fecha-field
+        class="item"
+        formControlName="fechaDeposito"
+        label="Fecha Depósito"
+        [maxDate]="limitDate"
+      ></swrx-fecha-field>
+      <mat-checkbox class="item" formControlName="transferencia">
+        Transferencia
+      </mat-checkbox>
+      <span class="item"></span>
+    </div>
+    <swrx-deposito-importes-field
+      [parent]="form"
+    ></swrx-deposito-importes-field>
+    <div class="row">
+      <swrx-numeric-field
+        class="total"
+        formControlName="total"
+        label="Total"
+        placeholder="Total"
+      >
+        <mat-error>Total incorrecto</mat-error>
+      </swrx-numeric-field>
+      <!-- <mat-form-field class="total">
+        <input type="number" matInput formControlName="total" />
+        <mat-error>Total incorrecto</mat-error>
+      </mat-form-field> -->
+    </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>
     CANCELAR
   </button>
-  <button mat-button tabindex="-1" (click)="submit()" [disabled]="form.invalid">
+  <button mat-button (click)="submit()" [disabled]="form.invalid">
     SALVAR
   </button>
 </mat-dialog-actions>

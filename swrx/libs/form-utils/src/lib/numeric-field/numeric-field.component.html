@@ -1,0 +1,15 @@
+<mat-form-field class="numeric-field">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matInput
+    type="number"
+    [placeholder]="placeholder"
+    [value]="_value"
+    (change)="onChangeValue($event)"
+    (input)="onInput($event)"
+    [disabled]="disabled"
+    autocomplete="off"
+    (keydown.enter)="onEnter($event)"
+  />
+  <mat-error>Importe invalido</mat-error>
+</mat-form-field>

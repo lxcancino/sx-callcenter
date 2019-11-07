@@ -1,0 +1,41 @@
+@mixin debug-border($color: rgb(100, 20, 47)) {
+  border: 1px solid $color;
+}
+.mat-list-item {
+  height: 30px;
+  // span {
+  //   @include debug-border;
+  // }
+}
+
+.main-line {
+  display: flex;
+  flex: 1 0 100%;
+  box-sizing: border-box;
+}
+
+.nombre {
+  flex: 1 0 30%;
+}
+.cuenta {
+  flex: 1 0 30%;
+}
+.total {
+  flex: 1 0 20%;
+  // margin-left: auto;
+  text-align: end;
+}
+.autorizacion {
+  margin-left: auto;
+  flex: 1 0 20%;
+  text-align: end;
+  &.autorizado {
+    color: green;
+  }
+  &.pendiente {
+    color: goldenrod;
+  }
+  &.cancelado {
+    color: red;
+  }
+}

@@ -2,8 +2,15 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>Depositos / Transferencias</mat-card-title>
-      <swrx-deposito-create-btn></swrx-deposito-create-btn>
+      <swrx-deposito-create-btn
+        (create)="onCreate($event)"
+      ></swrx-deposito-create-btn>
+      <button mat-icon-button (click)="reload()">
+        <mat-icon>refresh</mat-icon>
+      </button>
     </mat-card-header>
     <mat-divider></mat-divider>
+    <swrx-depositos-list [depositos]="depositos$ | async"></swrx-depositos-list>
+    <mat-card-content> </mat-card-content>
   </mat-card>
 </div>

@@ -1,0 +1,21 @@
+<mat-form-field class="fecha-field">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matInput
+    [matDatepicker]="fechaDP"
+    [min]="minDate"
+    [max]="maxDate"
+    (dateChange)="onDateChanged($event)"
+    [value]="_value"
+    [disabled]="disabled"
+    [placeholder]="placeholder"
+    autocomplete="off"
+  />
+  <mat-error>Fecha invalida</mat-error>
+  <mat-datepicker-toggle
+    matSuffix
+    [for]="fechaDP"
+    [disabled]="disabled"
+  ></mat-datepicker-toggle>
+  <mat-datepicker #fechaDP></mat-datepicker>
+</mat-form-field>

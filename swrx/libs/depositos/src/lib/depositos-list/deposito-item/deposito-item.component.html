@@ -1,0 +1,22 @@
+<mat-list-item>
+  <div class="main-line">
+    <span class="nombre">
+      {{ deposito.nombre }}
+    </span>
+    <span class="cuenta">
+      {{ deposito.cuenta.numero }}
+      ({{ deposito.cuenta.descripcion }})
+    </span>
+    <span class="total">{{ deposito.total | currency }}</span>
+    <span
+      class="autorizacion"
+      [ngClass]="{
+        pendiente: !deposito.autorizacion,
+        autorizado: deposito.autorizacion
+      }"
+    >
+      {{ deposito.autorizacion ? 'AUTORIZADO' : 'PENDIENTE' }}
+    </span>
+  </div>
+  <h3 matLine>Othre line</h3>
+</mat-list-item>

@@ -28,10 +28,10 @@ export class ClienteFieldComponent implements OnInit, ControlValueAccessor {
 
   control = new FormControl();
 
-  onChange: any;
-  onTouch: any;
+  onChange: any = () => {};
+  onTouch: any = () => {};
 
-  selected: any = undefined;
+  selected: any;
 
   filteredClientes$: Observable<any>;
   apiUrl = 'http://localhost:8080/callcener/api/clientes';
@@ -58,15 +58,9 @@ export class ClienteFieldComponent implements OnInit, ControlValueAccessor {
   }
 
   onSelection(event: any) {
-    console.log('Selection:', event);
     this.selected = event;
-
-    if (this.onChange) {
-      this.onChange(event);
-    }
-    if (this.onTouch) {
-      this.onTouch(event);
-    }
+    this.onChange(event);
+    this.onTouch(event);
   }
 
   isDeCredito() {

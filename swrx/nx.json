@@ -26,7 +26,7 @@
     "notifications": {
       "tags": []
     },
-    "core-form-ui": {
+    "form-utils": {
       "tags": []
     }
   }

@@ -5,6 +5,7 @@ import { Route, RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material';
 
 import { UiCoreModule } from '@swrx/ui-core';
+import { FormUtilsModule } from '@swrx/form-utils';
 import { ClientesModule } from '@swrx/clientes';
 
 import { StoreModule } from '@ngrx/store';
@@ -25,7 +26,10 @@ import { DepositoCreateComponent } from './deposito-create/deposito-create.compo
 import { DepositoCreateBtnComponent } from './deposito-create/deposito-create-btn.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BancoFieldComponent } from './banco-field/banco-field.component';
-import { CuentasFieldComponent } from './cuentas-field/cuentas-field.component';
+import { CuentaFieldComponent } from './cuenta-field/cuenta-field.component';
+import { DepositoImportesFieldComponent } from './deposito-importes-field/deposito-importes-field.component';
+import { DepositosListComponent } from './depositos-list/depositos-list.component';
+import { DepositoItemComponent } from './depositos-list/deposito-item/deposito-item.component';
 
 const routes: Route[] = [{ path: '', component: DepositosPageComponent }];
 
@@ -34,6 +38,7 @@ const routes: Route[] = [{ path: '', component: DepositosPageComponent }];
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     UiCoreModule,
+    FormUtilsModule,
     MatSelectModule,
     ClientesModule,
     StoreModule.forFeature(
@@ -47,11 +52,14 @@ const routes: Route[] = [{ path: '', component: DepositosPageComponent }];
     DepositoCreateComponent,
     DepositoCreateBtnComponent,
     BancoFieldComponent,
-    CuentasFieldComponent
+    CuentaFieldComponent,
+    DepositoImportesFieldComponent,
+    DepositosListComponent,
+    DepositoItemComponent
   ],
   entryComponents: [DepositoCreateComponent],
   providers: [DepositosFacade],
-  exports: [BancoFieldComponent, CuentasFieldComponent]
+  exports: [BancoFieldComponent, CuentaFieldComponent]
 })
 export class DepositosModule {
   constructor(library: FaIconLibrary) {

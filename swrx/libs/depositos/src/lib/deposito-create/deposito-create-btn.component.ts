@@ -1,6 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DepositoCreateComponent } from './deposito-create.component';
+import { DepositosEntity } from '../+state/depositos.models';
 
 @Component({
   selector: 'swrx-deposito-create-btn',
@@ -10,9 +17,11 @@ import { DepositoCreateComponent } from './deposito-create.component';
       Nuevo
     </button>
   `,
-  styles: []
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DepositoCreateBtnComponent implements OnInit {
+  @Output() create = new EventEmitter<DepositosEntity>();
   constructor(private dialog: MatDialog) {}
 
   ngOnInit() {}
@@ -26,7 +35,7 @@ export class DepositoCreateBtnComponent implements OnInit {
       .afterClosed()
       .subscribe(deposito => {
         if (deposito) {
-          console.log('Deposito creado: ', deposito);
+          this.create.emit(deposito);
         }
       });
   }

@@ -1,0 +1,17 @@
+<div class="deposito-importes-panel" [formGroup]="parent">
+  <ng-container formGroupName="importes">
+    <swrx-numeric-field
+      class="efectivo-field"
+      label="Efectivo"
+      formControlName="efectivo"
+    ></swrx-numeric-field>
+    <swrx-numeric-field
+      label="Cheque"
+      formControlName="cheque"
+    ></swrx-numeric-field>
+    <swrx-numeric-field
+      label="Tarjeta"
+      formControlName="tarjeta"
+    ></swrx-numeric-field>
+  </ng-container>
+</div>

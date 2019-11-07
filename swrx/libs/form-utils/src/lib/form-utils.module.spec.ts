@@ -1,14 +1,14 @@
 import { async, TestBed } from '@angular/core/testing';
-import { CoreFormUiModule } from './core-form-ui.module';
+import { FormUtilsModule } from './form-utils.module';
 
-describe('CoreFormUiModule', () => {
+describe('FormUtilsModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CoreFormUiModule]
+      imports: [FormUtilsModule]
     }).compileComponents();
   }));
 
   it('should create', () => {
-    expect(CoreFormUiModule).toBeDefined();
+    expect(FormUtilsModule).toBeDefined();
   });
 });
