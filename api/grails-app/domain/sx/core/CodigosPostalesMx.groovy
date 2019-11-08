@@ -1,4 +1,4 @@
-package sx.logistica
+package sx.core
 
 class CodigosPostalesMx {
 
