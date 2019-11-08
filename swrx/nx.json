@@ -28,6 +28,12 @@
     },
     "form-utils": {
       "tags": []
+    },
+    "depositos-app-e2e": {
+      "tags": []
+    },
+    "depositos-app": {
+      "tags": []
     }
   }
 }

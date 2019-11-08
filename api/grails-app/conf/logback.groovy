@@ -67,6 +67,8 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
     logger("sx.audit", DEBUG, ['STDOUT'], false)
     logger("sx.reports", OFF, ['STDOUT'], false)
     logger("sx.tasks", DEBUG, ['STDOUT', 'TASKJOBS'], false)
+    logger("sx.firebase", DEBUG, ['STDOUT', 'TASKJOBS'], false)
+    
 } else {
     root(ERROR, ['STDOUT'])
     logger("sx.tasks", INFO, ['TASKJOBS'], false)

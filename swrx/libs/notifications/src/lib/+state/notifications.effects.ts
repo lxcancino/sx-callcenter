@@ -69,16 +69,22 @@ export class NotificationsEffects implements OnInitEffects {
           return actions;
         }),
         map(action => mapToNotificationAction(action)),
-        catchError( error => of(NotificationsActions.loadNotificationsFailure({error})))
+        catchError(error =>
+          of(NotificationsActions.loadNotificationsFailure({ error }))
+        )
       ),
     {}
   );
 
-  fetchError$ = createEffect( () => this.actions$.pipe(
-    ofType(NotificationsActions.loadNotificationsFailure),
-    map(action => action.error),
-    map( error => console.log('Error fetching data: ', error))
-  ), {dispatch: false})
+  fetchError$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(NotificationsActions.loadNotificationsFailure),
+        map(action => action.error),
+        map(error => console.log('Error fetching data: ', error))
+      ),
+    { dispatch: false }
+  );
 
   constructor(
     private actions$: Actions,
@@ -89,7 +95,7 @@ export class NotificationsEffects implements OnInitEffects {
 
   ngrxOnInitEffects(): Action {
     console.log('Inicializando Notifications effect');
-    return { type: '[Notifications Effect]: Init' };
-    // return NotificationsActions.loadNotifications();
+    // return { type: '[Notifications Effect]: Init' };
+    return NotificationsActions.loadNotifications();
   }
 }
