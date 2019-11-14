@@ -1,0 +1,68 @@
+<mat-card class="item">
+  <mat-card-header>
+    <mat-card-title
+      >{{ item.cuenta.descripcion }} ({{ item.cuenta.numero }})
+    </mat-card-title>
+    <mat-card-subtitle>{{ item.sucursal || 'CALLCENTER' }}</mat-card-subtitle>
+    <span>{{ item.fecha | date }}</span>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+  <div class="item-content">
+    <div class="total">
+      <span class="importe">{{ item.total | currency }}</span>
+      <span class="tipo"
+        >({{ item.transferencia ? 'TRANSFERENCIA' : 'DEPOSITO' }})</span
+      >
+    </div>
+
+    <div class="property">
+      <span>Fecha Deposito:</span>
+      <span>{{ item.fechaDeposito | date }}</span>
+    </div>
+
+    <div class="property">
+      <span>Origen:</span>
+      <span>{{ item.banco.nombreCorto }}</span>
+    </div>
+
+    <div class="property">
+      <span>Cliente:</span>
+      <span>{{ item.nombre }}</span>
+    </div>
+
+    <div class="property">
+      <span>Vendedor:</span>
+      <span>{{ item.updateUser }}</span>
+    </div>
+
+    <div class="property">
+      <span>Retraso:</span>
+      <span [ngClass]="getWarningClass(item.fechaDeposito)">{{
+        fromNow(item.fechaDeposito)
+      }}</span>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-card-actions align="start">
+    <ng-container *ngIf="even">
+      <button mat-icon-button color="warn">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button color="accent">
+        <mat-icon>block</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" (click)="autorizar.emit(item)">
+        <mat-icon>check_circle</mat-icon>
+      </button>
+    </ng-container>
+    <ng-container *ngIf="!even">
+      <button mat-button color="accent" (click)="rechazar.emit(item)">
+        <mat-icon>block</mat-icon> Rechazar
+      </button>
+      <button mat-button color="primary" (click)="autorizar.emit(item)">
+        <mat-icon>check_circle</mat-icon> Autorizar
+      </button>
+    </ng-container>
+  </mat-card-actions>
+</mat-card>

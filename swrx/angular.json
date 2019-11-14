@@ -308,7 +308,10 @@
               "apps/depositos-app/src/favicon.ico",
               "apps/depositos-app/src/assets"
             ],
-            "styles": ["apps/depositos-app/src/styles.scss"],
+            "styles": [
+              "apps/depositos-app/src/theme.scss",
+              "apps/depositos-app/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -404,6 +407,37 @@
             "tsConfig": ["apps/depositos-app-e2e/tsconfig.e2e.json"],
             "exclude": ["**/node_modules/**", "!apps/depositos-app-e2e/**"]
           }
+        }
+      }
+    },
+    "fa": {
+      "projectType": "library",
+      "root": "libs/fa",
+      "sourceRoot": "libs/fa/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/fa/tsconfig.lib.json",
+              "libs/fa/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/fa/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/fa/jest.config.js",
+            "tsConfig": "libs/fa/tsconfig.spec.json",
+            "setupFile": "libs/fa/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
         }
       }
     }

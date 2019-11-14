@@ -1,0 +1,14 @@
+.footer {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-content: flex-start;
+  line-height: 35px;
+  .item {
+    margin-left: 5px;
+    text-align: center;
+  }
+  .grow {
+    margin-left: auto;
+  }
+}

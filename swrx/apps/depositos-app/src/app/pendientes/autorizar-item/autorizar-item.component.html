@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>
+  AUTORIZACION
+  {{
+    transaccion.transferencia ? 'TRANSFERENCIA BANCARIA' : 'DEPOSITO BANCARIO'
+  }}
+</h2>
+
+<mat-dialog-content>
+  <div class="info">
+    <h3>IMPORTE:</h3>
+    <h3>{{ transaccion.total | currency }}</h3>
+  </div>
+
+  <div class="content">
+    <mat-form-field class="flex">
+      <input
+        matInput
+        [formControl]="control"
+        placeholder="Referencia"
+        tabindex="1"
+      />
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>CANCELAR</button>
+  <button mat-button (click)="submit()" cdkFocusInitial>
+    ACCEPTAR
+  </button>
+</mat-dialog-actions>

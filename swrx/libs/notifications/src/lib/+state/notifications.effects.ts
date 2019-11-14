@@ -95,7 +95,7 @@ export class NotificationsEffects implements OnInitEffects {
 
   ngrxOnInitEffects(): Action {
     console.log('Inicializando Notifications effect');
-    // return { type: '[Notifications Effect]: Init' };
-    return NotificationsActions.loadNotifications();
+    return { type: '[Notifications Effect]: Init' };
+    // return NotificationsActions.loadNotifications();
   }
 }

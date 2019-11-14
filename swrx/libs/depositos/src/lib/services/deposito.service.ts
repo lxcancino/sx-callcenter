@@ -7,8 +7,9 @@ import {
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
 
-import { DepositosEntity } from '../+state/depositos.models';
+import { DepositosEntity, Deposito } from '../+state/depositos.models';
 import { map } from 'rxjs/operators';
+import { Update } from '@ngrx/entity';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,34 @@ export class DepositoService {
         })
       )
     );
+  }
+
+  fetchPendientes(): Observable<Deposito[]> {
+    return this.afs
+      .collection('depositos', ref =>
+        ref.where('autorizacion', '==', null).where('rechazo', '==', null)
+      )
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as Deposito;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
+  }
+
+  update(deposito: Update<Deposito>) {
+    const path = `depositos/${deposito.id}`;
+    this.afs
+      .doc(path)
+      .update(deposito.changes)
+      .then(value => console.log('Update value: ', value))
+      .catch(reason => {
+        console.error('Error actualizando deposito: ', reason);
+      });
   }
 
   save(deposito: DepositosEntity) {

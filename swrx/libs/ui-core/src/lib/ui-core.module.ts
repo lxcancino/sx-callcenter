@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ReactiveFormsModule } from '@angular/forms';
+// import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FaModule } from '@swrx/fa';
 
 export const MY_FORMATS = {
   parse: {
@@ -31,7 +32,9 @@ import {
   DateAdapter,
   MAT_DATE_LOCALE,
   MAT_DATE_FORMATS,
-  MatBadgeModule
+  MatBadgeModule,
+  MatButtonToggleModule,
+  MatSelectModule
 } from '@angular/material';
 
 import {
@@ -40,32 +43,37 @@ import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS
 } from '@angular/material-moment-adapter';
-import { ReactiveFormsModule } from '@angular/forms';
+
+import * as moment from 'moment';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
+    // FontAwesomeModule,
+    FaModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatIconModule,
     MatCheckboxModule,
     MatListModule,
     MatMenuModule,
-    MatListModule,
     MatInputModule,
     MatCardModule,
     MatDialogModule,
     MatTabsModule,
     MatToolbarModule,
     MatBadgeModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatSelectModule
   ],
   exports: [
     CommonModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
+    // FontAwesomeModule,
+    FaModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatIconModule,
     MatCheckboxModule,
     MatListModule,
@@ -78,7 +86,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatTabsModule,
     MatToolbarModule,
     MatBadgeModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatSelectModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX' },
@@ -92,4 +101,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     // { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ]
 })
-export class UiCoreModule {}
+export class UiCoreModule {
+  constructor() {
+    moment.locale(['es-MX']);
+  }
+}

@@ -1,3 +1,22 @@
+export interface Deposito {
+  id?: string;
+  sucursal?: string;
+  cliente: any;
+  nombre: string;
+  rfc: string;
+  banco: any;
+  cuenta: any;
+  fecha: string;
+  fechaDeposito: string;
+  transferencia: boolean;
+  importes?: DepositoImportes;
+  total: number;
+  autorizacion?: any;
+  rechazo?: any;
+  createUser?: string;
+  updateUser?: string;
+}
+
 /**
  * Interface for the 'Depositos' data
  */

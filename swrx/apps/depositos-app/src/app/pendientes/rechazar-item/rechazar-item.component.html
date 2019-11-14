@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>
+  RECHAZAR
+  {{
+    transaccion.transferencia ? 'TRANSFERENCIA BANCARIA' : 'DEPOSITO BANCARIO'
+  }}
+</h2>
+
+<mat-dialog-content>
+  <div class="info">
+    <h3>IMPORTE:</h3>
+    <h3>{{ transaccion.total | currency }}</h3>
+  </div>
+
+  <div class="content">
+    <mat-form-field class="flex">
+      <mat-label>MOTIVO</mat-label>
+      <mat-select [formControl]="control">
+        <mat-option *ngFor="let m of motivos" [value]="m">
+          {{ m }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    color="accent"
+    mat-button
+    (click)="submit()"
+    [disabled]="!control.value"
+  >
+    RECHAZAR
+  </button>
+</mat-dialog-actions>
