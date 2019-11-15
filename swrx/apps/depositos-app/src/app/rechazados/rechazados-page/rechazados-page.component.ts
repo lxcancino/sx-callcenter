@@ -11,15 +11,11 @@ import { Deposito, DepositoService } from '@swrx/depositos';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RechazadosPageComponent implements OnInit {
-
   depositos$: Observable<Deposito[]>;
 
-  constructor(private service: DepositoService) { }
+  constructor(private service: DepositoService) {}
 
   ngOnInit() {
     this.depositos$ = this.service.fetchRechazados();
-    this.depositos$.subscribe( data => console.log('Rechazados: ', data));
-    
   }
-
 }

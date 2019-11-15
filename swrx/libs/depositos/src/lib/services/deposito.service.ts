@@ -22,11 +22,11 @@ export class DepositoService {
     this._collection = this.afs.collection<DepositosEntity>('depositos');
   }
 
-  fetchDepositos(): Observable<DepositosEntity[]> {
+  fetchDepositos(): Observable<Deposito[]> {
     return this._collection.snapshotChanges().pipe(
       map(actions =>
         actions.map(a => {
-          const data = a.payload.doc.data() as DepositosEntity;
+          const data = a.payload.doc.data() as Deposito;
           const id = a.payload.doc.id;
           return { id, ...data };
         })
@@ -35,47 +35,18 @@ export class DepositoService {
   }
 
   fetchPendientes(): Observable<Deposito[]> {
-    return this.afs
-      .collection('depositos', ref =>
-        ref.where('estado', '==', 'PENDIENTE')
-      )
-      .snapshotChanges()
-      .pipe(
-        map(actions =>
-          actions.map(a => {
-            const data = a.payload.doc.data() as Deposito;
-            const id = a.payload.doc.id;
-            return { id, ...data };
-          })
-        )
-      );
+    return this.fetchDepositosByStatus('PENDIENTE');
   }
 
   fetchRechazados(): Observable<Deposito[]> {
-    /*
-    return this.afs
-      .collection('depositos', ref =>
-        ref.where('estado', '==', 'RECHAZADO')
-      )
-      .snapshotChanges()
-      .pipe(
-        map(actions =>
-          actions.map(a => {
-            const data = a.payload.doc.data() as Deposito;
-            const id = a.payload.doc.id;
-            return { id, ...data };
-          })
-        )
-      );
-      */
-     return this.fetchDepositosByStatus('RECHAZADO')
+    return this.fetchDepositosByStatus('RECHAZADO');
   }
 
-  fetchDepositosByStatus(status: 'PENDIENTE' | 'AUTORIZADO' | 'RECHAZADO'): Observable<Deposito[]> {
+  fetchDepositosByStatus(
+    status: 'PENDIENTE' | 'AUTORIZADO' | 'RECHAZADO'
+  ): Observable<Deposito[]> {
     return this.afs
-      .collection('depositos', ref =>
-        ref.where('estado', '==', status)
-      )
+      .collection('depositos', ref => ref.where('estado', '==', status))
       .snapshotChanges()
       .pipe(
         map(actions =>
@@ -89,6 +60,7 @@ export class DepositoService {
   }
 
   update(deposito: Update<Deposito>) {
+    this.logEntity(deposito.changes);
     const path = `depositos/${deposito.id}`;
     this.afs
       .doc(path)
@@ -99,7 +71,9 @@ export class DepositoService {
       });
   }
 
-  save(deposito: DepositosEntity) {
+  save(deposito: Deposito) {
+    deposito.estado = 'PENDIENTE';
+    this.logEntity(deposito);
     this._collection
       .add(deposito)
       .then(docRef => {
@@ -108,5 +82,22 @@ export class DepositoService {
       .catch(reason => {
         console.error('Error agregando deposito: ', reason);
       });
+  }
+
+  logEntity(deposito: Partial<Deposito>) {
+    const user = this.getUsuario();
+    if (!deposito.id) {
+      deposito.createUser = user;
+      deposito.sucursal = this.getSucursal();
+    }
+    deposito.vendedor = user;
+    deposito.updateUser = this.getUsuario();
+  }
+
+  private getSucursal(): string {
+    return 'CALLCENTEr';
+  }
+  private getUsuario(): string {
+    return 'admin';
   }
 }

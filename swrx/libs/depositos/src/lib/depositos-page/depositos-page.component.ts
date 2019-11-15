@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DepositoService } from '../services/deposito.service';
-import { DepositosEntity } from '../+state/depositos.models';
+import { Deposito } from '../+state/depositos.models';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,13 +10,14 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DepositosPageComponent implements OnInit {
-  depositos$: Observable<DepositosEntity[]>;
+  depositos$: Observable<Deposito[]>;
   constructor(private service: DepositoService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.reload();
+  }
 
-  onCreate(event: DepositosEntity) {
-    event.sucursal = '5FEBRERO';
+  onCreate(event: Deposito) {
     this.service.save(event);
   }
 

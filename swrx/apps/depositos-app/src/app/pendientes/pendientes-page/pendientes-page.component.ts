@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { DATA } from './data';
 import { MatDialog } from '@angular/material';
 
 import { AutorizarItemComponent } from '../autorizar-item/autorizar-item.component';
@@ -18,14 +17,11 @@ import { Update } from '@ngrx/entity';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PendientesPageComponent implements OnInit {
-  pendientes: any[];
-
   pendientes$: Observable<Deposito[]>;
 
   constructor(private dialog: MatDialog, private service: DepositoService) {}
 
   ngOnInit() {
-    this.pendientes = DATA;
     this.pendientes$ = this.service.fetchDepositosByStatus('PENDIENTE');
   }
 

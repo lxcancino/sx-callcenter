@@ -13,7 +13,8 @@ export interface Deposito {
   total: number;
   autorizacion?: any;
   rechazo?: any;
-  estado: 'PENDIENTE' | 'AUTORIZADO' | 'RECHAZADO'
+  estado: 'PENDIENTE' | 'AUTORIZADO' | 'RECHAZADO';
+  vendedor: string;
   createUser?: string;
   updateUser?: string;
 }

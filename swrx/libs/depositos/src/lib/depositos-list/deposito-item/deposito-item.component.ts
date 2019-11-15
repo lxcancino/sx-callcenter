@@ -4,7 +4,8 @@ import {
   ChangeDetectionStrategy,
   Input
 } from '@angular/core';
-import { DepositosEntity } from '../../+state/depositos.models';
+
+import { Deposito } from '../../+state/depositos.models';
 
 @Component({
   selector: 'swrx-deposito-item',
@@ -13,7 +14,7 @@ import { DepositosEntity } from '../../+state/depositos.models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DepositoItemComponent implements OnInit {
-  @Input() deposito: DepositosEntity;
+  @Input() deposito: Deposito;
   constructor() {}
 
   ngOnInit() {}

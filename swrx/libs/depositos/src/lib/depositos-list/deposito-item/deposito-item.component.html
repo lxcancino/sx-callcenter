@@ -9,14 +9,19 @@
     </span>
     <span class="total">{{ deposito.total | currency }}</span>
     <span
-      class="autorizacion"
+      class="estado"
       [ngClass]="{
-        pendiente: !deposito.autorizacion,
-        autorizado: deposito.autorizacion
+        pendiente: deposito.estado === 'PENDIENTE',
+        autorizado: deposito.estado === 'AUTORIZADO',
+        rechazado: deposito.estado === 'RECHAZADO'
       }"
     >
-      {{ deposito.autorizacion ? 'AUTORIZADO' : 'PENDIENTE' }}
+      {{ deposito.estado }}
     </span>
+    <div class="comentario">
+      <span class="rechazado" *ngIf="deposito.rechazo">
+        {{ deposito?.rechazo?.motivo }}
+      </span>
+    </div>
   </div>
-  <h3 matLine>Othre line</h3>
 </mat-list-item>

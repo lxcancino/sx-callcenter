@@ -10,24 +10,26 @@
 
 .main-line {
   display: flex;
+  justify-content: flex-start;
   flex: 1 0 100%;
-  box-sizing: border-box;
+  // box-sizing: border-box;
 }
 
 .nombre {
-  flex: 1 0 30%;
+  flex: 1 0 20%;
 }
 .cuenta {
-  flex: 1 0 30%;
+  flex: 1 0 20%;
 }
 .total {
   flex: 1 0 20%;
-  // margin-left: auto;
   text-align: end;
 }
-.autorizacion {
-  margin-left: auto;
+
+.estado {
   flex: 1 0 20%;
+  // margin-left: auto;
+  // flex: 1 0 120px;
   text-align: end;
   &.autorizado {
     color: green;
@@ -35,7 +37,18 @@
   &.pendiente {
     color: goldenrod;
   }
-  &.cancelado {
+  &.rechazado {
     color: red;
   }
+}
+
+.comentario {
+  flex: 1 0 20%;
+  .rechazado {
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  display: flex;
+  justify-content: flex-end;
 }
