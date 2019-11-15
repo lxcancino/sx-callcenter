@@ -10,8 +10,6 @@ import { DepositoService, Deposito } from '@swrx/depositos';
 
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
-// import {  } from '@swrx/depositos'
-// import { DepositoService } from '@swrx/depositos/src/lib/services/deposito.service';
 
 @Component({
   selector: 'swrx-pendientes-page',
@@ -28,8 +26,7 @@ export class PendientesPageComponent implements OnInit {
 
   ngOnInit() {
     this.pendientes = DATA;
-    this.pendientes$ = this.service.fetchPendientes();
-    this.pendientes$.subscribe(pend => console.log('Pendientes:', pend));
+    this.pendientes$ = this.service.fetchDepositosByStatus('PENDIENTE');
   }
 
   onAutorizar(event: Deposito) {
@@ -42,7 +39,7 @@ export class PendientesPageComponent implements OnInit {
         if (auth && auth.uuid) {
           const update: Update<Deposito> = {
             id: event.id,
-            changes: { autorizacion: auth }
+            changes: { autorizacion: auth, estado: 'AUTORIZADO' }
           };
           // console.log('Autorizando deposito/transfrerencia: ', update);
           this.service.update(update);
@@ -60,7 +57,7 @@ export class PendientesPageComponent implements OnInit {
         if (res) {
           const update: Update<Deposito> = {
             id: event.id,
-            changes: { rechazo: res }
+            changes: { rechazo: res, estado: 'RECHAZADO' }
           };
           // console.log('Rechazar: ', update);
           this.service.update(update);

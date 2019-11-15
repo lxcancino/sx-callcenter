@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 // import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaModule } from '@swrx/fa';
+import { AgGridModule } from 'ag-grid-angular';
 
 export const MY_FORMATS = {
   parse: {
@@ -65,7 +66,8 @@ import * as moment from 'moment';
     MatToolbarModule,
     MatBadgeModule,
     MatMomentDateModule,
-    MatSelectModule
+    MatSelectModule,
+    AgGridModule.withComponents([])
   ],
   exports: [
     CommonModule,
@@ -87,7 +89,8 @@ import * as moment from 'moment';
     MatToolbarModule,
     MatBadgeModule,
     MatMomentDateModule,
-    MatSelectModule
+    MatSelectModule,
+    AgGridModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX' },

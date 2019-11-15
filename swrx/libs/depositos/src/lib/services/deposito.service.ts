@@ -37,7 +37,44 @@ export class DepositoService {
   fetchPendientes(): Observable<Deposito[]> {
     return this.afs
       .collection('depositos', ref =>
-        ref.where('autorizacion', '==', null).where('rechazo', '==', null)
+        ref.where('estado', '==', 'PENDIENTE')
+      )
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as Deposito;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
+  }
+
+  fetchRechazados(): Observable<Deposito[]> {
+    /*
+    return this.afs
+      .collection('depositos', ref =>
+        ref.where('estado', '==', 'RECHAZADO')
+      )
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as Deposito;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
+      */
+     return this.fetchDepositosByStatus('RECHAZADO')
+  }
+
+  fetchDepositosByStatus(status: 'PENDIENTE' | 'AUTORIZADO' | 'RECHAZADO'): Observable<Deposito[]> {
+    return this.afs
+      .collection('depositos', ref =>
+        ref.where('estado', '==', status)
       )
       .snapshotChanges()
       .pipe(

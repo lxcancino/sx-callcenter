@@ -1,9 +1,28 @@
-<div class="wrapper">
-  <swrx-toolbar title="AUTORIZACIONES"></swrx-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" fixedTopGap="50">
+    <mat-nav-list>
+      <a
+        *ngFor="let link of routes"
+        mat-list-item
+        [routerLink]="link.path"
+        routerLinkActive="active-nav"
+        (click)="sidenav.close()"
+      >
+        <mat-icon matListIcon>{{ link.matIcon }}</mat-icon>
+        {{ link.title }}
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
 
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
+  <mat-sidenav-content class="wrapper">
+    <swrx-toolbar
+      title="AUTORIZACIONES"
+      (toogle)="sidenav.toggle()"
+    ></swrx-toolbar>
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
 
-  <swrx-footer></swrx-footer>
-</div>
+    <swrx-footer></swrx-footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

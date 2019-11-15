@@ -18,21 +18,40 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { DepositosModule } from '@swrx/depositos';
+import { HomeComponent } from './home/home.component';
 
 const routes: Route[] = [
+  {
+    path: '',
+    redirectTo: 'inicio',
+    pathMatch: 'full'
+  },
+  {
+    path: 'inicio',
+    component: HomeComponent
+  },
   {
     path: 'pendientes',
     loadChildren: () =>
       import('./pendientes/pendientes.module').then(m => m.PendientesModule)
+  },
+  {
+    path: 'rechazados',
+    loadChildren: () =>
+      import('./rechazados/rechazados.module').then(m => m.RechazadosModule)
+  },
+  {
+    path: 'autorizados',
+    loadChildren: () =>
+      import('./autorizados/autorizados.module').then(m => m.AutorizadosModule)
   }
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
     LayoutModule,
     StoreModule.forRoot(
       {},
@@ -49,7 +68,8 @@ const routes: Route[] = [
     StoreRouterConnectingModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase, 'swrx-callcemter'),
     AngularFirestoreModule,
-    DepositosModule
+    DepositosModule,
+    RouterModule.forRoot(routes, { initialNavigation: 'enabled' })
   ],
   providers: [DataPersistence],
   bootstrap: [AppComponent]

@@ -1,42 +1,22 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button>
+  <button mat-icon-button (click)="toogle.emit(true)">
     <mat-icon>menu</mat-icon>
   </button>
   <h1 class="mat-title">{{ title }}</h1>
   <div class="site-nav">
-    <a mat-button [routerLink]="'/home'" routerLinkActive="router-link-active">
-      <fa-icon icon="home"></fa-icon>
-      <span>Inicio</span>
-    </a>
     <a
+      *ngFor="let r of routes"
       mat-button
-      [routerLink]="'/pendientes'"
+      [routerLink]="r.path"
       routerLinkActive="router-link-active"
     >
-      <fa-icon icon="clock"></fa-icon>
-      <span>Pendientes</span>
-    </a>
-    <a
-      mat-button
-      [routerLink]="'/regresados'"
-      routerLinkActive="router-link-active"
-    >
-      <fa-icon icon="comment-slash"></fa-icon>
-      <span>Regresados</span>
-    </a>
-    <a
-      mat-button
-      [routerLink]="'/autorizados'"
-      routerLinkActive="router-link-active"
-    >
-      <fa-icon icon="check-circle"></fa-icon>
-      <span>Autorizados</span>
+      <fa-icon [icon]="r.iconName"></fa-icon>
+      <span>{{ r.title }}</span>
     </a>
   </div>
-  <!-- <button mat-icon-button>
-      <fa-icon icon="bell"></fa-icon>
-    </button> -->
-  <!-- <swrx-notification-btn></swrx-notification-btn> -->
+  <button mat-icon-button>
+    <fa-icon icon="bell"></fa-icon>
+  </button>
   <button mat-icon-button>
     <fa-icon icon="cogs"></fa-icon>
   </button>
