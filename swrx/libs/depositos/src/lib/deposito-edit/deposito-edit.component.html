@@ -1,0 +1,53 @@
+<div class="header">
+  <h2 mat-dialog-title>Alta de {{ tipo }}</h2>
+  <span
+    class="estado"
+    [ngClass]="{ rechazado: deposito.estado === 'RECHAZADO' }"
+    >{{ deposito.estado }}</span
+  >
+</div>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <div class="create-cliente-form" [formGroup]="form">
+    <swrx-cliente-field formControlName="cliente"></swrx-cliente-field>
+    <swrx-cuenta-field formControlName="cuenta"></swrx-cuenta-field>
+    <swrx-banco-field formControlName="banco"></swrx-banco-field>
+    <div class="row">
+      <swrx-fecha-field
+        class="item"
+        formControlName="fechaDeposito"
+        label="Fecha Depósito"
+        [maxDate]="limitDate"
+      ></swrx-fecha-field>
+      <mat-checkbox class="item" formControlName="transferencia">
+        Transferencia
+      </mat-checkbox>
+      <span class="item"></span>
+    </div>
+    <swrx-deposito-importes-field
+      [parent]="form"
+    ></swrx-deposito-importes-field>
+    <div class="row">
+      <swrx-numeric-field
+        class="total"
+        formControlName="total"
+        label="Total"
+        placeholder="Total"
+      >
+        <mat-error>Total incorrecto</mat-error>
+      </swrx-numeric-field>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>
+    CANCELAR
+  </button>
+  <button
+    mat-button
+    (click)="submit()"
+    [disabled]="form.invalid || form.pristine"
+  >
+    SALVAR
+  </button>
+</mat-dialog-actions>

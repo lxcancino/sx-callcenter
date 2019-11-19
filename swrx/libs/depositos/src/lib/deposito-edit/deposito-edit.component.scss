@@ -1,0 +1,45 @@
+.create-cliente-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.header {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: baseline;
+  .estado {
+    margin-left: auto;
+    &.rechazado {
+      color: red;
+    }
+  }
+}
+swrx-cliente-field {
+  grid-column: 1 / 5;
+}
+swrx-banco-field {
+  grid-column: 1 /5;
+}
+swrx-cuenta-field {
+  grid-column: 1 / 5;
+}
+
+swrx-deposito-importes-field {
+  grid-column: 1 / 5;
+}
+
+.row {
+  grid-column: 1 / 5;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: baseline;
+  .item {
+    flex: 1 0 auto;
+    // border: 1px solid powderblue;
+  }
+}
+
+.row .total {
+  margin-left: auto;
+  flex-basis: 33%;
+}

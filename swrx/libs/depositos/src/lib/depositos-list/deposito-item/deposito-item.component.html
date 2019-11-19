@@ -8,6 +8,7 @@
       ({{ deposito.cuenta.descripcion }})
     </span>
     <span class="total">{{ deposito.total | currency }}</span>
+    <span class="updateUser">{{ deposito.updateUser }}</span>
     <span
       class="estado"
       [ngClass]="{
@@ -19,7 +20,11 @@
       {{ deposito.estado }}
     </span>
     <div class="comentario">
-      <span class="rechazado" *ngIf="deposito.rechazo">
+      <span
+        class="rechazado"
+        *ngIf="deposito.rechazo"
+        (click)="edit.emit(deposito)"
+      >
         {{ deposito?.rechazo?.motivo }}
       </span>
     </div>

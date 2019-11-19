@@ -1,7 +1,12 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import {
+  distinctUntilChanged,
+  debounceTime,
+  switchMap,
+  catchError
+} from 'rxjs/operators';
 
 import {
   FormControl,
@@ -48,9 +53,11 @@ export class ClienteFieldComponent implements OnInit, ControlValueAccessor {
 
   lookUp(value: string) {
     const params = new HttpParams().set('term', value).set('activos', 'true');
-    return this.http.get(this.apiUrl, {
-      params: params
-    });
+    return this.http
+      .get(this.apiUrl, {
+        params: params
+      })
+      .pipe(catchError((response: any) => throwError(response)));
   }
 
   displayFn(cliente?: any): string | undefined {

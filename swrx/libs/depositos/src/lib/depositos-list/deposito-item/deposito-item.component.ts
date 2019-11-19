@@ -2,7 +2,9 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
-  Input
+  Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
 import { Deposito } from '../../+state/depositos.models';
@@ -15,6 +17,7 @@ import { Deposito } from '../../+state/depositos.models';
 })
 export class DepositoItemComponent implements OnInit {
   @Input() deposito: Deposito;
+  @Output() edit = new EventEmitter();
   constructor() {}
 
   ngOnInit() {}

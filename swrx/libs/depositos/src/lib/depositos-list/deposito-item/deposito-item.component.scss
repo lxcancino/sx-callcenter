@@ -21,8 +21,12 @@
 .cuenta {
   flex: 1 0 20%;
 }
+.updateUser {
+  flex: 1 0 10%;
+  text-align: end;
+}
 .total {
-  flex: 1 0 20%;
+  flex: 1 0 10%;
   text-align: end;
 }
 
@@ -43,7 +47,7 @@
 }
 
 .comentario {
-  flex: 1 0 20%;
+  flex: 1 0 15%;
   .rechazado {
     color: red;
     font-weight: bold;

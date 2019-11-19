@@ -65,7 +65,7 @@ export class DepositoService {
     this.afs
       .doc(path)
       .update(deposito.changes)
-      .then(value => console.log('Update value: ', value))
+      .then(value => console.log('Deposito actualizado satisfactriamente '))
       .catch(reason => {
         console.error('Error actualizando deposito: ', reason);
       });

@@ -48,7 +48,7 @@ export class CuentaFieldComponent implements OnInit, ControlValueAccessor {
 
   compareWith(itemA, itemB: any) {
     if (itemA && itemB) {
-      return itemA.clave === itemB.clave;
+      return itemA.id === itemB.id;
     } else {
       return false;
     }
