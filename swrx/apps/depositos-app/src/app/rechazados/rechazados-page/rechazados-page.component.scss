@@ -1,0 +1,17 @@
+.mat-card {
+  height: 95%;
+}
+.header {
+  display: flex;
+  justify-content: flex-end;
+  span {
+    flex: 1 0 auto;
+  }
+  .actions {
+    flex: 2 0 1;
+  }
+}
+.mat-card-content {
+  padding: 5px 0px;
+  height: 500px;
+}

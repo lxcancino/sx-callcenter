@@ -1,0 +1,14 @@
+<!-- <mat-card>
+  <div class="header">
+    <span class="mat-title">Transacciones rechazadas</span>
+    <div class="actions">
+      <button mat-icon-button>
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+  <mat-card-content> </mat-card-content>
+</mat-card> -->
+<swrx-rechazados-table [partidas]="depositos$ | async"></swrx-rechazados-table>

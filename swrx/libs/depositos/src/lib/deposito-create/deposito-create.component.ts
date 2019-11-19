@@ -16,6 +16,7 @@ import {
 import { MatDialogRef } from '@angular/material';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Deposito } from '../+state/depositos.models';
 
 const depositoValidator: ValidatorFn = (
   control: any
@@ -105,19 +106,23 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
 
   submit() {
     if (this.form.valid) {
-      const data: any = this.form.getRawValue();
-      const { cliente, cuenta } = data;
-      const deposito = { ...data };
-      deposito.nombre = cliente.nombre;
-      deposito.rfc = cliente.rfc;
-      deposito.cuenta = {
-        id: cuenta.id,
-        descripcion: cuenta.descripcion,
-        numero: cuenta.numero
-      };
-      // console.log('Deposito: ', res);
-      this.dialogRef.close(deposito);
+      const d: Deposito = this.buildDeposito();
+      this.dialogRef.close(d);
     }
+  }
+
+  buildDeposito(): Deposito {
+    const data: any = this.form.getRawValue();
+    const { cliente, cuenta } = data;
+    const deposito = { ...data };
+    deposito.nombre = cliente.nombre;
+    deposito.rfc = cliente.rfc;
+    deposito.cuenta = {
+      id: cuenta.id,
+      descripcion: cuenta.descripcion,
+      numero: cuenta.numero
+    };
+    return deposito;
   }
 
   get tipo() {

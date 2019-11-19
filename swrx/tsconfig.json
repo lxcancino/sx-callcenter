@@ -20,7 +20,8 @@
       "@swrx/depositos": ["libs/depositos/src/index.ts"],
       "@swrx/clientes": ["libs/clientes/src/index.ts"],
       "@swrx/notifications": ["libs/notifications/src/index.ts"],
-      "@swrx/form-utils": ["libs/form-utils/src/index.ts"]
+      "@swrx/form-utils": ["libs/form-utils/src/index.ts"],
+      "@swrx/fa": ["libs/fa/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

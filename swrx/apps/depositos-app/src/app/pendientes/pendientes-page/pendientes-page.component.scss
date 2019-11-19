@@ -1,0 +1,26 @@
+.toolbar {
+  display: flex;
+  height: 48px;
+  margin: 0px 0px 5px 0;
+  align-items: center;
+  .title {
+    // flex-grow: 2;
+    // flex-shrink: 1;
+    // flex-basis: auto;
+    flex: 2 1 auto;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .actions {
+    flex-basis: auto;
+    flex-shrink: 1;
+  }
+}
+
+.pendientes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 40px, 1fr;
+  gap: 10px 10px;
+}

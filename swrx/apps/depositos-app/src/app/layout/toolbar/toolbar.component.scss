@@ -1,0 +1,45 @@
+.mat-toolbar {
+  height: 50px;
+  // line-height: 40px;
+  // font-size: 20px;
+  grid-column: span 3;
+  grid-row: 1 / 2;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  // border-radius: 5px;
+}
+/*
+mat-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+*/
+.site-nav {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-start;
+  margin: 0;
+  padding: .5em;
+  border-radius: .2em;
+
+}
+
+.site-nav a {
+  margin: 0;
+  span {
+    text-transform: uppercase;
+    padding-left: 5px;
+  }
+}
+
+.site-nav > .nav-right {
+  margin-left: auto;
+
+}
+.site-nav a > span {
+  text-transform: capitalize;
+}

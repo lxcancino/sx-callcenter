@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="toogle.emit(true)">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1 class="mat-title">{{ title }}</h1>
+  <div class="site-nav">
+    <a
+      *ngFor="let r of routes"
+      mat-button
+      [routerLink]="r.path"
+      routerLinkActive="router-link-active"
+    >
+      <fa-icon [icon]="r.iconName"></fa-icon>
+      <span>{{ r.title }}</span>
+    </a>
+  </div>
+  <button mat-icon-button>
+    <fa-icon icon="bell"></fa-icon>
+  </button>
+  <button mat-icon-button>
+    <fa-icon icon="cogs"></fa-icon>
+  </button>
+</mat-toolbar>

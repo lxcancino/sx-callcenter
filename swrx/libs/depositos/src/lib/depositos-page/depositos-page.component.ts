@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DepositoService } from '../services/deposito.service';
-import { DepositosEntity } from '../+state/depositos.models';
+import { Deposito } from '../+state/depositos.models';
 import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { DepositoEditComponent } from '../deposito-edit/deposito-edit.component';
 
 @Component({
   selector: 'swrx-depositos-page',
@@ -10,14 +12,28 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DepositosPageComponent implements OnInit {
-  depositos$: Observable<DepositosEntity[]>;
-  constructor(private service: DepositoService) {}
+  depositos$: Observable<Deposito[]>;
+  constructor(private service: DepositoService, private dialog: MatDialog) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.reload();
+  }
 
-  onCreate(event: DepositosEntity) {
-    event.sucursal = '5FEBRERO';
+  onCreate(event: Deposito) {
     this.service.save(event);
+  }
+  onEdit(deposito: Deposito) {
+    this.dialog
+      .open(DepositoEditComponent, {
+        data: { deposito }
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          console.log('Salvando cambios: ', res);
+          this.service.update(res);
+        }
+      });
   }
 
   reload() {

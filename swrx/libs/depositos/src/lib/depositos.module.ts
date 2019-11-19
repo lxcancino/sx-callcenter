@@ -30,6 +30,7 @@ import { CuentaFieldComponent } from './cuenta-field/cuenta-field.component';
 import { DepositoImportesFieldComponent } from './deposito-importes-field/deposito-importes-field.component';
 import { DepositosListComponent } from './depositos-list/depositos-list.component';
 import { DepositoItemComponent } from './depositos-list/deposito-item/deposito-item.component';
+import { DepositoEditComponent } from './deposito-edit/deposito-edit.component';
 
 const routes: Route[] = [{ path: '', component: DepositosPageComponent }];
 
@@ -55,9 +56,10 @@ const routes: Route[] = [{ path: '', component: DepositosPageComponent }];
     CuentaFieldComponent,
     DepositoImportesFieldComponent,
     DepositosListComponent,
-    DepositoItemComponent
+    DepositoItemComponent,
+    DepositoEditComponent
   ],
-  entryComponents: [DepositoCreateComponent],
+  entryComponents: [DepositoCreateComponent, DepositoEditComponent],
   providers: [DepositosFacade],
   exports: [BancoFieldComponent, CuentaFieldComponent]
 })

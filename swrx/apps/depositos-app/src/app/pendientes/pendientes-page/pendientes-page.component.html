@@ -1,0 +1,26 @@
+<div class="toolbar">
+  <span class="title"
+    >Depositos y Transferencias pendientes de autorización</span
+  >
+  <div class="actions">
+    <mat-button-toggle-group>
+      <mat-button-toggle value="card">
+        <mat-icon>view_module</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="list">
+        <mat-icon>view_headline</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</div>
+<div class="pendientes">
+  <swrx-pendiente-item
+    *ngFor="let item of pendientes$ | async; even as even"
+    class="item"
+    [item]="item"
+    (autorizar)="onAutorizar($event)"
+    (rechazar)="onRechazar($event)"
+    (eliminar)="onEliminar($event)"
+  >
+  </swrx-pendiente-item>
+</div>

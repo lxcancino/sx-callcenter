@@ -2,5 +2,6 @@
   <swrx-deposito-item
     [deposito]="item"
     *ngFor="let item of depositos"
+    (edit)="edit.emit($event)"
   ></swrx-deposito-item>
 </mat-list>

@@ -10,7 +10,10 @@
       </button>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <swrx-depositos-list [depositos]="depositos$ | async"></swrx-depositos-list>
+    <swrx-depositos-list
+      [depositos]="depositos$ | async"
+      (edit)="onEdit($event)"
+    ></swrx-depositos-list>
     <mat-card-content> </mat-card-content>
   </mat-card>
 </div>
