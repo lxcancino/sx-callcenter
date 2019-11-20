@@ -7,6 +7,8 @@ import {
   EventEmitter
 } from '@angular/core';
 
+import { ProductosUiService } from '@swrx/productos';
+
 @Component({
   selector: 'swrx-main-toolbar',
   templateUrl: './main-toolbar.component.html',
@@ -18,7 +20,11 @@ export class MainToolbarComponent implements OnInit {
 
   @Output() toogle = new EventEmitter();
 
-  constructor() {}
+  constructor(private productosUi: ProductosUiService) {}
 
   ngOnInit() {}
+
+  showProductos() {
+    this.productosUi.openSelector();
+  }
 }

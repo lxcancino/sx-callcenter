@@ -21,7 +21,9 @@
       "@swrx/clientes": ["libs/clientes/src/index.ts"],
       "@swrx/notifications": ["libs/notifications/src/index.ts"],
       "@swrx/form-utils": ["libs/form-utils/src/index.ts"],
-      "@swrx/fa": ["libs/fa/src/index.ts"]
+      "@swrx/fa": ["libs/fa/src/index.ts"],
+      "@swrx/shopping-cart": ["libs/shopping-cart/src/index.ts"],
+      "@swrx/productos": ["libs/productos/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

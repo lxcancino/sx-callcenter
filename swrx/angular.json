@@ -440,6 +440,68 @@
           "styleext": "scss"
         }
       }
+    },
+    "shopping-cart": {
+      "projectType": "library",
+      "root": "libs/shopping-cart",
+      "sourceRoot": "libs/shopping-cart/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/shopping-cart/tsconfig.lib.json",
+              "libs/shopping-cart/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shopping-cart/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shopping-cart/jest.config.js",
+            "tsConfig": "libs/shopping-cart/tsconfig.spec.json",
+            "setupFile": "libs/shopping-cart/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "productos": {
+      "projectType": "library",
+      "root": "libs/productos",
+      "sourceRoot": "libs/productos/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/productos/tsconfig.lib.json",
+              "libs/productos/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/productos/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/productos/jest.config.js",
+            "tsConfig": "libs/productos/tsconfig.spec.json",
+            "setupFile": "libs/productos/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

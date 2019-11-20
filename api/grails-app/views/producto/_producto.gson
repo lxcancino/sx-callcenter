@@ -4,7 +4,7 @@ model {
 	Producto producto
 }
 
-json g.render(producto, [resolveTemplate: false]) {
+json g.render(producto, [excludes: ['linea', 'marca', 'clase', 'proveedorFavorito'], resolveTemplate: false]) {
 	linea {
 		id producto?.linea?.id
 		linea producto.linea?.linea

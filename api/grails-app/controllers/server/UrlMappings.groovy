@@ -12,6 +12,7 @@ class UrlMappings {
         "/api/depositos/bancos"(controller: 'deposito', action: 'bancos', method: 'GET')
         "/api/depositos/cuentas"(controller: 'deposito', action: 'cuentas', method: 'GET')
         
+        "/api/productos"(resources: 'producto', excludes: ['create', 'edit', 'delete'])
 
         
         "/"(controller: 'application', action:'index')

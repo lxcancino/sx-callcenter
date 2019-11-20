@@ -29,18 +29,11 @@
       <fa-icon icon="users"></fa-icon>
       <span>Clientes</span>
     </a>
-    <a
-      mat-button
-      [routerLink]="'/productos'"
-      routerLinkActive="router-link-active"
-    >
+    <a mat-button (click)="showProductos()">
       <fa-icon icon="layer-group"></fa-icon>
       <span>Productos</span>
     </a>
   </div>
-  <!-- <button mat-icon-button>
-    <fa-icon icon="bell"></fa-icon>
-  </button> -->
   <swrx-notification-btn></swrx-notification-btn>
   <button mat-icon-button (click)="toogle.emit()">
     <fa-icon icon="cogs"></fa-icon>

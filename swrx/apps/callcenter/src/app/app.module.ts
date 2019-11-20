@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Route } from '@angular/router';
 
 import { NotificationsModule } from '@swrx/notifications';
+import { ProductosModule } from '@swrx/productos';
 import { LayoutModule } from './layout/layout.module';
 import { AppComponent } from './app.component';
 
@@ -43,6 +44,7 @@ const routes: Route[] = [
     MatListModule,
     MatButtonModule,
     NotificationsModule,
+    ProductosModule,
     LayoutModule,
     StoreModule.forRoot(
       {},
