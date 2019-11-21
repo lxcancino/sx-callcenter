@@ -1,0 +1,27 @@
+.summary {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(5, fr);
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
+  font-size: 20px;
+  & > * {
+    border: 1px dotted yellow;
+  }
+  .row {
+    display: flex;
+    .value {
+      margin-left: auto;
+      font-weight: bold;
+    }
+  }
+}
+.descuento {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}

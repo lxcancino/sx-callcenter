@@ -15,10 +15,12 @@ import {
 } from '@angular/forms';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+import { Update } from '@ngrx/entity';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { Deposito } from '../+state/depositos.models';
-import { Update } from '@ngrx/entity';
 
 const depositoValidator: ValidatorFn = (
   form: FormGroup
@@ -27,7 +29,6 @@ const depositoValidator: ValidatorFn = (
     const control = form.get('importes');
     const { efectivo, cheque, tarjeta } = control.value;
     const total = efectivo + cheque + tarjeta;
-    console.log('Total: ', total);
     return total > 0.0 ? null : { importesInvalidos: true };
   }
   return null;
@@ -53,7 +54,6 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
   limitDate = new Date().toISOString();
 
   ngOnInit() {
-    console.log('Editando: ', this.deposito);
     this.buildForm();
     this.form.patchValue(this.deposito);
     this.transfernciaListener();

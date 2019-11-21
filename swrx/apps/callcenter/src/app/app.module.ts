@@ -29,6 +29,11 @@ const routes: Route[] = [
   {
     path: 'depositos',
     loadChildren: () => import('@swrx/depositos').then(m => m.DepositosModule)
+  },
+  {
+    path: 'shopping-cart',
+    loadChildren: () =>
+      import('@swrx/shopping-cart').then(m => m.ShoppingCartModule)
   }
 ];
 

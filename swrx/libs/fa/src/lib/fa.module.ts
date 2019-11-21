@@ -17,7 +17,8 @@ import {
   faClock,
   faCheckCircle,
   faCommentSlash,
-  faTh
+  faTh,
+  faTruckLoading
 } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
@@ -39,7 +40,8 @@ export class FaModule {
       faClock,
       faCheckCircle,
       faCommentSlash,
-      faTh
+      faTh,
+      faTruckLoading
     );
   }
 }

@@ -1,0 +1,40 @@
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input
+} from '@angular/core';
+import { FormGroup } from '@angular/forms';
+
+@Component({
+  selector: 'swrx-cart-tipo',
+  template: `
+    <mat-form-field class="tipo-field">
+      <mat-label>TIPO</mat-label>
+      <mat-select placeholder="TIPO">
+        <mat-option *ngFor="let t of tipos" [value]="t"> {{ t }} </mat-option>
+      </mat-select>
+      <mat-error>
+        Debe seleccionar un tipo de venta
+      </mat-error>
+    </mat-form-field>
+  `,
+  styles: [
+    `
+      .tipo-field {
+        width: 100px;
+        margin-right: 5px;
+      }
+    `
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class CartTipoComponent implements OnInit {
+  @Input() parent = FormGroup;
+
+  @Input() tipos = ['COD', 'CRE', 'CON'];
+
+  constructor() {}
+
+  ngOnInit() {}
+}

@@ -16,7 +16,7 @@ import { ProductosUiService } from '@swrx/productos';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainToolbarComponent implements OnInit {
-  @Input() title = 'SX CAT';
+  @Input() title = 'SIIPAPX CALLCENTER';
 
   @Output() toogle = new EventEmitter();
 

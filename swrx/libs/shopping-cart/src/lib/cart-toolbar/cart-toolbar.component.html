@@ -1,0 +1,32 @@
+<mat-toolbar color="default" class="toolbar">
+  <h3>PEDIDO:</h3>
+  <h3 class="cliente">MOSTRADOR</h3>
+  <!-- <swrx-cliente-field class="cliente"></swrx-cliente-field> -->
+
+  <div class="menu">
+    <button mat-icon-button>
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon>add_shopping_cart</mat-icon>
+    </button>
+    <button mat-icon-button [matMenuTriggerFor]="padidoMenu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #padidoMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>monetization_on</mat-icon>
+        <span>Descuento especial</span>
+      </button>
+      <button mat-menu-item>
+        <!-- <fa-icon icon="truck-loading"></fa-icon> -->
+        <mat-icon>local_shipping</mat-icon>
+        <span>Maniobra</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>dialpad</mat-icon>
+        <span>Venta INE</span>
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

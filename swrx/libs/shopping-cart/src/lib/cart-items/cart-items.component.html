@@ -1,0 +1,17 @@
+<div class="cart-items mat-elevation-z2">
+  <ag-grid-angular
+    #agGrid
+    class="ag-theme-balham"
+    style="width: 100%; height: 100%;"
+    [rowData]="partidas"
+    [gridOptions]="gridOptions"
+    [defaultColDef]="defaultColDef"
+    [floatingFilter]="false"
+    [localeText]="localeText"
+    (gridReady)="onGridReady($event)"
+    (rowDoubleClicked)="onDoubleClick($event)"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    rowSelection="single"
+  >
+  </ag-grid-angular>
+</div>

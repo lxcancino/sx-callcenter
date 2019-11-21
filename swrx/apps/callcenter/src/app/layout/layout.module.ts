@@ -3,20 +3,9 @@ import { RouterModule } from '@angular/router';
 
 import { UiCoreModule } from '@swrx/ui-core';
 
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import {
-  faFileInvoiceDollar,
-  faFileInvoice,
-  faShoppingCart,
-  faHandHoldingUsd,
-  faCogs,
-  faBell,
-  faUsers,
-  faLayerGroup
-} from '@fortawesome/free-solid-svg-icons';
-
 import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
 import { NotificationsModule } from '@swrx/notifications';
+import { ShoppingCartModule } from '@swrx/shopping-cart';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -29,6 +18,7 @@ import { LayoutFacade } from './+state/layout.facade';
   imports: [
     RouterModule,
     UiCoreModule,
+    ShoppingCartModule,
     NotificationsModule,
     StoreModule.forFeature(fromLayout.LAYOUT_FEATURE_KEY, fromLayout.reducer),
     EffectsModule.forFeature([LayoutEffects])
@@ -37,16 +27,5 @@ import { LayoutFacade } from './+state/layout.facade';
   providers: [LayoutFacade]
 })
 export class LayoutModule {
-  constructor(library: FaIconLibrary) {
-    library.addIcons(
-      faFileInvoice,
-      faFileInvoiceDollar,
-      faShoppingCart,
-      faHandHoldingUsd,
-      faCogs,
-      faBell,
-      faUsers,
-      faLayerGroup
-    );
-  }
+  constructor() {}
 }
