@@ -21,6 +21,7 @@ import {
 
 import { spAgGridText } from '@swrx/ui-core';
 import { CartItem } from '../+state/cart.models';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'swrx-cart-items',
@@ -29,6 +30,7 @@ import { CartItem } from '../+state/cart.models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartItemsComponent implements OnInit {
+  @Input() cartForm: FormGroup;
   @Input() partidas: CartItem[] = [];
   @Output() doubleClick = new EventEmitter();
 

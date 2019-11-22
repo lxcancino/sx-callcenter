@@ -23,7 +23,8 @@
       "@swrx/form-utils": ["libs/form-utils/src/index.ts"],
       "@swrx/fa": ["libs/fa/src/index.ts"],
       "@swrx/shopping-cart": ["libs/shopping-cart/src/index.ts"],
-      "@swrx/productos": ["libs/productos/src/index.ts"]
+      "@swrx/productos": ["libs/productos/src/index.ts"],
+      "@swrx/core-model": ["libs/core-model/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

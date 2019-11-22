@@ -1,13 +1,12 @@
 <mat-toolbar color="default" class="toolbar">
   <h3>PEDIDO:</h3>
-  <h3 class="cliente">MOSTRADOR</h3>
-  <!-- <swrx-cliente-field class="cliente"></swrx-cliente-field> -->
+  <h3 class="cliente">{{ nombre }}</h3>
 
   <div class="menu">
-    <button mat-icon-button>
+    <button mat-icon-button (click)="seleccionarCliente()">
       <mat-icon>account_circle</mat-icon>
     </button>
-    <button mat-icon-button>
+    <button mat-icon-button (click)="addItem.emit()">
       <mat-icon>add_shopping_cart</mat-icon>
     </button>
     <button mat-icon-button [matMenuTriggerFor]="padidoMenu">

@@ -4,6 +4,7 @@ import { RouterModule, Route } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import * as fromCart from './+state/cart.reducer';
+import { CartEffects } from './+state/cart.effects';
 
 import { UiCoreModule } from '@swrx/ui-core';
 import { ClientesModule } from '@swrx/clientes';
@@ -18,6 +19,8 @@ import { CartFooterComponent } from './cart-footer/cart-footer.component';
 import { CartSummaryComponent } from './cart-summary/cart-summary.component';
 import { CartInfoComponent } from './cart-info/cart-info.component';
 import { CartFormModule } from './cart-form/cart-form.module';
+import { CartFacade } from './+state/cart.facade';
+import { CartAddItemComponent } from './cart-add-item/cart-add-item.component';
 
 const routes: Route[] = [{ path: '', component: CartPageComponent }];
 
@@ -28,6 +31,7 @@ const routes: Route[] = [{ path: '', component: CartPageComponent }];
     ClientesModule,
     FormUtilsModule,
     StoreModule.forFeature(fromCart.CART_FEATURE_KEY, fromCart.reducer),
+    EffectsModule.forFeature([CartEffects]),
     CartFormModule
   ],
   declarations: [
@@ -37,8 +41,11 @@ const routes: Route[] = [{ path: '', component: CartPageComponent }];
     CartItemsComponent,
     CartFooterComponent,
     CartSummaryComponent,
-    CartInfoComponent
+    CartInfoComponent,
+    CartAddItemComponent
   ],
-  exports: [CartBtnComponent]
+  entryComponents: [CartAddItemComponent],
+  exports: [CartBtnComponent],
+  providers: [CartFacade]
 })
 export class ShoppingCartModule {}

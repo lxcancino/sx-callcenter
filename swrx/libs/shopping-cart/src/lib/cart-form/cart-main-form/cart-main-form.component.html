@@ -1,11 +1,8 @@
-<div class="main-form">
-  <!-- <div class="row">
-    <swrx-cliente-field></swrx-cliente-field>
-  </div> -->
+<div class="main-form" [formGroup]="cartForm">
   <div class="row">
-    <swrx-cart-tipo></swrx-cart-tipo>
-    <swrx-cart-fpago></swrx-cart-fpago>
-    <swrx-cart-uso></swrx-cart-uso>
+    <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
+    <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
+    <swrx-cart-uso [cartForm]="cartForm"></swrx-cart-uso>
     <mat-checkbox>MISMO COMPRADOR</mat-checkbox>
   </div>
 </div>

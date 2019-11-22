@@ -1,1 +1,14 @@
-<p>cart-info works!</p>
+<div class="cart-info-container">
+  <mat-tab-group [dynamicHeight]="true">
+    <mat-tab label="JSON">
+      <pre class="json-data">
+        {{ cartForm.valueChanges | async | json }}
+      </pre>
+    </mat-tab>
+    <mat-tab label="Envío">
+      <pre>
+        PENDIENTE
+      </pre>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -18,7 +18,8 @@ import {
   faCheckCircle,
   faCommentSlash,
   faTh,
-  faTruckLoading
+  faTruckLoading,
+  faCartArrowDown
 } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
@@ -41,7 +42,8 @@ export class FaModule {
       faCheckCircle,
       faCommentSlash,
       faTh,
-      faTruckLoading
+      faTruckLoading,
+      faCartArrowDown
     );
   }
 }

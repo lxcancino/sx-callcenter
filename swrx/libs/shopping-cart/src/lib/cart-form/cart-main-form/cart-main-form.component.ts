@@ -14,8 +14,7 @@ import { Cart, FormaDePago } from '../../+state/cart.models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartMainFormComponent implements OnInit {
-  @Input() cart: Partial<Cart>;
-  @Input() parent: FormGroup;
+  @Input() cartForm: FormGroup;
 
   constructor() {}
 

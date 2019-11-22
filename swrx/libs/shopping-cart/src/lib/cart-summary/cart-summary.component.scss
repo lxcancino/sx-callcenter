@@ -1,22 +1,20 @@
 .summary {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(5, fr);
-  align-items: center;
   border: 1px solid black;
   border-radius: 5px;
-  padding: 5px;
+  padding: 10px;
   margin-bottom: 5px;
-  font-size: 20px;
-  & > * {
-    border: 1px dotted yellow;
-  }
   .row {
     display: flex;
+    margin: 5px 20px;
+    padding: 5px 0px;
+    font-size: 20px;
+    // flex: 1 0 auto;
     .value {
       margin-left: auto;
       font-weight: bold;
+    }
+    label {
+      text-transform: capitalize;
     }
   }
 }
@@ -24,4 +22,45 @@
   display: flex;
   flex-direction: column;
   text-align: center;
+  .percent {
+    font-size: 16px;
+  }
+}
+.tile {
+  padding: 1.5em;
+  background-color: #fff;
+}
+.tile > :first-child {
+  margin-top: 0;
+  // border: 1px dotted green;
+}
+.tile * + * {
+  // margin-top: 1.5em;
+  // border: 1px dotted blue;
+}
+.centered {
+  text-align: center;
+}
+.cost {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 0.7;
+}
+.cost > span {
+  margin-top: 0;
+}
+.cost-currency {
+  font-size: 2rem;
+}
+.cost-dollars {
+  font-size: 4rem;
+}
+.cost-cents {
+  font-size: 1.5rem;
+  align-self: flex-start;
+}
+.checkout-button {
+  margin: 20px 0 10px 0;
+  width: 100%;
 }

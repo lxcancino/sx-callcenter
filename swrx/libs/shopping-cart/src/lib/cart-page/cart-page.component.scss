@@ -36,13 +36,13 @@ swrx-cart-footer {
 .side-bar {
   grid-column: 2 / 3;
   grid-row: 3 / 7;
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
   swrx-cart-summary {
-    height: 60%;
+    // height: 60%;
   }
   swrx-cart-info {
-    height: 40%;
+    height: 250px;
   }
 }
 // swrx-cart-summary {

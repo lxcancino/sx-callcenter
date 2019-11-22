@@ -7,25 +7,36 @@ export interface Cart {
   credito: boolean;
   formaDePago: FormaDePago;
   tipo: Tipo;
-  items: any[];
+  usoDeCfdi: string;
+  partidas: CartItem[];
   comentario: string;
-  descuentos: number;
+  importe: number;
+  descuento: number;
+  descuentImporte: number;
+  subtotal: number;
+  impuesto: number;
+  total: number;
+  kilos: number;
 }
 
 export interface CartItem {
+  id: string | number;
+  producto: any;
   clave: string;
   descripcion: string;
-  productoId: string;
   cantidad: number;
+  precio: number;
+  importe: number;
+  descuento: number;
+  descuentoImporte: number;
+  subtotal: number;
+  impuesto: number;
+  total: number;
   precioCredito: number;
   precioContado: number;
   unidad: string;
   kilos: number;
   gramos: number;
-  importe: number;
-  impuestos: any[];
-  descuento: number;
-  subtotal: number;
 }
 
 export enum FormaDePago {

@@ -1,4 +1,4 @@
-// export * from './lib/+state/depositos.facade';
+export * from './lib/+state/cart.facade';
 export * from './lib/+state/cart.reducer';
 export * from './lib/+state/cart.models';
 // export * from './lib/+state/depositos.selectors';

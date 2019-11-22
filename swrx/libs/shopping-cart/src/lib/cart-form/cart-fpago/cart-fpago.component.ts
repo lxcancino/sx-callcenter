@@ -5,13 +5,14 @@ import {
   Input
 } from '@angular/core';
 import { FormaDePago } from '../../+state/cart.models';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'swrx-cart-fpago',
   template: `
-    <mat-form-field class="forma-de-pago-field">
+    <mat-form-field class="forma-de-pago-field" [formGroup]="cartForm">
       <mat-label>FORMA DE PAGO</mat-label>
-      <mat-select placeholder="F. Pago">
+      <mat-select placeholder="F. Pago" formControlName="formaDePago">
         <mat-option *ngFor="let f of formasDePago" [value]="f">
           {{ f }}
         </mat-option>
@@ -32,6 +33,7 @@ export class CartFpagoComponent implements OnInit {
     FormaDePago.CHEQUE,
     FormaDePago.NO_DEFINIDO
   ];
+  @Input() cartForm: FormGroup;
 
   constructor() {}
 

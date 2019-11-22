@@ -43,6 +43,9 @@
     },
     "productos": {
       "tags": []
+    },
+    "core-model": {
+      "tags": []
     }
   }
 }

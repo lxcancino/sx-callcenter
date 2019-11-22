@@ -1,25 +1,38 @@
 <div class="summary">
   <div class="row">
-    <label>IMPORTE:</label>
-    <span class="value">{{ 100 | currency }}</span>
+    <label>importe:</label>
+    <span class="value">{{ importe | currency }}</span>
   </div>
   <div class="row">
-    <div class="descuento">
-      <span>DESCUENTO:</span>
-      <span> (0.0 %)</span>
+    <label
+      >descuento:
+      <small>({{ descuento | percent }})</small>
+    </label>
+    <span class="value">{{ descuentoImporte | currency }}</span>
+  </div>
+  <div class="row">
+    <label>subtotal:</label>
+    <span class="value">{{ subtotal | currency }}</span>
+  </div>
+  <div class="row">
+    <label>impuesto:</label>
+    <span class="value">{{ impuesto | currency }}</span>
+  </div>
+
+  <div class="sidebar-bottom tile centered">
+    <h4>Total</h4>
+    <div class="cost">
+      <span class="cost-currency">$</span>
+      <span class="cost-dollars">{{ total | number: '1.0-0' }}</span>
+      <span class="cost-cents">{{ getDecimalPart(total) }}</span>
     </div>
-    <span class="value">{{ 100 | currency }}</span>
-  </div>
-  <div class="row">
-    <span>SUBTOTAL:</span>
-    <span class="value">{{ 100 | currency }}</span>
-  </div>
-  <div class="row">
-    <span>IMPUESTO:</span>
-    <span class="value">{{ 100 | currency }}</span>
-  </div>
-  <div class="row">
-    <span>TOTAL:</span>
-    <span class="value">{{ 100 | currency }}</span>
+    <button
+      class="checkout-button"
+      mat-raised-button
+      color="primary"
+      [disabled]="true"
+    >
+      <fa-icon icon="cart-arrow-down" size="lg"></fa-icon> TERMINAR
+    </button>
   </div>
 </div>
