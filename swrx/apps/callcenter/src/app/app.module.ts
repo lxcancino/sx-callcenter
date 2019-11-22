@@ -26,6 +26,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { HomeComponent } from './home/home.component';
 import { UiCoreModule } from '@swrx/ui-core';
+import { PedidosPageComponent } from './pedidos-page/pedidos-page.component';
+import { PedidosTableComponent } from './pedidos-page/pedidos-table/pedidos-table.component';
 
 const routes: Route[] = [
   {
@@ -36,6 +38,10 @@ const routes: Route[] = [
   {
     path: 'inicio',
     component: HomeComponent
+  },
+  {
+    path: 'pedidos',
+    component: PedidosPageComponent
   },
   {
     path: 'depositos',
@@ -49,7 +55,7 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, PedidosPageComponent, PedidosTableComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
