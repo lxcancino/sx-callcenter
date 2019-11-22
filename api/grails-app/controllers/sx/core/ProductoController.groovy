@@ -17,8 +17,8 @@ class ProductoController extends RestfulController<Producto> {
     @Override
     protected List<Producto> listAllResources(Map params) {
         def query = Producto.where {}
-        params.sort = params.sort ?:'lastUpdated'
-        params.order = params.order ?:'desc'
+        params.sort = params.sort ?:'clave'
+        params.order = params.order ?:'asc'
         params.max = 100
 
         if(params.term){
