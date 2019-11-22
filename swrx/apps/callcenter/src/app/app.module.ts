@@ -24,8 +24,19 @@ import { DataPersistence } from '@nrwl/angular';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { HomeComponent } from './home/home.component';
+import { UiCoreModule } from '@swrx/ui-core';
 
 const routes: Route[] = [
+  {
+    path: '',
+    redirectTo: 'inicio',
+    pathMatch: 'full'
+  },
+  {
+    path: 'inicio',
+    component: HomeComponent
+  },
   {
     path: 'depositos',
     loadChildren: () => import('@swrx/depositos').then(m => m.DepositosModule)
@@ -38,7 +49,7 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
@@ -51,6 +62,7 @@ const routes: Route[] = [
     NotificationsModule,
     ProductosModule,
     LayoutModule,
+    UiCoreModule,
     StoreModule.forRoot(
       {},
       {
