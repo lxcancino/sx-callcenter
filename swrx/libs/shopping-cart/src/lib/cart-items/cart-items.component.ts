@@ -31,7 +31,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class CartItemsComponent implements OnInit {
   @Input() cartForm: FormGroup;
-  @Input() partidas: CartItem[] = [];
+  @Input() partidas: Partial<CartItem>[] = [];
   @Output() doubleClick = new EventEmitter();
 
   gridOptions: GridOptions;
@@ -108,8 +108,8 @@ export class CartItemsComponent implements OnInit {
         width: 110
       },
       {
-        headerName: 'P. Credito',
-        field: 'precioCrédito',
+        headerName: 'Precio',
+        field: 'precio',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
@@ -118,7 +118,7 @@ export class CartItemsComponent implements OnInit {
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'Sub Tot',
+        headerName: 'Subtotal',
         field: 'subtotal',
         width: 110,
         cellRenderer: params => this.transformCurrency(params.value)

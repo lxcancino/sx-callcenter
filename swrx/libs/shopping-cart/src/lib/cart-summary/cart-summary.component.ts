@@ -11,8 +11,8 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'swrx-cart-summary',
   templateUrl: './cart-summary.component.html',
-  styleUrls: ['./cart-summary.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./cart-summary.component.scss']
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartSummaryComponent implements OnInit {
   @Input() cartForm: FormGroup;

@@ -8,6 +8,7 @@ import { CartEffects } from './+state/cart.effects';
 
 import { UiCoreModule } from '@swrx/ui-core';
 import { ClientesModule } from '@swrx/clientes';
+import { ProductosModule } from '@swrx/productos';
 import { FormUtilsModule } from '@swrx/form-utils';
 
 import { CartPageComponent } from './cart-page/cart-page.component';
@@ -29,6 +30,7 @@ const routes: Route[] = [{ path: '', component: CartPageComponent }];
     RouterModule.forChild(routes),
     UiCoreModule,
     ClientesModule,
+    ProductosModule,
     FormUtilsModule,
     StoreModule.forFeature(fromCart.CART_FEATURE_KEY, fromCart.reducer),
     EffectsModule.forFeature([CartEffects]),

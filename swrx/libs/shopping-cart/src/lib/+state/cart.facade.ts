@@ -21,10 +21,9 @@ export class CartFacade {
     return this.dialog
       .open(CartAddItemComponent, {
         data: {},
-        width: '600px'
+        width: '700px'
       })
-      .afterClosed().pipe( 
-        filter( res => !res)
-      );
+      .afterClosed();
+    // .pipe(filter(res => !res));
   }
 }

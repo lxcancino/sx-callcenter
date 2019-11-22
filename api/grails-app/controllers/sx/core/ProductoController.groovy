@@ -29,8 +29,8 @@ class ProductoController extends RestfulController<Producto> {
         Boolean activos = this.params.getBoolean('activos', true)
         if(activos) query = query.where {activo == activos}
 
-        Boolean deLinea = this.params.getBoolean('deLinea')
-        if(deLinea) query = query.where {deLinea == deLinea}
+        // Boolean deLinea = this.params.getBoolean('deLinea')
+        // if(deLinea) query = query.where {deLinea == deLinea}
 
         return query.list(params)
     }

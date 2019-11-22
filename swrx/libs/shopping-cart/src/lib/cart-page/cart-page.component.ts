@@ -1,8 +1,16 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormArray,
+  FormControl
+} from '@angular/forms';
 
 import { DEMO } from './demo-cart';
 import { CartFacade } from '../+state/cart.facade';
+
+import sumBy from 'lodash/sumBy';
 
 @Component({
   selector: 'swrx-cart-page',
@@ -18,7 +26,7 @@ export class CartPageComponent implements OnInit {
   ngOnInit() {
     this.buildForm();
     this.addListeners();
-    this.cartForm.patchValue(DEMO);
+    // this.cartForm.patchValue(DEMO);
   }
 
   private buildForm() {
@@ -42,6 +50,9 @@ export class CartPageComponent implements OnInit {
   private addListeners() {
     this.addFormaDePagoListener();
     this.addTipoDeVentaListener();
+    // this.partidas.valueChanges.subscribe(value =>
+    //   console.log('Partidas: ', value)
+    // );
   }
 
   private addFormaDePagoListener() {
@@ -55,9 +66,26 @@ export class CartPageComponent implements OnInit {
       .valueChanges.subscribe(fp => console.log('Tipo: ', fp));
   }
 
+  getPartidas() {
+    return this.cartForm.get('partidas') as FormArray;
+  }
+
   onAddCartItem() {
     this.facade.addCartItem().subscribe(item => {
-      console.log('Add ITEM: ', item);
+      this.getPartidas().push(new FormControl(item));
+      this.actualizarTotales();
     });
+  }
+
+  private actualizarTotales() {
+    const items = this.getPartidas().value;
+    const importe = sumBy(items, 'importe');
+    const descuento = sumBy(items, 'descuento');
+    const subtotal = sumBy(items, 'subtotal');
+    const impuesto = sumBy(items, 'impuesto');
+    const total = sumBy(items, 'total');
+    const part = { importe, descuento, subtotal, impuesto, total };
+    this.cartForm.patchValue(part);
+    // this.cartForm.get('importe').setValue(importe);
   }
 }

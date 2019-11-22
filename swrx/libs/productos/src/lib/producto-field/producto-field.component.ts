@@ -16,36 +16,36 @@ import {
 import { HttpParams, HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'swrx-cliente-field',
-  templateUrl: './cliente-field.component.html',
-  styleUrls: ['./cliente-field.component.scss'],
+  selector: 'swrx-producto-field',
+  templateUrl: './producto-field.component.html',
+  styleUrls: ['./producto-field.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ClienteFieldComponent),
+      useExisting: forwardRef(() => ProductoFieldComponent),
       multi: true
     }
   ]
 })
-export class ClienteFieldComponent implements OnInit, ControlValueAccessor {
-  @Input() placeholder = 'Seleccione el cliente';
+export class ProductoFieldComponent implements OnInit, ControlValueAccessor {
+  @Input() placeholder = 'Buscar producto';
   @Input() apparence: 'legacy' | 'standard' | 'fill' | 'outline' = 'fill';
 
   control = new FormControl();
-
   selected: any;
 
-  filteredClientes$: Observable<any>;
-  apiUrl = 'http://localhost:8080/callcener/api/clientes';
+  filteredProducts$: Observable<any>;
+  apiUrl = 'http://localhost:8080/callcener/api/productos';
 
   onChange: any = () => {};
   onTouch: any = () => {};
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.filteredClientes$ = this.control.valueChanges.pipe(
+    this.filteredProducts$ = this.control.valueChanges.pipe(
       // startWith(''),
-      debounceTime(1000),
+      debounceTime(400),
       distinctUntilChanged(),
       switchMap(value => this.lookUp(value))
     );
@@ -60,18 +60,14 @@ export class ClienteFieldComponent implements OnInit, ControlValueAccessor {
       .pipe(catchError((response: any) => throwError(response)));
   }
 
-  displayFn(cliente?: any): string | undefined {
-    return cliente ? cliente.nombre : undefined;
+  displayFn(producto?: any): string | undefined {
+    return producto ? `${producto.clave} ${producto.descripcion}` : undefined;
   }
 
   onSelection(event: any) {
     this.selected = event;
     this.onChange(event);
     this.onTouch(event);
-  }
-
-  isDeCredito() {
-    return this.selected ? this.selected.credito : false;
   }
 
   /*** ControlValueAccessor implementation ***/

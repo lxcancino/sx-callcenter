@@ -35,7 +35,8 @@ import {
   MAT_DATE_FORMATS,
   MatBadgeModule,
   MatButtonToggleModule,
-  MatSelectModule
+  MatSelectModule,
+  MatAutocompleteModule
 } from '@angular/material';
 
 import {
@@ -67,6 +68,7 @@ import * as moment from 'moment';
     MatBadgeModule,
     MatMomentDateModule,
     MatSelectModule,
+    MatAutocompleteModule,
     AgGridModule.withComponents([])
   ],
   exports: [
@@ -90,6 +92,7 @@ import * as moment from 'moment';
     MatBadgeModule,
     MatMomentDateModule,
     MatSelectModule,
+    MatAutocompleteModule,
     AgGridModule
   ],
   providers: [

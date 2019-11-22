@@ -1,17 +1,85 @@
-<h3>Detalle de pedido</h3>
-<mat-dialog-content [formGroup]="form">
-  <mat-form-field>
-    <input matInput placeholder="Producto" formControlName="producto" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="Cantidad" formControlName="cantidad" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="Precio" formControlName="precio" />
-  </mat-form-field>
+<h3>Partida del pedido</h3>
+<mat-dialog-content>
+  <div class="item-form" [formGroup]="form">
+    <swrx-producto-field formControlName="producto"></swrx-producto-field>
+    <div class="importes">
+      <swrx-numeric-field
+        formControlName="cantidad"
+        label="Cantidad"
+        decimals="3"
+      ></swrx-numeric-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Precio"
+          value="{{ precio | currency }}"
+          readonly
+          tabindex="-1"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Importe"
+          value="{{ importe | currency }}"
+          readonly
+          tabindex="-1"
+        />
+      </mat-form-field>
+    </div>
+    <div class="importes">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Descuento"
+          value="{{ descuento | currency }}"
+          readonly
+          tabindex="-1"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Subtotal"
+          value="{{ subtotal | currency }}"
+          readonly
+          tabindex="-1"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="exis-header">
+    <small>Disponibilidad</small>
+  </div>
+
+  <div class="existencias">
+    <div class="exis">
+      <small>5 Febrero</small>
+      <span>{{ 500 }}</span>
+    </div>
+    <div class="exis">
+      <small>Andrade</small>
+      <span>{{ 500 }}</span>
+    </div>
+    <div class="exis">
+      <small>Solis</small>
+      <span>{{ 500 }}</span>
+    </div>
+    <div class="exis">
+      <small>Tacuba</small>
+      <span>{{ 500 }}</span>
+    </div>
+  </div>
+
+  <mat-card-actions>
+    <button
+      mat-stroked-button
+      (click)="onSubmit()"
+      [disabled]="form.invalid"
+      color="accent"
+    >
+      <mat-icon>add_shopping_cart</mat-icon> Agregar
+    </button>
+  </mat-card-actions>
 </mat-dialog-content>
-<mat-card-actions>
-  <button mat-button (click)="onSubmit()" [disabled]="form.invalid">
-    <mat-icon>check</mat-icon> ACEPTAR
-  </button>
-</mat-card-actions>

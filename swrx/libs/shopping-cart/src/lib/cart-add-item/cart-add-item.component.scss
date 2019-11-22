@@ -1,0 +1,45 @@
+.item-form {
+  display: flex;
+  flex-direction: column;
+  .importes {
+    flex: 1;
+    display: flex;
+    // flex-wrap: wrap;
+    & > * {
+      flex: 1 0 33%;
+      padding-left: 5px;
+    }
+  }
+}
+.exis-header {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 5px;
+  padding: 10px;
+  background-color: rgb(241, 239, 239);
+}
+.existencias {
+  display: flex;
+  border-bottom: 0.5px solid black;
+  margin-bottom: 10px;
+  .exis {
+    flex-basis: 20%;
+    // border: 0.5px solid gray;
+    margin: 0px 5px 10px 0px;
+    // border-radius: 10px;
+    padding: 5px;
+    text-align: center;
+    // background-color: rgba(228, 244, 250, 0.788);
+    span {
+      display: block;
+      padding: 5px;
+      font-size: 14;
+      font-weight: bold;
+      line-height: 14px;
+    }
+    // flex: 1;
+    // max-width: 110px;
+  }
+}
