@@ -23,7 +23,7 @@ import { CartFormModule } from './cart-form/cart-form.module';
 import { CartFacade } from './+state/cart.facade';
 import { CartAddItemComponent } from './cart-add-item/cart-add-item.component';
 
-const routes: Route[] = [{ path: '', component: CartPageComponent }];
+const routes: Route[] = [{ path: 'cart', component: CartPageComponent }];
 
 @NgModule({
   imports: [

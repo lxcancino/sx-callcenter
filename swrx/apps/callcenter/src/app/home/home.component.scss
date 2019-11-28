@@ -1,4 +1,23 @@
 .home-page {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  justify-items: center;
+  align-items: center;
+  background-color: white;
+  height: 100%;
+  // & > * {
+  //   // border: 1px solid black;
+  // }
+  .title {
+    padding: 5px 5px 0 5px;
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: bold;
+  }
+  .subtitle {
+    padding: 5px;
+    margin: 0px;
+    font-size: 1.5em;
+  }
 }

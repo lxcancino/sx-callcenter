@@ -2,26 +2,29 @@ package sx.callcenter
 
 class PedidoDet {
 
-    String  id
+    String id
 
-    String    producto
+    Producto producto
 
-    String   sucursal
+    String clave
+    
+    String descripcion
 
-    Pedido  pedido
+    String sucursal
 
+    Pedido pedido
 
-    BigDecimal  cantidad = 0.0
+    BigDecimal cantidad = 0.0
 
-    BigDecimal  precio = 0.0
+    BigDecimal precio = 0.0
 
-    BigDecimal  importe = 0.0
+    BigDecimal importe = 0.0
 
-    BigDecimal  descuento = 0.0
+    BigDecimal descuento = 0.0
 
-    BigDecimal  descuentoImporte = 0.0
+    BigDecimal descuentoImporte = 0.0
 
-    BigDecimal  subtotal = 0.0
+    BigDecimal subtotal = 0.0
 
     BigDecimal impuesto = 0.0
 
@@ -31,33 +34,30 @@ class PedidoDet {
 
     Boolean nacional = true
 
-    BigDecimal  kilos = 0.0
+    BigDecimal kilos = 0.0
 
-    String  comentario
+    String comentario
 
-    BigDecimal  precioLista = 0.0
+    BigDecimal precioLista = 0.0
 
-    BigDecimal  precioOriginal = 0.0
+    BigDecimal precioOriginal = 0.0
 
-    BigDecimal  descuentoOriginal = 0.0
+    BigDecimal descuentoOriginal = 0.0
 
-    BigDecimal  importeCortes = 0.0
-
-    BigDecimal devuelto
+    BigDecimal importeCortes = 0.0
 
     BigDecimal enviado = 0.0
 
     Boolean sinExistencia = false
-
     // InstruccionCorte corte
 
     Date dateCreated
-    
     Date lastUpdated
+    String createUser
+    String updateUser
 
 
     static belongsTo = [pedido: Pedido]
-
 
     static constraints = {
         comentario nullable: true
@@ -68,6 +68,6 @@ class PedidoDet {
 
      static mapping = {
         id generator:'uuid'
-        producto index: 'VENTADET_IDX2'
+        producto index: 'PEDIDODET_PROD_IDX'
     }
 }

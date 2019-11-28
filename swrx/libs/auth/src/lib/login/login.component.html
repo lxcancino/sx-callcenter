@@ -1,0 +1,12 @@
+<div class="container">
+  <mat-toolbar color="primary">
+    <span class="title">
+      SX CALLCENTER
+    </span>
+  </mat-toolbar>
+  <ngx-auth-firebaseui
+    #authComponent
+    [messageOnAuthSuccess]="loginSuccessMsg"
+    [messageOnAuthError]="loginFailMsg"
+  ></ngx-auth-firebaseui>
+</div>

@@ -25,7 +25,12 @@
             "aot": false,
             "assets": [
               "apps/callcenter/src/favicon.ico",
-              "apps/callcenter/src/assets"
+              "apps/callcenter/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/ngx-auth-firebaseui/assets/",
+                "output": "assets"
+              }
             ],
             "styles": [
               "apps/callcenter/src/theme.scss",
@@ -525,6 +530,37 @@
             "jestConfig": "libs/core-model/jest.config.js",
             "tsConfig": "libs/core-model/tsconfig.spec.json"
           }
+        }
+      }
+    },
+    "auth": {
+      "projectType": "library",
+      "root": "libs/auth",
+      "sourceRoot": "libs/auth/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/auth/tsconfig.lib.json",
+              "libs/auth/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/auth/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/auth/jest.config.js",
+            "tsConfig": "libs/auth/tsconfig.spec.json",
+            "setupFile": "libs/auth/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
         }
       }
     }

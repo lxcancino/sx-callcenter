@@ -2,6 +2,7 @@
   <button mat-icon-button (click)="toogle.emit()">
     <mat-icon>menu</mat-icon>
   </button>
+  <ngx-auth-firebaseui-avatar> </ngx-auth-firebaseui-avatar>
   <div class="title">
     <h3 class="mat-title">{{ title }}</h3>
   </div>
@@ -37,9 +38,15 @@
       <span>Productos</span>
     </a>
   </div>
-  <swrx-cart-btn></swrx-cart-btn>
-  <swrx-notification-btn></swrx-notification-btn>
+  <button mat-icon-button [routerLink]="['/cart']">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+
+  <a mat-icon-button routerLink="/notifications">
+    <mat-icon>notifications</mat-icon>
+  </a>
+
   <button mat-icon-button (click)="toogle.emit()">
-    <fa-icon icon="cogs"></fa-icon>
+    <fa-icon icon="cogs" size="lg"></fa-icon>
   </button>
 </mat-toolbar>
