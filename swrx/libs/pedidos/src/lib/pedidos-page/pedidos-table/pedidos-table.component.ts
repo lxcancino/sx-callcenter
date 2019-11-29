@@ -20,7 +20,7 @@ import {
 } from 'ag-grid-community';
 
 import { spAgGridText } from '@swrx/ui-core';
-import { Deposito } from '@swrx/depositos';
+import { Pedido } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-pedidos-table',
@@ -29,7 +29,7 @@ import { Deposito } from '@swrx/depositos';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PedidosTableComponent implements OnInit {
-  @Input() partidas: Deposito[] = [];
+  @Input() partidas: Pedido[] = [];
   @Output() doubleClick = new EventEmitter();
 
   gridOptions: GridOptions;

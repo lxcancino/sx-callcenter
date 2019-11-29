@@ -563,6 +563,37 @@
           "styleext": "scss"
         }
       }
+    },
+    "pedidos": {
+      "projectType": "library",
+      "root": "libs/pedidos",
+      "sourceRoot": "libs/pedidos/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/pedidos/tsconfig.lib.json",
+              "libs/pedidos/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/pedidos/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/pedidos/jest.config.js",
+            "tsConfig": "libs/pedidos/tsconfig.spec.json",
+            "setupFile": "libs/pedidos/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

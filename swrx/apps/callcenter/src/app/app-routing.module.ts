@@ -4,7 +4,6 @@ import { RouterModule, Route, PreloadAllModules } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 
 import {
-  AngularFireAuthGuard,
   canActivate,
   redirectUnauthorizedTo,
   AngularFireAuthGuardModule
@@ -12,6 +11,8 @@ import {
 
 import { MainPageComponent } from './main-page/main-page.component';
 import { MainPageModule } from './main-page/main-page.module';
+
+import { AuthModule, ProfileComponent } from '@swrx/auth';
 
 const redirectToLogin = () => redirectUnauthorizedTo(['loginx']);
 
@@ -26,6 +27,10 @@ const routes: Route[] = [
         component: HomeComponent
       },
       {
+        path: 'pedidos',
+        loadChildren: () => import('@swrx/pedidos').then(m => m.PedidosModule)
+      },
+      {
         path: 'depositos',
         loadChildren: () =>
           import('@swrx/depositos').then(m => m.DepositosModule)
@@ -34,6 +39,10 @@ const routes: Route[] = [
         path: 'cart',
         loadChildren: () =>
           import('@swrx/shopping-cart').then(m => m.ShoppingCartModule)
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent
       },
       {
         path: '',
@@ -51,7 +60,8 @@ const routes: Route[] = [
       // initialNavigation: 'enabled',
       preloadingStrategy: PreloadAllModules
     }),
-    AngularFireAuthGuardModule
+    AngularFireAuthGuardModule,
+    AuthModule
   ],
   exports: [RouterModule]
 })

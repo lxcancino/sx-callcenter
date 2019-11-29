@@ -25,7 +25,8 @@
       "@swrx/shopping-cart": ["libs/shopping-cart/src/index.ts"],
       "@swrx/productos": ["libs/productos/src/index.ts"],
       "@swrx/core-model": ["libs/core-model/src/index.ts"],
-      "@swrx/auth": ["libs/auth/src/index.ts"]
+      "@swrx/auth": ["libs/auth/src/index.ts"],
+      "@swrx/pedidos": ["libs/pedidos/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

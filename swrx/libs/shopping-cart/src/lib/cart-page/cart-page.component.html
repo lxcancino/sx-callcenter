@@ -4,11 +4,12 @@
     (addItem)="onAddCartItem()"
   ></swrx-cart-toolbar>
   <swrx-cart-main-form [cartForm]="cartForm"></swrx-cart-main-form>
+
   <swrx-cart-items
     [cartForm]="cartForm"
     [partidas]="getPartidas().value"
   ></swrx-cart-items>
-  <swrx-cart-footer [cartForm]="cartForm"></swrx-cart-footer>
+  <!-- <swrx-cart-footer [cartForm]="cartForm"></swrx-cart-footer> -->
   <div class="side-bar">
     <swrx-cart-summary [cartForm]="cartForm"></swrx-cart-summary>
     <swrx-cart-info [cartForm]="cartForm"></swrx-cart-info>

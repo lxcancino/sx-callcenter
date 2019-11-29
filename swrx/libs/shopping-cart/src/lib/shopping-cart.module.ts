@@ -22,8 +22,10 @@ import { CartInfoComponent } from './cart-info/cart-info.component';
 import { CartFormModule } from './cart-form/cart-form.module';
 import { CartFacade } from './+state/cart.facade';
 import { CartAddItemComponent } from './cart-add-item/cart-add-item.component';
+import { CartItemsTableComponent } from './cart-items/cart-items-table/cart-items-table.component';
+import { CartItemsListComponent } from './cart-items/cart-items-list/cart-items-list.component';
 
-const routes: Route[] = [{ path: 'cart', component: CartPageComponent }];
+const routes: Route[] = [{ path: '', component: CartPageComponent }];
 
 @NgModule({
   imports: [
@@ -44,7 +46,9 @@ const routes: Route[] = [{ path: 'cart', component: CartPageComponent }];
     CartFooterComponent,
     CartSummaryComponent,
     CartInfoComponent,
-    CartAddItemComponent
+    CartAddItemComponent,
+    CartItemsTableComponent,
+    CartItemsListComponent
   ],
   entryComponents: [CartAddItemComponent],
   exports: [CartBtnComponent],

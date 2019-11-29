@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
   selector: 'swrx-cart-uso',
   template: `
     <mat-form-field class="uso-field" [formGroup]="cartForm">
-      <mat-label>USO CFDI</mat-label>
+      <mat-label>Uso de Cfdi</mat-label>
       <mat-select placeholder="USO CFDI" formControlName="usoDeCfdi">
         <mat-option *ngFor="let uso of usos" [value]="uso.clave">
           {{ uso.descripcion }}
@@ -24,7 +24,7 @@ import { FormGroup } from '@angular/forms';
   styles: [
     `
       .uso-field {
-        width: 150;
+        width: 300px;
       }
     `
   ],

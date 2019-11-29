@@ -1,7 +1,21 @@
 .cart-info-container {
-  border: 1px dotted gray;
-  max-height: 210px;
-  overflow: auto;
-  .json-data {
+  // border: 1px solid blue;
+  box-sizing: border-box;
+  border-radius: 3px;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+  mat-tab-group {
+    // border: 2px solid green;
+    border-radius: 10px;
+    flex: 1;
+    min-height: 200px;
+    max-height: 270px;
   }
+}
+.json-data {
+  max-height: 270px;
+  overflow: scroll;
 }

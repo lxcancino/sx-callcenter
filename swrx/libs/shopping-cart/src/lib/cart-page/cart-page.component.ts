@@ -7,7 +7,6 @@ import {
   FormControl
 } from '@angular/forms';
 
-import { DEMO } from './demo-cart';
 import { CartFacade } from '../+state/cart.facade';
 
 import sumBy from 'lodash/sumBy';
@@ -26,7 +25,6 @@ export class CartPageComponent implements OnInit {
   ngOnInit() {
     this.buildForm();
     this.addListeners();
-    // this.cartForm.patchValue(DEMO);
   }
 
   private buildForm() {

@@ -9,6 +9,7 @@ import {
 } from 'ngx-auth-firebaseui';
 import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   imports: [
@@ -21,11 +22,10 @@ import { RouterModule } from '@angular/router';
     ]),
     UiCoreModule
   ],
-  exports: [NgxAuthFirebaseUIModule],
-  declarations: [LoginComponent]
+  declarations: [LoginComponent, ProfileComponent],
+  exports: [NgxAuthFirebaseUIModule, ProfileComponent]
 })
 export class AuthModule {
-  // configFactory: FirebaseAppConfig, appNameFactory?: () => string, config?: NgxAuthFirebaseUIConfig
   static forRoot(
     fbConfig: FirebaseAppConfig,
     appNameFactory?: () => string,

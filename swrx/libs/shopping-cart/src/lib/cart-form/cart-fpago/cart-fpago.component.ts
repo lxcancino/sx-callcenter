@@ -11,7 +11,7 @@ import { FormGroup } from '@angular/forms';
   selector: 'swrx-cart-fpago',
   template: `
     <mat-form-field class="forma-de-pago-field" [formGroup]="cartForm">
-      <mat-label>FORMA DE PAGO</mat-label>
+      <mat-label>Forma de Pago</mat-label>
       <mat-select placeholder="F. Pago" formControlName="formaDePago">
         <mat-option *ngFor="let f of formasDePago" [value]="f">
           {{ f }}

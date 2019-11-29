@@ -25,7 +25,8 @@
     "update:check": "ng update",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "callcenter": "http-server ./dist/apps/callcenter -p 8080 -c-1  --silent --cors"
   },
   "private": true,
   "dependencies": {

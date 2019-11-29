@@ -1,8 +1,6 @@
 <div class="main-form" [formGroup]="cartForm">
-  <div class="row">
-    <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
-    <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
-    <swrx-cart-uso [cartForm]="cartForm"></swrx-cart-uso>
-    <mat-checkbox>MISMO COMPRADOR</mat-checkbox>
-  </div>
+  <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
+  <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
+  <swrx-cart-uso [cartForm]="cartForm"></swrx-cart-uso>
+  <mat-checkbox>Mismo Comprado</mat-checkbox>
 </div>
