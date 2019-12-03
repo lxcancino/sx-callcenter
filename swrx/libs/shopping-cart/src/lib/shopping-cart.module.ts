@@ -23,7 +23,8 @@ import { CartFormModule } from './cart-form/cart-form.module';
 import { CartFacade } from './+state/cart.facade';
 import { CartAddItemComponent } from './cart-add-item/cart-add-item.component';
 import { CartItemsTableComponent } from './cart-items/cart-items-table/cart-items-table.component';
-import { CartItemsListComponent } from './cart-items/cart-items-list/cart-items-list.component';
+import { CartListComponent } from './cart-items/cart-list/cart-list.component';
+import { CartListItemComponent } from './cart-items/cart-list/cart-list-item/cart-list-item.component';
 
 const routes: Route[] = [{ path: '', component: CartPageComponent }];
 
@@ -48,7 +49,8 @@ const routes: Route[] = [{ path: '', component: CartPageComponent }];
     CartInfoComponent,
     CartAddItemComponent,
     CartItemsTableComponent,
-    CartItemsListComponent
+    CartListComponent,
+    CartListItemComponent
   ],
   entryComponents: [CartAddItemComponent],
   exports: [CartBtnComponent],

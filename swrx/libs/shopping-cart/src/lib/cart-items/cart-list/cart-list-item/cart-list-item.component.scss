@@ -1,0 +1,56 @@
+@import '~@angular/material/theming';
+
+.producto {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 16px;
+  font-weight: bold;
+  // color: rgb(7, 69, 90);
+  // padding: 1em 1.5em;
+  padding-bottom: 3px;
+  cursor: pointer;
+  .clave {
+    flex: 1;
+  }
+  .descripcion {
+    flex: 5;
+  }
+}
+.producto:hover {
+  text-decoration: underline;
+}
+.propiedades {
+  margin: 5px 0px;
+  font-size: 10px;
+  span:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+.importes {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: 16px;
+  span:not(:first-child) {
+    margin-left: 10px;
+  }
+  .currency {
+    font-weight: bold;
+    // font-style: italic;
+  }
+}
+
+.cortes {
+  display: flex;
+  flex-direction: row;
+  span:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+.actions {
+  // border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  //width: 30%;
+}

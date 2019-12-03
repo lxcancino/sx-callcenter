@@ -37,7 +37,8 @@ import {
   MatButtonToggleModule,
   MatSelectModule,
   MatAutocompleteModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatDividerModule
 } from '@angular/material';
 
 import {
@@ -71,6 +72,7 @@ import * as moment from 'moment';
     MatSelectModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
+    MatDividerModule,
     AgGridModule.withComponents([])
   ],
   exports: [
@@ -96,6 +98,7 @@ import * as moment from 'moment';
     MatSelectModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
+    MatDividerModule,
     AgGridModule
   ],
   providers: [

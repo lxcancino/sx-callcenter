@@ -1,0 +1,63 @@
+<mat-list-item>
+  <img matListAvatar [src]="item.imageUrl" alt="linea" />
+  <div matLine>
+    <div class="producto">
+      <span class="clave">{{ item.clave }}</span>
+      <span class="descripcion">{{ item.descripcion }}</span>
+      <span class="cantidad">
+        Cantidad:
+        <strong>{{
+          item.unidad === 'MIL'
+            ? item.cantidad / 1000
+            : (item.cantidad | number: '1.1-3')
+        }}</strong>
+      </span>
+    </div>
+  </div>
+  <div matLine>
+    <div class="importes">
+      <span
+        >P/U: <strong>{{ item.precio | currency }}</strong></span
+      >
+      <span
+        >Imp:
+        <strong>
+          {{ item.importe | currency }}
+        </strong>
+      </span>
+
+      <span>
+        Dcto:
+        <strong>
+          {{ item.descuentoImporte * -1 | currency }}
+          <small> ({{ item.descuentoOriginal / 100 | percent }}) </small>
+        </strong>
+      </span>
+      <span>Sub:</span>
+      <span class="currency">{{ item.subtotal | currency }}</span>
+    </div>
+  </div>
+  <div matLine class="propiedades">
+    <span
+      >Unidad: <strong>{{ item.unidad }}</strong></span
+    >
+    <span
+      >Kilos:<strong>{{ item.kilos }}</strong></span
+    >
+    <span><strong>Calibre:</strong> {{ item.gramos }}g</span>
+    <span
+      ><strong>{{ item.presentacion }}</strong></span
+    >
+  </div>
+
+  <div matLine class="cortes" *ngIf="item.corte">
+    <a (click)="editCorte.emit(item)" mat-button>
+      <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
+      <span>{{ item.corte.instruccion }}</span>
+    </a>
+    <span>Corte: </span>
+    <span>Cantidad: {{ item.corte.cantidad }}</span>
+  </div>
+
+  <mat-divider inset></mat-divider>
+</mat-list-item>
