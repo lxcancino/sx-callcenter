@@ -7,8 +7,9 @@ import {
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil, map } from 'rxjs/operators';
+
+import { Subject, Observable } from 'rxjs';
+import { takeUntil, map, startWith } from 'rxjs/operators';
 
 import round from 'lodash/round';
 
@@ -23,6 +24,19 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   form: FormGroup;
   credito: boolean;
   destroy$ = new Subject<boolean>();
+  filteredOptions: Observable<string[]>;
+
+  tiposDeCorte = [
+    'CARTA',
+    'CALCULADO',
+    'CROQUIS',
+    'CRUZ',
+    'DOBLE_CARTA',
+    'MEDIA_CARTA',
+    'MITAD',
+    'OFICIO',
+    '1/8'
+  ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -34,6 +48,13 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.filteredOptions = this.form
+      .get('corte')
+      .get('instruccion')
+      .valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
     this.addListeners();
   }
 
@@ -52,7 +73,14 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
       descuentoTasa: [0.0, [Validators.required]],
       subtotal: [0.0, [Validators.required]],
       impuesto: [0.0, [Validators.required]],
-      total: [0.0, [Validators.required]]
+      total: [0.0, [Validators.required]],
+      corte: this.fb.group({
+        instruccion: [null],
+        cantidad: [0],
+        precio: [0.0],
+        refinado: false,
+        limpio: false
+      })
     });
   }
 
@@ -66,7 +94,6 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
       .get('producto')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(prod => {
-        console.log('Producto: ', prod);
         if (this.credito) {
           this.form.get('precio').setValue(prod.precioCredito);
         } else {
@@ -113,7 +140,12 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
       const { clave, descripcion, kilos, gramos, unidad } = producto;
       const entity = {
         ...this.form.value,
-        producto: { id: producto.id },
+        producto: {
+          id: producto.id,
+          clave,
+          descripcion,
+          imageUrl: 'assets/images/1273567240.jpg'
+        },
         clave,
         descripcion,
         kilos,
@@ -149,5 +181,12 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
 
   private getValue(prop: string) {
     return this.form.get(prop).value;
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.tiposDeCorte.filter(option =>
+      option.toLowerCase().includes(filterValue)
+    );
   }
 }

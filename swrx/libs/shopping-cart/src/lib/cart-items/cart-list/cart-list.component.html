@@ -1,6 +1,6 @@
 <div class="cart-item-list">
   <mat-list>
-    <swrx-cart-list-item *ngFor="let item of items" [item]="item">
+    <swrx-cart-list-item *ngFor="let item of items$ | async" [item]="item">
     </swrx-cart-list-item>
   </mat-list>
 </div>

@@ -38,7 +38,12 @@
     </a>
   </div>
   <button mat-icon-button [routerLink]="['/cart']">
-    <mat-icon>shopping_cart</mat-icon>
+    <mat-icon
+      [matBadge]="cartItems"
+      matBadgeColor="accent"
+      [matBadgeHidden]="!cartItems && cartItems <= 0"
+      >shopping_cart</mat-icon
+    >
   </button>
 
   <a mat-icon-button routerLink="/notifications">

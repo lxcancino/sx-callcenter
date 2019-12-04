@@ -10,18 +10,12 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="wrapper">
-    <swrx-main-toolbar></swrx-main-toolbar>
+    <swrx-main-toolbar [cartItems]="cartItmes$ | async"></swrx-main-toolbar>
     <main class="content">
       <router-outlet></router-outlet>
     </main>
 
     <footer class="footer">
-      <!-- <button mat-button>
-        <mat-icon>account_circle</mat-icon>
-        <span class="item">
-          Admin
-        </span>
-      </button> -->
       Papel S A de C.V.
     </footer>
   </mat-sidenav-content>

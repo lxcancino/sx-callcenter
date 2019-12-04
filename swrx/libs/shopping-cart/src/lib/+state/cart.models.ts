@@ -1,3 +1,5 @@
+import { PedidoDet } from '@swrx/core-model';
+
 export interface Cart {
   id: string | number;
   cliente?: any;
@@ -19,24 +21,17 @@ export interface Cart {
   kilos: number;
 }
 
-export interface CartItem {
-  id: string | number;
-  producto: any;
-  clave: string;
-  descripcion: string;
-  cantidad: number;
-  precio: number;
+export interface CartItem extends PedidoDet {
+  itemId?: string | number;
+}
+
+export interface CartSumary {
   importe: number;
   descuento: number;
   descuentoImporte: number;
   subtotal: number;
   impuesto: number;
   total: number;
-  precioCredito: number;
-  precioContado: number;
-  unidad: string;
-  kilos: number;
-  gramos: number;
 }
 
 export enum FormaDePago {

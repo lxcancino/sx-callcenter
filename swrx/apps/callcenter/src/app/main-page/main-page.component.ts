@@ -1,4 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+/**
+ * Temporal fix this is not the right way to acces the state from a lazy loaded module
+ */
+// tslint:disable-next-line: nx-enforce-module-boundaries
+import { CartFacade } from '@swrx/shopping-cart';
 
 @Component({
   selector: 'swrx-main-page',
@@ -8,8 +13,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class MainPageComponent implements OnInit {
   title = 'SIIPAP Rx Call Center';
+  cartItmes$ = this.cartFacade.cartItemsCount$;
 
-  constructor() {}
+  constructor(private cartFacade: CartFacade) {}
 
   ngOnInit() {}
 }

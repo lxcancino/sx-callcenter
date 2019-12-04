@@ -1,5 +1,6 @@
 .cart-info-container {
   // border: 1px solid blue;
+  height: 100%;
   box-sizing: border-box;
   border-radius: 3px;
   padding: 0px;
@@ -8,12 +9,17 @@
   justify-content: flex-start;
   flex: 1;
   mat-tab-group {
-    // border: 2px solid green;
+    border: 0.5px solid black;
     border-radius: 10px;
     flex: 1;
-    min-height: 200px;
-    max-height: 270px;
+    // min-height: 200px;
+    // max-height: 270px;
   }
+}
+.contacto {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
 }
 .json-data {
   max-height: 270px;

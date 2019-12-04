@@ -20,6 +20,8 @@ export class MainToolbarComponent implements OnInit {
 
   @Output() toogle = new EventEmitter();
 
+  @Input() cartItems = 0;
+
   constructor(private productosUi: ProductosUiService) {}
 
   ngOnInit() {}

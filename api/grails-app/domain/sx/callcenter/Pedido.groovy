@@ -1,5 +1,11 @@
 package sx.callcenter
 
+import groovy.transform.ToString
+import groovy.transform.EqualsAndHashCode
+
+
+@ToString(includes='cliente, nombre, fecha, sucursal, subtotal total',includeNames=true,includePackage=false)
+@EqualsAndHashCode(includes = 'id')
 class Pedido {
 
     String id

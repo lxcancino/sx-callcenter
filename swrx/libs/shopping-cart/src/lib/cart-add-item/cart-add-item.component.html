@@ -1,6 +1,42 @@
 <h3>Partida del pedido</h3>
 <mat-dialog-content>
+  <mat-divider></mat-divider>
   <div class="item-form" [formGroup]="form">
+    <div class="corte-container" formGroupName="corte">
+      <div class="corte-form">
+        <mat-form-field class="instruccion">
+          <input
+            matInput
+            placeholder="Instrucción de corte"
+            formControlName="instruccion"
+            [matAutocomplete]="auto"
+            swrxUpperCase
+          />
+        </mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+          <mat-option
+            *ngFor="let option of filteredOptions | async"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+        <swrx-numeric-field
+          class="cantidad"
+          formControlName="cantidad"
+          label="Cantidad"
+          decimals="0"
+        ></swrx-numeric-field>
+        <swrx-numeric-field
+          class="precio"
+          formControlName="precio"
+          label="Precio"
+          decimals="2"
+        ></swrx-numeric-field>
+        <mat-checkbox formControlName="refinado">Refinado</mat-checkbox>
+        <mat-checkbox formControlName="limpio">Limpio</mat-checkbox>
+      </div>
+    </div>
     <swrx-producto-field formControlName="producto"></swrx-producto-field>
     <div class="importes">
       <swrx-numeric-field

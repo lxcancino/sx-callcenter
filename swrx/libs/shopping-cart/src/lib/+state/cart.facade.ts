@@ -4,26 +4,39 @@ import { select, Store } from '@ngrx/store';
 
 import * as fromCart from './cart.reducer';
 import * as CartActions from './cart.actions';
+import * as CartSelectors from './cart.selectors';
+
 import { MatDialog } from '@angular/material';
 import { CartAddItemComponent } from '../cart-add-item/cart-add-item.component';
-import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class CartFacade {
+  loading$ = this.store.pipe(select(CartSelectors.getCartLoading));
+  cartItems$ = this.store.pipe(select(CartSelectors.getCartItems));
+  sumary$ = this.store.pipe(select(CartSelectors.getCartSumary));
+  cartItemsCount$ = this.store.pipe(select(CartSelectors.getCartItemsCount));
   constructor(
     private store: Store<fromCart.CartState>,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.store.pipe(select(CartSelectors.getCartSumary));
+  }
 
-  addCartItem() {
-    // console.log('ADD CART ITEM...');
-    // this.store.dispatch(CartActions.addCartItem());
+  addCartItem2() {
     return this.dialog
       .open(CartAddItemComponent, {
         data: {},
-        width: '700px'
+        width: '750px'
       })
-      .afterClosed();
-    // .pipe(filter(res => !res));
+      .afterClosed()
+      .subscribe(item => {
+        if (item) {
+          console.log('Add item: ', item);
+        }
+      });
+  }
+
+  addCartItem() {
+    this.store.dispatch(CartActions.addCartItem());
   }
 }

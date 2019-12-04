@@ -32,9 +32,9 @@ import { FormGroup } from '@angular/forms';
 })
 export class CartUsoComponent implements OnInit {
   @Input() usos = [
-    { clave: 'G01', descripcion: 'ADQUISICIÓN DE MERCANCIAS' },
-    { clave: 'G03', descripcion: 'GASTOS EN GENERAL' },
-    { clave: 'P01', descripcion: 'POR DEFINIR' }
+    { clave: 'G01', descripcion: 'ADQUISICIÓN DE MERCANCIAS (G01)' },
+    { clave: 'G03', descripcion: 'GASTOS EN GENERAL (G03)' },
+    { clave: 'P01', descripcion: 'POR DEFINIR (P01)' }
   ];
   @Input() cartForm: FormGroup;
   constructor() {}

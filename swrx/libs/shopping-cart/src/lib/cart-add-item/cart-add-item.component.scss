@@ -11,6 +11,30 @@
     }
   }
 }
+.corte-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+  .corte-form {
+    box-sizing: border-box;
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    .instruccion {
+      // min-width: 250px;
+      width: 100%;
+      flex: 1;
+    }
+    .cantidad,
+    .precio {
+      width: 70px;
+      margin-left: 5px;
+    }
+  }
+}
 .exis-header {
   display: flex;
   justify-content: center;
