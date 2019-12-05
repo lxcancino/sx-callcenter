@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { items } from './demo';
 import { Observable } from 'rxjs';
 import { CartFacade } from '../../+state/cart.facade';
 

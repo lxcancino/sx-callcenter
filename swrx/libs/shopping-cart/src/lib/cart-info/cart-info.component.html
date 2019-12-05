@@ -1,11 +1,17 @@
 <div class="cart-info-container">
   <mat-tab-group [dynamicHeight]="false">
+    <mat-tab label="CFDI">
+      <div class="cfdi">
+        <swrx-cart-uso [cartForm]="cartForm"></swrx-cart-uso>
+      </div>
+    </mat-tab>
     <mat-tab label="Envío"> </mat-tab>
     <mat-tab label="Contacto">
       <div class="contacto">
         <mat-checkbox>Agregar contacto</mat-checkbox>
       </div>
     </mat-tab>
+
     <mat-tab label="JSON">
       <pre class="json-data">
         {{ cartForm.valueChanges | async | json }}

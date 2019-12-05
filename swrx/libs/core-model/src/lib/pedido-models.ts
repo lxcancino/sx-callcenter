@@ -1,5 +1,47 @@
+import { Cliente } from './core-model';
+
 export interface Pedido {
-  id: string | number;
+  id?: string | number;
+  fecha: string;
+  sucursal: string;
+  folio?: string;
+  cliente: Partial<Cliente>;
+  nombre: string;
+  rfc: string;
+  socio?: any; // Solo para los clientes de la union
+  tipo: 'CON' | 'CRE' | 'COD';
+  formaDePago: FormaDePago;
+  moneda: 'MXN' | 'USD' | 'EUR';
+  tipoDeCambio: number;
+  partidas: PedidoDet[];
+  // Importes
+  importe: number;
+  descuento: number;
+  descuentoImporte: number;
+  subtotal: number;
+  impuesto: number;
+  total: number;
+  descuentoOriginal?: number;
+  cargosPorManiobra?: number;
+  comisionTarjeta?: number;
+  comisionTarjetaImporte?: number;
+  corteImporte?: number;
+  // Otros
+  kilos?: number;
+  comprador?: string;
+  comentario?: string;
+  envio?: any;
+  cfdiMail?: string;
+  usoDeCfdi: string;
+  sinExistencia?: boolean;
+  chequePostFechado?: boolean;
+  ventaIne?: boolean;
+
+  // Log
+  dateCreated?: string;
+  lastUpdated?: string;
+  createUser?: string;
+  updateUser?: string;
 }
 
 export interface PedidoDet {
@@ -14,29 +56,30 @@ export interface PedidoDet {
   };
   unidad: string;
   presentacion?: string;
+  gramos: number;
+  nacional: true;
   // Importes
   cantidad: number;
   precio: number;
   importe: number;
+  descuento: number; // %
   descuentoImporte: number;
   subtotal: number;
   impuesto: number;
-  total: number;
-  // Tasas
-  descuento: number; // %
   impuestoTasa: number;
+  total: number;
+  kilos: number;
   // Valores historicos
   precioLista: number;
   precioOriginal: number;
+  descuentoOriginal: number; // % Calculado por el sistema
   precioCredito: number;
   precioContado: number;
-  descuentoOriginal: number; // % Calculado por el sistema
-  gramos: number;
-  kilos: number;
-  nacional: true;
-  comentario?: string;
   importeCortes?: number;
+  sinExistencia?: boolean;
   corte?: Partial<InstruccionDeCorte>;
+  comentario?: string;
+  // Bitacora
   dateCreated?: string;
   lastUpdated?: string;
   createUser?: string;
@@ -54,4 +97,18 @@ export interface InstruccionDeCorte {
   seleccionCalculo: null;
   precio: number;
   instruccionEmpacado?: string;
+}
+
+export enum TipoDePedido {
+  CONTADO = 'CONTADO',
+  CRE = 'CREDITO',
+  COD = 'COD'
+}
+
+export enum FormaDePago {
+  EFECTIVO = 'EFECTIVO',
+  TARJETA_CREDITO = 'TARJETA_CREDITO',
+  TARJETA_DEBITO = 'TARJETA_DEBITO',
+  CHEQUE = 'CHEQUE',
+  NO_DEFINIDO = 'NO_DEFINIDO' // Para Ventas a credito
 }

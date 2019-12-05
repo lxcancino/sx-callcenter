@@ -10,19 +10,24 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'swrx-cart-fpago',
   template: `
-    <mat-form-field class="forma-de-pago-field" [formGroup]="cartForm">
-      <mat-label>Forma de Pago</mat-label>
+    <div class="tipo-field" [formGroup]="cartForm">
       <mat-select placeholder="F. Pago" formControlName="formaDePago">
         <mat-option *ngFor="let f of formasDePago" [value]="f">
           {{ f }}
         </mat-option>
       </mat-select>
-      <mat-error>
-        DEBE SELECCIONAR UN TIPO DE VENTA
-      </mat-error>
-    </mat-form-field>
+    </div>
   `,
-  styles: [],
+  styles: [
+    `
+      .tipo-field {
+        width: 150px;
+        font-size: 16px;
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+    `
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartFpagoComponent implements OnInit {

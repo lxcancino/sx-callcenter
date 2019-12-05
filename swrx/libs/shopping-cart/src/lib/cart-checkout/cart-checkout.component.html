@@ -1,0 +1,20 @@
+<h3 matDialogTitle>
+  Finalizar Pedido
+</h3>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <pre>
+    {{ entity | json }}
+  </pre>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close>
+    <mat-icon>cancel</mat-icon> CANCELAR
+  </button>
+  <button mat-stroked-button color="primary" (click)="doSubmit()">
+    <mat-icon>check</mat-icon> ACEPTAR
+  </button>
+</mat-dialog-actions>
+<!-- <mat-dialog-container>
+</mat-dialog-container> -->

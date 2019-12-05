@@ -2,7 +2,9 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
-  Input
+  Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
 import round from 'lodash/round';
@@ -17,6 +19,7 @@ import { CartSumary } from '../+state/cart.models';
 })
 export class CartSummaryComponent implements OnInit {
   @Input() sumary: CartSumary;
+  @Output() checkout = new EventEmitter();
 
   constructor() {}
 

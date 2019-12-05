@@ -25,6 +25,7 @@ import { CartAddItemComponent } from './cart-add-item/cart-add-item.component';
 import { CartItemsTableComponent } from './cart-items/cart-items-table/cart-items-table.component';
 import { CartListComponent } from './cart-items/cart-list/cart-list.component';
 import { CartListItemComponent } from './cart-items/cart-list/cart-list-item/cart-list-item.component';
+import { CartCheckoutComponent } from './cart-checkout/cart-checkout.component';
 
 const routes: Route[] = [{ path: '', component: CartPageComponent }];
 
@@ -50,9 +51,10 @@ const routes: Route[] = [{ path: '', component: CartPageComponent }];
     CartAddItemComponent,
     CartItemsTableComponent,
     CartListComponent,
-    CartListItemComponent
+    CartListItemComponent,
+    CartCheckoutComponent
   ],
-  entryComponents: [CartAddItemComponent],
+  entryComponents: [CartAddItemComponent, CartCheckoutComponent],
   exports: [CartBtnComponent],
   providers: [CartFacade]
 })

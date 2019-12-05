@@ -5,10 +5,26 @@
     display: inline;
   }
   .cliente {
-    flex: 1;
+    flex: 3;
     text-align: center;
   }
+  .options {
+    box-sizing: border-box;
+    // flex: 1 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    margin: 0px 5px;
+  }
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    margin: 0px 5px;
+  }
   .menu {
-    margin-left: auto;
+    justify-content: flex-end;
   }
 }

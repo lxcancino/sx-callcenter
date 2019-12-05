@@ -7,6 +7,7 @@ import sumBy from 'lodash/sumBy';
 import round from 'lodash/round';
 import maxBy from 'lodash/maxBy';
 import values from 'lodash/values';
+import { Pedido, TipoDePedido, FormaDePago } from '@swrx/core-model';
 
 export const getCartState = createFeatureSelector<CartState>(CART_FEATURE_KEY);
 
@@ -23,6 +24,16 @@ export const getCartItems = createSelector(
 export const getCartItemsCount = createSelector(
   getCartItems,
   items => items.length
+);
+
+export const getCliente = createSelector(
+  getCartState,
+  state => state.cliente
+);
+
+export const getTipo = createSelector(
+  getCartState,
+  state => state.tipo
 );
 
 export const getCartSumary = createSelector(
@@ -42,6 +53,29 @@ export const getCartSumary = createSelector(
       impuesto,
       total,
       descuento
+    };
+  }
+);
+
+export const getCartEntity = createSelector(
+  getCartState,
+  getCliente,
+  getCartItems,
+  getCartSumary,
+  (state, cliente, items, sumary) => {
+    return {
+      fecha: new Date().toISOString(),
+      sucursal: 'CALL CENTER',
+      tipo: 'COD',
+      formaDePago: FormaDePago.EFECTIVO,
+      moneda: 'MXN',
+      tipoDeCambio: 1.0,
+      usoDeCfdi: 'G03',
+      cliente: { id: cliente.id },
+      nombre: cliente.nombre,
+      rfc: cliente.rfc,
+      partidas: items,
+      ...sumary
     };
   }
 );

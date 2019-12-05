@@ -9,20 +9,20 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'swrx-cart-tipo',
   template: `
-    <mat-form-field class="tipo-field" [formGroup]="cartForm">
-      <mat-label>Tipo</mat-label>
-      <mat-select placeholder="TIPO" formControlName="tipo">
+    <div [formGroup]="cartForm">
+      <mat-select placeholder="TIPO" formControlName="tipo" class="tipo-field">
         <mat-option *ngFor="let t of tipos" [value]="t"> {{ t }} </mat-option>
       </mat-select>
-      <mat-error>
-        Debe seleccionar un tipo de venta
-      </mat-error>
-    </mat-form-field>
+      <div></div>
+    </div>
   `,
   styles: [
     `
       .tipo-field {
-        width: 200px;
+        width: 150px;
+        margin-left: 5px;
+        margin-right: 5px;
+        font-size: 16px;
       }
     `
   ],
@@ -31,7 +31,7 @@ import { FormGroup } from '@angular/forms';
 export class CartTipoComponent implements OnInit {
   @Input() cartForm = FormGroup;
 
-  @Input() tipos = ['COD', 'CRE', 'CON'];
+  @Input() tipos = ['CONTADO', 'CREDITO', 'COD'];
 
   constructor() {}
 

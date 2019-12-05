@@ -8,8 +8,18 @@ import { CartUsoComponent } from './cart-uso/cart-uso.component';
 import { CartFpagoComponent } from './cart-fpago/cart-fpago.component';
 
 @NgModule({
-  declarations: [CartMainFormComponent, CartTipoComponent, CartUsoComponent, CartFpagoComponent],
+  declarations: [
+    CartMainFormComponent,
+    CartTipoComponent,
+    CartUsoComponent,
+    CartFpagoComponent
+  ],
   imports: [UiCoreModule, ClientesModule],
-  exports: [CartMainFormComponent]
+  exports: [
+    CartMainFormComponent,
+    CartTipoComponent,
+    CartFpagoComponent,
+    CartUsoComponent
+  ]
 })
 export class CartFormModule {}

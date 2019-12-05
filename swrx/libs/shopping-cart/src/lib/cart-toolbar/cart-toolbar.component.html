@@ -1,31 +1,20 @@
 <mat-toolbar color="default" class="toolbar">
   <h3>PEDIDO:</h3>
-  <h3 class="cliente">{{ nombre }}</h3>
+  <h3 class="cliente">{{ cliente?.nombre }} ({{ cliente?.rfc }})</h3>
+  <div class="options">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="actions">
+    <ng-content select="button.action"></ng-content>
+  </div>
 
   <div class="menu">
-    <button mat-icon-button (click)="seleccionarCliente()">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <button mat-icon-button (click)="addItem.emit()">
-      <mat-icon>add_shopping_cart</mat-icon>
-    </button>
     <button mat-icon-button [matMenuTriggerFor]="padidoMenu">
       <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #padidoMenu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>monetization_on</mat-icon>
-        <span>Descuento especial</span>
-      </button>
-      <button mat-menu-item>
-        <!-- <fa-icon icon="truck-loading"></fa-icon> -->
-        <mat-icon>local_shipping</mat-icon>
-        <span>Maniobra</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>dialpad</mat-icon>
-        <span>Venta INE</span>
-      </button>
+      <ng-content select="button.menu-item"></ng-content>
     </mat-menu>
   </div>
 </mat-toolbar>
