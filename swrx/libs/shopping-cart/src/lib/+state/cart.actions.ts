@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { Cart, CartItem } from './cart.models';
-import { Cliente, Pedido } from '@swrx/core-model';
+import { CartItem } from './cart.models';
+import { Cliente, Pedido, TipoDePedido, PedidoDet } from '@swrx/core-model';
+
 export const addCartItem = createAction('[ShoppingCartPage] Add CartItem');
 export const addCartItemSuccess = createAction(
   '[ShoppingCartPage] Add CartItem success',
@@ -31,4 +32,14 @@ export const generarPedidoFail = createAction(
 export const generarPedidoSuccess = createAction(
   '[ShoppigCartPage] Generar PEDIDO SUCCESS',
   props<{ pedido: Pedido }>()
+);
+
+export const cambiarTipo = createAction(
+  '[ShoppingCartPage]',
+  props<{ tipo: TipoDePedido }>()
+);
+
+export const recalcularPartidas = createAction(
+  '[ShoppingCart Effects] Recalcular Partidas',
+  props<{ items: PedidoDet[]; descuento: number }>()
 );

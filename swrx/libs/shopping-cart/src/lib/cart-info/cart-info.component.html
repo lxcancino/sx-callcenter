@@ -1,5 +1,20 @@
 <div class="cart-info-container">
   <mat-tab-group [dynamicHeight]="false">
+    <mat-tab>
+      <div class="info">
+        <span>
+          <strong>Descuento: {{ facade.descuento$ | async }} %</strong>
+        </span>
+        <span>
+          <label>Imp % x Volumen:</label>
+          <strong
+            >{{ facade.descuentoPorVolumenImporte$ | async | currency }} ({{
+              facade.descuentoPorVolumen$ | async
+            }})
+          </strong>
+        </span>
+      </div>
+    </mat-tab>
     <mat-tab label="CFDI">
       <div class="cfdi">
         <swrx-cart-uso [cartForm]="cartForm"></swrx-cart-uso>
@@ -10,12 +25,6 @@
       <div class="contacto">
         <mat-checkbox>Agregar contacto</mat-checkbox>
       </div>
-    </mat-tab>
-
-    <mat-tab label="JSON">
-      <pre class="json-data">
-        {{ cartForm.valueChanges | async | json }}
-      </pre>
     </mat-tab>
   </mat-tab-group>
 </div>

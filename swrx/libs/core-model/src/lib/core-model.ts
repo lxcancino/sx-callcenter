@@ -20,6 +20,7 @@ export interface Cliente {
 
 export interface ClienteCredito {
   id: string | number;
+  descuentoFijo: number;
 }
 
 export interface Direccion {

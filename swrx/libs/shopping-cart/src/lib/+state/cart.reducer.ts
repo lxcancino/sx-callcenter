@@ -2,14 +2,14 @@ import { createReducer, on, Action } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import * as CartActions from './cart.actions';
-import { Cart, CartItem } from './cart.models';
+import { CartItem } from './cart.models';
 
-import { DemoItems } from './cart-state-demo';
-import { clienteMostrador } from './cart.utils';
+import { clienteMostrador, aplicarDescuentos } from './cart.utils';
+import { Cliente, TipoDePedido, PedidoDet } from '@swrx/core-model';
 
 import keyBy from 'lodash/keyBy';
-
-import { Cliente } from '@swrx/core-model';
+import values from 'lodash/values';
+import forIn from 'lodash/forIn';
 
 export const CART_FEATURE_KEY = 'cart';
 
@@ -18,7 +18,7 @@ export interface CartState {
   error?: string | null; // last none error (if any)
   loading: boolean;
   cliente: Partial<Cliente>;
-  tipo: 'CREDITO' | 'CONTADO' | 'COD';
+  tipo: TipoDePedido;
   items: { [id: string]: CartItem };
 }
 
@@ -29,7 +29,7 @@ export interface CartPartialState {
 export const initialState: CartState = {
   loading: false,
   cliente: clienteMostrador(),
-  tipo: 'CONTADO',
+  tipo: TipoDePedido.CONTADO,
   items: keyBy([], 'id')
 };
 
@@ -48,7 +48,13 @@ const cartReducer = createReducer(
     ...state,
     loading: false,
     error
-  }))
+  })),
+  on(CartActions.cambiarTipo, (state, { tipo }) => ({ ...state, tipo })),
+  on(CartActions.recalcularPartidas, (state, { descuento }) => {
+    const partidas = values(state.items)
+    const items = keyBy(aplicarDescuentos(partidas, state.tipo, descuento), 'id');
+    return { ...state, items };
+  })
 );
 
 export function reducer(state: CartState | undefined, action: Action) {

@@ -5,6 +5,7 @@ import {
   Input
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { CartFacade } from '../+state/cart.facade';
 
 @Component({
   selector: 'swrx-cart-info',
@@ -15,7 +16,7 @@ import { FormGroup } from '@angular/forms';
 export class CartInfoComponent implements OnInit {
   @Input() cartForm: FormGroup;
 
-  constructor() {}
+  constructor(public facade: CartFacade) {}
 
   ngOnInit() {}
 }

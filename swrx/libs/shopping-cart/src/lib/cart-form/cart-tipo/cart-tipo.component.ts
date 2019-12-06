@@ -5,6 +5,7 @@ import {
   Input
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { TipoDePedido } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-tipo',
@@ -31,7 +32,13 @@ import { FormGroup } from '@angular/forms';
 export class CartTipoComponent implements OnInit {
   @Input() cartForm = FormGroup;
 
-  @Input() tipos = ['CONTADO', 'CREDITO', 'COD'];
+  @Input() tipos = [
+    TipoDePedido.CONTADO,
+    TipoDePedido.CREDITO,
+    TipoDePedido.COD,
+    TipoDePedido.PSF,
+    TipoDePedido.INE
+  ];
 
   constructor() {}
 

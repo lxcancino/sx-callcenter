@@ -16,20 +16,23 @@ class Pedido {
     String folio
     Cliente cliente // 2
     String nombre
-    Sring rfc
+    String rfc
     String socio
     String tipo
     String  formaDePago
     String moneda = 'MXN'
     BigDecimal  tipoDeCambio = 1
     List<PedidoDet> partidas = []
+    
     // Importes
-    BigDecimal importe  = 0
-    BigDecimal descuento = 0
-    BigDecimal descuentoImporte = 0
-    BigDecimal subtotal = 0
-    BigDecimal impuesto = 0
-    BigDecimal total = 0
+    BigDecimal importe
+    BigDecimal descuento
+    BigDecimal descuentoImporte
+    BigDecimal subtotal
+    BigDecimal impuesto
+    BigDecimal total
+
+    // Precios y descuentos historicos
     BigDecimal descuentoOriginal = 0
     BigDecimal cargosPorManiobra = 0
     BigDecimal comisionTarjeta = 0
@@ -37,15 +40,13 @@ class Pedido {
     BigDecimal corteImporte = 0
     
     
-    BigDecimal  kilos = 0
+    BigDecimal  kilos
     String  comprador
     String  comentario
     String envio
     String cfdiMail
     String usoDeCfdi
     Boolean sinExistencia
-    Boolean chequePostFechado;
-    Boolean ventaIne;
     
     
     Date dateCreated
@@ -58,6 +59,7 @@ class Pedido {
     static constraints = {
         rfc maxSize:13
         tipo  inList:['CON','COD','CRE','PSF','INE','OTR','ACF','ANT','AND']
+        moneda inList: ['MXN', 'USD', 'EUR']
         documento maxSize: 20
         tipoDeCambio scale:6
         comentario nullable: true
@@ -67,8 +69,6 @@ class Pedido {
         envio nullable: true
         socio nullable: true
         sinExistencia nullable: true
-        chequePostFechado nullable: true
-        ventaIne nullable: true
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
     }

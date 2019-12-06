@@ -23,7 +23,8 @@ import { ClienteUiService } from '@swrx/clientes';
 
 import uuidv4 from 'uuid/v4';
 import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
-import { Pedido } from '@swrx/core-model';
+import { Pedido, PedidoDet } from '@swrx/core-model';
+import { recalculaPartida } from './cart.utils';
 
 @Injectable()
 export class CartEffects {
@@ -39,14 +40,24 @@ export class CartEffects {
         filter(item => !!item),
         tap((item: CartItem) => {
           item.id = uuidv4();
-          if (item.corte && item.corte.cantidad) {
+          if (item.corte && item.corte.cantidad && item.corte.cantidad > 0) {
             const { cantidad, precio } = item.corte;
-            const factor = item.unidad === 'MIL' ? 1000 : 1;
-            const importe = (cantidad * precio) / factor;
+            const importe = cantidad * precio;
             item.importeCortes = importe;
           }
         }),
         map((item: CartItem) => CartActions.addCartItemSuccess({ item }))
+      ),
+    { dispatch: true }
+  );
+
+  cambiarCliente$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.cambiarCliente),
+        mergeMap(() => this.clienteUi.seleccionarCliente()),
+        filter(cliente => !!cliente),
+        map(cliente => CartActions.cambiarClienteSuccess({ cliente }))
       ),
     { dispatch: true }
   );
@@ -58,17 +69,32 @@ export class CartEffects {
         tap(item => {
           console.log('New cart item ', item);
         })
+        // map(() => CartActions.recalcularPartidas())
       ),
     { dispatch: false }
   );
 
-  cambiarCliente$ = createEffect(
+  recalcular$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(CartActions.cambiarCliente),
-        mergeMap(() => this.clienteUi.seleccionarCliente()),
-        filter(cliente => !!cliente),
-        map(cliente => CartActions.cambiarClienteSuccess({ cliente }))
+        ofType(CartActions.addCartItemSuccess),
+        concatMap(action =>
+          of(action).pipe(
+            withLatestFrom(
+              this.store.pipe(select(CartSelectors.getCartState)),
+              this.store.pipe(select(CartSelectors.getCartItems)),
+              this.store.pipe(select(CartSelectors.getDescuento))
+            )
+          )
+        ),
+        // tap(([action, state, items, descuento]) =>
+        //   console.log(
+        //     `Recalculando importes para ${items.length} partidas tipo ${state.tipo} Descto: ${descuento}% Cliente: ${state.cliente.nombre}`
+        //   )
+        // ),
+        map(([action, state, items, descuento]) => {
+          return CartActions.recalcularPartidas({ items, descuento });
+        })
       ),
     { dispatch: true }
   );

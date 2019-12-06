@@ -6,11 +6,6 @@
       <span class="descripcion">{{ item.descripcion }}</span>
       <span class="cantidad">
         Cantidad:
-        <!-- <strong>{{
-          item.unidad === 'MIL'
-            ? item.cantidad
-            : (item.cantidad | number: '1.1-3')
-        }}</strong> -->
         <strong>{{ item.cantidad | number: '1.0' }}</strong>
       </span>
     </div>
@@ -31,7 +26,7 @@
         Dcto:
         <strong>
           {{ item.descuentoImporte * -1 | currency }}
-          <small> ({{ item.descuentoOriginal / 100 | percent }}) </small>
+          <small> ({{ item.descuento / 100 | percent }}) </small>
         </strong>
       </span>
       <span>Sub:</span>
@@ -43,12 +38,28 @@
       >Unidad: <strong>{{ item.unidad }}</strong></span
     >
     <span
+      >Presentación: <strong>{{ item.producto.presentacion }}</strong></span
+    >
+    <span
       >Kilos:<strong>{{ item.kilos }}</strong></span
     >
     <span><strong>Calibre:</strong> {{ item.gramos }}g</span>
     <span
       ><strong>{{ item.presentacion }}</strong></span
     >
+    <span>
+      <strong>{{ item.modoVenta === 'B' ? 'P.BRUTO' : 'P. NETO' }}</strong>
+    </span>
+    <span>
+      <strong
+        >CON:
+        <span class="pad-r">{{ item.precioCredito | currency }}</span></strong
+      >
+      <strong
+        >CON:
+        <span class="pad-r">{{ item.precioContado | currency }}</span></strong
+      >
+    </span>
   </div>
 
   <div matLine class="cortes" *ngIf="item.corte">

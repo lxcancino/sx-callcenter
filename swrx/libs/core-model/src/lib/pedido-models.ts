@@ -9,7 +9,7 @@ export interface Pedido {
   nombre: string;
   rfc: string;
   socio?: any; // Solo para los clientes de la union
-  tipo: 'CON' | 'CRE' | 'COD';
+  tipo: TipoDePedido;
   formaDePago: FormaDePago;
   moneda: 'MXN' | 'USD' | 'EUR';
   tipoDeCambio: number;
@@ -27,7 +27,7 @@ export interface Pedido {
   comisionTarjetaImporte?: number;
   corteImporte?: number;
   // Otros
-  kilos?: number;
+  kilos: number;
   comprador?: string;
   comentario?: string;
   envio?: any;
@@ -35,7 +35,6 @@ export interface Pedido {
   usoDeCfdi: string;
   sinExistencia?: boolean;
   chequePostFechado?: boolean;
-  ventaIne?: boolean;
 
   // Log
   dateCreated?: string;
@@ -52,12 +51,14 @@ export interface PedidoDet {
     id: string;
     clave: string;
     descripcion: string;
+    modoVenta: string;
     imageUrl: string;
   };
   unidad: string;
   presentacion?: string;
   gramos: number;
   nacional: true;
+  modoVenta: 'B' | 'N';
   // Importes
   cantidad: number;
   precio: number;
@@ -101,8 +102,10 @@ export interface InstruccionDeCorte {
 
 export enum TipoDePedido {
   CONTADO = 'CONTADO',
-  CRE = 'CREDITO',
-  COD = 'COD'
+  CREDITO = 'CREDITO',
+  COD = 'COD',
+  PSF = 'POST FECHADO',
+  INE = 'INE'
 }
 
 export enum FormaDePago {

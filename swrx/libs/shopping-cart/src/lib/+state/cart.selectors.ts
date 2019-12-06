@@ -3,11 +3,13 @@ import { CART_FEATURE_KEY, CartState } from './cart.reducer';
 import { CartSumary, CartItem } from './cart.models';
 import { Observable } from 'rxjs';
 
+import { Pedido, TipoDePedido, FormaDePago } from '@swrx/core-model';
+
 import sumBy from 'lodash/sumBy';
 import round from 'lodash/round';
 import maxBy from 'lodash/maxBy';
 import values from 'lodash/values';
-import { Pedido, TipoDePedido, FormaDePago } from '@swrx/core-model';
+import { calcularDescuentoPorVolumen } from './cart.utils';
 
 export const getCartState = createFeatureSelector<CartState>(CART_FEATURE_KEY);
 
@@ -62,11 +64,11 @@ export const getCartEntity = createSelector(
   getCliente,
   getCartItems,
   getCartSumary,
-  (state, cliente, items, sumary) => {
+  (state, cliente, items, sumary): Pedido => {
     return {
       fecha: new Date().toISOString(),
       sucursal: 'CALL CENTER',
-      tipo: 'COD',
+      tipo: state.tipo,
       formaDePago: FormaDePago.EFECTIVO,
       moneda: 'MXN',
       tipoDeCambio: 1.0,
@@ -75,7 +77,66 @@ export const getCartEntity = createSelector(
       nombre: cliente.nombre,
       rfc: cliente.rfc,
       partidas: items,
+      kilos: sumBy(items, 'kilos'),
       ...sumary
     };
   }
 );
+
+export const getDescuentoPorVolumenImporte = createSelector(
+  getCartState,
+  getCartItems,
+  (state, items): number => {
+    if (
+      state.tipo === TipoDePedido.CONTADO ||
+      state.tipo === TipoDePedido.COD
+    ) {
+      const importe = sumBy(items, (i: CartItem) => {
+        if(i.producto.modoVenta === 'B') {
+          return i.importe;
+        } else {
+          return 0.0;
+        }
+      });
+      return importe;
+    } else {
+      return 0.0;
+    }
+  }
+);
+
+export const getDescuentoPorVolumen = createSelector(
+  getCartState,
+  getDescuentoPorVolumenImporte,
+  (state, importe) => {
+    if(state.tipo !== TipoDePedido.CONTADO && state.tipo !== TipoDePedido.COD) {
+      return 0.0;
+    }
+    return calcularDescuentoPorVolumen(importe)
+  }
+)
+
+export const getDescuento = createSelector(
+  getTipo,
+  getCliente,
+  getDescuentoPorVolumen,
+  (tipo, cliente, descuentoPorVolumen) => {
+    switch(tipo) {
+      case TipoDePedido.CREDITO: {
+        return cliente.credito ? cliente.credito.descuentoFijo : 0.0;
+      }
+      case TipoDePedido.CONTADO:
+      case TipoDePedido.COD: {
+        return descuentoPorVolumen;  
+      }
+      case TipoDePedido.PSF: {
+        return descuentoPorVolumen - 4;  
+      }
+      default: {
+        console.log('Tipo de venta no califica para descuento tipo: ', tipo);
+        return 0;
+      }
+    }
+    
+  }
+)

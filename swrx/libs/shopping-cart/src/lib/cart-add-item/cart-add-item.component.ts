@@ -12,6 +12,7 @@ import { Subject, Observable } from 'rxjs';
 import { takeUntil, map, startWith } from 'rxjs/operators';
 
 import round from 'lodash/round';
+import { PedidoDet } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-add-item',
@@ -69,11 +70,6 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
       cantidad: [0.0, Validators.required],
       precio: [0.0, Validators.required],
       importe: [0.0, Validators.required],
-      descuento: [0.0, [Validators.required]],
-      descuentoTasa: [0.0, [Validators.required]],
-      subtotal: [0.0, [Validators.required]],
-      impuesto: [0.0, [Validators.required]],
-      total: [0.0, [Validators.required]],
       corte: this.fb.group({
         instruccion: [null],
         cantidad: [0],
@@ -121,36 +117,45 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
     const precio = this.precio;
     const bruto = cantidad * precio;
     const importe = round(bruto, 2);
-    const descuentoTasa = this.descuento || 0.0;
-    const descuento = this.descuento;
-    const subtotal = importe - descuento;
-    const impuesto = round(subtotal * 0.16, 2);
-    const total = subtotal + impuesto;
     this.form.get('importe').setValue(importe);
-    this.form.get('descuento').setValue(descuento);
-    this.form.get('descuentoTasa').setValue(descuentoTasa);
-    this.form.get('subtotal').setValue(subtotal);
-    this.form.get('impuesto').setValue(impuesto);
-    this.form.get('total').setValue(total);
   }
 
   onSubmit() {
     if (this.form.valid) {
       const producto = this.producto;
-      const { clave, descripcion, kilos, gramos, unidad } = producto;
-      const entity = {
+      const {
+        clave,
+        descripcion,
+        kilos,
+        gramos,
+        unidad,
+        modoVenta,
+        presentacion,
+        precioCredito,
+        precioContado
+      } = producto;
+      const entity: PedidoDet = {
         ...this.form.value,
         producto: {
           id: producto.id,
           clave,
           descripcion,
+          modoVenta,
           imageUrl: 'assets/images/1273567240.jpg'
         },
         clave,
         descripcion,
         kilos,
         gramos,
-        unidad
+        unidad,
+        modoVenta,
+        precioCredito,
+        precioContado,
+        descuento: 0.0,
+        descuentoImporte: 0.0,
+        subtotal: 0.0,
+        impuesto: 0.0,
+        total: 0.0
       };
       this.dialoRef.close(entity);
     }
@@ -165,18 +170,6 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
 
   get importe() {
     return this.form.get('importe').value;
-  }
-
-  get descuento() {
-    return this.getValue('descuento');
-  }
-
-  get subtotal() {
-    return this.getValue('subtotal');
-  }
-
-  get total() {
-    return this.getValue('total');
   }
 
   private getValue(prop: string) {
