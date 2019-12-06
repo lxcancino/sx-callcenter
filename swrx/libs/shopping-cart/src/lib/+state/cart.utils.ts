@@ -1,5 +1,11 @@
-import { PedidoDet, TipoDePedido } from '@swrx/core-model';
+import { PedidoDet, TipoDePedido, Pedido, Cliente } from '@swrx/core-model';
+
+import { CartState } from './cart.reducer';
+import { CartSumary } from './cart.models';
+
 import round from 'lodash/round';
+import sumBy from 'lodash/sumBy';
+import maxBy from 'lodash/maxBy';
 
 export function clienteMostrador() {
   return {
@@ -52,9 +58,6 @@ export function recalculaPartida(
   tipo: TipoDePedido,
   descuento: number
 ): PedidoDet {
-  console.log('Recalculando partida:', item);
-  console.log('Tipo de pedido: ', tipo);
-  console.log('Descuento: ', descuento);
   const { cantidad, precioCredito, precioContado } = item;
   const precio = tipo === TipoDePedido.CREDITO ? precioCredito : precioContado;
   const factor = item.unidad === 'MIL' ? 1000 : 1;
@@ -74,5 +77,71 @@ export function recalculaPartida(
     subtotal,
     impuesto,
     total
+  };
+}
+
+/**
+ * Build an initial Pedido entity with default
+ * properties
+ */
+export function createPedidoTemplate(): Partial<Pedido> {
+  return {
+    cliente: clienteMostrador(),
+    fecha: new Date().toISOString(),
+    sucursal: 'CALL CENTER'
+  };
+}
+
+/**
+ * Build the ShoppingCart sumary out of their items
+ *
+ * @param items PedidoDet array
+ */
+export function buildCartSumary(items: PedidoDet[]) {
+  const importe = round(sumBy(items, 'importe'), 2);
+  const descuentoImporte = round(sumBy(items, 'descuentoImporte'), 2);
+  const subtotal = round(sumBy(items, 'subtotal'), 2);
+  const impuesto = round(sumBy(items, 'impuesto'), 2);
+  const total = round(sumBy(items, 'total'), 2);
+  const maxDes = maxBy(items, 'descuento');
+  const descuento = maxDes ? maxDes.descuento : 0.0;
+  return {
+    importe,
+    descuentoImporte,
+    subtotal,
+    impuesto,
+    total,
+    descuento
+  };
+}
+
+/**
+ * Builds a Pedido entity in order to by persisted
+ *
+ * @param state The ShoppingCart state
+ * @param cliente The cliente to charte
+ * @param items  Array of items (PedidoDet entities)
+ * @param sumary Summary of the chart (Totales)
+ */
+export function buildPedidoEntity(
+  state: CartState,
+  cliente: Partial<Cliente>,
+  items: PedidoDet[],
+  sumary: CartSumary
+): Pedido {
+  return {
+    fecha: new Date().toISOString(),
+    sucursal: state.sucursal,
+    tipo: state.tipo,
+    formaDePago: state.formaDePago,
+    moneda: 'MXN',
+    tipoDeCambio: 1.0,
+    usoDeCfdi: 'G03',
+    cliente: { id: cliente.id },
+    nombre: cliente.nombre,
+    rfc: cliente.rfc,
+    partidas: items,
+    kilos: sumBy(items, 'kilos'),
+    ...sumary
   };
 }

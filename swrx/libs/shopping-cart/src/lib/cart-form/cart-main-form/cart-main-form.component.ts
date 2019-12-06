@@ -4,8 +4,7 @@ import {
   ChangeDetectionStrategy,
   Input
 } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Cart, FormaDePago } from '../../+state/cart.models';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'swrx-cart-main-form',

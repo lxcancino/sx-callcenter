@@ -8,7 +8,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { CartFacade } from '../+state/cart.facade';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { CartSumary } from '../+state/cart.models';
 import { TipoDePedido } from '@swrx/core-model';
 
@@ -21,15 +23,24 @@ import { TipoDePedido } from '@swrx/core-model';
 export class CartPageComponent implements OnInit, OnDestroy {
   cartForm: FormGroup;
   sumary$: Observable<CartSumary> = this.facade.sumary$;
+  destroy$ = new Subject<boolean>();
 
   constructor(private fb: FormBuilder, public facade: CartFacade) {}
 
   ngOnInit() {
     this.buildForm();
     this.addListeners();
+    this.facade.cartStateForm$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(state => {
+        console.log('Initial form state: ', state);
+      });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
 
   private buildForm() {
     this.cartForm = this.fb.group({
@@ -41,18 +52,29 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   private addListeners() {
     this.addFormaDePagoListener();
-    this.addTipoDeVentaListener();
+    this.addTipoDePedidoListener();
+    this.addUsoDeCfdiListener();
   }
 
   private addFormaDePagoListener() {
     this.cartForm
       .get('formaDePago')
-      .valueChanges.subscribe(fp => console.log('F.P: ', fp));
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(fp => console.log('F.P: ', fp));
   }
-  private addTipoDeVentaListener() {
+
+  private addTipoDePedidoListener() {
     this.cartForm
       .get('tipo')
-      .valueChanges.subscribe(tipo => this.facade.cambiarTipo(tipo));
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(tipo => this.facade.cambiarTipo(tipo));
+  }
+
+  private addUsoDeCfdiListener() {
+    this.cartForm
+      .get('usoDeCfdi')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(clave => this.facade.cambiarUso(clave));
   }
 
   addCartItem() {

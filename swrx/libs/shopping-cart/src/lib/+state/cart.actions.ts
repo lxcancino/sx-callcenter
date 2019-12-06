@@ -1,6 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { CartItem } from './cart.models';
-import { Cliente, Pedido, TipoDePedido, PedidoDet } from '@swrx/core-model';
+import {
+  Cliente,
+  Pedido,
+  TipoDePedido,
+  PedidoDet,
+  FormaDePago
+} from '@swrx/core-model';
 
 export const addCartItem = createAction('[ShoppingCartPage] Add CartItem');
 export const addCartItemSuccess = createAction(
@@ -35,8 +41,16 @@ export const generarPedidoSuccess = createAction(
 );
 
 export const cambiarTipo = createAction(
-  '[ShoppingCartPage]',
+  '[ShoppingCartPage] Cambiar Tipo de Pedido',
   props<{ tipo: TipoDePedido }>()
+);
+export const cambiarFormaDePago = createAction(
+  '[ShoppingCartPage] Cambiar Forma de Pago',
+  props<{ formaDePago: FormaDePago }>()
+);
+export const cambiarUsoDeCfdi = createAction(
+  '[ShoppingCartPage] Cambiar Uso de CFDI',
+  props<{ clave: string }>()
 );
 
 export const recalcularPartidas = createAction(

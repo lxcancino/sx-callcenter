@@ -4,8 +4,9 @@ import {
   ChangeDetectionStrategy,
   Input
 } from '@angular/core';
-import { FormaDePago } from '../../+state/cart.models';
+
 import { FormGroup } from '@angular/forms';
+import { FormaDePago } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-fpago',

@@ -21,6 +21,7 @@ export class CartFacade {
     select(CartSelectors.getDescuentoPorVolumen)
   );
   descuento$ = this.store.pipe(select(CartSelectors.getDescuento));
+  cartStateForm$ = this.store.pipe(select(CartSelectors.selectFormState));
   constructor(private store: Store<fromCart.CartState>) {
     this.store.pipe(select(CartSelectors.getCartSumary));
   }
@@ -38,5 +39,8 @@ export class CartFacade {
 
   cambiarTipo(tipo: TipoDePedido) {
     this.store.dispatch(CartActions.cambiarTipo({ tipo }));
+  }
+  cambiarUso(clave: string) {
+    this.store.dispatch(CartActions.cambiarUsoDeCfdi({ clave }));
   }
 }

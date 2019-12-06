@@ -28,7 +28,7 @@
   <div class="side-bar">
     <swrx-cart-summary
       [sumary]="sumary$ | async"
-      (checkout)="onCheckout($event)"
+      (checkout)="onCheckout()"
     ></swrx-cart-summary>
     <swrx-cart-info [cartForm]="cartForm"></swrx-cart-info>
   </div>

@@ -6,6 +6,7 @@ import com.google.cloud.firestore.EventListener
 import com.google.cloud.firestore.FirestoreException
 import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.google.cloud.firestore.QuerySnapshot
+import com.google.cloud.firestore.ListenerRegistration 
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 
@@ -24,10 +25,30 @@ import org.apache.commons.lang3.exception.ExceptionUtils
 
 import javax.annotation.Nullable
 
-@ToString(includeFields = true)
+import org.springframework.stereotype.Component
+import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
+
 @Slf4j
+@ToString(includeFields = true)
+@Component
 class FirebaseSdk {
-    
+
+	@PostConstruct
+    void doLog() {
+        log.info("Inicializando FireBase en PostConstruct")
+        init()
+        registerFirestoreListeners()
+    }
+
+    @PreDestroy
+    void closeSession() {
+    	if(registration) {
+    		registration.remove();
+    	}
+    	log.ifo('Clossing Firebase session.....');
+    	println 'CLOSE FIREBASE............'
+    }
 
     def init() {
     	// FileInputStream serviceAccount = new FileInputStream("/Users/rubencancino/Desktop/firebase/siipapx-436ce-firebase-adminsdk-ci4eg-779346f0c5.json");
@@ -103,10 +124,12 @@ class FirebaseSdk {
 
 	}
 
+	ListenerRegistration registration
+
 	def registerFirestoreListeners() {
 		Firestore db = FirestoreClient.getFirestore()
 
-		db.collection("depositos")
+		registration = db.collection("depositos")
 				.addSnapshotListener(new EventListener<QuerySnapshot>() {
 			@Override
 			void onEvent(

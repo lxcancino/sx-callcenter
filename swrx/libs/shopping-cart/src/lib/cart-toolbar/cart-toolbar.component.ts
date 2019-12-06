@@ -5,7 +5,7 @@ import {
   Input
 } from '@angular/core';
 
-import { Cliente, TipoDePedido } from '@swrx/core-model';
+import { Cliente } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-toolbar',
@@ -17,10 +17,7 @@ export class CartToolbarComponent implements OnInit {
   @Input() cliente: Cliente;
   constructor() {}
 
-  ngOnInit() {
-    const tipo = TipoDePedido.CONTADO;
-    console.log('Tipo: ', TipoDePedido['COD']);
-  }
+  ngOnInit() {}
 
   seleccionarCliente() {}
 }
