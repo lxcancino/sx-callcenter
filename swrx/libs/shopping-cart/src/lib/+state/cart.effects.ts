@@ -6,6 +6,7 @@ import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { CartState } from './cart.reducer';
 import * as CartActions from './cart.actions';
 import * as CartSelectors from './cart.selectors';
+import { PedidosFacade } from '@swrx/pedidos';
 
 import {
   mergeMap,
@@ -87,11 +88,6 @@ export class CartEffects {
             )
           )
         ),
-        // tap(([action, state, items, descuento]) =>
-        //   console.log(
-        //     `Recalculando importes para ${items.length} partidas tipo ${state.tipo} Descto: ${descuento}% Cliente: ${state.cliente.nombre}`
-        //   )
-        // ),
         map(([action, state, items, descuento]) => {
           return CartActions.recalcularPartidas({ items, descuento });
         })
@@ -120,8 +116,7 @@ export class CartEffects {
           };
           return pedido;
         }),
-        tap(pedido => console.log('Salvando pedido: ', pedido)),
-        map(pedido => CartActions.generarPedido({ pedido }))
+        map(pedido => this.pedidoFacade.createPedido(pedido))
       ),
     { dispatch: true }
   );
@@ -129,6 +124,7 @@ export class CartEffects {
     private actions$: Actions,
     private dialog: MatDialog, // private dataPersistence: DataPersistence<CartPartialState>
     private clienteUi: ClienteUiService,
-    private store: Store<CartState>
+    private store: Store<CartState>,
+    private pedidoFacade: PedidosFacade
   ) {}
 }

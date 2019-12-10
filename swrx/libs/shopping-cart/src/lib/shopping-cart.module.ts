@@ -10,6 +10,7 @@ import { UiCoreModule } from '@swrx/ui-core';
 import { ClientesModule } from '@swrx/clientes';
 import { ProductosModule } from '@swrx/productos';
 import { FormUtilsModule } from '@swrx/form-utils';
+import { PedidosModule } from '@swrx/pedidos';
 
 import { CartPageComponent } from './cart-page/cart-page.component';
 import { CartBtnComponent } from './cart-btn/cart-btn.component';
@@ -35,6 +36,7 @@ const routes: Route[] = [{ path: '', component: CartPageComponent }];
     UiCoreModule,
     ClientesModule,
     ProductosModule,
+    PedidosModule,
     FormUtilsModule,
     StoreModule.forFeature(fromCart.CART_FEATURE_KEY, fromCart.reducer),
     EffectsModule.forFeature([CartEffects]),

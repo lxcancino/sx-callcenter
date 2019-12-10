@@ -16,8 +16,8 @@ class PedidoDet {
     String descripcion
     String unidad
     String presentacion
-    BigDecimal gramos = 0.0
-    Boolean nacional = true
+    BigDecimal gramos
+    Boolean nacional
 
     //
     BigDecimal cantidad = 0.0
@@ -37,7 +37,7 @@ class PedidoDet {
     BigDecimal precioContado
     BigDecimal precioCredito
     BigDecimal importeCortes = 0.0
-    Boolean sinExistencia = false
+    // Boolean sinExistencia = false
     // InstruccionCorte corte
     String comentario
 
@@ -53,13 +53,14 @@ class PedidoDet {
         unidad maxSize: 10
         presentacion nullable: true, maxSize: 100
         comentario nullable: true
-        corte nullable: true
+        // corte nullable: true
         createUser nullable: true
         updateUser nullable: true
     }
 
      static mapping = {
-        id generator:'uuid'
-        producto index: 'PEDIDODET_PROD_IDX'
+        id generator: 'assigned'
+        clave index: 'PEDIDODET_PROD_IDX1'
+        descripcion index: 'PEDIDODET_PROD_IDX1'
     }
 }

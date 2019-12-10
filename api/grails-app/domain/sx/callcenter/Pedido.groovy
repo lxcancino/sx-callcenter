@@ -13,7 +13,7 @@ class Pedido {
     String id // 1
     Date fecha
     String sucursal
-    String folio
+    Long folio
     Cliente cliente // 2
     String nombre
     String rfc
@@ -33,21 +33,18 @@ class Pedido {
     BigDecimal total
 
     // Precios y descuentos historicos
-    BigDecimal descuentoOriginal = 0
-    BigDecimal cargosPorManiobra = 0
-    BigDecimal comisionTarjeta = 0
-    BigDecimal comisionTarjetaImporte = 0
-    BigDecimal corteImporte = 0
+    BigDecimal descuentoOriginal = 0.0
+    BigDecimal cargosPorManiobra = 0.0
+    BigDecimal comisionTarjeta = 0.0
+    BigDecimal comisionTarjetaImporte = 0.0
+    BigDecimal corteImporte = 0.0
+    BigDecimal kilos 
     
-    
-    BigDecimal  kilos
-    String  comprador
-    String  comentario
-    String envio
+    // String envio PENDIENTE PARA IMPLEMENTAR DIRECCION DE ENVIO
+    String comprador
+    String comentario
     String cfdiMail
     String usoDeCfdi
-    Boolean sinExistencia
-    
     
     Date dateCreated
     Date lastUpdated
@@ -58,17 +55,17 @@ class Pedido {
 
     static constraints = {
         rfc maxSize:13
+        folio unique: true
         tipo  inList:['CON','COD','CRE','PSF','INE','OTR','ACF','ANT','AND']
+        formaDePago inList: ['DEPOSITO', 'TRANSFERENCIA', 'EFECTIVO', 'TARJETA_DEBITO', 'TARJETA_CREDITO', 'CHEQUE', 'NO_DEFINIDO']
         moneda inList: ['MXN', 'USD', 'EUR']
-        documento maxSize: 20
         tipoDeCambio scale:6
+        usoDeCfdi maxSize:3
+        // propiedades opcionales
         comentario nullable: true
         comprador nullable: true
         cfdiMail nullable: true
-        usoDeCfdi nullable: true, maxSize:3
-        envio nullable: true
         socio nullable: true
-        sinExistencia nullable: true
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
     }

@@ -20,6 +20,7 @@ export class PedidosFacade {
   }
 
   createPedido(pedido: Pedido) {
-    this.store.dispatch(PedidosActions.createPedido({ pedido }));
+    // this.store.dispatch(PedidosActions.createPedido({ pedido }));
+    return PedidosActions.createPedido({ pedido });
   }
 }

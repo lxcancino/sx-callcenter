@@ -11,7 +11,9 @@ import * as fromPedidos from './+state/pedidos.reducer';
 import { PedidosEffects } from './+state/pedidos.effects';
 import { PedidosFacade } from './+state/pedidos.facade';
 
-export const routes: Route[] = [{ path: '', component: PedidosPageComponent }];
+export const routes: Route[] = [
+  { path: 'index', component: PedidosPageComponent }
+];
 
 @NgModule({
   declarations: [PedidosPageComponent, PedidosTableComponent],

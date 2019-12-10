@@ -4,6 +4,8 @@ import { DataPersistence } from '@nrwl/angular';
 
 import { PedidosPartialState } from './pedidos.reducer';
 import * as PedidosActions from './pedidos.actions';
+import { PedidoService } from '../services/pedido.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class PedidosEffects {
@@ -33,14 +35,16 @@ export class PedidosEffects {
         action: ReturnType<typeof PedidosActions.createPedido>,
         state: PedidosPartialState
       ) => {
-        return PedidosActions.createPedidoSuccess({ pedido: action.pedido });
+        return this.service
+          .save(action.pedido)
+          .pipe(map(pedido => PedidosActions.createPedidoSuccess({ pedido })));
       },
 
       onError: (
         action: ReturnType<typeof PedidosActions.createPedido>,
         error
       ) => {
-        console.error('Error', error);
+        console.error('Error salvando pedido Error: ', error);
         return PedidosActions.createPedidoFail({ error });
       }
     })
@@ -48,6 +52,7 @@ export class PedidosEffects {
 
   constructor(
     private actions$: Actions,
-    private dataPersistence: DataPersistence<PedidosPartialState>
+    private dataPersistence: DataPersistence<PedidosPartialState>,
+    private service: PedidoService
   ) {}
 }

@@ -101,17 +101,19 @@ export interface InstruccionDeCorte {
 }
 
 export enum TipoDePedido {
-  CONTADO = 'CONTADO',
-  CREDITO = 'CREDITO',
+  CONTADO = 'CON',
+  CREDITO = 'CRE',
   COD = 'COD',
-  PSF = 'POST FECHADO',
+  POST_FECHADO = 'PSF',
   INE = 'INE'
 }
 
 export enum FormaDePago {
+  TRANSFERENCIA = 'TRANSFERENCIA',
+  DEPOSITO = 'DEPOSITO',
   EFECTIVO = 'EFECTIVO',
   TARJETA_CREDITO = 'TARJETA_CREDITO',
   TARJETA_DEBITO = 'TARJETA_DEBITO',
   CHEQUE = 'CHEQUE',
-  NO_DEFINIDO = 'NO_DEFINIDO' // Para Ventas a credito
+  NO_DEFINIDO = 'NO_DEFINIDO'
 }

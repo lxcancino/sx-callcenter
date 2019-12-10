@@ -13,6 +13,7 @@ class UrlMappings {
         "/api/depositos/cuentas"(controller: 'deposito', action: 'cuentas', method: 'GET')
         
         "/api/productos"(resources: 'producto', excludes: ['create', 'edit', 'delete'])
+        "/api/pedidos"(resources: 'pedido', excludes: ['create', 'edit'])
 
         
         "/"(controller: 'application', action:'index')

@@ -1,0 +1,7 @@
+import sx.callcenter.Pedido
+
+model {
+	Pedido pedido
+}
+
+json g.render(pedido, [resolveTemplate: false])

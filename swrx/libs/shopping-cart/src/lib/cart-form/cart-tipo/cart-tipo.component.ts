@@ -12,7 +12,9 @@ import { TipoDePedido } from '@swrx/core-model';
   template: `
     <div [formGroup]="cartForm">
       <mat-select placeholder="TIPO" formControlName="tipo" class="tipo-field">
-        <mat-option *ngFor="let t of tipos" [value]="t"> {{ t }} </mat-option>
+        <mat-option *ngFor="let t of tipos" [value]="t">
+          {{ t.toString() }}
+        </mat-option>
       </mat-select>
       <div></div>
     </div>
@@ -36,7 +38,7 @@ export class CartTipoComponent implements OnInit {
     TipoDePedido.CONTADO,
     TipoDePedido.CREDITO,
     TipoDePedido.COD,
-    TipoDePedido.PSF,
+    TipoDePedido.POST_FECHADO,
     TipoDePedido.INE
   ];
 

@@ -53,21 +53,6 @@ export const getCartEntity = createSelector(
   getCartSumary,
   (state, cliente, items, summary): Pedido => {
     return buildPedidoEntity(state, cliente, items, summary);
-    // return {
-    //   fecha: new Date().toISOString(),
-    //   sucursal: state.sucursal,
-    //   tipo: state.tipo,
-    //   formaDePago: state.formaDePago,
-    //   moneda: 'MXN',
-    //   tipoDeCambio: 1.0,
-    //   usoDeCfdi: 'G03',
-    //   cliente: { id: cliente.id },
-    //   nombre: cliente.nombre,
-    //   rfc: cliente.rfc,
-    //   partidas: items,
-    //   kilos: sumBy(items, 'kilos'),
-    //   ...sumary
-    // };
   }
 );
 
@@ -120,7 +105,7 @@ export const getDescuento = createSelector(
       case TipoDePedido.COD: {
         return descuentoPorVolumen;
       }
-      case TipoDePedido.PSF: {
+      case TipoDePedido.POST_FECHADO: {
         return descuentoPorVolumen - 4;
       }
       default: {

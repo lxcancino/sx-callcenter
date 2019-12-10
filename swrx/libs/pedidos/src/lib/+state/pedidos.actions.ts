@@ -14,7 +14,7 @@ export const loadPedidosSuccess = createAction(
 
 export const createPedido = createAction(
   '[Shopping Cart Page] Create Pedido',
-  props<{ pedido: Pedido }>()
+  props<{ pedido: Partial<Pedido> }>()
 );
 export const createPedidoFail = createAction(
   '[Pedidos API] Create Pedido fail',
