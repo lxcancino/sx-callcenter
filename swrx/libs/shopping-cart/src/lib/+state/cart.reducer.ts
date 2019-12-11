@@ -3,12 +3,13 @@ import { createReducer, on, Action } from '@ngrx/store';
 import * as CartActions from './cart.actions';
 import { CartItem } from './cart.models';
 
-import { clienteMostrador, aplicarDescuentos } from './cart.utils';
+import { clienteMostrador, aplicarDescuentos, normalize } from './cart.utils';
 import { Cliente, TipoDePedido, FormaDePago } from '@swrx/core-model';
 
 import keyBy from 'lodash/keyBy';
 import values from 'lodash/values';
 import forIn from 'lodash/forIn';
+import { generarCargoPorTarjeta } from './cart-cargos-utils';
 
 export const CART_FEATURE_KEY = 'cart';
 
@@ -45,6 +46,13 @@ const cartReducer = createReducer(
     items: { ...state.items, [item.id]: item },
     loading: false
   })),
+  on(CartActions.deleteItem, (state, { item }) => {
+    const { [item.id]: result, ...items } = state.items;
+    return {
+      ...state,
+      items
+    };
+  }),
   on(CartActions.cambiarClienteSuccess, (state, { cliente }) => ({
     ...state,
     cliente
@@ -55,18 +63,33 @@ const cartReducer = createReducer(
     error
   })),
   on(CartActions.cambiarTipo, (state, { tipo }) => ({ ...state, tipo })),
-  on(CartActions.cambiarFormaDePago, (state, { formaDePago }) => ({
-    ...state,
-    formaDePago
-  })),
+  on(CartActions.cambiarFormaDePago, (state, { formaDePago }) => {
+    const partidas = values(state.items);
+    let newPartidas = normalize(partidas);
+    if (
+      formaDePago === FormaDePago.TARJETA_CRE ||
+      formaDePago === FormaDePago.TARJETA_DEB
+    ) {
+      const cargo = generarCargoPorTarjeta(partidas, state.tipo, formaDePago);
+      if (cargo !== null) {
+        newPartidas = [...partidas, cargo];
+      }
+    }
+    const items = keyBy(newPartidas, 'id');
+    return {
+      ...state,
+      formaDePago,
+      items
+    };
+  }),
   on(CartActions.cambiarUsoDeCfdi, (state, { clave }) => ({
     ...state,
     usoDeCfdi: clave
   })),
-  on(CartActions.recalcularPartidas, (state, { descuento }) => {
+  on(CartActions.recalcularPartidas, state => {
     const partidas = values(state.items);
     const items = keyBy(
-      aplicarDescuentos(partidas, state.tipo, descuento),
+      aplicarDescuentos(partidas, state.tipo, state.cliente),
       'id'
     );
     return { ...state, items };

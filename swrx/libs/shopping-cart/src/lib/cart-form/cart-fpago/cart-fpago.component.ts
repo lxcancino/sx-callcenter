@@ -22,7 +22,7 @@ import { FormaDePago } from '@swrx/core-model';
   styles: [
     `
       .tipo-field {
-        width: 150px;
+        width: 200px;
         font-size: 16px;
         margin-left: 5px;
         margin-right: 5px;
@@ -36,8 +36,8 @@ export class CartFpagoComponent implements OnInit {
     FormaDePago.TRANSFERENCIA,
     FormaDePago.DEPOSITO,
     FormaDePago.EFECTIVO,
-    FormaDePago.TARJETA_CREDITO,
-    FormaDePago.TARJETA_DEBITO,
+    FormaDePago.TARJETA_CRE,
+    FormaDePago.TARJETA_DEB,
     FormaDePago.CHEQUE,
     FormaDePago.NO_DEFINIDO
   ];

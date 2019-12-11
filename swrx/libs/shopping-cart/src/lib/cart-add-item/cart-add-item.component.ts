@@ -12,7 +12,9 @@ import { Subject, Observable } from 'rxjs';
 import { takeUntil, map, startWith } from 'rxjs/operators';
 
 import round from 'lodash/round';
-import { PedidoDet } from '@swrx/core-model';
+
+import { PedidoDet, Corte } from '@swrx/core-model';
+import { buildCartItem } from '../+state/cart.utils';
 
 @Component({
   selector: 'swrx-cart-add-item',
@@ -110,10 +112,10 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this.destroy$)
       )
-      .subscribe(cantidad => this.actualizarTotal(cantidad));
+      .subscribe(cantidad => this.actualizarImporte(cantidad));
   }
 
-  private actualizarTotal(cantidad) {
+  private actualizarImporte(cantidad: number) {
     const precio = this.precio;
     const bruto = cantidad * precio;
     const importe = round(bruto, 2);
@@ -122,54 +124,42 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.valid) {
-      const producto = this.producto;
-      const {
-        clave,
-        descripcion,
-        kilos,
-        gramos,
-        unidad,
-        modoVenta,
-        presentacion,
-        precioCredito,
-        precioContado
-      } = producto;
-      const entity: PedidoDet = {
-        ...this.form.value,
-        producto: {
-          id: producto.id,
-          clave,
-          descripcion,
-          modoVenta,
-          imageUrl: 'assets/images/1273567240.jpg'
-        },
-        clave,
-        descripcion,
-        kilos,
-        gramos,
-        unidad,
-        modoVenta,
-        precioCredito,
-        precioContado,
-        descuento: 0.0,
-        descuentoImporte: 0.0,
-        subtotal: 0.0,
-        impuesto: 0.0,
-        total: 0.0
+      const { producto, cantidad, precio, corte } = this;
+      const emptyItem = buildCartItem(producto);
+      const item: PedidoDet = {
+        ...emptyItem,
+        cantidad,
+        precio
       };
-      this.dialoRef.close(entity);
+      if (corte) {
+        const instruccion = corte.instruccion.toUpperCase(); // small fix por que swrxUpperCase tiene un Bug
+        item.corte = { ...corte, instruccion };
+      }
+      this.dialoRef.close(item);
     }
   }
+
   get producto() {
     return this.getValue('producto');
   }
 
+  get cantidad() {
+    return this.form.get('cantidad').value;
+  }
   get precio() {
     return this.form.get('precio').value;
   }
 
   get importe() {
     return this.form.get('importe').value;
+  }
+  get corte(): Corte {
+    const corte = this.form.get('corte').value;
+    if (corte.cantidad && corte.cantidad > 0) {
+      return corte;
+    } else {
+      return null;
+    }
   }
 
   private getValue(prop: string) {

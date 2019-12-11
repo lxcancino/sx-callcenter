@@ -23,7 +23,9 @@
     <h4>Total</h4>
     <div class="cost">
       <span class="cost-currency">$</span>
-      <span class="cost-dollars">{{ sumary.total | number: '1.0-0' }}</span>
+      <span class="cost-dollars">{{
+        getIntegarPart(sumary.total) | number: '1.0-0'
+      }}</span>
       <span class="cost-cents">{{ getDecimalPart(sumary.total) }}</span>
     </div>
     <button

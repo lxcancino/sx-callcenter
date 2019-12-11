@@ -13,6 +13,10 @@ export const addCartItemSuccess = createAction(
   '[ShoppingCartPage] Add CartItem success',
   props<{ item: CartItem }>()
 );
+export const deleteItem = createAction(
+  '[CartItemsList] Delete item',
+  props<{ item: Partial<CartItem> }>()
+);
 
 // Modificaciion de cliente
 export const cambiarCliente = createAction(
@@ -40,6 +44,6 @@ export const cambiarUsoDeCfdi = createAction(
 );
 export const recalcularPartidas = createAction(
   '[ShoppingCart Effects] Recalcular Partidas',
-  props<{ items: PedidoDet[]; descuento: number }>()
+  props<{ items: PedidoDet[] }>()
 );
 export const startCheckout = createAction('[ShoppingCartPage] Start Checkout');

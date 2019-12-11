@@ -5,7 +5,7 @@ import groovy.transform.EqualsAndHashCode
 
 import sx.core.Producto
 
-@ToString(includes='clave, descripcion, cantidad, precio, descuentoImporte, subtotal',includeNames=true,includePackage=false)
+@ToString(includes='id, clave, descripcion, cantidad, precio, descuentoImporte, subtotal',includeNames=true,includePackage=false)
 @EqualsAndHashCode(includes = 'id')
 class PedidoDet {
 
@@ -34,12 +34,11 @@ class PedidoDet {
     BigDecimal precioLista
     BigDecimal precioOriginal
     BigDecimal descuentoOriginal
-    BigDecimal precioContado
-    BigDecimal precioCredito
+    
     BigDecimal importeCortes = 0.0
-    // Boolean sinExistencia = false
-    // InstruccionCorte corte
+    
     String comentario
+    Corte corte
 
     Date dateCreated
     Date lastUpdated
@@ -49,11 +48,14 @@ class PedidoDet {
     Pedido pedido
     static belongsTo = [pedido: Pedido]
 
+    static embedded = ['corte']
+
     static constraints = {
+        id bindable: true
         unidad maxSize: 10
         presentacion nullable: true, maxSize: 100
         comentario nullable: true
-        // corte nullable: true
+        corte nullable: true
         createUser nullable: true
         updateUser nullable: true
     }
@@ -63,4 +65,15 @@ class PedidoDet {
         clave index: 'PEDIDODET_PROD_IDX1'
         descripcion index: 'PEDIDODET_PROD_IDX1'
     }
+}
+
+class Corte {
+  double cantidad
+  String instruccion
+  double precio
+  boolean refinado
+  static constraints = {
+    cantidad minSize: 1
+  }
+
 }

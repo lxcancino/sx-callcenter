@@ -9,6 +9,8 @@ import grails.compiler.GrailsCompileStatic
 
 import grails.plugin.springsecurity.annotation.Secured
 
+import org.apache.commons.lang3.exception.ExceptionUtils
+
 import sx.reports.ReportService
 import sx.utils.Periodo
 
@@ -74,5 +76,11 @@ class PedidoController extends RestfulController<Pedido> {
     @Override
     protected void deleteResource(Pedido resource) {
         pedidoService.delete(resource)
+    }
+
+    def handleException(Exception e) {
+        String message = ExceptionUtils.getRootCauseMessage(e)
+        log.error(message, ExceptionUtils.getRootCause(e))
+        respond([message: message], status: 500)
     }
 }

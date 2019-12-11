@@ -1,0 +1,7 @@
+import sx.core.ClienteCredito
+
+model {
+	ClienteCredito clienteCredito
+}
+
+json tmpl.clienteCredito(clienteCredito)

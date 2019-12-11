@@ -5,7 +5,8 @@ import { select, Store } from '@ngrx/store';
 import * as fromCart from './cart.reducer';
 import * as CartActions from './cart.actions';
 import * as CartSelectors from './cart.selectors';
-import { TipoDePedido } from '@swrx/core-model';
+import { TipoDePedido, FormaDePago } from '@swrx/core-model';
+import { CartItem } from './cart.models';
 
 @Injectable()
 export class CartFacade {
@@ -29,6 +30,9 @@ export class CartFacade {
   addCartItem() {
     this.store.dispatch(CartActions.addCartItem());
   }
+  deleteItem(item: Partial<CartItem>) {
+    this.store.dispatch(CartActions.deleteItem({ item }));
+  }
 
   cambiarCliente() {
     this.store.dispatch(CartActions.cambiarCliente());
@@ -42,5 +46,9 @@ export class CartFacade {
   }
   cambiarUso(clave: string) {
     this.store.dispatch(CartActions.cambiarUsoDeCfdi({ clave }));
+  }
+
+  cambiarFormaDePago(formaDePago: FormaDePago) {
+    this.store.dispatch(CartActions.cambiarFormaDePago({ formaDePago }));
   }
 }

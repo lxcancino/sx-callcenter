@@ -33,6 +33,14 @@
       <span class="currency">{{ item.subtotal | currency }}</span>
     </div>
   </div>
+  <button
+    mat-icon-button
+    class="delete-button"
+    color="warn"
+    (click)="delete.emit(item)"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
   <div matLine class="propiedades">
     <span
       >Unidad: <strong>{{ item.unidad }}</strong></span
@@ -50,14 +58,18 @@
     <span>
       <strong>{{ item.modoVenta === 'B' ? 'P.BRUTO' : 'P. NETO' }}</strong>
     </span>
-    <span>
+    <span class="catalogo-precio">
       <strong
-        >CON:
-        <span class="pad-r">{{ item.precioCredito | currency }}</span></strong
+        >P.CON:
+        <span class="pad-r">{{
+          item.producto.precioCredito | currency
+        }}</span></strong
       >
       <strong
-        >CON:
-        <span class="pad-r">{{ item.precioContado | currency }}</span></strong
+        >P.CRE:
+        <span class="pad-r">{{
+          item.producto.precioContado | currency
+        }}</span></strong
       >
     </span>
   </div>

@@ -1,14 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Input,
-  Output,
-  EventEmitter,
-  Inject,
-  LOCALE_ID
-} from '@angular/core';
-import { formatCurrency, formatDate } from '@angular/common';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'swrx-cart-items',

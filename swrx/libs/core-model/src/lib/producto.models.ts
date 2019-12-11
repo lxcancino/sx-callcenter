@@ -24,16 +24,17 @@ export interface Producto {
   linea: string;
   marca: string;
   clase: string;
+  imageUrl?: string;
   productoSat?: string;
   unidadSat?: string;
-  existencias: Disponibilidad[];
+  existencias: Existencia[];
   dateCreated: string;
   lastUpdated: string;
   createUser: string;
   updateUser: string;
 }
 
-export interface Disponibilidad {
+export interface Existencia {
   almacen: string;
   existencia: number;
   apartados: number;

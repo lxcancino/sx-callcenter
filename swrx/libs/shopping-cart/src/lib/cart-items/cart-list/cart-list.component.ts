@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { CartFacade } from '../../+state/cart.facade';
+import { CartItem } from '../../+state/cart.models';
 
 @Component({
   selector: 'swrx-cart-list',
@@ -16,5 +17,8 @@ export class CartListComponent implements OnInit {
 
   ngOnInit() {
     this.items$ = this.cartFacade.cartItems$;
+  }
+  onDelete(item: Partial<CartItem>) {
+    this.cartFacade.deleteItem(item);
   }
 }

@@ -1,7 +1,13 @@
-import { PedidoDet, TipoDePedido, Pedido, Cliente } from '@swrx/core-model';
+import {
+  PedidoDet,
+  TipoDePedido,
+  Pedido,
+  Cliente,
+  Producto
+} from '@swrx/core-model';
 
 import { CartState } from './cart.reducer';
-import { CartSumary } from './cart.models';
+import { CartSumary, CartItem } from './cart.models';
 
 import round from 'lodash/round';
 import sumBy from 'lodash/sumBy';
@@ -27,6 +33,21 @@ export const DESCUENTOS = [
   { descuento: 18.0, importe: 30000000.0 }
 ];
 
+export function calcularImporteBruto(partidas: CartItem[]): number {
+  const items = normalize(partidas);
+  const importe = sumBy(items, (i: CartItem) => {
+    if (i.producto.modoVenta === 'B') {
+      const { cantidad, precio } = i;
+      const factor = i.unidad === 'MIL' ? 1000 : 1;
+      const res = (cantidad * precio) / factor;
+      return round(res, 2);
+    } else {
+      return 0.0;
+    }
+  });
+  return importe;
+}
+
 export function calcularDescuentoPorVolumen(importe: number) {
   const mayores = DESCUENTOS.filter(item => item.importe >= importe);
   if (mayores.length > 0) {
@@ -36,19 +57,54 @@ export function calcularDescuentoPorVolumen(importe: number) {
   }
 }
 
-export function aplicarDescuentos(
-  partidas: PedidoDet[],
+export function calcularDescuento(
+  items: CartItem[],
   tipo: TipoDePedido,
-  descuento: number
-) {
-  const res = partidas.map(item => {
+  cliente: Partial<Cliente>
+): number {
+  switch (tipo) {
+    case TipoDePedido.CREDITO: {
+      return cliente.credito ? cliente.credito.descuentoFijo || 0.0 : 0.0;
+    }
+    case TipoDePedido.CONTADO:
+    case TipoDePedido.COD: {
+      const importe = calcularImporteBruto(items);
+      return calcularDescuentoPorVolumen(importe);
+    }
+    case TipoDePedido.POST_FECHADO: {
+      const importe = calcularImporteBruto(items);
+      return calcularDescuentoPorVolumen(importe) - 4;
+    }
+    default: {
+      console.log('Tipo de venta no califica para descuento tipo: ', tipo);
+      return 0;
+    }
+  }
+}
+
+/**
+ * Pure function para aplica el descuento a las partidas del ShoppingCart
+ *
+ * @param partidas
+ * @param tipo
+ * @param cliente
+ */
+export function aplicarDescuentos(
+  partidas: CartItem[],
+  tipo: TipoDePedido,
+  cliente: Partial<Cliente>
+): CartItem[] {
+  const items = normalize(partidas);
+  const descuento = calcularDescuento(items, tipo, cliente);
+  const res: CartItem[] = [];
+  items.map(item => {
     let rdesc: number;
     if (tipo === TipoDePedido.CREDITO) {
       rdesc = descuento;
     } else {
       rdesc = item.modoVenta === 'B' ? descuento : 0;
     }
-    return recalculaPartida(item, tipo, rdesc);
+    res.push(recalculaPartida(item, tipo, rdesc));
   });
   return res;
 }
@@ -58,7 +114,8 @@ export function recalculaPartida(
   tipo: TipoDePedido,
   descuento: number
 ): PedidoDet {
-  const { cantidad, precioCredito, precioContado } = item;
+  const { cantidad } = item;
+  const { precioCredito, precioContado } = item.producto;
   const precio = tipo === TipoDePedido.CREDITO ? precioCredito : precioContado;
   const factor = item.unidad === 'MIL' ? 1000 : 1;
   let importe = (cantidad * precio) / factor;
@@ -71,6 +128,7 @@ export function recalculaPartida(
   return {
     ...item,
     precio,
+    precioLista: precio,
     importe,
     descuento,
     descuentoImporte,
@@ -116,7 +174,7 @@ export function buildCartSumary(items: PedidoDet[]) {
 }
 
 /**
- * Builds a Pedido entity in order to by persisted
+ * Builds a Pedido entity in ready to be persisted
  *
  * @param state The ShoppingCart state
  * @param cliente The cliente to charte
@@ -144,4 +202,63 @@ export function buildPedidoEntity(
     kilos: sumBy(items, 'kilos'),
     ...sumary
   };
+}
+
+/**
+ * Utility function to create a CartItem out of a
+ * producto
+ *
+ * @param producto The producto to build from
+ */
+export function buildCartItem(producto: Producto): CartItem {
+  const {
+    clave,
+    descripcion,
+    kilos,
+    gramos,
+    unidad,
+    modoVenta,
+    presentacion,
+    nacional,
+    precioContado,
+    precioCredito
+  } = producto;
+  return {
+    id: undefined,
+    cantidad: 0.0,
+    precio: 0.0,
+    importe: 0.0,
+    producto: {
+      id: producto.id,
+      clave,
+      descripcion,
+      modoVenta,
+      imageUrl: 'assets/images/1273567240.jpg',
+      precioCredito,
+      precioContado
+    },
+    clave,
+    descripcion,
+    kilos,
+    gramos,
+    unidad,
+    modoVenta,
+    presentacion,
+    nacional,
+    descuento: 0.0,
+    descuentoImporte: 0.0,
+    subtotal: 0.0,
+    impuesto: 0.0,
+    impuestoTasa: 0.16,
+    total: 0.0,
+    precioOriginal: 0.0,
+    precioLista: 0.0,
+    descuentoOriginal: 0
+  };
+}
+
+export function normalize(partidas: CartItem[]) {
+  return partidas.filter(
+    item => !item.clave.startsWith('MANIOBRA')
+  );
 }

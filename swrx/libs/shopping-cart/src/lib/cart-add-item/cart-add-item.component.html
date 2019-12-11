@@ -4,6 +4,12 @@
   <div class="item-form" [formGroup]="form">
     <div class="corte-container" formGroupName="corte">
       <div class="corte-form">
+        <swrx-numeric-field
+          class="cantidad"
+          formControlName="cantidad"
+          label="Cantidad"
+          decimals="0"
+        ></swrx-numeric-field>
         <mat-form-field class="instruccion">
           <input
             matInput
@@ -21,12 +27,7 @@
             {{ option }}
           </mat-option>
         </mat-autocomplete>
-        <swrx-numeric-field
-          class="cantidad"
-          formControlName="cantidad"
-          label="Cantidad"
-          decimals="0"
-        ></swrx-numeric-field>
+
         <swrx-numeric-field
           class="precio"
           formControlName="precio"

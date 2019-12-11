@@ -53,12 +53,14 @@ export interface PedidoDet {
     descripcion: string;
     modoVenta: string;
     imageUrl: string;
+    precioCredito: number;
+    precioContado: number;
   };
   unidad: string;
   presentacion?: string;
   gramos: number;
-  nacional: true;
-  modoVenta: 'B' | 'N';
+  nacional: boolean;
+  modoVenta: string;
   // Importes
   cantidad: number;
   precio: number;
@@ -71,14 +73,12 @@ export interface PedidoDet {
   total: number;
   kilos: number;
   // Valores historicos
-  precioLista: number;
   precioOriginal: number;
+  precioLista: number;
   descuentoOriginal: number; // % Calculado por el sistema
-  precioCredito: number;
-  precioContado: number;
   importeCortes?: number;
-  sinExistencia?: boolean;
-  corte?: Partial<InstruccionDeCorte>;
+
+  corte?: Partial<Corte>;
   comentario?: string;
   // Bitacora
   dateCreated?: string;
@@ -87,17 +87,12 @@ export interface PedidoDet {
   updateUser?: string;
 }
 
-export interface InstruccionDeCorte {
-  id?: string | number;
-  largo: number;
-  ancho: number;
-  tipo: string;
+export interface Corte {
   cantidad: number;
-  instruccion?: string;
-  refinado: boolean;
-  seleccionCalculo: null;
+  instruccion: string;
   precio: number;
-  instruccionEmpacado?: string;
+  limptio: boolean;
+  refinado: boolean;
 }
 
 export enum TipoDePedido {
@@ -112,8 +107,8 @@ export enum FormaDePago {
   TRANSFERENCIA = 'TRANSFERENCIA',
   DEPOSITO = 'DEPOSITO',
   EFECTIVO = 'EFECTIVO',
-  TARJETA_CREDITO = 'TARJETA_CREDITO',
-  TARJETA_DEBITO = 'TARJETA_DEBITO',
+  TARJETA_CRE = 'TARJETA_CREDITO',
+  TARJETA_DEB = 'TARJETA_DEBITO',
   CHEQUE = 'CHEQUE',
   NO_DEFINIDO = 'NO_DEFINIDO'
 }

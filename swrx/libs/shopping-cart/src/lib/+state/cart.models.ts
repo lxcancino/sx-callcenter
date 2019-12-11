@@ -1,4 +1,9 @@
-import { PedidoDet, TipoDePedido, FormaDePago } from '@swrx/core-model';
+import {
+  PedidoDet,
+  TipoDePedido,
+  FormaDePago,
+  Producto
+} from '@swrx/core-model';
 
 export interface Cart {
   id: string | number;
@@ -21,7 +26,13 @@ export interface CartSumary {
  * Interface use to manage through an angular FormGroup
  */
 export interface CartFormState {
-  tipo: TipoDePedido,
-  formaDePago: FormaDePago,
-  usoDeCfdi: string
+  tipo: TipoDePedido;
+  formaDePago: FormaDePago;
+  usoDeCfdi: string;
+}
+
+export interface AddCartItemDto {
+  producto: Partial<Producto>;
+  cantidad: number;
+  tipo: TipoDePedido;
 }

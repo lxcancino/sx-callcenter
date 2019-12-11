@@ -12,7 +12,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
-import { TipoDePedido } from '@swrx/core-model';
+import { TipoDePedido, FormaDePago } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-page',
@@ -30,11 +30,11 @@ export class CartPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.buildForm();
     this.addListeners();
-    this.facade.cartStateForm$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(state => {
-        console.log('Initial form state: ', state);
-      });
+    // this.facade.cartStateForm$
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe(state => {
+    //     console.log('Initial form state: ', state);
+    //   });
   }
 
   ngOnDestroy() {
@@ -60,7 +60,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.cartForm
       .get('formaDePago')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(fp => console.log('F.P: ', fp));
+      .subscribe(formaDePago => this.facade.cambiarFormaDePago(formaDePago));
   }
 
   private addTipoDePedidoListener() {

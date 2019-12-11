@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
+import { CartItem } from '../../../+state/cart.models';
 
 @Component({
   selector: 'swrx-cart-list-item',
@@ -16,6 +17,7 @@ import {
 export class CartListItemComponent implements OnInit {
   @Input() item;
   @Output() editCorte = new EventEmitter();
+  @Output() delete = new EventEmitter<Partial<CartItem>>();
 
   constructor() {}
 
