@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { select, Store } from '@ngrx/store';
-
 import * as fromCart from './cart.reducer';
 import * as CartActions from './cart.actions';
 import * as CartSelectors from './cart.selectors';
-import { TipoDePedido, FormaDePago } from '@swrx/core-model';
+
+import { TipoDePedido, FormaDePago, Pedido } from '@swrx/core-model';
 import { CartItem } from './cart.models';
 
 @Injectable()
@@ -54,5 +54,16 @@ export class CartFacade {
 
   cambiarFormaDePago(formaDePago: FormaDePago) {
     this.store.dispatch(CartActions.cambiarFormaDePago({ formaDePago }));
+  }
+
+  /**
+   * Clean the ShoppingCartState
+   */
+  cleanShoppingCartState() {
+    this.store.dispatch(CartActions.cleanShoppingCart());
+  }
+
+  eliminarPedido(pedido: Pedido) {
+    console.log('Eliminar pedido.....');
   }
 }

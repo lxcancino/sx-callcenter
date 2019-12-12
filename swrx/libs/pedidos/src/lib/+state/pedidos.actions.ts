@@ -38,3 +38,18 @@ export const updatePedidoSuccess = createAction(
   '[Pedidos API] Update Pedido success',
   props<{ pedido: Pedido }>()
 );
+
+export const deletePedido = createAction(
+  '[ShoppingCart Edit Page] Delete Pedido',
+  props<{ pedido: Pedido }>()
+);
+export const deletePedidoFail = createAction(
+  '[Pedidos API] Delete Pedido fail',
+  props<{ error: any }>()
+);
+export const deletePedidoSuccess = createAction(
+  '[Pedidos API] Delete Pedido success',
+  props<{ pedido: Pedido }>()
+);
+
+

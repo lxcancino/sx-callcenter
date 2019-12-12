@@ -32,7 +32,11 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.buildForm();
     this.addListeners();
     this.pedido$ = this.facade.currentPedido;
-    this.pedido$.pipe(takeUntil(this.destroy$)).subscribe( value => this.cartForm.patchValue(value));
+    this.pedido$.pipe(takeUntil(this.destroy$)).subscribe(value => {
+      if (value) {
+        this.cartForm.patchValue(value, { emitEvent: false });
+      }
+    });
   }
 
   ngOnDestroy() {

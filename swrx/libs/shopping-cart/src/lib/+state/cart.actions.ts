@@ -60,3 +60,9 @@ export const loadPedidoSucces = createAction(
   '[CartEffects] Load pedido success',
   props<{ pedido: Pedido }>()
 );
+
+export const cleanShoppingCart = createAction(
+  '[NewCartGuard] Clea shopping cart state'
+);
+
+export const validarPedido = createAction('[CartEffects] Validar Pedido');

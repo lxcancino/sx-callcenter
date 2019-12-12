@@ -10,6 +10,7 @@ import keyBy from 'lodash/keyBy';
 import values from 'lodash/values';
 import forIn from 'lodash/forIn';
 import { generarCargoPorTarjeta } from './cart-cargos-utils';
+import { ValidationErrors } from '@angular/forms';
 
 export const CART_FEATURE_KEY = 'cart';
 
@@ -24,6 +25,8 @@ export interface CartState {
   loading: boolean;
   pedido?: Pedido;
   error?: string | null; // last none error (if any)
+  validationErrors?: ValidationErrors;
+  warrnings?: ValidationErrors;
 }
 
 export interface CartPartialState {
@@ -99,7 +102,7 @@ const cartReducer = createReducer(
     ...state
   })),
   on(CartActions.loadPedidoSucces, (state, { pedido }) => {
-    const items = keyBy(pedido.partidas,'id');
+    const items = keyBy(pedido.partidas, 'id');
     return {
       ...state,
       loading: false,
@@ -111,7 +114,10 @@ const cartReducer = createReducer(
       usoDeCfdi: pedido.usoDeCfdi,
       items
     };
-  })
+  }),
+  on(CartActions.cleanShoppingCart, state => ({
+    ...initialState
+  }))
 );
 
 export function reducer(state: CartState | undefined, action: Action) {

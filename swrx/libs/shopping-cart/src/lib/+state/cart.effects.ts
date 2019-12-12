@@ -3,15 +3,9 @@ import { MatDialog } from '@angular/material';
 
 import { Store, select } from '@ngrx/store';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { CartState, CartPartialState } from './cart.reducer';
+import { CartState } from './cart.reducer';
 import * as CartActions from './cart.actions';
 import * as CartSelectors from './cart.selectors';
-import {
-  ROUTER_NAVIGATED,
-  ROUTER_NAVIGATION,
-  RouterNavigationAction,
-  RouterNavigatedAction
-} from '@ngrx/router-store';
 
 import {
   mergeMap,
@@ -95,40 +89,16 @@ export class CartEffects {
     { dispatch: false }
   );
 
-  cambiarTipo$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.cambiarTipo, CartActions.cambiarClienteSuccess),
-        concatMap(action =>
-          of(action).pipe(
-            withLatestFrom(this.store.pipe(select(CartSelectors.getCartItems)))
-          )
-        ),
-        map(([action, items]) => {
-          return CartActions.recalcularPartidas({ items });
-        })
-      ),
-    { dispatch: true }
-  );
-
-  cambiarFormaDePago$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.cambiarFormaDePago),
-        concatMap(action =>
-          of(action).pipe(
-            withLatestFrom(this.store.pipe(select(CartSelectors.getCartItems)))
-          )
-        ),
-        tap(([action, items]) => console.log('Cambiando forma de pago........'))
-      ),
-    { dispatch: false }
-  );
-
   recalcular$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(CartActions.addCartItemSuccess),
+        ofType(
+          CartActions.cambiarTipo,
+          CartActions.cambiarClienteSuccess,
+          CartActions.addCartItemSuccess,
+          CartActions.deleteItem,
+          CartActions.editItemSuccess
+        ),
         concatMap(action =>
           of(action).pipe(
             withLatestFrom(
@@ -139,10 +109,17 @@ export class CartEffects {
           )
         ),
         map(([action, state, items]) => {
+          console.log('Recalcular partidas detonado por: ', action.type);
           return CartActions.recalcularPartidas({ items });
         })
       ),
     { dispatch: true }
+  );
+
+  validar$ = createEffect(() => this.actions$.pipe(
+    ofType(CartActions.recalcularPartidas),
+    map(() => CartActions.validarPedido())
+    )
   );
 
   startCheckout$ = createEffect(
@@ -173,6 +150,8 @@ export class CartEffects {
       ),
     { dispatch: true }
   );
+
+  // endChekout$
 
   constructor(
     private actions$: Actions,

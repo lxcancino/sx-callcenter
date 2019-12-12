@@ -25,10 +25,16 @@
   <swrx-cart-items></swrx-cart-items>
 
   <div class="side-bar">
-    <swrx-cart-summary
-      [sumary]="sumary$ | async"
-      (checkout)="onCheckout()"
-    ></swrx-cart-summary>
+    <swrx-cart-summary [sumary]="sumary$ | async" (checkout)="onCheckout()">
+      <div class="checkout-actions">
+        <a mat-raised-button color="accent" [routerLink]="['/shop/cart']">
+          <mat-icon>autorenew</mat-icon> Nuevo
+        </a>
+        <button mat-raised-button color="warn">
+          <mat-icon>delete</mat-icon> Eliminar
+        </button>
+      </div>
+    </swrx-cart-summary>
     <swrx-cart-info [cartForm]="cartForm"></swrx-cart-info>
   </div>
 </div>

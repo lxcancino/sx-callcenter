@@ -1,28 +1,20 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
-import { Store, select } from '@ngrx/store';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { CartState, CartPartialState } from './cart.reducer';
+import { CartPartialState } from './cart.reducer';
 import * as CartActions from './cart.actions';
+import { createPedidoSuccess } from '@swrx/pedidos';
 
-import {
-  mergeMap,
-  filter,
-  map,
-  tap,
-  concatMap,
-  withLatestFrom
-} from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
-import { PedidosFacade } from '@swrx/pedidos';
 import { PedidoService } from '@swrx/pedidos';
 import { CartEditPageComponent } from '../cart-edit-page/cart-edit-page.component';
 
 import { DataPersistence } from '@nrwl/angular';
 
 /**
- * Shopping cart effects related to the persistence store
+ * Shopping  persistence and navigation effects
  *
  */
 @Injectable()
@@ -41,11 +33,22 @@ export class CartPersistenceEffects {
     })
   );
 
+  saveOrUpdateCart$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createPedidoSuccess),
+        tap(action => {
+          console.log('Pedido persistido: ', action.pedido);
+          this.router.navigate(['/shop/cart', action.pedido.id]);
+        })
+      ),
+    { dispatch: false }
+  );
+
   constructor(
     private actions$: Actions,
-    private store: Store<CartState>,
-    private pedidoFacade: PedidosFacade, //
     private dataPersistence: DataPersistence<CartPartialState>,
-    private pedidoService: PedidoService
+    private pedidoService: PedidoService,
+    private router: Router
   ) {}
 }

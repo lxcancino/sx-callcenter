@@ -1,3 +1,4 @@
+export * from './lib/+state/pedidos.actions';
 export * from './lib/+state/pedidos.facade';
 export * from './lib/+state/pedidos.reducer';
 export * from './lib/+state/pedidos.models';

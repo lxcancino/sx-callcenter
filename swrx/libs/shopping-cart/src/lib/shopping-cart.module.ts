@@ -30,13 +30,18 @@ import { CartCheckoutComponent } from './cart-checkout/cart-checkout.component';
 import { CartEditItemComponent } from './cart-edit-item/cart-edit-item.component';
 import { CartEditPageComponent } from './cart-edit-page/cart-edit-page.component';
 import { CartPersistenceEffects } from './+state/cart-persistence.effects';
+import { NewCartGuard } from './guards/new-cart.guard';
 
 const routes: Route[] = [
   {
     path: '',
     children: [
       { path: '', redirectTo: 'cart', pathMatch: 'full' },
-      { path: 'cart', component: CartPageComponent },
+      {
+        path: 'cart',
+        component: CartPageComponent,
+        canActivate: [NewCartGuard]
+      },
       { path: 'cart/:id', component: CartEditPageComponent }
     ]
   }
