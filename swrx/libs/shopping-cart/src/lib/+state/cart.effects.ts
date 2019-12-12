@@ -3,10 +3,15 @@ import { MatDialog } from '@angular/material';
 
 import { Store, select } from '@ngrx/store';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { CartState } from './cart.reducer';
+import { CartState, CartPartialState } from './cart.reducer';
 import * as CartActions from './cart.actions';
 import * as CartSelectors from './cart.selectors';
-import { PedidosFacade } from '@swrx/pedidos';
+import {
+  ROUTER_NAVIGATED,
+  ROUTER_NAVIGATION,
+  RouterNavigationAction,
+  RouterNavigatedAction
+} from '@ngrx/router-store';
 
 import {
   mergeMap,
@@ -16,15 +21,17 @@ import {
   concatMap,
   withLatestFrom
 } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, EMPTY } from 'rxjs';
 
+import { ClienteUiService } from '@swrx/clientes';
+import { Pedido } from '@swrx/core-model';
+import { PedidosFacade } from '@swrx/pedidos';
 import { CartItem } from './cart.models';
 import { CartAddItemComponent } from '../cart-add-item/cart-add-item.component';
-import { ClienteUiService } from '@swrx/clientes';
+import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
+import { CartEditItemComponent } from '../cart-edit-item/cart-edit-item.component';
 
 import uuidv4 from 'uuid/v4';
-import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
-import { Pedido } from '@swrx/core-model';
 
 @Injectable()
 export class CartEffects {
@@ -60,6 +67,32 @@ export class CartEffects {
         map((item: CartItem) => CartActions.addCartItemSuccess({ item }))
       ),
     { dispatch: true }
+  );
+
+  editItem$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.editItem),
+        concatMap(action =>
+          of(action).pipe(
+            withLatestFrom(this.store.pipe(select(CartSelectors.getCartState)))
+          )
+        ),
+        mergeMap(([action, state]) =>
+          this.dialog
+            .open(CartEditItemComponent, {
+              data: { tipo: state.tipo, item: action.item },
+              width: '750px'
+            })
+            .afterClosed()
+        ),
+        tap(res => {
+          console.log('Cambios: ', res);
+        })
+        // filter(changes => !!changes),
+        // map((changes: CartItemDto) => CartActions.editItemSuccess({ changes }))
+      ),
+    { dispatch: false }
   );
 
   cambiarTipo$ = createEffect(
@@ -118,30 +151,34 @@ export class CartEffects {
         ofType(CartActions.startCheckout),
         concatMap(action =>
           of(action).pipe(
-            withLatestFrom(this.store.pipe(select(CartSelectors.getCartEntity)))
+            withLatestFrom(
+              this.store.pipe(select(CartSelectors.getCartState)),
+              this.store.pipe(select(CartSelectors.getCartEntity))
+            )
           )
         ),
-        mergeMap(([action, entity]) =>
+        mergeMap(([action, state, entity]) =>
           this.dialog
-            .open(CartCheckoutComponent, { data: { entity }, width: '750px' })
+            .open(CartCheckoutComponent, {
+              data: {
+                id: state.pedido ? state.pedido.id : null,
+                changes: entity
+              },
+              width: '750px'
+            })
             .afterClosed()
         ),
-        filter(entity => !!entity),
-        map(entity => {
-          const pedido: Pedido = {
-            ...entity
-          };
-          return pedido;
-        }),
-        map(pedido => this.pedidoFacade.createPedido(pedido))
+        filter(data => !!data),
+        map(pedido => this.pedidoFacade.createOrUpdatePedido(pedido))
       ),
     { dispatch: true }
   );
+
   constructor(
     private actions$: Actions,
-    private dialog: MatDialog, // private dataPersistence: DataPersistence<CartPartialState>
+    private dialog: MatDialog,
     private clienteUi: ClienteUiService,
     private store: Store<CartState>,
-    private pedidoFacade: PedidosFacade
+    private pedidoFacade: PedidosFacade //
   ) {}
 }

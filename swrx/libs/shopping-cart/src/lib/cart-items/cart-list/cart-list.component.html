@@ -4,6 +4,7 @@
       *ngFor="let item of items$ | async"
       [item]="item"
       (delete)="onDelete($event)"
+      (edit)="onEdit($event)"
     >
     </swrx-cart-list-item>
   </mat-list>

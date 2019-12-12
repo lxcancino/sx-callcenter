@@ -4,7 +4,7 @@ import * as CartActions from './cart.actions';
 import { CartItem } from './cart.models';
 
 import { clienteMostrador, aplicarDescuentos, normalize } from './cart.utils';
-import { Cliente, TipoDePedido, FormaDePago } from '@swrx/core-model';
+import { Cliente, TipoDePedido, FormaDePago, Pedido } from '@swrx/core-model';
 
 import keyBy from 'lodash/keyBy';
 import values from 'lodash/values';
@@ -22,6 +22,7 @@ export interface CartState {
   usoDeCfdi: string;
   items: { [id: string]: CartItem };
   loading: boolean;
+  pedido?: Pedido;
   error?: string | null; // last none error (if any)
 }
 
@@ -93,6 +94,23 @@ const cartReducer = createReducer(
       'id'
     );
     return { ...state, items };
+  }),
+  on(CartActions.editItemSuccess, (state, { item }) => ({
+    ...state
+  })),
+  on(CartActions.loadPedidoSucces, (state, { pedido }) => {
+    const items = keyBy(pedido.partidas,'id');
+    return {
+      ...state,
+      loading: false,
+      pedido,
+      cliente: pedido.cliente,
+      tipo: pedido.tipo,
+      formaDePago: pedido.formaDePago,
+      sucursal: pedido.sucursal,
+      usoDeCfdi: pedido.usoDeCfdi,
+      items
+    };
   })
 );
 

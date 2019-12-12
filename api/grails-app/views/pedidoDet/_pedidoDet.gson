@@ -4,4 +4,6 @@ model {
 	PedidoDet pedidoDet
 }
 
-json g.render(pedidoDet, [resolveTemplate: false])
+json g.render(pedidoDet, [ excludes: ['producto'], resolveTemplate: false]){
+	producto g.render(pedidoDet.producto)
+}

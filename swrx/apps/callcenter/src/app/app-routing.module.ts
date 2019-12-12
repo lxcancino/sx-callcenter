@@ -27,6 +27,11 @@ const routes: Route[] = [
         component: HomeComponent
       },
       {
+        path: 'shop',
+        loadChildren: () =>
+          import('@swrx/shopping-cart').then(m => m.ShoppingCartModule)
+      },
+      {
         path: 'pedidos',
         loadChildren: () => import('@swrx/pedidos').then(m => m.PedidosModule)
       },
@@ -35,11 +40,7 @@ const routes: Route[] = [
         loadChildren: () =>
           import('@swrx/depositos').then(m => m.DepositosModule)
       },
-      {
-        path: 'cart',
-        loadChildren: () =>
-          import('@swrx/shopping-cart').then(m => m.ShoppingCartModule)
-      },
+
       {
         path: 'profile',
         component: ProfileComponent

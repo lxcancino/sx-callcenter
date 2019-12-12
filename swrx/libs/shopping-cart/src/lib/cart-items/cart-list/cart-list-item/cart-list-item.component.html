@@ -1,7 +1,11 @@
 <mat-list-item>
-  <img matListAvatar [src]="item.producto.imageUrl" alt="linea" />
+  <img
+    matListAvatar
+    [src]="item.producto.imageUrl || 'assets/images/1273567240.jpg'"
+    alt="linea"
+  />
   <div matLine>
-    <div class="producto">
+    <div class="producto" (click)="edit.emit(item)">
       <span class="clave">{{ item.clave }}</span>
       <span class="descripcion">{{ item.descripcion }}</span>
       <span class="cantidad">
@@ -75,7 +79,7 @@
   </div>
 
   <div matLine class="cortes" *ngIf="item.corte">
-    <a (click)="editCorte.emit(item)" mat-icon-button>
+    <a (click)="edit.emit(item)" mat-icon-button>
       <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
     </a>
     <span>Instruccion: {{ item.corte.instruccion }}</span>

@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { PedidosEntity } from './pedidos.models';
 import { Pedido } from '@swrx/core-model';
+import { Update } from '@ngrx/entity';
 
 export const loadPedidos = createAction('[Pedidos] Load Pedidos');
 export const loadPedidosFailure = createAction(
@@ -22,5 +23,18 @@ export const createPedidoFail = createAction(
 );
 export const createPedidoSuccess = createAction(
   '[Pedidos API] Create Pedido success',
+  props<{ pedido: Pedido }>()
+);
+
+export const updatePedido = createAction(
+  '[ShoppingCart Edit Page] Update Pedido',
+  props<{ pedido: Update<Pedido> }>()
+);
+export const updatePedidoFail = createAction(
+  '[Pedidos API] Update Pedido fail',
+  props<{ error: any }>()
+);
+export const updatePedidoSuccess = createAction(
+  '[Pedidos API] Update Pedido success',
   props<{ pedido: Pedido }>()
 );

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
 
 import { UiCoreModule } from '@swrx/ui-core';
@@ -12,7 +12,13 @@ import { PedidosEffects } from './+state/pedidos.effects';
 import { PedidosFacade } from './+state/pedidos.facade';
 
 export const routes: Route[] = [
-  { path: 'index', component: PedidosPageComponent }
+  {
+    path: '',
+    children: [
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      { path: 'list', component: PedidosPageComponent }
+    ]
+  }
 ];
 
 @NgModule({
@@ -28,4 +34,23 @@ export const routes: Route[] = [
   ],
   providers: [PedidosFacade]
 })
-export class PedidosModule {}
+export class PedidosModule {
+  static forRoot(): ModuleWithProviders {
+    return { ngModule: PedidosStateModule, providers: [] };
+  }
+}
+
+@NgModule({
+  declarations: [PedidosPageComponent, PedidosTableComponent],
+  imports: [
+    UiCoreModule,
+    RouterModule.forChild(routes),
+    StoreModule.forFeature(
+      fromPedidos.PEDIDOS_FEATURE_KEY,
+      fromPedidos.reducer
+    ),
+    EffectsModule.forFeature([PedidosEffects])
+  ],
+  providers: [PedidosFacade]
+})
+export class PedidosStateModule {}

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CartItem } from './cart.models';
+import { CartItem, CartItemDto } from './cart.models';
 import {
   Cliente,
   Pedido,
@@ -14,7 +14,15 @@ export const addCartItemSuccess = createAction(
   props<{ item: CartItem }>()
 );
 export const deleteItem = createAction(
-  '[CartItemsList] Delete item',
+  '[CartListComponent] Delete item',
+  props<{ item: Partial<CartItem> }>()
+);
+export const editItem = createAction(
+  '[CartListComponent] Edit CartItem',
+  props<{ item: CartItem }>()
+);
+export const editItemSuccess = createAction(
+  '[CartEffects] Edit CartItem Success',
   props<{ item: Partial<CartItem> }>()
 );
 
@@ -47,3 +55,8 @@ export const recalcularPartidas = createAction(
   props<{ items: PedidoDet[] }>()
 );
 export const startCheckout = createAction('[ShoppingCartPage] Start Checkout');
+
+export const loadPedidoSucces = createAction(
+  '[CartEffects] Load pedido success',
+  props<{ pedido: Pedido }>()
+);

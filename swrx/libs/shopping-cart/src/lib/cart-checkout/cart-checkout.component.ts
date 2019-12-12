@@ -5,6 +5,7 @@ import {
   Inject
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Pedido } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-checkout',
@@ -13,18 +14,21 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartCheckoutComponent implements OnInit {
-  entity: any;
+  id: string;
+  changes: Partial<Pedido>;
+  
 
   constructor(
-    private dialogRef: MatDialogRef<CartCheckoutComponent>,
+    private dialogRef: MatDialogRef<CartCheckoutComponent, {id: string, changes: Partial<Pedido>}>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {
-    this.entity = data.entity;
+    this.id = data.id;
+    this.changes = data.changes;
   }
 
   ngOnInit() {}
 
   doSubmit() {
-    this.dialogRef.close(this.entity);
+    this.dialogRef.close({id: this.id, changes: this.changes});
   }
 }

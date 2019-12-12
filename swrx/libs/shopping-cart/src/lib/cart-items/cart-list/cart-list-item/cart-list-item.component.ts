@@ -16,7 +16,7 @@ import { CartItem } from '../../../+state/cart.models';
 })
 export class CartListItemComponent implements OnInit {
   @Input() item;
-  @Output() editCorte = new EventEmitter();
+  @Output() edit = new EventEmitter<Partial<CartItem>>();
   @Output() delete = new EventEmitter<Partial<CartItem>>();
 
   constructor() {}

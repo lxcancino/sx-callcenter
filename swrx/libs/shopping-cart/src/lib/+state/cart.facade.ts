@@ -23,12 +23,16 @@ export class CartFacade {
   );
   descuento$ = this.store.pipe(select(CartSelectors.getDescuento));
   cartStateForm$ = this.store.pipe(select(CartSelectors.selectFormState));
+  currentPedido = this.store.pipe(select(CartSelectors.selectCurrentPedido));
   constructor(private store: Store<fromCart.CartState>) {
     this.store.pipe(select(CartSelectors.getCartSumary));
   }
 
   addCartItem() {
     this.store.dispatch(CartActions.addCartItem());
+  }
+  editItem(item: CartItem) {
+    this.store.dispatch(CartActions.editItem({ item }));
   }
   deleteItem(item: Partial<CartItem>) {
     this.store.dispatch(CartActions.deleteItem({ item }));

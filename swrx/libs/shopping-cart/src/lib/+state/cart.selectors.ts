@@ -129,3 +129,8 @@ export const selectFormState = createSelector(
     };
   }
 );
+
+export const selectCurrentPedido = createSelector(
+  getCartState,
+  state => state.pedido
+);

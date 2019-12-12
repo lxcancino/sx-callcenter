@@ -4,6 +4,13 @@
   h3 {
     display: inline;
   }
+  .pedido-info {
+    flex: 1;
+  }
+  .fecha {
+    margin: 0px 2px;
+    padding: 0px 2px;
+  }
   .cliente {
     flex: 3;
     text-align: center;

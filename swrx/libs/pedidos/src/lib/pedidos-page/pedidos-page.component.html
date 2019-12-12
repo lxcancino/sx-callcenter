@@ -5,7 +5,10 @@
     </mat-card-title>
   </mat-card-header>
   <mat-divider></mat-divider>
-  <mat-card-content>
-    <swrx-pedidos-table></swrx-pedidos-table>
-  </mat-card-content>
+  <div class="pedidos-table">
+    <swrx-pedidos-table
+      [partidas]="pedidos$ | async"
+      (selection)="onSelection($event)"
+    ></swrx-pedidos-table>
+  </div>
 </mat-card>

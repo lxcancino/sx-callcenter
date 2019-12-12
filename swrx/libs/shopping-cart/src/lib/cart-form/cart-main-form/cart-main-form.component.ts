@@ -15,7 +15,9 @@ import { FormGroup } from '@angular/forms';
 export class CartMainFormComponent implements OnInit {
   @Input() cartForm: FormGroup;
 
-  constructor() {}
+  constructor() {
+    console.log('Shopping cart main form...');
+  }
 
   ngOnInit() {}
 }

@@ -1,7 +1,8 @@
 import { Cliente } from './core-model';
+import { Producto } from './producto.models';
 
 export interface Pedido {
-  id?: string | number;
+  id?: string;
   fecha: string;
   sucursal: string;
   folio?: string;
@@ -44,18 +45,10 @@ export interface Pedido {
 }
 
 export interface PedidoDet {
-  id: string | number;
+  id: string;
   clave: string;
   descripcion: string;
-  producto: {
-    id: string;
-    clave: string;
-    descripcion: string;
-    modoVenta: string;
-    imageUrl: string;
-    precioCredito: number;
-    precioContado: number;
-  };
+  producto: Partial<Producto>;
   unidad: string;
   presentacion?: string;
   gramos: number;
@@ -91,7 +84,7 @@ export interface Corte {
   cantidad: number;
   instruccion: string;
   precio: number;
-  limptio: boolean;
+  limpio: boolean;
   refinado: boolean;
 }
 

@@ -19,8 +19,13 @@ export class PedidosFacade {
     this.store.dispatch(PedidosActions.loadPedidos());
   }
 
-  createPedido(pedido: Pedido) {
-    // this.store.dispatch(PedidosActions.createPedido({ pedido }));
-    return PedidosActions.createPedido({ pedido });
+  createOrUpdatePedido(data: { id: string; changes: Pedido }) {
+    if (data.id) {
+      return PedidosActions.updatePedido({
+        pedido: { id: data.id, changes: data.changes }
+      });
+    } else {
+      return PedidosActions.createPedido({ pedido: data.changes });
+    }
   }
 }

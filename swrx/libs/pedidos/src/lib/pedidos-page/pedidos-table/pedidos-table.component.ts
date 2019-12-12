@@ -30,7 +30,7 @@ import { Pedido } from '@swrx/core-model';
 })
 export class PedidosTableComponent implements OnInit {
   @Input() partidas: Pedido[] = [];
-  @Output() doubleClick = new EventEmitter();
+  @Output() selection = new EventEmitter();
 
   gridOptions: GridOptions;
   gridApi: GridApi;
@@ -65,7 +65,7 @@ export class PedidosTableComponent implements OnInit {
   }
 
   onDoubleClick(event: RowDoubleClickedEvent) {
-    this.doubleClick.emit(event.data);
+    this.selection.emit(event.data);
   }
 
   onGridReady(params: GridReadyEvent) {
@@ -74,7 +74,7 @@ export class PedidosTableComponent implements OnInit {
   }
 
   onFirstDataRendered(params) {
-    this.autoSizeAll();
+    // this.autoSizeAll();
     params.api.sizeColumnsToFit();
   }
 

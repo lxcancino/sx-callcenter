@@ -2,7 +2,8 @@ import {
   PedidoDet,
   TipoDePedido,
   FormaDePago,
-  Producto
+  Producto,
+  Corte
 } from '@swrx/core-model';
 
 export interface Cart {
@@ -35,4 +36,11 @@ export interface AddCartItemDto {
   producto: Partial<Producto>;
   cantidad: number;
   tipo: TipoDePedido;
+}
+
+export interface CartItemDto {
+  producto: Partial<Producto>;
+  cantidad: number;
+  precio: number;
+  corte?: Corte;
 }

@@ -194,7 +194,7 @@ export function buildPedidoEntity(
     formaDePago: state.formaDePago,
     moneda: 'MXN',
     tipoDeCambio: 1.0,
-    usoDeCfdi: 'G03',
+    usoDeCfdi: state.usoDeCfdi,
     cliente: { id: cliente.id },
     nombre: cliente.nombre,
     rfc: cliente.rfc,
@@ -219,24 +219,14 @@ export function buildCartItem(producto: Producto): CartItem {
     unidad,
     modoVenta,
     presentacion,
-    nacional,
-    precioContado,
-    precioCredito
+    nacional
   } = producto;
   return {
     id: undefined,
     cantidad: 0.0,
     precio: 0.0,
     importe: 0.0,
-    producto: {
-      id: producto.id,
-      clave,
-      descripcion,
-      modoVenta,
-      imageUrl: 'assets/images/1273567240.jpg',
-      precioCredito,
-      precioContado
-    },
+    producto: producto,
     clave,
     descripcion,
     kilos,
@@ -258,7 +248,5 @@ export function buildCartItem(producto: Producto): CartItem {
 }
 
 export function normalize(partidas: CartItem[]) {
-  return partidas.filter(
-    item => !item.clave.startsWith('MANIOBRA')
-  );
+  return partidas.filter(item => !item.clave.startsWith('MANIOBRA'));
 }

@@ -27,20 +27,32 @@ import { CartItemsTableComponent } from './cart-items/cart-items-table/cart-item
 import { CartListComponent } from './cart-items/cart-list/cart-list.component';
 import { CartListItemComponent } from './cart-items/cart-list/cart-list-item/cart-list-item.component';
 import { CartCheckoutComponent } from './cart-checkout/cart-checkout.component';
+import { CartEditItemComponent } from './cart-edit-item/cart-edit-item.component';
+import { CartEditPageComponent } from './cart-edit-page/cart-edit-page.component';
+import { CartPersistenceEffects } from './+state/cart-persistence.effects';
 
-const routes: Route[] = [{ path: '', component: CartPageComponent }];
+const routes: Route[] = [
+  {
+    path: '',
+    children: [
+      { path: '', redirectTo: 'cart', pathMatch: 'full' },
+      { path: 'cart', component: CartPageComponent },
+      { path: 'cart/:id', component: CartEditPageComponent }
+    ]
+  }
+];
 
 @NgModule({
   imports: [
-    RouterModule.forChild(routes),
     UiCoreModule,
     ClientesModule,
     ProductosModule,
     PedidosModule,
     FormUtilsModule,
     StoreModule.forFeature(fromCart.CART_FEATURE_KEY, fromCart.reducer),
-    EffectsModule.forFeature([CartEffects]),
-    CartFormModule
+    EffectsModule.forFeature([CartEffects, CartPersistenceEffects]),
+    CartFormModule,
+    RouterModule.forChild(routes)
   ],
   declarations: [
     CartPageComponent,
@@ -54,9 +66,15 @@ const routes: Route[] = [{ path: '', component: CartPageComponent }];
     CartItemsTableComponent,
     CartListComponent,
     CartListItemComponent,
-    CartCheckoutComponent
+    CartCheckoutComponent,
+    CartEditItemComponent,
+    CartEditPageComponent
   ],
-  entryComponents: [CartAddItemComponent, CartCheckoutComponent],
+  entryComponents: [
+    CartAddItemComponent,
+    CartCheckoutComponent,
+    CartEditItemComponent
+  ],
   exports: [CartBtnComponent],
   providers: [CartFacade]
 })

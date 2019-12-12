@@ -5,7 +5,7 @@ import {
   Input
 } from '@angular/core';
 
-import { Cliente } from '@swrx/core-model';
+import { Cliente, Pedido } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-toolbar',
@@ -15,6 +15,7 @@ import { Cliente } from '@swrx/core-model';
 })
 export class CartToolbarComponent implements OnInit {
   @Input() cliente: Cliente;
+  @Input() pedido: Pedido;
   constructor() {}
 
   ngOnInit() {}

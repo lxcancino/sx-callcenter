@@ -4,4 +4,7 @@ model {
 	Pedido pedido
 }
 
-json tmpl.pedido(pedido)
+json g.render(pedido, [ excludes: ['cliente', 'partidas'], resolveTemplate: false]) {
+	cliente g.render(pedido.cliente)
+	partidas g.render(pedido.partidas)
+}

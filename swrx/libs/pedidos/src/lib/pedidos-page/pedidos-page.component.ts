@@ -1,4 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { PedidosFacade } from '../+state/pedidos.facade';
+import { Pedido } from '@swrx/core-model';
+
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'swrx-pedidos-page',
@@ -7,10 +13,16 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PedidosPageComponent implements OnInit {
+  pedidos$: Observable<Pedido[]>;
 
-  constructor() { }
+  constructor(private facade: PedidosFacade, private router: Router) {}
 
   ngOnInit() {
+    this.pedidos$ = this.facade.allPedidos$;
   }
 
+  onSelection(event: Pedido) {
+    console.log('Edit: ', event);
+    this.router.navigate(['/shop/cart', event.id]);
+  }
 }

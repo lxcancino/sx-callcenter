@@ -6,25 +6,28 @@ import { PedidosPartialState } from './pedidos.reducer';
 import * as PedidosActions from './pedidos.actions';
 import { PedidoService } from '../services/pedido.service';
 import { map } from 'rxjs/operators';
+import { PedidosPageComponent } from '../pedidos-page/pedidos-page.component';
+import { ActivatedRouteSnapshot } from '@angular/router';
+import { of } from 'rxjs';
 
 @Injectable()
 export class PedidosEffects {
   loadPedidos$ = createEffect(() =>
-    this.dataPersistence.fetch(PedidosActions.loadPedidos, {
-      run: (
-        action: ReturnType<typeof PedidosActions.loadPedidos>,
-        state: PedidosPartialState
-      ) => {
-        // Your custom service 'load' logic goes here. For now just return a success action...
-        return PedidosActions.loadPedidosSuccess({ pedidos: [] });
-      },
+    this.dataPersistence.navigation(PedidosPageComponent, {
+      run: (a: ActivatedRouteSnapshot, state: PedidosPartialState) => {
+        console.log('Cargando los pedidos....');
 
-      onError: (
-        action: ReturnType<typeof PedidosActions.loadPedidos>,
-        error
-      ) => {
-        console.error('Error', error);
-        return PedidosActions.loadPedidosFailure({ error });
+        // .pipe(map( pedidos => PedidosActions.loadPedidosSuccess({ pedidos }))
+        // return PedidosActions.loadPedidosSuccess({ pedidos: [] });
+        return this.service
+          .list()
+          .pipe(map(pedidos => PedidosActions.loadPedidosSuccess({ pedidos })));
+      },
+      onError: (a: ActivatedRouteSnapshot, e: any) => {
+        // we can log and error here and return null
+        // we can also navigate back
+        console.error('Pedidos not loaded....');
+        return null;
       }
     })
   );
