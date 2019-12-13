@@ -116,9 +116,10 @@ export class CartEffects {
     { dispatch: true }
   );
 
-  validar$ = createEffect(() => this.actions$.pipe(
-    ofType(CartActions.recalcularPartidas),
-    map(() => CartActions.validarPedido())
+  validar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.recalcularPartidas),
+      map(() => CartActions.validarPedido())
     )
   );
 

@@ -11,6 +11,7 @@ import values from 'lodash/values';
 import forIn from 'lodash/forIn';
 import { generarCargoPorTarjeta } from './cart-cargos-utils';
 import { ValidationErrors } from '@angular/forms';
+import { runValidation } from './cart-validations';
 
 export const CART_FEATURE_KEY = 'cart';
 
@@ -25,8 +26,8 @@ export interface CartState {
   loading: boolean;
   pedido?: Pedido;
   error?: string | null; // last none error (if any)
-  validationErrors?: ValidationErrors;
-  warrnings?: ValidationErrors;
+  validationErrors?: { error: string; descripcion: string }[];
+  warrnings?: { error: string; descripcion: string }[];
 }
 
 export interface CartPartialState {
@@ -117,6 +118,10 @@ const cartReducer = createReducer(
   }),
   on(CartActions.cleanShoppingCart, state => ({
     ...initialState
+  })),
+  on(CartActions.validarPedido, state => ({
+    ...state,
+    validationErrors: runValidation(state)
   }))
 );
 

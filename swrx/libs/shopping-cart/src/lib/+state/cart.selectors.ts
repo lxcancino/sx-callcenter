@@ -134,3 +134,13 @@ export const selectCurrentPedido = createSelector(
   getCartState,
   state => state.pedido
 );
+
+export const getValidationErrors = createSelector(
+  getCartState,
+  state => state.validationErrors
+);
+
+export const getValidationWarnings = createSelector(
+  getCartState,
+  state => state.validationErrors
+);
