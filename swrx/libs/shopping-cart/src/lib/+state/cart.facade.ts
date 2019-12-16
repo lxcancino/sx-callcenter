@@ -66,4 +66,8 @@ export class CartFacade {
   eliminarPedido(pedido: Pedido) {
     console.log('Eliminar pedido.....');
   }
+
+  registrarEnvio() {
+    this.store.dispatch(CartActions.registrarEnvio());
+  }
 }

@@ -31,6 +31,7 @@ import { CartEditItemComponent } from './cart-edit-item/cart-edit-item.component
 import { CartEditPageComponent } from './cart-edit-page/cart-edit-page.component';
 import { CartPersistenceEffects } from './+state/cart-persistence.effects';
 import { NewCartGuard } from './guards/new-cart.guard';
+import { EnvioComponent } from './envio/envio.component';
 
 const routes: Route[] = [
   {
@@ -73,12 +74,14 @@ const routes: Route[] = [
     CartListItemComponent,
     CartCheckoutComponent,
     CartEditItemComponent,
-    CartEditPageComponent
+    CartEditPageComponent,
+    EnvioComponent
   ],
   entryComponents: [
     CartAddItemComponent,
     CartCheckoutComponent,
-    CartEditItemComponent
+    CartEditItemComponent,
+    EnvioComponent
   ],
   exports: [CartBtnComponent],
   providers: [CartFacade]

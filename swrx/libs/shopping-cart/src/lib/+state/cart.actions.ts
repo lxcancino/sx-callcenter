@@ -5,7 +5,8 @@ import {
   Pedido,
   TipoDePedido,
   PedidoDet,
-  FormaDePago
+  FormaDePago,
+  InstruccionDeEnvio
 } from '@swrx/core-model';
 
 export const addCartItem = createAction('[ShoppingCartPage] Add CartItem');
@@ -66,3 +67,9 @@ export const cleanShoppingCart = createAction(
 );
 
 export const validarPedido = createAction('[CartEffects] Validar Pedido');
+
+export const registrarEnvio = createAction('[CartEffects] Registrar envio');
+export const registrarEnvioSuccess = createAction(
+  '[CartEffects] Registrar envio success',
+  props<{ envio: InstruccionDeEnvio }>()
+);

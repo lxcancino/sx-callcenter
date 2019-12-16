@@ -4,6 +4,7 @@ import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
 
 import sx.core.Producto
+import sx.core.ClienteDireccion
 
 @ToString(includes='id, clave, descripcion, cantidad, precio, descuentoImporte, subtotal',includeNames=true,includePackage=false)
 @EqualsAndHashCode(includes = 'id')
@@ -39,6 +40,7 @@ class PedidoDet {
     
     String comentario
     Corte corte
+    EnvioUnitario envio
 
     Date dateCreated
     Date lastUpdated
@@ -48,7 +50,7 @@ class PedidoDet {
     Pedido pedido
     static belongsTo = [pedido: Pedido]
 
-    static embedded = ['corte']
+    static embedded = ['corte', 'envio']
 
     static constraints = {
         id bindable: true
@@ -56,6 +58,7 @@ class PedidoDet {
         presentacion nullable: true, maxSize: 100
         comentario nullable: true
         corte nullable: true
+        envio nullable: true
         createUser nullable: true
         updateUser nullable: true
     }
@@ -76,4 +79,9 @@ class Corte {
     cantidad minSize: 1
   }
 
+}
+
+class EnvioUnitario {
+    ClienteDireccion direccion;
+    String comentario
 }

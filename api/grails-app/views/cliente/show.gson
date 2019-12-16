@@ -4,4 +4,8 @@ model {
 	Cliente cliente
 }
 
-json tmpl.cliente(cliente)
+json g.render(cliente, [excludes: ['credito', 'cobrador', ''], resolveTemplate: false]) {
+	credito g.render(cliente.credito)
+	direcciones g.render(cliente.direcciones)
+	medios g.render(cliente.medios)
+}

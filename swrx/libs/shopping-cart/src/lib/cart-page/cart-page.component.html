@@ -26,10 +26,13 @@
   <swrx-cart-items></swrx-cart-items>
 
   <div class="side-bar">
-    <swrx-cart-summary
-      [sumary]="sumary$ | async"
-      (checkout)="onCheckout()"
-    ></swrx-cart-summary>
+    <swrx-cart-summary [sumary]="sumary$ | async" (checkout)="onCheckout()">
+      <div class="checkout-actions">
+        <a mat-raised-button color="accent" [routerLink]="['/shop/cart/new']">
+          <mat-icon>autorenew</mat-icon> Nuevo
+        </a>
+      </div>
+    </swrx-cart-summary>
     <swrx-cart-info [cartForm]="cartForm"></swrx-cart-info>
   </div>
 </div>

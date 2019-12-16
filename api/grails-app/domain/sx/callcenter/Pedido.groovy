@@ -50,8 +50,11 @@ class Pedido {
     Date lastUpdated
     String createUser
     String updateUser
+    
 
     static hasMany =[partidas:PedidoDet]
+
+    static hasOne = [envio: InstruccionDeEnvio]
 
     static constraints = {
         rfc maxSize:13
@@ -66,6 +69,7 @@ class Pedido {
         comprador nullable: true
         cfdiMail nullable: true
         socio nullable: true
+        envio nullable: true
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
     }
@@ -78,3 +82,6 @@ class Pedido {
         rfc index: 'PEDIDO_IDX2B'
     }
 }
+
+
+

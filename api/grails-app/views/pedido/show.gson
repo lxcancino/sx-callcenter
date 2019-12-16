@@ -7,4 +7,5 @@ model {
 json g.render(pedido, [ excludes: ['cliente', 'partidas'], resolveTemplate: false]) {
 	cliente g.render(pedido.cliente)
 	partidas g.render(pedido.partidas)
+	envio g.render(pedido.envio)
 }

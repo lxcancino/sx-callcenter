@@ -35,11 +35,13 @@ export const routes: Route[] = [
   providers: [PedidosFacade]
 })
 export class PedidosModule {
+  /*
   static forRoot(): ModuleWithProviders {
     return { ngModule: PedidosStateModule, providers: [] };
   }
+  */
 }
-
+/*
 @NgModule({
   declarations: [PedidosPageComponent, PedidosTableComponent],
   imports: [
@@ -54,3 +56,4 @@ export class PedidosModule {
   providers: [PedidosFacade]
 })
 export class PedidosStateModule {}
+*/

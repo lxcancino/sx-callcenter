@@ -1,4 +1,10 @@
-import { Cliente } from './core-model';
+import {
+  Cliente,
+  ClienteCredito,
+  Transporte,
+  ClienteDireccion,
+  Direccion
+} from './core-model';
 import { Producto } from './producto.models';
 
 export interface Pedido {
@@ -31,7 +37,7 @@ export interface Pedido {
   kilos: number;
   comprador?: string;
   comentario?: string;
-  envio?: any;
+  envio?: InstruccionDeEnvio;
   cfdiMail?: string;
   usoDeCfdi: string;
   sinExistencia?: boolean;
@@ -104,4 +110,14 @@ export enum FormaDePago {
   TARJETA_DEB = 'TARJETA_DEBITO',
   CHEQUE = 'CHEQUE',
   NO_DEFINIDO = 'NO_DEFINIDO'
+}
+
+export interface InstruccionDeEnvio {
+  tipo: 'ENVIO' | 'FORANEO' | 'OCURRE' | 'ENVIO_CARGO';
+  direccion: Direccion;
+  transporte?: Transporte;
+  telefono: string;
+  contacto: string;
+  horario: string;
+  comentario: string;
 }

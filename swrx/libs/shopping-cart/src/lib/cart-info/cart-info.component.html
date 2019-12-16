@@ -1,6 +1,6 @@
 <div class="cart-info-container">
-  <mat-tab-group [dynamicHeight]="false">
-    <mat-tab>
+  <mat-tab-group [dynamicHeight]="false" selectedIndex="2">
+    <mat-tab label="Info">
       <div class="info">
         <span>
           <strong>Descuento: {{ facade.descuento$ | async }} %</strong>
@@ -15,12 +15,20 @@
         </span>
       </div>
     </mat-tab>
+
     <mat-tab label="CFDI">
       <div class="cfdi">
         <swrx-cart-uso [cartForm]="cartForm"></swrx-cart-uso>
       </div>
     </mat-tab>
-    <mat-tab label="Envío"> </mat-tab>
+
+    <mat-tab label="Envío">
+      <div class="envio">
+        <button mat-button (click)="facade.registrarEnvio()">
+          <fa-icon icon="truck"></fa-icon> Registrar Envio
+        </button>
+      </div>
+    </mat-tab>
     <mat-tab label="Contacto">
       <div class="contacto">
         <mat-checkbox>Agregar contacto</mat-checkbox>

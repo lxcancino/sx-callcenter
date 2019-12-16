@@ -11,6 +11,7 @@ export interface Cliente {
   juridico: false;
   medios: [];
   direccion: Direccion;
+  direcciones?: ClienteDireccion[];
   dateCreated?: string;
   lastUpdated?: string;
   sw2?: string | number;
@@ -21,6 +22,12 @@ export interface Cliente {
 export interface ClienteCredito {
   id: string | number;
   descuentoFijo: number;
+}
+
+export interface ClienteDireccion {
+  id: string;
+  nombre: string;
+  direccion: Direccion;
 }
 
 export interface Direccion {
@@ -34,4 +41,10 @@ export interface Direccion {
   pais: 'MEXICO' | 'ESTADOS UNIDOS' | 'CANADA';
   latitud: string;
   longitud: string;
+}
+
+export interface Transporte {
+  id?: string;
+  nombre: string;
+  direccion: Direccion;
 }

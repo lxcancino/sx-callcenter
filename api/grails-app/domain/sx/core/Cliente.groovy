@@ -31,6 +31,8 @@ class Cliente {
 
     Set<ComunicacionEmpresa> medios = []
 
+    Set<ClienteDireccion> direcciones
+
     Set telefonos
     String fax
     String cfdiMail
@@ -51,13 +53,14 @@ class Cliente {
 
     static hasOne = [credito: ClienteCredito]
 
-    static hasMany =[medios:ComunicacionEmpresa]
+    static hasMany =[medios:ComunicacionEmpresa, direcciones: ClienteDireccion]
 
     static embedded = ['direccion']
 
     static mapping={
         id generator:'uuid'
         medios cascade: "all-delete-orphan"
+        direcciones cascade: "all-delete-orphan"
     }
 
     static transients = ['telefonos','fax','cfdiMail']
