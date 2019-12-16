@@ -37,7 +37,7 @@ class FirebaseSdk {
 	@PostConstruct
     void doLog() {
         log.info("Inicializando FireBase en PostConstruct")
-        // init()
+        init()
         // registerFirestoreListeners()
     }
 
