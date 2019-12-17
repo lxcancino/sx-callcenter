@@ -33,6 +33,7 @@
       mat-raised-button
       color="primary"
       (click)="checkout.emit($event)"
+      [disabled]="disabled"
     >
       <fa-icon icon="cart-arrow-down" size="lg"></fa-icon> Terminar
     </button>

@@ -1,7 +1,7 @@
 .shopping-cart {
   // Grid layout configuration
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 3fr 350px;
   grid-template-rows: auto auto 2fr 6fr 1fr;
   align-content: start;
   gap: 0.5em;

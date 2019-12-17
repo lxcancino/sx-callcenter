@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, Inject } from '@angular/core';
 
 import { Observable, throwError } from 'rxjs';
 import {
@@ -35,12 +35,14 @@ export class ProductoFieldComponent implements OnInit, ControlValueAccessor {
   selected: any;
 
   filteredProducts$: Observable<any>;
-  apiUrl = 'http://localhost:8080/callcener/api/productos';
+  apiUrl: string;
 
   onChange: any = () => {};
   onTouch: any = () => {};
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject('apiUrl') api) {
+    this.apiUrl = `${api}/productos`;
+  }
 
   ngOnInit() {
     this.filteredProducts$ = this.control.valueChanges.pipe(

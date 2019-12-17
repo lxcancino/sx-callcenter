@@ -3,6 +3,7 @@ export interface Cliente {
   nombre: string;
   clave: string;
   rfc: string;
+  cfdiMail?: string;
   credito?: ClienteCredito;
   permiteCheque: boolean;
   folioRFC: number;
@@ -14,14 +15,19 @@ export interface Cliente {
   direcciones?: ClienteDireccion[];
   dateCreated?: string;
   lastUpdated?: string;
-  sw2?: string | number;
+  telefonos?: string | number;
   createUser?: string;
   updateUser?: string;
 }
 
 export interface ClienteCredito {
-  id: string | number;
   descuentoFijo: number;
+  postfechado: boolean;
+  lineaDeCredito: number;
+  plazo: number;
+  saldo: number;
+  atrasoMaximo: number;
+  creditoActivo: boolean;
 }
 
 export interface ClienteDireccion {

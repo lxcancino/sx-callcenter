@@ -51,6 +51,10 @@ export const cambiarUsoDeCfdi = createAction(
   '[ShoppingCartPage] Cambiar Uso de CFDI',
   props<{ clave: string }>()
 );
+export const cambiarCfdiMail = createAction(
+  '[ShoppingCartPage] Cambiar CFDI mail',
+  props<{ email: string }>()
+);
 export const recalcularPartidas = createAction(
   '[ShoppingCart Effects] Recalcular Partidas',
   props<{ items: PedidoDet[] }>()

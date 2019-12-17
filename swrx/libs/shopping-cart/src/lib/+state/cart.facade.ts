@@ -7,6 +7,7 @@ import * as CartSelectors from './cart.selectors';
 
 import { TipoDePedido, FormaDePago, Pedido } from '@swrx/core-model';
 import { CartItem } from './cart.models';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class CartFacade {
@@ -24,6 +25,14 @@ export class CartFacade {
   descuento$ = this.store.pipe(select(CartSelectors.getDescuento));
   cartStateForm$ = this.store.pipe(select(CartSelectors.selectFormState));
   currentPedido = this.store.pipe(select(CartSelectors.selectCurrentPedido));
+  errors$ = this.store.pipe(select(CartSelectors.getValidationErrors));
+  errorsCount$ = this.errors$.pipe(map(errors => (errors ? errors.length : 0)));
+  hasErrors$ = this.store.pipe(select(CartSelectors.hasErrors));
+
+  warnings$ = this.store.pipe(select(CartSelectors.getWarnings));
+  warningsCount$ = this.store.pipe(select(CartSelectors.getWarningsCount));
+  hasWarnings$ = this.store.pipe(select(CartSelectors.hasWarnings));
+
   constructor(private store: Store<fromCart.CartState>) {
     this.store.pipe(select(CartSelectors.getCartSumary));
   }
@@ -50,6 +59,9 @@ export class CartFacade {
   }
   cambiarUso(clave: string) {
     this.store.dispatch(CartActions.cambiarUsoDeCfdi({ clave }));
+  }
+  cambiarMail(email: string) {
+    this.store.dispatch(CartActions.cambiarCfdiMail({ email }));
   }
 
   cambiarFormaDePago(formaDePago: FormaDePago) {

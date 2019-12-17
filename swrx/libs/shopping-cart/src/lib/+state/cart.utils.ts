@@ -13,11 +13,13 @@ import round from 'lodash/round';
 import sumBy from 'lodash/sumBy';
 import maxBy from 'lodash/maxBy';
 
-export function clienteMostrador() {
+export function clienteMostrador(): Partial<Cliente> {
   return {
     id: '402880fc5e4ec411015e4ecc5dfc0554',
     rfc: 'XAXX010101000',
-    nombre: 'MOSTRADOR'
+    nombre: 'MOSTRADOR',
+    permiteCheque: false,
+    activo: true
   };
 }
 
@@ -195,6 +197,7 @@ export function buildPedidoEntity(
     moneda: 'MXN',
     tipoDeCambio: 1.0,
     usoDeCfdi: state.usoDeCfdi,
+    cfdiMail: state.cfdiMail,
     cliente: { id: cliente.id },
     nombre: cliente.nombre,
     rfc: cliente.rfc,

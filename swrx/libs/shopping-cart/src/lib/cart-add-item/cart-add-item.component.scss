@@ -28,7 +28,10 @@
       width: 100%;
       flex: 1;
     }
-    .cantidad,
+    .cantidad {
+      margin-right: 5px;
+      width: 70px;
+    }
     .precio {
       width: 70px;
       margin-left: 5px;

@@ -1,4 +1,5 @@
 export const environment = {
+  apiUrl: 'http://10.10.1.146:9197/callcener/api',
   production: true,
   firebase: {
     apiKey: 'AIzaSyC4cYX9eZN4XqsX2EuYwN2GLPtb6R3r7RU',

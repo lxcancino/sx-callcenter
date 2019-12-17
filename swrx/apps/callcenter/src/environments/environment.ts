@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  apiUrl: 'http://localhost:8080/callcener/api',
   production: false,
   firebase: {
     apiKey: 'AIzaSyC4cYX9eZN4XqsX2EuYwN2GLPtb6R3r7RU',

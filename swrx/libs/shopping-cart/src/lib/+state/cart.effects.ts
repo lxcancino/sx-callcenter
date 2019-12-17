@@ -97,7 +97,8 @@ export class CartEffects {
           CartActions.cambiarClienteSuccess,
           CartActions.addCartItemSuccess,
           CartActions.deleteItem,
-          CartActions.editItemSuccess
+          CartActions.editItemSuccess,
+          CartActions.cambiarFormaDePago
         ),
         concatMap(action =>
           of(action).pipe(

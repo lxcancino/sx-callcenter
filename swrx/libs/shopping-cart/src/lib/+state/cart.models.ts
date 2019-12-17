@@ -44,3 +44,8 @@ export interface CartItemDto {
   precio: number;
   corte?: Corte;
 }
+
+export class CartValidationError {
+  error: string;
+  descripcion: string;
+}

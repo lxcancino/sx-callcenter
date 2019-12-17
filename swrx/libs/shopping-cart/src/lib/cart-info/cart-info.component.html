@@ -1,24 +1,52 @@
 <div class="cart-info-container">
-  <mat-tab-group [dynamicHeight]="false" selectedIndex="2">
-    <mat-tab label="Info">
-      <div class="info">
-        <span>
-          <strong>Descuento: {{ facade.descuento$ | async }} %</strong>
-        </span>
-        <span>
-          <label>Imp % x Volumen:</label>
-          <strong
-            >{{ facade.descuentoPorVolumenImporte$ | async | currency }} ({{
-              facade.descuentoPorVolumen$ | async
-            }})
-          </strong>
-        </span>
+  <mat-tab-group [dynamicHeight]="false" selectedIndex="0">
+    <mat-tab label="Cliente">
+      <div class="cliente" *ngIf="facade.cliente$ | async as cliente">
+        <section class="direccion" *ngIf="cliente.direccion as direccion">
+          <span class="header">Dirección:</span>
+          <div class="direccion-row">
+            <span
+              >Calle: {{ direccion.calle }} #:{{
+                direccion.numeroExterior
+              }} </span
+            ><span *ngIf="!!direccion.numeroExterior"
+              >#Int: {{ direccion.numeroInterior }}
+            </span>
+          </div>
+          <div class="direccion-row">
+            <span>Colonia: {{ direccion.colonia }}</span>
+          </div>
+          <div class="direccion-row">
+            <span>Municipio: {{ direccion.municipio }}</span>
+            <span>Estado: {{ direccion.estado }}</span>
+          </div>
+          <div class="direccion-row">
+            <span>C.P: {{ direccion.colonia }}</span>
+            <span>País: {{ direccion.pais }}</span>
+          </div>
+        </section>
+        <section class="telefonos">
+          <span class="header">Teléfonos:</span>
+          <div class="field" *ngIf="cliente.telefonos as telefonos">
+            <span *ngFor="let item of telefonos" class="telefono">
+              {{ item }}
+            </span>
+          </div>
+        </section>
       </div>
     </mat-tab>
 
-    <mat-tab label="CFDI">
-      <div class="cfdi">
+    <mat-tab label="Cfdi">
+      <div class="cfdi" [formGroup]="cartForm">
         <swrx-cart-uso [cartForm]="cartForm"></swrx-cart-uso>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Cfdi Email"
+            formControlName="cfdiMail"
+            placeholder="Email"
+          />
+        </mat-form-field>
       </div>
     </mat-tab>
 
@@ -29,10 +57,41 @@
         </button>
       </div>
     </mat-tab>
-    <mat-tab label="Contacto">
-      <div class="contacto">
-        <mat-checkbox>Agregar contacto</mat-checkbox>
-      </div>
+
+    <mat-tab #errorsTab>
+      <ng-template mat-tab-label>
+        <span
+          matBadgeOverlap="false"
+          [matBadge]="facade.errorsCount$ | async"
+          matBadgeColor="warn"
+          [matBadgeHidden]="(facade.errorsCount$ | async) < 1"
+          >Errores</span
+        >
+      </ng-template>
+      <mat-list dense>
+        <mat-list-item *ngFor="let err of facade.errors$ | async as errors">
+          <mat-icon matListIcon color="warn">error</mat-icon>
+          {{ err.descripcion }}
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span
+          matBadgeOverlap="false"
+          [matBadge]="facade.warningsCount$ | async"
+          matBadgeColor="accent"
+          [matBadgeHidden]="!(facade.hasWarnings$ | async)"
+          >Advertencias</span
+        >
+      </ng-template>
+      <mat-list dense>
+        <mat-list-item *ngFor="let err of facade.warnings$ | async as warnings">
+          <mat-icon matListIcon color="accent">error</mat-icon>
+          {{ err.descripcion }}
+        </mat-list-item>
+      </mat-list>
     </mat-tab>
   </mat-tab-group>
 </div>

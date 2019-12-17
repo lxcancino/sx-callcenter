@@ -139,8 +139,22 @@ export const getValidationErrors = createSelector(
   getCartState,
   state => state.validationErrors
 );
+export const hasErrors = createSelector(
+  getValidationErrors,
+  errors => errors.length > 0
+);
 
-export const getValidationWarnings = createSelector(
+export const getWarnings = createSelector(
   getCartState,
-  state => state.validationErrors
+  state => state.warrnings
+);
+
+export const getWarningsCount = createSelector(
+  getWarnings,
+  warnings => warnings.length
+);
+
+export const hasWarnings = createSelector(
+  getWarnings,
+  warnings => warnings.length > 0
 );

@@ -1,10 +1,16 @@
 import { createReducer, on, Action } from '@ngrx/store';
 
 import * as CartActions from './cart.actions';
-import { CartItem } from './cart.models';
+import { CartItem, CartValidationError } from './cart.models';
 
 import { clienteMostrador, aplicarDescuentos, normalize } from './cart.utils';
-import { Cliente, TipoDePedido, FormaDePago, Pedido } from '@swrx/core-model';
+import {
+  Cliente,
+  TipoDePedido,
+  FormaDePago,
+  Pedido,
+  InstruccionDeEnvio
+} from '@swrx/core-model';
 
 import keyBy from 'lodash/keyBy';
 import values from 'lodash/values';
@@ -12,6 +18,7 @@ import forIn from 'lodash/forIn';
 import { generarCargoPorTarjeta } from './cart-cargos-utils';
 import { ValidationErrors } from '@angular/forms';
 import { runValidation } from './cart-validations';
+import { runWarnings } from './cart-warnings';
 
 export const CART_FEATURE_KEY = 'cart';
 
@@ -22,12 +29,14 @@ export interface CartState {
   tipo: TipoDePedido;
   formaDePago: FormaDePago;
   usoDeCfdi: string;
+  cfdiMail?: string;
   items: { [id: string]: CartItem };
   loading: boolean;
   pedido?: Pedido;
+  envio?: InstruccionDeEnvio;
   error?: string | null; // last none error (if any)
-  validationErrors?: { error: string; descripcion: string }[];
-  warrnings?: { error: string; descripcion: string }[];
+  validationErrors: CartValidationError[];
+  warrnings: { error: string; descripcion: string }[];
 }
 
 export interface CartPartialState {
@@ -41,7 +50,9 @@ export const initialState: CartState = {
   tipo: TipoDePedido.CONTADO,
   formaDePago: FormaDePago.EFECTIVO,
   usoDeCfdi: 'G01',
-  items: keyBy([], 'id')
+  items: keyBy([], 'id'),
+  validationErrors: [],
+  warrnings: []
 };
 
 const cartReducer = createReducer(
@@ -60,7 +71,8 @@ const cartReducer = createReducer(
   }),
   on(CartActions.cambiarClienteSuccess, (state, { cliente }) => ({
     ...state,
-    cliente
+    cliente,
+    cfdiMail: cliente.cfdiMail
   })),
   on(CartActions.cambiarClienteError, (state, { error }) => ({
     ...state,
@@ -91,6 +103,10 @@ const cartReducer = createReducer(
     ...state,
     usoDeCfdi: clave
   })),
+  on(CartActions.cambiarCfdiMail, (state, { email }) => ({
+    ...state,
+    cfdiMail: email
+  })),
   on(CartActions.recalcularPartidas, state => {
     const partidas = values(state.items);
     const items = keyBy(
@@ -113,6 +129,7 @@ const cartReducer = createReducer(
       formaDePago: pedido.formaDePago,
       sucursal: pedido.sucursal,
       usoDeCfdi: pedido.usoDeCfdi,
+      cfdiMail: pedido.cfdiMail,
       items
     };
   }),
@@ -121,7 +138,8 @@ const cartReducer = createReducer(
   })),
   on(CartActions.validarPedido, state => ({
     ...state,
-    validationErrors: runValidation(state)
+    validationErrors: runValidation(state),
+    warrnings: runWarnings(state)
   }))
 );
 

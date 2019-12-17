@@ -43,7 +43,10 @@ import { ShoppingCartModule } from '@swrx/shopping-cart';
     AuthModule.forRoot(environment.firebase),
     ShoppingCartModule
   ],
-  providers: [DataPersistence],
+  providers: [
+    DataPersistence,
+    { provide: 'apiUrl', useValue: environment.apiUrl }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

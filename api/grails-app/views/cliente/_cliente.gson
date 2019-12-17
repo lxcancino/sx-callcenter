@@ -4,6 +4,9 @@ model {
 	Cliente cliente
 }
 
-json g.render(cliente, [excludes: ['credito', 'cobrador', ''], resolveTemplate: false]) {
+json g.render(cliente, [excludes: ['credito', 'cobrador', 'medios'], resolveTemplate: false]) {
 	credito g.render(cliente.credito)
+	medios g.render(cliente.medios)
+	cfdiMail cliente.getCfdiMail()
+	telefonos cliente.getTelefonos()
 }

@@ -30,11 +30,18 @@ export class CartPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.buildForm();
     this.addListeners();
-    // this.facade.cartStateForm$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(state => {
-    //     console.log('Initial form state: ', state);
-    //   });
+    this.facade.cliente$.pipe(takeUntil(this.destroy$)).subscribe(cte => {
+      if (cte.credito) {
+        if (cte.credito.postfechado) {
+          this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE_PSTF);
+          this.cartForm.get('formaDePago').disable();
+        } else {
+          this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE);
+          this.cartForm.get('formaDePago').enable();
+        }
+      }
+      this.cartForm.get('cfdiMail').setValue(cte.cfdiMail);
+    });
   }
 
   ngOnDestroy() {
@@ -46,7 +53,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.cartForm = this.fb.group({
       tipo: [TipoDePedido.CONTADO, [Validators.required]],
       formaDePago: ['EFECTIVO', [Validators.required]],
-      usoDeCfdi: ['G01', [Validators.required]]
+      usoDeCfdi: ['G01', [Validators.required]],
+      cfdiMail: [null, [Validators.email]]
     });
   }
 
@@ -54,6 +62,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.addFormaDePagoListener();
     this.addTipoDePedidoListener();
     this.addUsoDeCfdiListener();
+    this.addCfdiMailListener();
   }
 
   private addFormaDePagoListener() {
@@ -75,6 +84,13 @@ export class CartPageComponent implements OnInit, OnDestroy {
       .get('usoDeCfdi')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(clave => this.facade.cambiarUso(clave));
+  }
+
+  private addCfdiMailListener() {
+    this.cartForm
+      .get('cfdiMail')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(email => this.facade.cambiarMail(email));
   }
 
   addCartItem() {

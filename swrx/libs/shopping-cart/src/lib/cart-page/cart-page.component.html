@@ -26,10 +26,15 @@
   <swrx-cart-items></swrx-cart-items>
 
   <div class="side-bar">
-    <swrx-cart-summary [sumary]="sumary$ | async" (checkout)="onCheckout()">
+    <swrx-cart-summary
+      *ngIf="sumary$ | async as sumary"
+      [sumary]="sumary$ | async"
+      (checkout)="onCheckout()"
+      [disabled]="(facade.hasErrors$ | async) || sumary.total <= 0.0"
+    >
       <div class="checkout-actions">
         <a mat-raised-button color="accent" [routerLink]="['/shop/cart/new']">
-          <mat-icon>autorenew</mat-icon> Nuevo
+          <mat-icon>autorenew</mat-icon> Limpiar
         </a>
       </div>
     </swrx-cart-summary>

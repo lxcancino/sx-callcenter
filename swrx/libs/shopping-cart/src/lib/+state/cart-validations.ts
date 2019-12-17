@@ -1,21 +1,11 @@
 import { CartState } from './cart.reducer';
-import { TipoDePedido } from '@swrx/core-model';
-import { ValidationErrors } from '@angular/forms';
+import { TipoDePedido, FormaDePago } from '@swrx/core-model';
 
 import sumBy from 'lodash/sumBy';
-
-export class CartValidationError {
-  error: string;
-  descripcion: string;
-}
-
-export enum TipoDeValidacion {
-  MINIMO_DE_VENTA,
-  VENTA_DE_CREDITO
-}
+import values from 'lodash/values';
+import { CartValidationError } from './cart.models';
 
 export function runValidation(state: CartState): CartValidationError[] {
-  console.log('Validando CartState: ', state);
   const errors: CartValidationError[] = [];
 
   minimoDeVenta(state, errors);
@@ -24,7 +14,21 @@ export function runValidation(state: CartState): CartValidationError[] {
   if (vtaCredito) {
     errors.push(vtaCredito);
   }
+  validarCod(state, errors);
+  validarCheque(state, errors);
+  validarJuridico(state, errors);
+  validarChequesDevueltos(state, errors);
   return errors;
+}
+
+export function minimoDeVenta(state: CartState, errors: any[]) {
+  const importe = sumBy(Object.values(state.items), 'importe');
+  if (importe < 10.0) {
+    errors.push({
+      error: 'MINIMO_DE_VENTA',
+      descripcion: 'El importe mínimo de venta es $10.00'
+    });
+  }
 }
 
 /**
@@ -43,12 +47,51 @@ export function ventaCredito(state: CartState): CartValidationError | null {
   return null;
 }
 
-export function minimoDeVenta(state: CartState, errors: any[]) {
-  const importe = sumBy(state.items, 'importe');
-  if (importe < 10.0) {
+export function validarCod(state: CartState, errors: CartValidationError[]) {
+  if (state.tipo === TipoDePedido.COD) {
+    if (
+      state.formaDePago === FormaDePago.CHEQUE ||
+      state.formaDePago === FormaDePago.EFECTIVO
+    ) {
+      errors.push({
+        error: 'VANTA_COD',
+        descripcion: 'En COD solo CHEQUE o EFECTIVO'
+      });
+    }
+  }
+}
+
+export function validarCheque(state: CartState, errors: CartValidationError[]) {
+  if (state.formaDePago === FormaDePago.CHEQUE) {
+    if (!state.cliente.permiteCheque) {
+      errors.push({
+        error: 'PERMITIR_CHEQUE',
+        descripcion: 'CLIENTE NO AUTORIZADO PARA CHEQUE'
+      });
+    }
+  }
+}
+
+export function validarJuridico(
+  state: CartState,
+  errors: CartValidationError[]
+) {
+  if (state.cliente.juridico) {
     errors.push({
-      error: 'MINIMO_DE_VENTA',
-      descripcion: 'El importe mínimo de venta es $10.00'
+      error: 'CLIENTE_JURIDICO',
+      descripcion: 'CLIENTE EN TRAMITE JURIDICO'
+    });
+  }
+}
+
+export function validarChequesDevueltos(
+  state: CartState,
+  errors: CartValidationError[]
+) {
+  if (state.cliente.chequeDevuelto > 0) {
+    errors.push({
+      error: 'CHEQUES_DEVUELTOS',
+      descripcion: 'CLIENTE CON CHEQUES DEVUELTOS'
     });
   }
 }

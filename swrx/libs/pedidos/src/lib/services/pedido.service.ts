@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Pedido, Periodo } from '@swrx/core-model';
 import { Observable, throwError } from 'rxjs';
@@ -8,10 +8,11 @@ import { Update } from '@ngrx/entity';
   providedIn: 'root'
 })
 export class PedidoService {
-  private apiUrl = 'http://localhost:8080/callcener/api/pedidos';
-  // http://localhost:8080/callcener
+  private apiUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject('apiUrl') api) {
+    this.apiUrl = `${api}/pedidos`;
+  }
 
   list(periodo: Periodo = Periodo.mesActual()): Observable<Pedido[]> {
     const data = periodo.toApiJSON();
