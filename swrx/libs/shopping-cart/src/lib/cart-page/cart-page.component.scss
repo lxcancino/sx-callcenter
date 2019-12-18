@@ -50,5 +50,12 @@ swrx-cart-footer {
 
 .checkout-actions {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: baseline;
+  align-content: flex-end;
+  flex-wrap: wrap;
+  button {
+    min-width: 100px;
+    margin-bottom: 10px;
+  }
 }

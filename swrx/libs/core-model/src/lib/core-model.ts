@@ -49,6 +49,10 @@ export interface Direccion {
   longitud: string;
 }
 
+export function buildDireccionKey(direccion: Direccion) {
+  return `${direccion.calle.substring(0, 20)} #${direccion.numeroExterior} CP:${direccion.codigoPostal}`;
+}
+
 export interface Transporte {
   id?: string;
   nombre: string;

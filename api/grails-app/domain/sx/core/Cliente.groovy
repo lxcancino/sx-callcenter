@@ -84,4 +84,12 @@ class Cliente {
         return medios.find{ it.tipo == 'MAIL' && it.cfdi}?.validado
     }
 
+    /*
+    def getAllDirecciones() {
+        def map = this.direcciones.collectEntries {
+             [(it): it.direccion]
+        }
+    }
+    */
+
 }

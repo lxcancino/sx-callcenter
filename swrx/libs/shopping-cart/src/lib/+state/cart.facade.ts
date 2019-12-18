@@ -32,6 +32,7 @@ export class CartFacade {
   warnings$ = this.store.pipe(select(CartSelectors.getWarnings));
   warningsCount$ = this.store.pipe(select(CartSelectors.getWarningsCount));
   hasWarnings$ = this.store.pipe(select(CartSelectors.hasWarnings));
+  isPrintable$ = this.store.pipe(select(CartSelectors.isPrintable));
 
   constructor(private store: Store<fromCart.CartState>) {
     this.store.pipe(select(CartSelectors.getCartSumary));
@@ -63,6 +64,9 @@ export class CartFacade {
   cambiarMail(email: string) {
     this.store.dispatch(CartActions.cambiarCfdiMail({ email }));
   }
+  cambiarSucursal(sucursal: string) {
+    this.store.dispatch(CartActions.cambiarSucursal({ sucursal }));
+  }
 
   cambiarFormaDePago(formaDePago: FormaDePago) {
     this.store.dispatch(CartActions.cambiarFormaDePago({ formaDePago }));
@@ -81,5 +85,9 @@ export class CartFacade {
 
   registrarEnvio() {
     this.store.dispatch(CartActions.registrarEnvio());
+  }
+
+  cerrarPedido() {
+    this.store.dispatch(CartActions.cerrarPedido());
   }
 }

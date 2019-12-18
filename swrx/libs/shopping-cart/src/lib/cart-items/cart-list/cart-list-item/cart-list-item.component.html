@@ -45,6 +45,20 @@
   >
     <mat-icon>delete</mat-icon>
   </button>
+  <div matLine class="cortes" *ngIf="item.corte">
+    <a (click)="edit.emit(item)" mat-icon-button>
+      <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
+    </a>
+    <span>{{ item.corte.instruccion }}</span>
+    <span
+      >Tamaños: <strong>{{ item.corte.cantidad }}</strong></span
+    >
+    <span
+      >Precio: <strong>{{ item.corte.precio | currency }}</strong></span
+    >
+    <span>Refinado: <fa-icon icon="check-circle"></fa-icon></span>
+    <span>Limpio: <fa-icon icon="times-circle" color="accent"></fa-icon> </span>
+  </div>
   <div matLine class="propiedades">
     <span
       >Unidad: <strong>{{ item.unidad }}</strong></span
@@ -76,21 +90,6 @@
         }}</span></strong
       >
     </span>
-  </div>
-
-  <div matLine class="cortes" *ngIf="item.corte">
-    <a (click)="edit.emit(item)" mat-icon-button>
-      <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
-    </a>
-    <span>Instruccion: {{ item.corte.instruccion }}</span>
-    <span
-      >Cantidad: <strong>{{ item.corte.cantidad }}</strong></span
-    >
-    <span
-      >Precio: <strong>{{ item.corte.precio | currency }}</strong></span
-    >
-    <span>Refinado: <fa-icon icon="check-circle"></fa-icon></span>
-    <span>Limpio: <fa-icon icon="times-circle" color="accent"></fa-icon> </span>
   </div>
 
   <mat-divider inset></mat-divider>

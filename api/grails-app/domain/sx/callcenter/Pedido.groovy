@@ -39,6 +39,7 @@ class Pedido {
     BigDecimal comisionTarjetaImporte = 0.0
     BigDecimal corteImporte = 0.0
     BigDecimal kilos 
+    String status
     
     // String envio PENDIENTE PARA IMPLEMENTAR DIRECCION DE ENVIO
     String comprador
@@ -54,13 +55,13 @@ class Pedido {
 
     static hasMany =[partidas:PedidoDet]
 
-    static hasOne = [envio: InstruccionDeEnvio]
+    static hasOne = [envio: InstruccionDeEnvio, socio: PedidoSocio]
 
     static constraints = {
         rfc maxSize:13
         folio unique: true
         tipo  inList:['CON','COD','CRE','PSF','INE','OTR','ACF','ANT','AND']
-        formaDePago inList: ['DEPOSITO', 'TRANSFERENCIA', 'EFECTIVO', 'TARJETA_DEBITO', 'TARJETA_CREDITO', 'CHEQUE', 'NO_DEFINIDO']
+        formaDePago inList: ['DEPOSITO', 'TRANSFERENCIA', 'EFECTIVO', 'TARJETA_DEBITO', 'TARJETA_CREDITO', 'CHEQUE','CHEQUE_PSTF', 'NO_DEFINIDO']
         moneda inList: ['MXN', 'USD', 'EUR']
         tipoDeCambio scale:6
         usoDeCfdi maxSize:3
@@ -70,6 +71,7 @@ class Pedido {
         cfdiMail nullable: true
         socio nullable: true
         envio nullable: true
+        status maxSize: 20
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
     }

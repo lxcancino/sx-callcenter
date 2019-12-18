@@ -55,6 +55,10 @@ export const cambiarCfdiMail = createAction(
   '[ShoppingCartPage] Cambiar CFDI mail',
   props<{ email: string }>()
 );
+export const cambiarSucursal = createAction(
+  '[ShoppingCartPage] Cambiar Sucursal',
+  props<{ sucursal: string }>()
+);
 export const recalcularPartidas = createAction(
   '[ShoppingCart Effects] Recalcular Partidas',
   props<{ items: PedidoDet[] }>()
@@ -77,3 +81,5 @@ export const registrarEnvioSuccess = createAction(
   '[CartEffects] Registrar envio success',
   props<{ envio: InstruccionDeEnvio }>()
 );
+
+export const cerrarPedido = createAction('[CartEffects] Cerrar Pedido');

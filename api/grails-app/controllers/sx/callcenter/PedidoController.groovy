@@ -44,6 +44,7 @@ class PedidoController extends RestfulController<Pedido> {
         Pedido res = new Pedido()
         bindData res, getObjectToBind()
         res.folio = -1L
+        res.status = 'PEDIDO'
         res.createUser = 'TEMPO'
         res.updateUser = 'TEMPO'
         return res
@@ -76,6 +77,16 @@ class PedidoController extends RestfulController<Pedido> {
     @Override
     protected void deleteResource(Pedido resource) {
         pedidoService.delete(resource)
+    }
+
+    def print(Pedido pedido ) {
+        if(pedido == null){
+            notFound()
+            return
+        }
+        Map repParams = [id: pedido.id]
+        def pdf =  reportService.run('Pedido.jrxml', repParams)
+        render (file: pdf.toByteArray(), contentType: 'application/pdf', filename: 'Pedido.pdf')
     }
 
     def handleException(Exception e) {

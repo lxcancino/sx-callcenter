@@ -30,6 +30,8 @@ export interface CartFormState {
   tipo: TipoDePedido;
   formaDePago: FormaDePago;
   usoDeCfdi: string;
+  cfdiMail?: string;
+  sucursal: string;
 }
 
 export interface AddCartItemDto {

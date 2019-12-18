@@ -15,7 +15,7 @@ import {
   concatMap,
   withLatestFrom
 } from 'rxjs/operators';
-import { of, EMPTY } from 'rxjs';
+import { of } from 'rxjs';
 
 import { ClienteUiService } from '@swrx/clientes';
 import { Pedido } from '@swrx/core-model';
@@ -26,6 +26,7 @@ import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component'
 import { CartEditItemComponent } from '../cart-edit-item/cart-edit-item.component';
 
 import uuidv4 from 'uuid/v4';
+import { EnvioComponent } from '../envio/envio.component';
 
 @Injectable()
 export class CartEffects {
@@ -151,6 +152,35 @@ export class CartEffects {
         map(pedido => this.pedidoFacade.createOrUpdatePedido(pedido))
       ),
     { dispatch: true }
+  );
+
+  envio$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.registrarEnvio),
+        concatMap(action =>
+          of(action).pipe(
+            withLatestFrom(
+              this.store.pipe(select(CartSelectors.getCartState)),
+              this.store.pipe(select(CartSelectors.getCartEntity))
+            )
+          )
+        ),
+        mergeMap(([action, state, entity]) =>
+          this.dialog
+            .open(EnvioComponent, {
+              data: {
+                id: state.pedido ? state.pedido.id : null,
+                changes: entity
+              },
+              width: '750px'
+            })
+            .afterClosed()
+        ),
+        filter(data => !!data)
+        // map(pedido => this.pedidoFacade.createOrUpdatePedido(pedido))
+      ),
+    { dispatch: false }
   );
 
   // endChekout$

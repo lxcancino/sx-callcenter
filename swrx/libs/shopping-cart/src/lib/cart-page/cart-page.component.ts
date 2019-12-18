@@ -12,7 +12,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
-import { TipoDePedido, FormaDePago } from '@swrx/core-model';
+import { TipoDePedido, FormaDePago, Pedido } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-page',
@@ -24,12 +24,56 @@ export class CartPageComponent implements OnInit, OnDestroy {
   cartForm: FormGroup;
   sumary$: Observable<CartSumary> = this.facade.sumary$;
   destroy$ = new Subject<boolean>();
+  pedido$: Observable<Pedido>;
 
   constructor(private fb: FormBuilder, public facade: CartFacade) {}
 
   ngOnInit() {
     this.buildForm();
+    this.registerStateForm();
+    this.registerPedido();
     this.addListeners();
+  }
+
+  private buildForm() {
+    this.cartForm = this.fb.group({
+      sucursal: [null],
+      tipo: [TipoDePedido.CONTADO, [Validators.required]],
+      formaDePago: [null, [Validators.required]],
+      usoDeCfdi: [null, [Validators.required]],
+      cfdiMail: [null, [Validators.email]]
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
+
+  private registerPedido() {
+    this.pedido$ = this.facade.currentPedido;
+    this.pedido$.pipe(takeUntil(this.destroy$)).subscribe(value => {
+      if (value) {
+        this.cartForm.patchValue(value, { emitEvent: false });
+      }
+    });
+  }
+  private registerStateForm() {
+    this.facade.cartStateForm$.subscribe(formState =>
+      this.cartForm.patchValue(formState, { emitEvent: false })
+    );
+  }
+
+  private addListeners() {
+    this.addFormaDePagoListener();
+    this.addTipoDePedidoListener();
+    this.addUsoDeCfdiListener();
+    this.addCfdiMailListener();
+    this.addSucursallListener();
+    this.addClienteListener();
+  }
+
+  private addClienteListener() {
     this.facade.cliente$.pipe(takeUntil(this.destroy$)).subscribe(cte => {
       if (cte.credito) {
         if (cte.credito.postfechado) {
@@ -42,27 +86,6 @@ export class CartPageComponent implements OnInit, OnDestroy {
       }
       this.cartForm.get('cfdiMail').setValue(cte.cfdiMail);
     });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.complete();
-  }
-
-  private buildForm() {
-    this.cartForm = this.fb.group({
-      tipo: [TipoDePedido.CONTADO, [Validators.required]],
-      formaDePago: ['EFECTIVO', [Validators.required]],
-      usoDeCfdi: ['G01', [Validators.required]],
-      cfdiMail: [null, [Validators.email]]
-    });
-  }
-
-  private addListeners() {
-    this.addFormaDePagoListener();
-    this.addTipoDePedidoListener();
-    this.addUsoDeCfdiListener();
-    this.addCfdiMailListener();
   }
 
   private addFormaDePagoListener() {
@@ -91,6 +114,13 @@ export class CartPageComponent implements OnInit, OnDestroy {
       .get('cfdiMail')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(email => this.facade.cambiarMail(email));
+  }
+
+  private addSucursallListener() {
+    this.cartForm
+      .get('sucursal')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(sucursal => this.facade.cambiarSucursal(sucursal));
   }
 
   addCartItem() {

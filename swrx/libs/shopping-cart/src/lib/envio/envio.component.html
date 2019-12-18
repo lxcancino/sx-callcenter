@@ -1,1 +1,8 @@
-<p>envio works!</p>
+<h3>Instrucción de entrega</h3>
+<div class="form" [formGroup]="form"></div>
+<mat-dialog-actions>
+  <button mat-raised-button [mat-dialog-close]>Cancelar</button>
+  <button mat-raised-button color="primary" (click)="doSubmit()">
+    <mat-icon>save</mat-icon> Salvar
+  </button>
+</mat-dialog-actions>

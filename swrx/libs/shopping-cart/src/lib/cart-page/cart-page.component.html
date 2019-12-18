@@ -3,6 +3,7 @@
   <swrx-cart-toolbar [cliente]="facade.cliente$ | async">
     <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
     <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
+    <swrx-sucursal-field [parent]="cartForm"></swrx-sucursal-field>
     <button mat-icon-button (click)="cambiarCliente()" class="action">
       <mat-icon>account_circle</mat-icon>
     </button>
@@ -33,9 +34,18 @@
       [disabled]="(facade.hasErrors$ | async) || sumary.total <= 0.0"
     >
       <div class="checkout-actions">
-        <a mat-raised-button color="accent" [routerLink]="['/shop/cart/new']">
-          <mat-icon>autorenew</mat-icon> Limpiar
-        </a>
+        <button mat-raised-button color="accent" [routerLink]="['/shop/cart']">
+          <mat-icon>autorenew</mat-icon> Nuevo
+        </button>
+        <button mat-raised-button color="warn">
+          <mat-icon>delete</mat-icon> Eliminar
+        </button>
+        <button mat-raised-button [disabled]="facade.isPrintable$ | async">
+          <mat-icon>print</mat-icon> Imprimir
+        </button>
+        <button mat-raised-button color="primary">
+          <mat-icon>send</mat-icon>Cerrar
+        </button>
       </div>
     </swrx-cart-summary>
     <swrx-cart-info [cartForm]="cartForm"></swrx-cart-info>

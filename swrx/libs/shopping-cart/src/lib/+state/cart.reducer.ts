@@ -45,7 +45,7 @@ export interface CartPartialState {
 
 export const initialState: CartState = {
   loading: false,
-  sucursal: 'CALL_CENTER',
+  sucursal: 'CF5FEBRERO',
   cliente: clienteMostrador(),
   tipo: TipoDePedido.CONTADO,
   formaDePago: FormaDePago.EFECTIVO,

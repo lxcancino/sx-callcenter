@@ -40,7 +40,7 @@ class PedidoDet {
     
     String comentario
     Corte corte
-    EnvioUnitario envio
+    
 
     Date dateCreated
     Date lastUpdated
@@ -50,7 +50,8 @@ class PedidoDet {
     Pedido pedido
     static belongsTo = [pedido: Pedido]
 
-    static embedded = ['corte', 'envio']
+    // static embedded = ['corte', 'envio']
+    static embedded = ['corte']
 
     static constraints = {
         id bindable: true
@@ -80,8 +81,8 @@ class Corte {
   }
 
 }
-
+/*
 class EnvioUnitario {
     ClienteDireccion direccion;
     String comentario
-}
+}*/

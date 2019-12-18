@@ -3,7 +3,7 @@ package sx.callcenter
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
-import sx.core.ClienteDireccion
+import sx.core.Direccion
 import sx.core.Transporte
 
 @EqualsAndHashCode(includes='nombre')
@@ -12,7 +12,7 @@ class InstruccionDeEnvio {
 
     String id
     String tipo 
-    ClienteDireccion direccion
+    Direccion direccion
     Transporte transporte
     Pedido pedido
     
@@ -20,6 +20,8 @@ class InstruccionDeEnvio {
     String contacto
     String horario
     String comentario
+
+    static embedded = ['direccion']
     
 
     static constraints = {

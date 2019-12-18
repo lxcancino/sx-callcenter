@@ -125,7 +125,9 @@ export const selectFormState = createSelector(
     return {
       tipo: state.tipo,
       formaDePago: state.formaDePago,
-      usoDeCfdi: state.usoDeCfdi
+      usoDeCfdi: state.usoDeCfdi,
+      cfdiMail: state.cfdiMail,
+      sucursal: state.sucursal
     };
   }
 );
@@ -157,4 +159,9 @@ export const getWarningsCount = createSelector(
 export const hasWarnings = createSelector(
   getWarnings,
   warnings => warnings.length > 0
+);
+
+export const isPrintable = createSelector(
+  selectCurrentPedido,
+  pedido => !!pedido
 );

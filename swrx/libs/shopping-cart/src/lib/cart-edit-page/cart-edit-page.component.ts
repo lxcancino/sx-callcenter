@@ -46,9 +46,11 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
 
   private buildForm() {
     this.cartForm = this.fb.group({
+      sucursal: [null],
       tipo: [null, [Validators.required]],
       formaDePago: [null, [Validators.required]],
-      usoDeCfdi: [null, [Validators.required]]
+      usoDeCfdi: [null, [Validators.required]],
+      cfdiMail: [null]
     });
   }
 
