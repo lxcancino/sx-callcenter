@@ -17,6 +17,10 @@ import round from 'lodash/round';
 import { Corte, TipoDePedido, Producto } from '@swrx/core-model';
 import { CartItem } from '../+state/cart.models';
 
+/**
+ * Descontinuado USAR CartItemForm
+ *
+ */
 @Component({
   selector: 'swrx-cart-edit-item',
   templateUrl: './cart-edit-item.component.html',
@@ -84,9 +88,11 @@ export class CartEditItemComponent implements OnInit, OnDestroy {
 
   private buildCorteForm() {
     this.corteForm = this.fb.group({
+      tantos: [null],
       instruccion: [null, [Validators.required]],
       cantidad: [null, [Validators.required, Validators.min(1)]],
       precio: [10.0, [Validators.required, Validators.min(1)]],
+      importe: [null, [Validators.required, Validators.min(1)]],
       refinado: false,
       limpio: false
     });

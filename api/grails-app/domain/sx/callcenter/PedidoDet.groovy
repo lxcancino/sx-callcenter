@@ -36,10 +36,11 @@ class PedidoDet {
     BigDecimal precioOriginal
     BigDecimal descuentoOriginal
     
+
     BigDecimal importeCortes = 0.0
     
     String comentario
-    Corte corte
+    CorteUnitario corte
     
 
     Date dateCreated
@@ -47,11 +48,13 @@ class PedidoDet {
     String createUser
     String updateUser
 
-    Pedido pedido
+    
     static belongsTo = [pedido: Pedido]
+    
+    // static hasOne = [corte: CorteUnitario]
 
     // static embedded = ['corte', 'envio']
-    static embedded = ['corte']
+    // static embedded = ['corte']
 
     static constraints = {
         id bindable: true
@@ -59,7 +62,6 @@ class PedidoDet {
         presentacion nullable: true, maxSize: 100
         comentario nullable: true
         corte nullable: true
-        envio nullable: true
         createUser nullable: true
         updateUser nullable: true
     }
@@ -71,16 +73,20 @@ class PedidoDet {
     }
 }
 
+/*
 class Corte {
-  double cantidad
+  double tantos
   String instruccion
+  int cantidad
   double precio
+  double importe
   boolean refinado
   static constraints = {
     cantidad minSize: 1
   }
 
 }
+*/
 /*
 class EnvioUnitario {
     ClienteDireccion direccion;

@@ -84,12 +84,19 @@ class Cliente {
         return medios.find{ it.tipo == 'MAIL' && it.cfdi}?.validado
     }
 
-    /*
-    def getAllDirecciones() {
-        def map = this.direcciones.collectEntries {
-             [(it): it.direccion]
+    
+    def selectDirecciones() {
+        def dd = this.direccion
+        Map dirs = [:]
+        if(dd) {
+            dirs << ["${dd?.calle?.trim()?.take(10)} #:${dd?.numeroExterior} CP:${dd?.codigoPostal}": dd ]
+        } 
+        direcciones.each {
+            def d = it.direccion
+            dirs << ["${d.trim().take(10)} Y#:${d.numeroExterior} CP:${d.codigoPostal}": d ]
         }
+        return dirs
     }
-    */
+    
 
 }

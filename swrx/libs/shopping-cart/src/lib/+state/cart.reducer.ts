@@ -49,7 +49,7 @@ export const initialState: CartState = {
   cliente: clienteMostrador(),
   tipo: TipoDePedido.CONTADO,
   formaDePago: FormaDePago.EFECTIVO,
-  usoDeCfdi: 'G01',
+  usoDeCfdi: null,
   items: keyBy([], 'id'),
   validationErrors: [],
   warrnings: []
@@ -115,9 +115,16 @@ const cartReducer = createReducer(
     );
     return { ...state, items };
   }),
-  on(CartActions.editItemSuccess, (state, { item }) => ({
-    ...state
-  })),
+  on(CartActions.editItemSuccess, (state, { item }) => {
+    const items = {
+      ...state.items,
+      [item.id]: item
+    };
+    return {
+      ...state,
+      items
+    };
+  }),
   on(CartActions.loadPedidoSucces, (state, { pedido }) => {
     const items = keyBy(pedido.partidas, 'id');
     return {

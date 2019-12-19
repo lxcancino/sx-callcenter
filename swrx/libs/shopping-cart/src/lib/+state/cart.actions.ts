@@ -60,8 +60,7 @@ export const cambiarSucursal = createAction(
   props<{ sucursal: string }>()
 );
 export const recalcularPartidas = createAction(
-  '[ShoppingCart Effects] Recalcular Partidas',
-  props<{ items: PedidoDet[] }>()
+  '[ShoppingCart Effects] Recalcular Partidas'
 );
 export const startCheckout = createAction('[ShoppingCartPage] Start Checkout');
 

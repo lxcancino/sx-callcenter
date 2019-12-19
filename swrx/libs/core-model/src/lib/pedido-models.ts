@@ -87,9 +87,11 @@ export interface PedidoDet {
 }
 
 export interface Corte {
-  cantidad: number;
+  tantos: number;
   instruccion: string;
+  cantidad: number;
   precio: number;
+  importe: number;
   limpio: boolean;
   refinado: boolean;
 }

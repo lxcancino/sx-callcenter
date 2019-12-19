@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
-  OnDestroy
+  OnDestroy,
+  HostListener
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -133,5 +134,14 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   onCheckout() {
     this.facade.startCheckout();
+  }
+
+  @HostListener('document:keydown.meta.i', ['$event'])
+  onHotKeyInsert(event) {
+    this.addCartItem();
+  }
+  @HostListener('document:keydown.insert', ['$event'])
+  onHotKeyInsert2(event) {
+    this.addCartItem();
   }
 }

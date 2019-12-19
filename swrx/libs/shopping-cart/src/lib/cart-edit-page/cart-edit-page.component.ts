@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
-  OnDestroy
+  OnDestroy,
+  HostListener
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -32,6 +33,7 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.buildForm();
     this.addListeners();
     this.pedido$ = this.facade.currentPedido;
+    this.pedido$.subscribe(p => console.log('Editando: ', p));
     this.pedido$.pipe(takeUntil(this.destroy$)).subscribe(value => {
       if (value) {
         this.cartForm.patchValue(value, { emitEvent: false });
@@ -91,5 +93,14 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
 
   onCheckout() {
     this.facade.startCheckout();
+  }
+
+  @HostListener('document:keydown.meta.i', ['$event'])
+  onHotKeyInsert(event) {
+    this.addCartItem();
+  }
+  @HostListener('document:keydown.insert', ['$event'])
+  onHotKeyInsert2(event) {
+    this.addCartItem();
   }
 }

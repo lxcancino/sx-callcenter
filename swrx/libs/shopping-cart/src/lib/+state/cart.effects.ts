@@ -15,107 +15,66 @@ import {
   concatMap,
   withLatestFrom
 } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 
+import {
+  notNull,
+  cartState,
+  reactiveCartActions,
+  newItem,
+  envioData
+} from './cart-operators';
 import { ClienteUiService } from '@swrx/clientes';
-import { Pedido } from '@swrx/core-model';
 import { PedidosFacade } from '@swrx/pedidos';
 import { CartItem } from './cart.models';
 import { CartAddItemComponent } from '../cart-add-item/cart-add-item.component';
 import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
-import { CartEditItemComponent } from '../cart-edit-item/cart-edit-item.component';
+import { EnvioComponent } from '../envio/envio.component';
 
 import uuidv4 from 'uuid/v4';
-import { EnvioComponent } from '../envio/envio.component';
 
 @Injectable()
 export class CartEffects {
-  cambiarCliente$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.cambiarCliente),
-        mergeMap(() => this.clienteUi.seleccionarCliente()),
-        filter(cliente => !!cliente),
-        map(cliente => CartActions.cambiarClienteSuccess({ cliente }))
-      ),
-    { dispatch: true }
+  cambiarCliente$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.cambiarCliente),
+      mergeMap(() => this.clienteUi.seleccionarCliente()),
+      filter(cliente => !!cliente),
+      map(cliente => CartActions.cambiarClienteSuccess({ cliente }))
+    )
   );
 
-  addCartItem$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.addCartItem),
-        mergeMap(() =>
-          this.dialog
-            .open(CartAddItemComponent, { data: {}, width: '750px' })
-            .afterClosed()
-        ),
-        filter(item => !!item),
-        tap((item: CartItem) => {
-          item.id = uuidv4();
-          if (item.corte && item.corte.cantidad > 0) {
-            const { cantidad, precio } = item.corte;
-            const importe = cantidad * precio;
-            item.importeCortes = importe;
-          }
-        }),
-        map((item: CartItem) => CartActions.addCartItemSuccess({ item }))
-      ),
-    { dispatch: true }
+  addCartItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.addCartItem),
+      cartState(this.store),
+      map(([action, state]) => ({ item: action.item, tipo: state.tipo })),
+      this.inDialog(CartAddItemComponent),
+      notNull(),
+      newItem,
+      map(item => CartActions.addCartItemSuccess({ item }))
+    )
   );
 
-  editItem$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.editItem),
-        concatMap(action =>
-          of(action).pipe(
-            withLatestFrom(this.store.pipe(select(CartSelectors.getCartState)))
-          )
-        ),
-        mergeMap(([action, state]) =>
-          this.dialog
-            .open(CartEditItemComponent, {
-              data: { tipo: state.tipo, item: action.item },
-              width: '750px'
-            })
-            .afterClosed()
-        ),
-        tap(res => {
-          console.log('Cambios: ', res);
-        })
-        // filter(changes => !!changes),
-        // map((changes: CartItemDto) => CartActions.editItemSuccess({ changes }))
-      ),
-    { dispatch: false }
+  editItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.editItem),
+      cartState(this.store),
+      map(([action, state]) => ({ item: action.item, tipo: state.tipo })),
+      this.inDialog(CartAddItemComponent),
+      notNull(),
+      map(item => CartActions.editItemSuccess({ item }))
+    )
   );
 
-  recalcular$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(
-          CartActions.cambiarTipo,
-          CartActions.cambiarClienteSuccess,
-          CartActions.addCartItemSuccess,
-          CartActions.deleteItem,
-          CartActions.editItemSuccess,
-          CartActions.cambiarFormaDePago
-        ),
-        concatMap(action =>
-          of(action).pipe(
-            withLatestFrom(
-              this.store.pipe(select(CartSelectors.getCartState)),
-              this.store.pipe(select(CartSelectors.getCartItems)),
-              this.store.pipe(select(CartSelectors.getDescuento))
-            )
-          )
-        ),
-        map(([action, state, items]) => {
-          console.log('Recalcular partidas detonado por: ', action.type);
-          return CartActions.recalcularPartidas({ items });
-        })
+  recalcular$ = createEffect(() =>
+    this.actions$.pipe(
+      reactiveCartActions,
+      tap(action =>
+        console.log('Recalcular partidas detonado por: ', action.type)
       ),
-    { dispatch: true }
+      map(() => CartActions.recalcularPartidas())
+    )
   );
 
   validar$ = createEffect(() =>
@@ -125,59 +84,43 @@ export class CartEffects {
     )
   );
 
-  startCheckout$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.startCheckout),
-        concatMap(action =>
-          of(action).pipe(
-            withLatestFrom(
-              this.store.pipe(select(CartSelectors.getCartState)),
-              this.store.pipe(select(CartSelectors.getCartEntity))
-            )
+  startCheckout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.startCheckout),
+      concatMap(action =>
+        of(action).pipe(
+          withLatestFrom(
+            this.store.pipe(select(CartSelectors.getCartState)),
+            this.store.pipe(select(CartSelectors.getCartEntity))
           )
-        ),
-        mergeMap(([action, state, entity]) =>
-          this.dialog
-            .open(CartCheckoutComponent, {
-              data: {
-                id: state.pedido ? state.pedido.id : null,
-                changes: entity
-              },
-              width: '750px'
-            })
-            .afterClosed()
-        ),
-        filter(data => !!data),
-        map(pedido => this.pedidoFacade.createOrUpdatePedido(pedido))
+        )
       ),
-    { dispatch: true }
+      map(([action, state, entity]) => {
+        return {
+          id: state.pedido ? state.pedido.id : null,
+          changes: entity
+        };
+      }),
+      mergeMap(data =>
+        this.dialog
+          .open(CartCheckoutComponent, {
+            data,
+            width: '750px'
+          })
+          .afterClosed()
+      ),
+      filter(data => !!data),
+      map(pedido => this.pedidoFacade.createOrUpdatePedido(pedido))
+    )
   );
 
   envio$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(CartActions.registrarEnvio),
-        concatMap(action =>
-          of(action).pipe(
-            withLatestFrom(
-              this.store.pipe(select(CartSelectors.getCartState)),
-              this.store.pipe(select(CartSelectors.getCartEntity))
-            )
-          )
-        ),
-        mergeMap(([action, state, entity]) =>
-          this.dialog
-            .open(EnvioComponent, {
-              data: {
-                id: state.pedido ? state.pedido.id : null,
-                changes: entity
-              },
-              width: '750px'
-            })
-            .afterClosed()
-        ),
-        filter(data => !!data)
+        envioData(this.store),
+        this.inDialog(EnvioComponent),
+        notNull()
         // map(pedido => this.pedidoFacade.createOrUpdatePedido(pedido))
       ),
     { dispatch: false }
@@ -192,4 +135,21 @@ export class CartEffects {
     private store: Store<CartState>,
     private pedidoFacade: PedidosFacade //
   ) {}
+
+  private inDialog(component: any) {
+    return mergeMap(data => this.openDialog(component, data));
+  }
+
+  private openDialog(
+    component: any,
+    data: any,
+    width = '750px'
+  ): Observable<any> {
+    return this.dialog
+      .open(component, {
+        data,
+        width
+      })
+      .afterClosed();
+  }
 }

@@ -47,6 +47,9 @@ class PedidoController extends RestfulController<Pedido> {
         res.status = 'PEDIDO'
         res.createUser = 'TEMPO'
         res.updateUser = 'TEMPO'
+        res.partidas.each {
+            println 'Corte: ' + it.corte
+        }
         return res
     }
 

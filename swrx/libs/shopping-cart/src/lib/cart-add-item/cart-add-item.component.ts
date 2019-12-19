@@ -13,8 +13,9 @@ import { takeUntil, map, startWith } from 'rxjs/operators';
 
 import round from 'lodash/round';
 
-import { PedidoDet, Corte } from '@swrx/core-model';
+import { PedidoDet, Corte, TipoDePedido } from '@swrx/core-model';
 import { buildCartItem } from '../+state/cart.utils';
+import { CartItem } from '../+state/cart.models';
 
 @Component({
   selector: 'swrx-cart-add-item',
@@ -23,9 +24,9 @@ import { buildCartItem } from '../+state/cart.utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartAddItemComponent implements OnInit, OnDestroy {
-  item: any;
+  item: CartItem;
   form: FormGroup;
-  credito: boolean;
+  tipo: TipoDePedido;
   destroy$ = new Subject<boolean>();
   filteredOptions: Observable<string[]>;
 
@@ -46,11 +47,17 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
     private dialoRef: MatDialogRef<CartAddItemComponent>,
     private fb: FormBuilder
   ) {
-    this.credito = data.credito || false;
-    this.buildForm();
+    this.tipo = data.tipo;
+    this.item = data.item || null;
+    
   }
 
   ngOnInit() {
+    this.buildForm();
+    if (this.item) {
+      this.form.patchValue(this.item);
+      console.log('Editando CartItem: ', this.item);
+    }
     this.filteredOptions = this.form
       .get('corte')
       .get('instruccion')
@@ -75,6 +82,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
       corte: this.fb.group({
         instruccion: [null],
         cantidad: [0],
+        tantos: [null],
         precio: [0.0],
         refinado: false,
         limpio: false
@@ -92,13 +100,14 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
       .get('producto')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(prod => {
-        if (this.credito) {
+        if (this.tipo === TipoDePedido.CREDITO) {
           this.form.get('precio').setValue(prod.precioCredito);
         } else {
           this.form.get('precio').setValue(prod.precioContado);
         }
       });
   }
+
   private addCantidadListener() {
     this.form
       .get('cantidad')
@@ -125,16 +134,15 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.form.valid) {
       const { producto, cantidad, precio, corte } = this;
-      const emptyItem = buildCartItem(producto);
+      
+      const emptyItem = this.item ? this.item : buildCartItem(producto);
+      
       const item: PedidoDet = {
         ...emptyItem,
         cantidad,
-        precio
+        precio,
+        corte
       };
-      if (corte) {
-        const instruccion = corte.instruccion.toUpperCase(); // small fix por que swrxUpperCase tiene un Bug
-        item.corte = { ...corte, instruccion };
-      }
       this.dialoRef.close(item);
     }
   }
@@ -156,6 +164,9 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   get corte(): Corte {
     const corte = this.form.get('corte').value;
     if (corte.cantidad && corte.cantidad > 0) {
+      const { cantidad, precio, instruccion } = corte;
+      corte.importe = cantidad * precio;
+      corte.instruccion = instruccion.toUpperCase(); // small fix por que swrxUpperCase tiene un Bug
       return corte;
     } else {
       return null;

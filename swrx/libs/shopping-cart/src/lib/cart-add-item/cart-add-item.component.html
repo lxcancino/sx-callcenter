@@ -1,13 +1,20 @@
-<h3>Partida del pedido</h3>
+<h3 *ngIf="item; else addItem">
+  Modificar: {{ item?.producto?.clave }} ({{
+    tipo === 'CON' ? 'CONTADO' : 'CEREDITO'
+  }})
+</h3>
+<ng-template #addItem>
+  <h3>Agregar producto</h3>
+</ng-template>
 <mat-dialog-content>
   <mat-divider></mat-divider>
   <div class="item-form" [formGroup]="form">
     <div class="corte-container" formGroupName="corte">
       <div class="corte-form">
         <swrx-numeric-field
-          class="cantidad"
-          formControlName="cantidad"
-          label="Cantidad"
+          class="tantos"
+          formControlName="tantos"
+          label="Tamaños"
           decimals="0"
         ></swrx-numeric-field>
         <mat-form-field class="instruccion">
@@ -27,7 +34,12 @@
             {{ option }}
           </mat-option>
         </mat-autocomplete>
-
+        <swrx-numeric-field
+          class="cantidad"
+          formControlName="cantidad"
+          label="Cortes"
+          decimals="0"
+        ></swrx-numeric-field>
         <swrx-numeric-field
           class="precio"
           formControlName="precio"
