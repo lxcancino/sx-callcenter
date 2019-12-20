@@ -1,1 +1,68 @@
-<p>direccion-form works!</p>
+<div class="form" [formGroup]="parent">
+  <div [formGroupName]="propertyName">
+    <div class="row">
+      <mat-form-field class="calle">
+        <input
+          matInput
+          type="text"
+          formControlName="calle"
+          placeholder="Calle"
+          swrxUpperCase
+        />
+      </mat-form-field>
+      <mat-form-field id="numeroExterior">
+        <input matInput formControlName="numeroExterior" placeholder="# Ext" />
+      </mat-form-field>
+      <mat-form-field id="numeroInterior">
+        <input matInput formControlName="numeroInterior" placeholder="# Int" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field id="codigoPostal">
+        <input
+          type="text"
+          matInput
+          placeholder="Código Postal"
+          formControlName="codigoPostal"
+        />
+      </mat-form-field>
+      <mat-form-field class="calle">
+        <input
+          matInput
+          type="text"
+          formControlName="colonia"
+          placeholder="Colonia"
+        />
+      </mat-form-field>
+      <mat-form-field class="municipio">
+        <input
+          matInput
+          type="text"
+          formControlName="monicipio"
+          placeholder="Municipio"
+        />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="estado">
+        <input
+          matInput
+          type="text"
+          formControlName="estado"
+          placeholder="Estado"
+          swrxUpperCase
+        />
+      </mat-form-field>
+      <mat-form-field class="pais">
+        <input
+          matInput
+          type="text"
+          formControlName="pais"
+          placeholder="Pais"
+          swrxUpperCase
+        />
+      </mat-form-field>
+    </div>
+  </div>
+</div>

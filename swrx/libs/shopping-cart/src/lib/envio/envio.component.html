@@ -1,8 +1,75 @@
-<h3>Instrucción de entrega</h3>
-<div class="form" [formGroup]="form"></div>
+<h3>Asignación de envio</h3>
+<div class="form" [formGroup]="form">
+  <mat-form-field appearance="fill">
+    <mat-label>Tipo</mat-label>
+    <mat-select placeholder="Tipo de envio" formControlName="tipo">
+      <mat-option *ngFor="let d of tipos" [value]="d">
+        {{ d }}
+      </mat-option>
+      <mat-option value="NUEVA">Registrar nueva dirección</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Dirección registrada</mat-label>
+    <mat-select
+      placeholder="Seleccione una direccion registrada"
+      (selectionChange)="onSelect($event)"
+    >
+      <mat-option *ngFor="let d of direccionesNombre" [value]="d">
+        {{ d }}
+      </mat-option>
+      <mat-option value="NUEVA">Registrar nueva dirección</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="direccion" [ngClass]="{ valid: isDirectionValid() }">
+    <swrx-direccion-form [parent]="form"></swrx-direccion-form>
+  </div>
+  <div class="row">
+    <mat-form-field class="contacto">
+      <input
+        matInput
+        fomrControlName="contacto"
+        placeholder="Contacto"
+        autocomplete="off"
+      />
+    </mat-form-field>
+    <mat-form-field class="telefono">
+      <input
+        matInput
+        fomrControlName="telefono"
+        placeholder="Telefono"
+        autocomplete="off"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        fomrControlName="horario"
+        placeholder="Horario"
+        autocomplete="off"
+      />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="comentario">
+      <input
+        matInput
+        fomrControlName="comentario"
+        placeholder="Comentario"
+        autocomplete="off"
+      />
+    </mat-form-field>
+  </div>
+</div>
+
 <mat-dialog-actions>
   <button mat-raised-button [mat-dialog-close]>Cancelar</button>
-  <button mat-raised-button color="primary" (click)="doSubmit()">
-    <mat-icon>save</mat-icon> Salvar
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="doSubmit()"
+    [disabled]="form.invalid || form.pristine"
+  >
+    <fa-icon icon="truck-loading"></fa-icon> Asignar
   </button>
 </mat-dialog-actions>

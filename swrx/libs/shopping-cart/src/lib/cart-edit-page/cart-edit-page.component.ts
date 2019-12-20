@@ -33,7 +33,6 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.buildForm();
     this.addListeners();
     this.pedido$ = this.facade.currentPedido;
-    this.pedido$.subscribe(p => console.log('Editando: ', p));
     this.pedido$.pipe(takeUntil(this.destroy$)).subscribe(value => {
       if (value) {
         this.cartForm.patchValue(value, { emitEvent: false });

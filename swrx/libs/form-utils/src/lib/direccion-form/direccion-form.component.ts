@@ -1,4 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input
+} from '@angular/core';
+
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'swrx-direccion-form',
@@ -7,10 +14,10 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DireccionFormComponent implements OnInit {
+  @Input() parent: FormGroup;
+  @Input() propertyName = 'direccion';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

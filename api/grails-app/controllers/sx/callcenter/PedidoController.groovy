@@ -44,12 +44,9 @@ class PedidoController extends RestfulController<Pedido> {
         Pedido res = new Pedido()
         bindData res, getObjectToBind()
         res.folio = -1L
-        res.status = 'PEDIDO'
+        res.status = 'COTIZACION'
         res.createUser = 'TEMPO'
         res.updateUser = 'TEMPO'
-        res.partidas.each {
-            println 'Corte: ' + it.corte
-        }
         return res
     }
 
@@ -58,7 +55,8 @@ class PedidoController extends RestfulController<Pedido> {
         String id = params.id as String
         Pedido pedido = Pedido.get(id)
         bindData pedido, getObjectToBind()
-        pedido = pedidoService.update(pedido)
+        log.info('Partidas: {}', pedido.partidas.size())
+        pedido = pedidoService.save(pedido)
         respond pedido, view: 'show'
     }
 

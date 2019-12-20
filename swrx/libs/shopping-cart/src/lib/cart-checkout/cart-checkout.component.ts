@@ -16,10 +16,12 @@ import { Pedido } from '@swrx/core-model';
 export class CartCheckoutComponent implements OnInit {
   id: string;
   changes: Partial<Pedido>;
-  
 
   constructor(
-    private dialogRef: MatDialogRef<CartCheckoutComponent, {id: string, changes: Partial<Pedido>}>,
+    private dialogRef: MatDialogRef<
+      CartCheckoutComponent,
+      { id: string; changes: Partial<Pedido> }
+    >,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {
     this.id = data.id;
@@ -29,6 +31,6 @@ export class CartCheckoutComponent implements OnInit {
   ngOnInit() {}
 
   doSubmit() {
-    this.dialogRef.close({id: this.id, changes: this.changes});
+    this.dialogRef.close({ id: this.id, changes: this.changes });
   }
 }

@@ -1,6 +1,11 @@
-<h3 matDialogTitle>
-  Finalizar Pedido
-</h3>
+<span matDialogTitle>
+  <span *ngIf="id; else alta">
+    Actualizar pedido
+  </span>
+  <ng-template #alta>
+    Generando pedido
+  </ng-template>
+</span>
 <mat-divider></mat-divider>
 <mat-dialog-content>
   <pre>

@@ -22,7 +22,7 @@ export class PedidosFacade {
   createOrUpdatePedido(data: { id: string; changes: Pedido }) {
     if (data.id) {
       return PedidosActions.updatePedido({
-        pedido: { id: data.id, changes: data.changes }
+        update: { id: data.id, changes: data.changes }
       });
     } else {
       return PedidosActions.createPedido({ pedido: data.changes });

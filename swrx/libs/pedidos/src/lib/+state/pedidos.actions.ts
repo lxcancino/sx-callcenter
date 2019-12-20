@@ -28,7 +28,7 @@ export const createPedidoSuccess = createAction(
 
 export const updatePedido = createAction(
   '[ShoppingCart Edit Page] Update Pedido',
-  props<{ pedido: Update<Pedido> }>()
+  props<{ update: Update<Pedido> }>()
 );
 export const updatePedidoFail = createAction(
   '[Pedidos API] Update Pedido fail',
@@ -51,5 +51,3 @@ export const deletePedidoSuccess = createAction(
   '[Pedidos API] Delete Pedido success',
   props<{ pedido: Pedido }>()
 );
-
-

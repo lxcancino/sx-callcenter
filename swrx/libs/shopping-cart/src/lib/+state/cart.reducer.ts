@@ -28,7 +28,7 @@ export interface CartState {
   cliente: Partial<Cliente>;
   tipo: TipoDePedido;
   formaDePago: FormaDePago;
-  usoDeCfdi: string;
+  usoDeCfdi?: string;
   cfdiMail?: string;
   items: { [id: string]: CartItem };
   loading: boolean;
@@ -49,10 +49,10 @@ export const initialState: CartState = {
   cliente: clienteMostrador(),
   tipo: TipoDePedido.CONTADO,
   formaDePago: FormaDePago.EFECTIVO,
-  usoDeCfdi: null,
   items: keyBy([], 'id'),
   validationErrors: [],
-  warrnings: []
+  warrnings: [],
+  envio: undefined
 };
 
 const cartReducer = createReducer(
@@ -107,6 +107,10 @@ const cartReducer = createReducer(
     ...state,
     cfdiMail: email
   })),
+  on(CartActions.registrarEnvioSuccess, (state, { envio }) => ({
+    ...state,
+    envio
+  })),
   on(CartActions.recalcularPartidas, state => {
     const partidas = values(state.items);
     const items = keyBy(
@@ -137,7 +141,8 @@ const cartReducer = createReducer(
       sucursal: pedido.sucursal,
       usoDeCfdi: pedido.usoDeCfdi,
       cfdiMail: pedido.cfdiMail,
-      items
+      items,
+      envio: pedido.envio
     };
   }),
   on(CartActions.cleanShoppingCart, state => ({

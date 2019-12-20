@@ -16,9 +16,6 @@ export class PedidosEffects {
     this.dataPersistence.navigation(PedidosPageComponent, {
       run: (a: ActivatedRouteSnapshot, state: PedidosPartialState) => {
         console.log('Cargando los pedidos....');
-
-        // .pipe(map( pedidos => PedidosActions.loadPedidosSuccess({ pedidos }))
-        // return PedidosActions.loadPedidosSuccess({ pedidos: [] });
         return this.service
           .list()
           .pipe(map(pedidos => PedidosActions.loadPedidosSuccess({ pedidos })));
@@ -48,6 +45,27 @@ export class PedidosEffects {
         error
       ) => {
         console.error('Error salvando pedido Error: ', error);
+        return PedidosActions.createPedidoFail({ error });
+      }
+    })
+  );
+  updatePedido$ = createEffect(() =>
+    this.dataPersistence.pessimisticUpdate(PedidosActions.updatePedido, {
+      run: (
+        action: ReturnType<typeof PedidosActions.updatePedido>,
+        state: PedidosPartialState
+      ) => {
+        console.log('Actualizamdo pedido: ', action.update);
+        return this.service
+          .update(action.update)
+          .pipe(map(pedido => PedidosActions.updatePedidoSuccess({ pedido })));
+      },
+
+      onError: (
+        action: ReturnType<typeof PedidosActions.updatePedido>,
+        error
+      ) => {
+        console.error('Actualizando pedido Error: ', error);
         return PedidosActions.createPedidoFail({ error });
       }
     })

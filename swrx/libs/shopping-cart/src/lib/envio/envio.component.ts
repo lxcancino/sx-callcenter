@@ -9,7 +9,9 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { Direccion, Cliente, buildDireccionEmpty } from '@swrx/core-model';
+import { buildDireccionForm } from '@swrx/form-utils';
 
 @Component({
   selector: 'swrx-envio',
@@ -20,25 +22,61 @@ import { Subject } from 'rxjs';
 export class EnvioComponent implements OnInit {
   form: FormGroup;
   destroy$ = new Subject();
+  cliente: Cliente;
+  direcciones: {};
+
+  nueva = false;
+  tipos = ['ENVIO', 'FORANEO', 'OCURRE', 'ENVIO_CARGO'];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) data: any,
+    @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<EnvioComponent>,
     private fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.buildForm();
+    this.cliente = this.data.cliente;
+    this.direcciones = this.cliente.direcciones || {};
   }
 
   buildForm() {
-    this.form = this.fb.group({});
+    this.form = this.fb.group({
+      tipo: [],
+      contacto: [],
+      telefono: [],
+      horario: [],
+      comentario: [],
+      direccion: buildDireccionForm(this.fb)
+    });
+    // this.form.get('direccion').disable();
+  }
+
+  onSelect(event: any) {
+    if (event.value === 'NUEVA') {
+      this.form.get('direccion').enable();
+      this.form.get('direccion').reset();
+      this.nueva = true;
+    } else {
+      const selected = this.direcciones[event.value];
+      this.form.get('direccion').patchValue(selected, { emitEvent: false });
+      this.form.get('direccion').disable();
+      this.nueva = false;
+    }
+  }
+
+  get direccionesNombre() {
+    return Object.keys(this.direcciones);
   }
 
   doSubmit() {
     if (this.form.valid) {
-      const data = { ...this.form.value };
+      const data = { ...this.form.getRawValue() };
       this.dialogRef.close(data);
     }
+  }
+
+  isDirectionValid() {
+    return this.form.get('direccion').valid;
   }
 }

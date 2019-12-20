@@ -13,7 +13,6 @@ import { CartState } from './cart.reducer';
 import { ofType } from '@ngrx/effects';
 import * as CartActions from './cart.actions';
 import { CartItem } from './cart.models';
-import { MatDialog } from '@angular/material';
 
 import uuidv4 from 'uuid/v4';
 
@@ -79,17 +78,34 @@ export const newItem = pipe(
   })
 );
 
-export const envioData = (store: Store<CartState>) =>
+/**
+ * Slice of CartState related to Envio
+ * @param store
+ */
+export const envioState = (store: Store<CartState>) =>
   pipe(
     concatMap(action =>
       of(action).pipe(
-        withLatestFrom(
-          store.pipe(select(CartSelectors.getCartState)),
-          store.pipe(select(CartSelectors.getCartEntity))
-        ),
-        map(([action, state, entity]) => {
+        withLatestFrom(store.pipe(select(CartSelectors.getCartState))),
+        map(([, state]) => {
           return {
-            id: state.pedido ? state.pedido.id : null,
+            pedido: state.pedido,
+            envio: state.envio,
+            cliente: state.cliente
+          };
+        })
+      )
+    )
+  );
+
+export const pedidoState = (store: Store<CartState>) =>
+  pipe(
+    concatMap(action =>
+      of(action).pipe(
+        withLatestFrom(store.pipe(select(CartSelectors.getPersistenceState))),
+        map(([, entity]) => {
+          return {
+            id: entity.id,
             changes: entity
           };
         })

@@ -14,7 +14,8 @@ class InstruccionDeEnvio {
     String tipo 
     Direccion direccion
     Transporte transporte
-    Pedido pedido
+    
+    // Pedido pedido
     
     String telefono
     String contacto
@@ -27,6 +28,10 @@ class InstruccionDeEnvio {
     static constraints = {
         tipo inList: ['ENVIO', 'FORANEO', 'OCURRE', 'ENVIO_CARGO']
         transporte nullable: true
+        telefono nullable: true
+        contacto nullable: true
+        horario nullable: true
+        comentario nullable: true
     }
 
     static belongsTo = [pedido: Pedido]

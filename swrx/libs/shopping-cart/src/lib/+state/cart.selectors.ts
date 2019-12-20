@@ -46,7 +46,7 @@ export const getCartSumary = createSelector(
   (items): CartSumary => buildCartSumary(items)
 );
 
-export const getCartEntity = createSelector(
+export const getPersistenceState = createSelector(
   getCartState,
   getCliente,
   getCartItems,
@@ -164,4 +164,9 @@ export const hasWarnings = createSelector(
 export const isPrintable = createSelector(
   selectCurrentPedido,
   pedido => !!pedido
+);
+
+export const selectEnvio = createSelector(
+  getCartState,
+  state => state.envio
 );

@@ -189,6 +189,31 @@ export function buildPedidoEntity(
   items: PedidoDet[],
   sumary: CartSumary
 ): Pedido {
+  if (state.pedido) {
+    const pedido = {
+      ...state.pedido,
+      sucursal: state.sucursal,
+      tipo: state.tipo,
+      formaDePago: state.formaDePago,
+      usoDeCfdi: state.usoDeCfdi,
+      cfdiMail: state.cfdiMail,
+      cliente: { id: cliente.id },
+      nombre: cliente.nombre,
+      rfc: cliente.rfc,
+      partidas: items,
+      kilos: sumBy(items, 'kilos'),
+      envio: state.envio,
+      ...sumary
+    };
+    return pedido;
+  } else {
+    return buildNewPedido(state, sumary);
+  }
+}
+
+export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
+  const cliente = state.cliente;
+  const items = Object.values(state.items);
   return {
     fecha: new Date().toISOString(),
     sucursal: state.sucursal,

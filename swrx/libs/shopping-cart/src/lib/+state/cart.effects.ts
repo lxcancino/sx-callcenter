@@ -1,20 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { CartState } from './cart.reducer';
 import * as CartActions from './cart.actions';
-import * as CartSelectors from './cart.selectors';
 
-import {
-  mergeMap,
-  filter,
-  map,
-  tap,
-  concatMap,
-  withLatestFrom
-} from 'rxjs/operators';
+import { mergeMap, filter, map, tap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
 import {
@@ -22,16 +14,16 @@ import {
   cartState,
   reactiveCartActions,
   newItem,
-  envioData
+  envioState,
+  pedidoState
 } from './cart-operators';
 import { ClienteUiService } from '@swrx/clientes';
 import { PedidosFacade } from '@swrx/pedidos';
-import { CartItem } from './cart.models';
+
 import { CartAddItemComponent } from '../cart-add-item/cart-add-item.component';
 import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
 import { EnvioComponent } from '../envio/envio.component';
-
-import uuidv4 from 'uuid/v4';
+import { InstruccionDeEnvio } from '@swrx/core-model';
 
 @Injectable()
 export class CartEffects {
@@ -87,46 +79,29 @@ export class CartEffects {
   startCheckout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.startCheckout),
-      concatMap(action =>
-        of(action).pipe(
-          withLatestFrom(
-            this.store.pipe(select(CartSelectors.getCartState)),
-            this.store.pipe(select(CartSelectors.getCartEntity))
-          )
-        )
-      ),
-      map(([action, state, entity]) => {
-        return {
-          id: state.pedido ? state.pedido.id : null,
-          changes: entity
-        };
-      }),
-      mergeMap(data =>
-        this.dialog
-          .open(CartCheckoutComponent, {
-            data,
-            width: '750px'
-          })
-          .afterClosed()
-      ),
-      filter(data => !!data),
-      map(pedido => this.pedidoFacade.createOrUpdatePedido(pedido))
+      pedidoState(this.store),
+      this.inDialog(CartCheckoutComponent),
+      notNull(),
+      map((data: any) =>
+        this.pedidoFacade.createOrUpdatePedido({
+          id: data.id,
+          changes: data.changes
+        })
+      )
     )
   );
 
-  envio$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.registrarEnvio),
-        envioData(this.store),
-        this.inDialog(EnvioComponent),
-        notNull()
-        // map(pedido => this.pedidoFacade.createOrUpdatePedido(pedido))
-      ),
-    { dispatch: false }
+  envio$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.registrarEnvio),
+      envioState(this.store),
+      this.inDialog(EnvioComponent),
+      notNull(),
+      map((envio: InstruccionDeEnvio) =>
+        CartActions.registrarEnvioSuccess({ envio })
+      )
+    )
   );
-
-  // endChekout$
 
   constructor(
     private actions$: Actions,

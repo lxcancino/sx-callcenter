@@ -33,6 +33,7 @@ export class CartFacade {
   warningsCount$ = this.store.pipe(select(CartSelectors.getWarningsCount));
   hasWarnings$ = this.store.pipe(select(CartSelectors.hasWarnings));
   isPrintable$ = this.store.pipe(select(CartSelectors.isPrintable));
+  envio$ = this.store.pipe(select(CartSelectors.selectEnvio));
 
   constructor(private store: Store<fromCart.CartState>) {
     this.store.pipe(select(CartSelectors.getCartSumary));

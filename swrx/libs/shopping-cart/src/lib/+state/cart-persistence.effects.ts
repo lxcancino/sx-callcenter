@@ -22,9 +22,10 @@ export class CartPersistenceEffects {
   editPedido$ = createEffect(() =>
     this.dataPersistence.navigation(CartEditPageComponent, {
       run: (a: ActivatedRouteSnapshot, state: CartPartialState) => {
-        return this.pedidoService
-          .get(a.params['id'])
-          .pipe(map(pedido => CartActions.loadPedidoSucces({ pedido })));
+        return this.pedidoService.get(a.params['id']).pipe(
+          tap(pedido => console.log('Editando pedido: ', pedido)),
+          map(pedido => CartActions.loadPedidoSucces({ pedido }))
+        );
       },
       onError: (a: ActivatedRouteSnapshot, e: any) => {
         console.error('Pedidos not loaded....');
