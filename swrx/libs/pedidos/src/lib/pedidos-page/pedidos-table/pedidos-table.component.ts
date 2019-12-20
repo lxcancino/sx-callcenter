@@ -55,6 +55,9 @@ export class PedidosTableComponent implements OnInit {
       resizable: true
     };
     this.gridOptions.getRowStyle = this.buildRowStyle.bind(this);
+    this.gridOptions.onCellMouseOver = event => {
+      console.log('Mouse over: ', event);
+    };
   }
 
   buildRowStyle(params: any) {

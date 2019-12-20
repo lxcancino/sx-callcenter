@@ -10,6 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import * as fromPedidos from './+state/pedidos.reducer';
 import { PedidosEffects } from './+state/pedidos.effects';
 import { PedidosFacade } from './+state/pedidos.facade';
+import { AltPedidoComponent } from './alt-pedido/alt-pedido.component';
 
 export const routes: Route[] = [
   {
@@ -22,7 +23,12 @@ export const routes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [PedidosPageComponent, PedidosTableComponent],
+  declarations: [
+    PedidosPageComponent,
+    PedidosTableComponent,
+    AltPedidoComponent
+  ],
+  entryComponents: [AltPedidoComponent],
   imports: [
     UiCoreModule,
     RouterModule.forChild(routes),

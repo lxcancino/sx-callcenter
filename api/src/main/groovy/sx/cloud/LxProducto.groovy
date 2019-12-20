@@ -3,11 +3,13 @@ package sx.cloud
 import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
 
+import grails.web.databinding.WebDataBinding
+
 import sx.core.Producto
 
 @ToString(includeNames=true,includePackage=false)
 @EqualsAndHashCode(includes = 'id, clave, unidad')
-class LxProducto {
+class LxProducto implements WebDataBinding{
 
     String id
     String clave
@@ -19,14 +21,14 @@ class LxProducto {
     boolean activo
     String	modoVenta
     String presentacion
-    BigDecimal kilos
-    BigDecimal gramos
-    BigDecimal calibre
+    double kilos
+    double gramos
+    double calibre
     String color
     boolean nacional
-    BigDecimal ancho
-    BigDecimal largo
-    BigDecimal m2XMillar 
+    double ancho
+    double largo
+    double m2XMillar 
     boolean inventariable
 
     String linea
@@ -44,7 +46,7 @@ class LxProducto {
     double disponible
 
     LxProducto(Producto prod) {
-        this.properties
+        this.properties = prod.properties
     }
 
 }
