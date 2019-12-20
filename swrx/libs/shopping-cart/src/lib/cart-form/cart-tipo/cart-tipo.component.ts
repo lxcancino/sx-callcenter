@@ -37,9 +37,7 @@ export class CartTipoComponent implements OnInit {
   @Input() tipos = [
     TipoDePedido.CONTADO,
     TipoDePedido.CREDITO,
-    TipoDePedido.COD,
-    TipoDePedido.POST_FECHADO,
-    TipoDePedido.INE
+    TipoDePedido.COD
   ];
 
   constructor() {}

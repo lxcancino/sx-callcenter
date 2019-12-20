@@ -36,7 +36,16 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="Cfdi">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span
+          matBadgeOverlap="false"
+          [matBadge]="(cartForm.get('usoDeCfdi').invalid || cartForm.pristine) ? 1 : 0"
+          matBadgeColor="warn"
+          [matBadgeHidden]="cartForm.get('usoDeCfdi').valid"
+          >Cfdi</span
+        >
+      </ng-template>
       <div class="cfdi" [formGroup]="cartForm">
         <swrx-cart-uso [cartForm]="cartForm"></swrx-cart-uso>
         <mat-form-field>
@@ -51,29 +60,10 @@
     </mat-tab>
 
     <mat-tab label="Envío">
-      <div class="envio">
-        <ng-container *ngIf="facade.envio$ | async as envio; else newEnvio">
-          <span>
-            {{ envio.tipo }}
-          </span>
-          <address>
-            Calle {{ envio.direccion.calle }} Ext:
-            {{ envio.direccion.numeroExterior }} Int:
-            {{ envio.direccion.numeroInterior }}
-          </address>
-          <div class="envio-row"></div>
-          <button mat-button (click)="facade.registrarEnvio()">
-            <fa-icon icon="truck"></fa-icon>
-            Actualizar
-          </button>
-        </ng-container>
-        <ng-template #newEnvio>
-          <button mat-button (click)="facade.registrarEnvio()">
-            <fa-icon icon="truck"></fa-icon>
-            Registrar Envio
-          </button>
-        </ng-template>
-      </div>
+      <swrx-envio-panel
+        [envio]="facade.envio$ | async"
+        (actualizar)="facade.registrarEnvio()"
+      ></swrx-envio-panel>
     </mat-tab>
 
     <mat-tab #errorsTab>

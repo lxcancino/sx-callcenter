@@ -49,7 +49,6 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   ) {
     this.tipo = data.tipo;
     this.item = data.item || null;
-    
   }
 
   ngOnInit() {
@@ -76,7 +75,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   private buildForm() {
     this.form = this.fb.group({
       producto: [null, Validators.required],
-      cantidad: [0.0, Validators.required],
+      cantidad: [0.0, [Validators.required, Validators.min(1)]],
       precio: [0.0, Validators.required],
       importe: [0.0, Validators.required],
       corte: this.fb.group({
@@ -134,9 +133,9 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.form.valid) {
       const { producto, cantidad, precio, corte } = this;
-      
+
       const emptyItem = this.item ? this.item : buildCartItem(producto);
-      
+
       const item: PedidoDet = {
         ...emptyItem,
         cantidad,

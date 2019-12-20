@@ -1,0 +1,37 @@
+.envio {
+  border: 0.3px solid black;
+  border-radius: 5px;
+  background-color: rgb(252, 248, 248);
+}
+.envio-edit {
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.envio-create {
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.row {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 5px 0px 0px 0px;
+
+  label {
+    padding-right: 10px;
+  }
+  span {
+    padding-right: 10px;
+  }
+}
+.pad-left {
+  padding-left: 5px;
+}
+.pad-right {
+  padding-right: 5px;
+}

@@ -103,6 +103,13 @@ export class CartEffects {
     )
   );
 
+  loadPedidoSucces$ = createEffect(() => 
+  this.actions$.pipe(
+    ofType(CartActions.loadPedidoSucces),
+    map(() => CartActions.validarPedido())
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private dialog: MatDialog,

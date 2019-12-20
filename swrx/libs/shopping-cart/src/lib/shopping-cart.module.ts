@@ -32,6 +32,9 @@ import { CartEditPageComponent } from './cart-edit-page/cart-edit-page.component
 import { CartPersistenceEffects } from './+state/cart-persistence.effects';
 import { NewCartGuard } from './guards/new-cart.guard';
 import { EnvioComponent } from './envio/envio.component';
+import { EnvioPanelComponent } from './envio/envio-panel/envio-panel.component';
+import { CfdiTabComponent } from './cart-info/cfdi-tab/cfdi-tab.component';
+import { MatStepperModule } from '@angular/material';
 
 const routes: Route[] = [
   {
@@ -51,6 +54,7 @@ const routes: Route[] = [
 @NgModule({
   imports: [
     UiCoreModule,
+    MatStepperModule,
     ClientesModule,
     ProductosModule,
     PedidosModule,
@@ -75,7 +79,9 @@ const routes: Route[] = [
     CartCheckoutComponent,
     CartEditItemComponent,
     CartEditPageComponent,
-    EnvioComponent
+    EnvioComponent,
+    EnvioPanelComponent,
+    CfdiTabComponent
   ],
   entryComponents: [
     CartAddItemComponent,

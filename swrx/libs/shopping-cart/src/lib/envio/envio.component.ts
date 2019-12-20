@@ -10,7 +10,12 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subject, Observable } from 'rxjs';
-import { Direccion, Cliente, buildDireccionEmpty } from '@swrx/core-model';
+import {
+  Direccion,
+  Cliente,
+  buildDireccionEmpty,
+  InstruccionDeEnvio
+} from '@swrx/core-model';
 import { buildDireccionForm } from '@swrx/form-utils';
 
 @Component({
@@ -23,7 +28,9 @@ export class EnvioComponent implements OnInit {
   form: FormGroup;
   destroy$ = new Subject();
   cliente: Cliente;
+  envio: InstruccionDeEnvio;
   direcciones: {};
+  selectedKey: string;
 
   nueva = false;
   tipos = ['ENVIO', 'FORANEO', 'OCURRE', 'ENVIO_CARGO'];
@@ -35,9 +42,22 @@ export class EnvioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.buildForm();
+    this.envio = this.data.envio;
     this.cliente = this.data.cliente;
     this.direcciones = this.cliente.direcciones || {};
+    this.buildForm();
+    this.form.patchValue(this.envio);
+    if (this.envio) {
+      const dd = this.envio.direccion;
+      const calle = dd.calle.trim() || '';
+      const key = `${calle.substr(0, 10)} #:${dd.numeroExterior} CP:${
+        dd.codigoPostal
+      }`;
+      const direccion = this.direcciones[key];
+      if (direccion) {
+        this.selectedKey = key;
+      }
+    }
   }
 
   buildForm() {

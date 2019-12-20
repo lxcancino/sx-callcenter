@@ -10,6 +10,7 @@ mat-toolbar {
   background-color: rgb(208, 210, 211);
   grid-row: 2 / 3;
   overflow: scroll;
+  border: 1px dotted red;
 }
 .footer {
   grid-row: 3 / 4;

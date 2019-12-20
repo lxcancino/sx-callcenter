@@ -14,6 +14,7 @@
     <mat-select
       placeholder="Seleccione una direccion registrada"
       (selectionChange)="onSelect($event)"
+      [value]="selectedKey"
     >
       <mat-option *ngFor="let d of direccionesNombre" [value]="d">
         {{ d }}
@@ -25,18 +26,16 @@
     <swrx-direccion-form [parent]="form"></swrx-direccion-form>
   </div>
   <div class="row">
-    <mat-form-field class="contacto">
-      <input
-        matInput
-        fomrControlName="contacto"
-        placeholder="Contacto"
-        autocomplete="off"
-      />
-    </mat-form-field>
+    <swrx-upper-case-field
+      formControlName="contacto"
+      class="contacto"
+      placeholder="Contacto"
+    ></swrx-upper-case-field>
     <mat-form-field class="telefono">
       <input
+        type="tel"
         matInput
-        fomrControlName="telefono"
+        formControlName="telefono"
         placeholder="Telefono"
         autocomplete="off"
       />
@@ -44,21 +43,18 @@
     <mat-form-field>
       <input
         matInput
-        fomrControlName="horario"
+        formControlName="horario"
         placeholder="Horario"
         autocomplete="off"
       />
     </mat-form-field>
   </div>
   <div class="row">
-    <mat-form-field class="comentario">
-      <input
-        matInput
-        fomrControlName="comentario"
-        placeholder="Comentario"
-        autocomplete="off"
-      />
-    </mat-form-field>
+    <swrx-upper-case-field
+      formControlName="comentario"
+      class="comentario"
+      placeholder="Comentario"
+    ></swrx-upper-case-field>
   </div>
 </div>
 

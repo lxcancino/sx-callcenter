@@ -9,6 +9,7 @@ import { UpperCaseDirective } from './upper-case/upper-case.directive';
 import { SucursalFieldComponent } from './sucursal-field/sucursal-field.component';
 import { DireccionComponent } from './direccion/direccion.component';
 import { DireccionFormComponent } from './direccion-form/direccion-form.component';
+import { UpperCaseFieldComponent } from './upper-case-field/upper-case-field.component';
 
 @NgModule({
   imports: [UiCoreModule],
@@ -19,7 +20,8 @@ import { DireccionFormComponent } from './direccion-form/direccion-form.componen
     UpperCaseDirective,
     SucursalFieldComponent,
     DireccionComponent,
-    DireccionFormComponent
+    DireccionFormComponent,
+    UpperCaseFieldComponent
   ],
   entryComponents: [DireccionComponent],
   exports: [
@@ -29,7 +31,8 @@ import { DireccionFormComponent } from './direccion-form/direccion-form.componen
     UpperCaseDirective,
     SucursalFieldComponent,
     DireccionComponent,
-    DireccionFormComponent
+    DireccionFormComponent,
+    UpperCaseFieldComponent
   ]
 })
 export class FormUtilsModule {}
