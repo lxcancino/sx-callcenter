@@ -22,6 +22,7 @@ import sx.core.FolioLog
 @GrailsCompileStatic
 class LxProductoService {
 
+/*
     LxProducto save(LxProducto producto) {
 
         def db = FirestoreClient.getFirestore()
@@ -33,7 +34,7 @@ class LxProductoService {
         log.info('Product updated: {}', future.get().getUpdateTime())
         return producto
     }
-
+*/
 
     
 }
