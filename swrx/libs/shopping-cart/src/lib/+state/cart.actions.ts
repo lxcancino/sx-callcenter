@@ -42,11 +42,11 @@ export const cambiarClienteSuccess = createAction(
 
 export const cambiarNombre = createAction(
   '[ShoppingCartPage] Cambiar nombre de cliente'
-)
+);
 export const cambiarNombreSuccess = createAction(
   '[ShoppingCart Effects] Cambiar nombre de cliente success',
-  props<{nombre: string}>()
-)
+  props<{ nombre: string }>()
+);
 
 export const cambiarTipo = createAction(
   '[ShoppingCartPage] Cambiar Tipo de Pedido',
@@ -90,4 +90,11 @@ export const registrarEnvioSuccess = createAction(
   props<{ envio: InstruccionDeEnvio }>()
 );
 
-export const cerrarPedido = createAction('[CartEffects] Cerrar Pedido');
+export const mostrarDescuentos = createAction(
+  '[CartEffects] Mostrar Descuentos'
+);
+
+export const iniciarCierreDePedido = createAction(
+  '[ShoppingCartPage] Solicitar cierre de pedido',
+  props<{ pedido: Partial<Pedido> }>()
+);

@@ -61,8 +61,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     });
   }
   private registerStateForm() {
-    this.facade.cartStateForm$
-      .subscribe(formState =>
+    this.facade.cartStateForm$.subscribe(formState =>
       this.cartForm.patchValue(formState, { emitEvent: false })
     );
   }
@@ -140,12 +139,16 @@ export class CartPageComponent implements OnInit, OnDestroy {
   }
 
   onCambiarNombre(cliente: Partial<Cliente>) {
-    if(cliente.rfc === 'XAXX010101000') {
-      console.log('Cambiano nombre para cliente:', cliente)
+    if (cliente.rfc === 'XAXX010101000') {
+      console.log('Cambiano nombre para cliente:', cliente);
       this.facade.cambiarNombre();
     }
   }
 
+  showDescuentos() {
+    this.facade.mostrarDescuentos();
+  }
+  /** Insert item */
   @HostListener('document:keydown.meta.i', ['$event'])
   onHotKeyInsert(event) {
     this.addCartItem();
@@ -153,5 +156,11 @@ export class CartPageComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown.insert', ['$event'])
   onHotKeyInsert2(event) {
     this.addCartItem();
+  }
+
+  /** Show descuentos */
+  @HostListener('document:keydown.control.d', ['$event'])
+  onHotKeyShowDescuentos(event) {
+    this.showDescuentos();
   }
 }

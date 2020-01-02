@@ -64,6 +64,9 @@ export class PedidosTableComponent implements OnInit {
     if (params.node.rowPinned) {
       return { 'font-weight': 'bold' };
     }
+    if (params.data.status === 'CERRADO') {
+      return { 'font-weight': 'bold', 'font-style': 'italic', color: 'green' };
+    }
     return {};
   }
 
@@ -123,6 +126,11 @@ export class PedidosTableComponent implements OnInit {
         field: 'total',
         width: 130,
         valueFormatter: params => this.transformCurrency(params.value)
+      },
+      {
+        headerName: 'Estatus',
+        field: 'status',
+        width: 130
       },
       {
         headerName: 'Comentario',

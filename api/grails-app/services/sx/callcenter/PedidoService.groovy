@@ -24,6 +24,11 @@ class PedidoService implements FolioLog{
         return pedido
     }
 
+    Pedido cerrar(Pedido pedido) {
+        pedido.status = 'CERRADO'
+        return save(pedido)
+    }
+
     void delete(Pedido pedido) {
     	pedido.delete flush: true
     }

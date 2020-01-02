@@ -39,6 +39,12 @@ export class PedidoService {
       .put<Pedido>(url, update.changes)
       .pipe(catchError((error: any) => throwError(error)));
   }
+  cerrar(pedido: Partial<Pedido>): Observable<Pedido> {
+    const url = `${this.apiUrl}/cerrar/${pedido.id}`;
+    return this.http
+      .put<Pedido>(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
 
   delete(id: string) {
     const url = `${this.apiUrl}/${id}`;

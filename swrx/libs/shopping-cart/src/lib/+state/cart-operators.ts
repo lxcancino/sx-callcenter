@@ -112,3 +112,23 @@ export const pedidoState = (store: Store<CartState>) =>
       )
     )
   );
+
+export const decuentosState = (store: Store<CartState>) =>
+  pipe(
+    concatMap(action =>
+      of(action).pipe(
+        withLatestFrom(
+          store.pipe(select(CartSelectors.getDescuentoPorVolumenImporte)),
+          store.pipe(select(CartSelectors.getDescuentoPorVolumen)),
+          store.pipe(select(CartSelectors.getTipo))
+        ),
+        map(([, importe, descuento, tipo]) => {
+          return {
+            importe,
+            descuento,
+            tipo
+          };
+        })
+      )
+    )
+  );

@@ -15,7 +15,8 @@ import {
   reactiveCartActions,
   newItem,
   envioState,
-  pedidoState
+  pedidoState,
+  decuentosState
 } from './cart-operators';
 import { ClienteUiService } from '@swrx/clientes';
 import { PedidosFacade } from '@swrx/pedidos';
@@ -23,8 +24,10 @@ import { PedidosFacade } from '@swrx/pedidos';
 import { CartAddItemComponent } from '../cart-add-item/cart-add-item.component';
 import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
 import { EnvioComponent } from '../envio/envio.component';
-import { InstruccionDeEnvio } from '@swrx/core-model';
+import { InstruccionDeEnvio, Pedido } from '@swrx/core-model';
 import { CartNombreComponent } from '../cart-nombre/cart-nombre.component';
+import { CartDescuentosComponent } from '../cart-form/cart-descuentos/cart-descuentos.component';
+import { CerrarComponent } from '../cerrar/cerrar.component';
 
 @Injectable()
 export class CartEffects {
@@ -121,6 +124,31 @@ export class CartEffects {
     )
   );
 
+  mostrarDescuentos$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.mostrarDescuentos),
+        decuentosState(this.store),
+        this.inDialog(CartDescuentosComponent)
+        // filter(nombre => !!nombre)
+      ),
+    { dispatch: false }
+  );
+
+  iniciarCierre$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.iniciarCierreDePedido),
+      //pedidoState(this.store),
+      map(action => {
+        return { pedido: action.pedido };
+      }),
+      this.inDialog(CerrarComponent, '500px'),
+      filter(pedido => !!pedido),
+      tap(pedido => console.log('Mandando cerrar pedido: ', pedido)),
+      map((pedido: Pedido) => this.pedidoFacade.cerrarPedido(pedido))
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private dialog: MatDialog,
@@ -129,8 +157,8 @@ export class CartEffects {
     private pedidoFacade: PedidosFacade //
   ) {}
 
-  private inDialog(component: any) {
-    return mergeMap(data => this.openDialog(component, data));
+  private inDialog(component: any, width = '750px') {
+    return mergeMap(data => this.openDialog(component, data, width));
   }
 
   private openDialog(

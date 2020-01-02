@@ -42,7 +42,7 @@ export interface Pedido {
   usoDeCfdi: string;
   sinExistencia?: boolean;
   chequePostFechado?: boolean;
-
+  status: 'COTIZACION' | 'CERRADO';
   // Log
   dateCreated?: string;
   lastUpdated?: string;

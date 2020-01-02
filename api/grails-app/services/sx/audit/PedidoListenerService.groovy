@@ -37,8 +37,8 @@ class PedidoListenerService {
     void afterInsert(PostInsertEvent event) {
         Pedido pedido = getPedido(event)
         if ( pedido ) {
-            log.debug('{} {} Id: {}', event.eventType.name(), event.entity.name, pedido.id)
-            logEntity(pedido, 'INSERT')
+            // log.debug('{} {} Id: {}', event.eventType.name(), event.entity.name, pedido.id)
+            // logEntity(pedido, 'INSERT')
         }
     }
 

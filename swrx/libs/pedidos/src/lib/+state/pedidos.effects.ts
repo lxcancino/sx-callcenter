@@ -8,7 +8,6 @@ import { PedidoService } from '../services/pedido.service';
 import { map } from 'rxjs/operators';
 import { PedidosPageComponent } from '../pedidos-page/pedidos-page.component';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { of } from 'rxjs';
 
 @Injectable()
 export class PedidosEffects {
@@ -66,7 +65,28 @@ export class PedidosEffects {
         error
       ) => {
         console.error('Actualizando pedido Error: ', error);
-        return PedidosActions.createPedidoFail({ error });
+        return PedidosActions.updatePedidoFail({ error });
+      }
+    })
+  );
+
+  cerrarPedido$ = createEffect(() =>
+    this.dataPersistence.pessimisticUpdate(PedidosActions.cerrarPedido, {
+      run: (
+        action: ReturnType<typeof PedidosActions.cerrarPedido>,
+        state: PedidosPartialState
+      ) => {
+        return this.service
+          .cerrar(action.pedido)
+          .pipe(map(pedido => PedidosActions.cerrarPedidoSuccess({ pedido })));
+      },
+
+      onError: (
+        action: ReturnType<typeof PedidosActions.cerrarPedido>,
+        error
+      ) => {
+        console.error('Cerrando pedido Error: ', error);
+        return PedidosActions.cerrarPedidoError({ error });
       }
     })
   );

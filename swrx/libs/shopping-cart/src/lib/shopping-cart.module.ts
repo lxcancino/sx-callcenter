@@ -34,8 +34,9 @@ import { NewCartGuard } from './guards/new-cart.guard';
 import { EnvioComponent } from './envio/envio.component';
 import { EnvioPanelComponent } from './envio/envio-panel/envio-panel.component';
 import { CfdiTabComponent } from './cart-info/cfdi-tab/cfdi-tab.component';
-import { MatStepperModule } from '@angular/material';
+import { MatStepperModule, MatTableModule } from '@angular/material';
 import { CartNombreComponent } from './cart-nombre/cart-nombre.component';
+import { CerrarComponent } from './cerrar/cerrar.component';
 
 const routes: Route[] = [
   {
@@ -56,6 +57,7 @@ const routes: Route[] = [
   imports: [
     UiCoreModule,
     MatStepperModule,
+    MatTableModule,
     ClientesModule,
     ProductosModule,
     PedidosModule,
@@ -83,14 +85,16 @@ const routes: Route[] = [
     EnvioComponent,
     EnvioPanelComponent,
     CfdiTabComponent,
-    CartNombreComponent
+    CartNombreComponent,
+    CerrarComponent
   ],
   entryComponents: [
     CartAddItemComponent,
     CartCheckoutComponent,
     CartEditItemComponent,
     EnvioComponent,
-    CartNombreComponent
+    CartNombreComponent,
+    CerrarComponent
   ],
   exports: [CartBtnComponent],
   providers: [CartFacade]

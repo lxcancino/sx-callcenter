@@ -22,7 +22,6 @@ export class PedidosPageComponent implements OnInit {
   }
 
   onSelection(event: Pedido) {
-    console.log('Edit: ', event);
     this.router.navigate(['/shop/cart', event.id]);
   }
 }

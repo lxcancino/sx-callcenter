@@ -6,7 +6,8 @@ import { ClientesModule } from '@swrx/clientes';
 import { CartTipoComponent } from './cart-tipo/cart-tipo.component';
 import { CartUsoComponent } from './cart-uso/cart-uso.component';
 import { CartFpagoComponent } from './cart-fpago/cart-fpago.component';
-
+import { CartDescuentosComponent } from './cart-descuentos/cart-descuentos.component';
+import { MatTableModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -14,13 +15,16 @@ import { CartFpagoComponent } from './cart-fpago/cart-fpago.component';
     CartTipoComponent,
     CartUsoComponent,
     CartFpagoComponent,
+    CartDescuentosComponent
   ],
-  imports: [UiCoreModule, ClientesModule],
+  entryComponents: [CartDescuentosComponent],
+  imports: [UiCoreModule, ClientesModule, MatTableModule],
   exports: [
     CartMainFormComponent,
     CartTipoComponent,
     CartFpagoComponent,
-    CartUsoComponent
+    CartUsoComponent,
+    CartDescuentosComponent
   ]
 })
 export class CartFormModule {}

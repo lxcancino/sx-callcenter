@@ -42,16 +42,16 @@
   <mat-step>
     <ng-template matStepLabel>JSON</ng-template>
     <div class="json">
-      <pre>
+      <!-- <pre>
         {{ changes | json }}
-      </pre>
+      </pre> -->
     </div>
     <div>
       <button mat-button mat-dialog-close>
         <mat-icon>cancel</mat-icon> Cancelar
       </button>
-      <button mat-button color="primary" (click)="doSubmit()">
-        <mat-icon>check</mat-icon> Salvar
+      <button mat-button color="accent" (click)="doSubmit()">
+        <mat-icon>check</mat-icon> Salvar pedido
       </button>
     </div>
   </mat-step>

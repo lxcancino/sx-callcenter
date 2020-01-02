@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { CartPartialState } from './cart.reducer';
 import * as CartActions from './cart.actions';
-import { createPedidoSuccess } from '@swrx/pedidos';
+import { createPedidoSuccess, cerrarPedidoSuccess } from '@swrx/pedidos';
 
 import { map, tap } from 'rxjs/operators';
 
@@ -38,6 +38,19 @@ export class CartPersistenceEffects {
     () =>
       this.actions$.pipe(
         ofType(createPedidoSuccess),
+        tap(action => {
+          // console.log('Pedido persistido: ', action.pedido);
+          // this.router.navigate(['/shop/cart', action.pedido.id]);
+          this.router.navigate(['/pedidos']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  cerrarPedidoSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(cerrarPedidoSuccess),
         tap(action => {
           // console.log('Pedido persistido: ', action.pedido);
           // this.router.navigate(['/shop/cart', action.pedido.id]);

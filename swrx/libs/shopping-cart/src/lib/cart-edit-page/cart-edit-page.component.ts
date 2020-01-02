@@ -93,6 +93,19 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   onCheckout() {
     this.facade.startCheckout();
   }
+  onCambiarNombre(cliente: Partial<Cliente>) {
+    if (cliente.rfc === 'XAXX010101000') {
+      this.facade.cambiarNombre();
+    }
+  }
+
+  showDescuentos() {
+    this.facade.mostrarDescuentos();
+  }
+
+  cerrarPedido(pedido: Pedido) {
+    this.facade.cerrarPedido(pedido);
+  }
 
   @HostListener('document:keydown.meta.i', ['$event'])
   onHotKeyInsert(event) {
@@ -102,11 +115,9 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   onHotKeyInsert2(event) {
     this.addCartItem();
   }
-
-  onCambiarNombre(cliente: Partial<Cliente>) {
-    if (cliente.rfc === 'XAXX010101000') {
-      console.log('Cambiano nombre para cliente:', cliente);
-      this.facade.cambiarNombre();
-    }
+  /** Show descuentos */
+  @HostListener('document:keydown.control.d', ['$event'])
+  onHotKeyShowDescuentos(event) {
+    this.showDescuentos();
   }
 }

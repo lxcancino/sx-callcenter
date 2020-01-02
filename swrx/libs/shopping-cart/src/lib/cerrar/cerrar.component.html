@@ -1,0 +1,9 @@
+<h3 mat-dialog-title>Cerrar pedido {{ pedido.folio }}</h3>
+<mat-dialog-content>
+  <p>{{ pedido.nombre }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]>CANCELAR</button>
+  <button mat-flat-button color="accent" (click)="onSubmit()">CERRAR</button>
+</mat-dialog-actions>

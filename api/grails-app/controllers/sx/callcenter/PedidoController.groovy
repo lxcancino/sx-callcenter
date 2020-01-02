@@ -80,6 +80,15 @@ class PedidoController extends RestfulController<Pedido> {
         pedidoService.delete(resource)
     }
 
+    def cerrar(Pedido pedido) {
+        if(pedido == null) {
+            notFound()
+            return
+        }
+        pedido = pedidoService.cerrar(pedido)
+        respond pedido
+    }
+
     def print(Pedido pedido ) {
         if(pedido == null){
             notFound()

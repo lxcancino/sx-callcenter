@@ -28,4 +28,8 @@ export class PedidosFacade {
       return PedidosActions.createPedido({ pedido: data.changes });
     }
   }
+
+  cerrarPedido(pedido: Pedido) {
+    return PedidosActions.cerrarPedido({ pedido });
+  }
 }

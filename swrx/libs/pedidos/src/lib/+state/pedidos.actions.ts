@@ -51,3 +51,17 @@ export const deletePedidoSuccess = createAction(
   '[Pedidos API] Delete Pedido success',
   props<{ pedido: Pedido }>()
 );
+
+export const cerrarPedido = createAction(
+  '[Pedido Facade] Cerrar Pedido',
+  props<{ pedido: Partial<Pedido> }>()
+);
+
+export const cerrarPedidoError = createAction(
+  '[PedidosEffects] Cerrar pedido error',
+  props<{ error: any }>()
+);
+export const cerrarPedidoSuccess = createAction(
+  '[PedidosEffects] Cerrar pedido success',
+  props<{ pedido: Pedido }>()
+);

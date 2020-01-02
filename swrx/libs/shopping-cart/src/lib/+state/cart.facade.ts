@@ -4,6 +4,7 @@ import { select, Store } from '@ngrx/store';
 import * as fromCart from './cart.reducer';
 import * as CartActions from './cart.actions';
 import * as CartSelectors from './cart.selectors';
+import * as fromPedido from '@swrx/pedidos';
 
 import { TipoDePedido, FormaDePago, Pedido } from '@swrx/core-model';
 import { CartItem } from './cart.models';
@@ -93,7 +94,11 @@ export class CartFacade {
     this.store.dispatch(CartActions.registrarEnvio());
   }
 
-  cerrarPedido() {
-    this.store.dispatch(CartActions.cerrarPedido());
+  cerrarPedido(pedido: Pedido) {
+    this.store.dispatch(CartActions.iniciarCierreDePedido({ pedido }));
+  }
+
+  mostrarDescuentos() {
+    this.store.dispatch(CartActions.mostrarDescuentos());
   }
 }

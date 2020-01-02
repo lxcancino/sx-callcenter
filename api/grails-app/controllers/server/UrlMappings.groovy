@@ -14,7 +14,8 @@ class UrlMappings {
         
         "/api/productos"(resources: 'producto', excludes: ['create', 'edit', 'delete'])
         "/api/pedidos"(resources: 'pedido', excludes: ['create', 'edit'])
-        "/api/pedido/print/$id"(controller: 'pedido', action: 'print', method: 'GET')
+        "/api/pedidos/cerrar/$id"(controller: 'pedido', action: 'cerrar', method: 'PUT')
+        "/api/pedidos/print/$id"(controller: 'pedido', action: 'print', method: 'GET')
 
         
         "/"(controller: 'application', action:'index')

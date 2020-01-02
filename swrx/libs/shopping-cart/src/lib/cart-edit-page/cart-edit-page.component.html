@@ -25,23 +25,38 @@
       <mat-icon>dialpad</mat-icon>
       <span>Venta INE</span>
     </button>
+    <button mat-menu-item class="menu-item" (click)="showDescuentos()">
+      <mat-icon>redeem</mat-icon>
+      <span>Descuentos (Ctr + D)</span>
+    </button>
   </swrx-cart-toolbar>
 
   <swrx-cart-items></swrx-cart-items>
 
   <div class="side-bar">
-    <swrx-cart-summary [sumary]="sumary$ | async" (checkout)="onCheckout()">
+    <swrx-cart-summary
+      [sumary]="sumary$ | async"
+      (checkout)="onCheckout()"
+      [disabled]="pedido.status === 'CERRADO'"
+    >
       <div class="checkout-actions">
-        <button mat-raised-button><mat-icon>print</mat-icon> Imprimir</button>
-        <button mat-raised-button color="primary">
-          <mat-icon>send</mat-icon>Cerrar
-        </button>
         <button mat-raised-button color="accent" [routerLink]="['/shop/cart']">
           <mat-icon>autorenew</mat-icon> Nuevo
         </button>
-        <button mat-raised-button color="warn">
-          <mat-icon>delete</mat-icon> Eliminar
-        </button>
+        <button mat-raised-button><mat-icon>print</mat-icon> Imprimir</button>
+        <ng-container *ngIf="pedido.status === 'COTIZACION'">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="cerrarPedido(pedido)"
+          >
+            <mat-icon>send</mat-icon>Cerrar
+          </button>
+
+          <button mat-raised-button color="warn">
+            <mat-icon>delete</mat-icon> Eliminar
+          </button>
+        </ng-container>
       </div>
     </swrx-cart-summary>
     <swrx-cart-info [cartForm]="cartForm"></swrx-cart-info>
