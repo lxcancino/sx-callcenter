@@ -96,6 +96,7 @@ const cartReducer = createReducer(
     ) {
       const cargo = generarCargoPorTarjeta(partidas, state.tipo, formaDePago);
       if (cargo !== null) {
+        console.log('Cargo por tarjeta generado: ', cargo);
         newPartidas = [...partidas, cargo];
       }
     }
@@ -124,6 +125,24 @@ const cartReducer = createReducer(
       aplicarDescuentos(partidas, state.tipo, state.cliente),
       'id'
     );
+
+    if (
+      state.formaDePago === FormaDePago.TARJETA_CRE ||
+      state.formaDePago === FormaDePago.TARJETA_DEB
+    ) {
+      console.log('Generando cargo por pago con tarjeta....');
+
+      const cargo = generarCargoPorTarjeta(
+        partidas,
+        state.tipo,
+        state.formaDePago
+      );
+      if (cargo !== null) {
+        console.log('Cargo por tarjeta generado: ', cargo);
+        // newPartidas = [...partidas, cargo];
+      }
+    }
+
     return { ...state, items };
   }),
   on(CartActions.editItemSuccess, (state, { item }) => {

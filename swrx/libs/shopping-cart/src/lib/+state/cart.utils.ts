@@ -58,7 +58,14 @@ export function calcularDescuentoPorVolumen(importe: number) {
     return 18.0;
   }
 }
-
+/**
+ * Pure function para calcular el descuento del Pedido en funcion de las partidas, el tipo de venta
+ * y el cliente
+ *
+ * @param items
+ * @param tipo
+ * @param cliente
+ */
 export function calcularDescuento(
   items: CartItem[],
   tipo: TipoDePedido,
@@ -96,6 +103,7 @@ export function aplicarDescuentos(
   tipo: TipoDePedido,
   cliente: Partial<Cliente>
 ): CartItem[] {
+  console.log('Aplicando descuentos ', partidas, tipo, cliente);
   const items = normalize(partidas);
   const descuento = calcularDescuento(items, tipo, cliente);
   const res: CartItem[] = [];
