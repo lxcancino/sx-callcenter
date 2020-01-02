@@ -47,7 +47,6 @@ class FirebaseSdk {
     		registration.remove();
     	}
     	log.ifo('Clossing Firebase session.....');
-    	println 'CLOSE FIREBASE............'
     }
 
     def init() {

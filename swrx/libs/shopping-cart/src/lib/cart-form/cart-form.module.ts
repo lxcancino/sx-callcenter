@@ -7,12 +7,13 @@ import { CartTipoComponent } from './cart-tipo/cart-tipo.component';
 import { CartUsoComponent } from './cart-uso/cart-uso.component';
 import { CartFpagoComponent } from './cart-fpago/cart-fpago.component';
 
+
 @NgModule({
   declarations: [
     CartMainFormComponent,
     CartTipoComponent,
     CartUsoComponent,
-    CartFpagoComponent
+    CartFpagoComponent,
   ],
   imports: [UiCoreModule, ClientesModule],
   exports: [

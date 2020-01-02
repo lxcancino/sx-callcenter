@@ -1,12 +1,17 @@
 <mat-toolbar color="default" class="toolbar">
-  <section *ngIf="pedido; else newPedido" class="pedido-info">
-    <span>Folio: {{ pedido.folio }}</span>
-    <span class="fecha">Fecha: {{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
+  <section *ngIf="pedido; else newPedido">
+    <div class="pedido-info">
+      <span>No: {{ pedido.folio }}</span>
+      <span class="fecha">Fecha: {{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
+    </div>
   </section>
   <ng-template #newPedido>
-    <h3>Alta de Pedido</h3>
+    <span>PEDIDO: </span>
   </ng-template>
-  <h3 class="cliente">{{ cliente?.nombre }} ({{ cliente?.rfc }})</h3>
+  <span class="cliente" (click)="cambiarNombre.emit(cliente)">{{
+    nombre
+  }}</span>
+
   <div class="options">
     <ng-content></ng-content>
   </div>

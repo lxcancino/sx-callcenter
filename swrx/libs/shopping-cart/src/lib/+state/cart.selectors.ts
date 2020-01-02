@@ -36,6 +36,11 @@ export const getCliente = createSelector(
   state => state.cliente
 );
 
+export const getNombre = createSelector(
+  getCartState,
+  state => state.nombre
+);
+
 export const getTipo = createSelector(
   getCartState,
   state => state.tipo
@@ -49,10 +54,11 @@ export const getCartSumary = createSelector(
 export const getPersistenceState = createSelector(
   getCartState,
   getCliente,
+  getNombre,
   getCartItems,
   getCartSumary,
-  (state, cliente, items, summary): Pedido => {
-    return buildPedidoEntity(state, cliente, items, summary);
+  (state, cliente, nombre, items, summary): Pedido => {
+    return buildPedidoEntity(state, cliente, nombre,items, summary);
   }
 );
 
@@ -123,6 +129,7 @@ export const selectFormState = createSelector(
   getCartState,
   (state): CartFormState => {
     return {
+      nombre: state.nombre,
       tipo: state.tipo,
       formaDePago: state.formaDePago,
       usoDeCfdi: state.usoDeCfdi,

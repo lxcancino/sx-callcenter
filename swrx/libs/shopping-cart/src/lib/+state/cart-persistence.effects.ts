@@ -39,8 +39,9 @@ export class CartPersistenceEffects {
       this.actions$.pipe(
         ofType(createPedidoSuccess),
         tap(action => {
-          console.log('Pedido persistido: ', action.pedido);
-          this.router.navigate(['/shop/cart', action.pedido.id]);
+          // console.log('Pedido persistido: ', action.pedido);
+          // this.router.navigate(['/shop/cart', action.pedido.id]);
+          this.router.navigate(['/pedidos']);
         })
       ),
     { dispatch: false }

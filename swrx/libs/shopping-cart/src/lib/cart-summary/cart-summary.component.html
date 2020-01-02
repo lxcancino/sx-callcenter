@@ -26,7 +26,9 @@
       <span class="cost-dollars">{{
         getIntegarPart(sumary.total) | number: '1.0-0'
       }}</span>
-      <span class="cost-cents">{{ getDecimalPart(sumary.total) }}</span>
+      <span class="cost-cents">
+        {{ getDecimalPart(sumary.total) }}
+      </span>
     </div>
     <button
       class="checkout-button"

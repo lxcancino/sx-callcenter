@@ -27,6 +27,7 @@ export interface CartSumary {
  * Interface use to manage through an angular FormGroup
  */
 export interface CartFormState {
+  nombre: string;
   tipo: TipoDePedido;
   formaDePago: FormaDePago;
   usoDeCfdi: string;

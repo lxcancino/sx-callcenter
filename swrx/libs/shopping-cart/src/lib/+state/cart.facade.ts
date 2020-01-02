@@ -16,6 +16,7 @@ export class CartFacade {
   sumary$ = this.store.pipe(select(CartSelectors.getCartSumary));
   cartItemsCount$ = this.store.pipe(select(CartSelectors.getCartItemsCount));
   cliente$ = this.store.pipe(select(CartSelectors.getCliente));
+  nombre$ = this.store.pipe(select(CartSelectors.getNombre));
   descuentoPorVolumenImporte$ = this.store.pipe(
     select(CartSelectors.getDescuentoPorVolumenImporte)
   );
@@ -71,6 +72,10 @@ export class CartFacade {
 
   cambiarFormaDePago(formaDePago: FormaDePago) {
     this.store.dispatch(CartActions.cambiarFormaDePago({ formaDePago }));
+  }
+
+  cambiarNombre() {
+    this.store.dispatch(CartActions.cambiarNombre());
   }
 
   /**

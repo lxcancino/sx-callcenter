@@ -21,8 +21,8 @@ import { FormGroup } from '@angular/forms';
   styles: [
     `
       .field {
-        width: 200px;
-        font-size: 16px;
+        width: 150px;
+        font-size: 14px;
         margin-left: 5px;
         margin-right: 5px;
       }

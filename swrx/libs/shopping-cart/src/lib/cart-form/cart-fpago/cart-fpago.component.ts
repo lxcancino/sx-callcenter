@@ -22,8 +22,8 @@ import { FormaDePago } from '@swrx/core-model';
   styles: [
     `
       .tipo-field {
-        width: 200px;
-        font-size: 16px;
+        width: 170px;
+        font-size: 14px;
         margin-left: 5px;
         margin-right: 5px;
       }

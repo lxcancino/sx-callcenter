@@ -10,10 +10,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CartFacade } from '../+state/cart.facade';
 
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
-import { TipoDePedido, FormaDePago, Pedido } from '@swrx/core-model';
+import { TipoDePedido, FormaDePago, Pedido, Cliente } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-page',
@@ -38,7 +38,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   private buildForm() {
     this.cartForm = this.fb.group({
-      sucursal: [null],
+      nombre: [null, [Validators.required]],
+      sucursal: [null, [Validators.required]],
       tipo: [TipoDePedido.CONTADO, [Validators.required]],
       formaDePago: [null, [Validators.required]],
       usoDeCfdi: [null, [Validators.required]],
@@ -60,7 +61,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
     });
   }
   private registerStateForm() {
-    this.facade.cartStateForm$.subscribe(formState =>
+    this.facade.cartStateForm$
+      .subscribe(formState =>
       this.cartForm.patchValue(formState, { emitEvent: false })
     );
   }
@@ -85,6 +87,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
           this.cartForm.get('formaDePago').enable();
         }
       }
+
       this.cartForm.get('cfdiMail').setValue(cte.cfdiMail);
     });
   }
@@ -134,6 +137,13 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   onCheckout() {
     this.facade.startCheckout();
+  }
+
+  onCambiarNombre(cliente: Partial<Cliente>) {
+    if(cliente.rfc === 'XAXX010101000') {
+      console.log('Cambiano nombre para cliente:', cliente)
+      this.facade.cambiarNombre();
+    }
   }
 
   @HostListener('document:keydown.meta.i', ['$event'])

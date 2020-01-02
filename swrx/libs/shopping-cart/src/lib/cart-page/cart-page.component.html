@@ -1,6 +1,10 @@
 <div class="shopping-cart">
   <!-- Cart Toolbar -->
-  <swrx-cart-toolbar [cliente]="facade.cliente$ | async">
+  <swrx-cart-toolbar
+    [cliente]="facade.cliente$ | async"
+    [nombre]="facade.nombre$ | async"
+    (cambiarNombre)="onCambiarNombre($event)"
+  >
     <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
     <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
     <swrx-sucursal-field [parent]="cartForm"></swrx-sucursal-field>

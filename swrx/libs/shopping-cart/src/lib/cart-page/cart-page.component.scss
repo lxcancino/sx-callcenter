@@ -1,7 +1,7 @@
 .shopping-cart {
   // Grid layout configuration
   display: grid;
-  grid-template-columns: 3fr 450px;
+  grid-template-columns: 3fr 350px;
   grid-template-rows: auto auto 2fr 6fr 1fr;
   align-content: start;
   gap: 0.5em;
@@ -50,12 +50,18 @@ swrx-cart-footer {
 
 .checkout-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: stretch;
   align-items: baseline;
   align-content: flex-end;
   flex-wrap: wrap;
   button {
+    // margin-left: 10px;
+    flex: 1;
     min-width: 100px;
     margin-bottom: 10px;
+    &:nth-child(odd) {
+      margin-right: 10px;
+    }
   }
 }
+

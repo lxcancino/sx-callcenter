@@ -1,0 +1,11 @@
+<h3 mat-dialog-title>Cliente</h3>
+<mat-dialog-content>
+  <swrx-upper-case-field
+    [formControl]="control"
+    placeholder="Nombre"
+  ></swrx-upper-case-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="accent" (click)="onSubmit()">Cambiar</button>
+  <button mat-button [mat-dialog-close]>Cancelar</button>
+</mat-dialog-actions>

@@ -2,7 +2,9 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
-  Input
+  Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
 import { Cliente, Pedido } from '@swrx/core-model';
@@ -16,9 +18,13 @@ import { Cliente, Pedido } from '@swrx/core-model';
 export class CartToolbarComponent implements OnInit {
   @Input() cliente: Cliente;
   @Input() pedido: Pedido;
+  @Input() nombre: string;
+  @Output() cambiarNombre = new EventEmitter();
   constructor() {}
 
   ngOnInit() {}
 
-  seleccionarCliente() {}
+
+
+
 }

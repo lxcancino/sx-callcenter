@@ -27,9 +27,8 @@ export class CartSummaryComponent implements OnInit {
   ngOnInit() {}
 
   getDecimalPart(value: number) {
-    const part = value % 1.0;
-    const res = round(part * 100.0, 2);
-    return res;
+    const part = value % 1;
+    return part.toFixed(2).substring(2);
   }
 
   getIntegarPart(value: number) {

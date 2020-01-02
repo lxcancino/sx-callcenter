@@ -1,11 +1,13 @@
 .mat-toolbar {
   //height: 50px;
   max-height: 50px;
+  font-size: 16px;
   h3 {
     display: inline;
   }
   .pedido-info {
     flex: 1;
+    
   }
   .fecha {
     margin: 0px 2px;
@@ -13,7 +15,13 @@
   }
   .cliente {
     flex: 3;
+    font-weight: bold;
     text-align: center;
+    overflow: scroll;
+    &:hover {
+      cursor: pointer;
+      color: rgb(163, 114, 22);
+    }
   }
   .options {
     box-sizing: border-box;

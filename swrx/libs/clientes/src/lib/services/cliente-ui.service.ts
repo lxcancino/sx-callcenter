@@ -15,7 +15,7 @@ export class ClienteUiService {
   openSelector(): MatDialogRef<any> {
     return this.dialog.open(ClienteSelectorComponent, {
       data: {},
-      width: '550px'
+      width: '750px'
     });
   }
 
@@ -23,7 +23,7 @@ export class ClienteUiService {
     return this.dialog
       .open(ClienteSelectorComponent, {
         data: {},
-        width: '550px'
+        width: '750px'
       })
       .afterClosed();
   }

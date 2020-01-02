@@ -13,7 +13,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
-import { Pedido } from '@swrx/core-model';
+import { Pedido, Cliente } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-edit-page',
@@ -101,5 +101,12 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown.insert', ['$event'])
   onHotKeyInsert2(event) {
     this.addCartItem();
+  }
+
+  onCambiarNombre(cliente: Partial<Cliente>) {
+    if (cliente.rfc === 'XAXX010101000') {
+      console.log('Cambiano nombre para cliente:', cliente);
+      this.facade.cambiarNombre();
+    }
   }
 }

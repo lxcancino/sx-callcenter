@@ -24,6 +24,7 @@ import { CartAddItemComponent } from '../cart-add-item/cart-add-item.component';
 import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
 import { EnvioComponent } from '../envio/envio.component';
 import { InstruccionDeEnvio } from '@swrx/core-model';
+import { CartNombreComponent } from '../cart-nombre/cart-nombre.component';
 
 @Injectable()
 export class CartEffects {
@@ -33,6 +34,16 @@ export class CartEffects {
       mergeMap(() => this.clienteUi.seleccionarCliente()),
       filter(cliente => !!cliente),
       map(cliente => CartActions.cambiarClienteSuccess({ cliente }))
+    )
+  );
+  cambiarNombre$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.cambiarNombre),
+      cartState(this.store),
+      map(([action, state]) => ({ nombre: state.nombre })),
+      this.inDialog(CartNombreComponent),
+      filter(nombre => !!nombre),
+      map(nombre => CartActions.cambiarNombreSuccess({ nombre }))
     )
   );
 
@@ -103,10 +114,10 @@ export class CartEffects {
     )
   );
 
-  loadPedidoSucces$ = createEffect(() => 
-  this.actions$.pipe(
-    ofType(CartActions.loadPedidoSucces),
-    map(() => CartActions.validarPedido())
+  loadPedidoSucces$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.loadPedidoSucces),
+      map(() => CartActions.validarPedido())
     )
   );
 

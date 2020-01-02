@@ -39,6 +39,15 @@ export const cambiarClienteSuccess = createAction(
   '[ShoppigCartPage] Cambiar cliente success',
   props<{ cliente: Partial<Cliente> }>()
 );
+
+export const cambiarNombre = createAction(
+  '[ShoppingCartPage] Cambiar nombre de cliente'
+)
+export const cambiarNombreSuccess = createAction(
+  '[ShoppingCart Effects] Cambiar nombre de cliente success',
+  props<{nombre: string}>()
+)
+
 export const cambiarTipo = createAction(
   '[ShoppingCartPage] Cambiar Tipo de Pedido',
   props<{ tipo: TipoDePedido }>()

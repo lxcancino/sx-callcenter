@@ -186,6 +186,7 @@ export function buildCartSumary(items: PedidoDet[]) {
 export function buildPedidoEntity(
   state: CartState,
   cliente: Partial<Cliente>,
+  nombre: string,
   items: PedidoDet[],
   sumary: CartSumary
 ): Pedido {
@@ -198,7 +199,7 @@ export function buildPedidoEntity(
       usoDeCfdi: state.usoDeCfdi,
       cfdiMail: state.cfdiMail,
       cliente: { id: cliente.id },
-      nombre: cliente.nombre,
+      nombre: nombre,
       rfc: cliente.rfc,
       partidas: items,
       kilos: sumBy(items, 'kilos'),
@@ -224,7 +225,7 @@ export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
     usoDeCfdi: state.usoDeCfdi,
     cfdiMail: state.cfdiMail,
     cliente: { id: cliente.id },
-    nombre: cliente.nombre,
+    nombre: state.nombre,
     rfc: cliente.rfc,
     partidas: items,
     kilos: sumBy(items, 'kilos'),

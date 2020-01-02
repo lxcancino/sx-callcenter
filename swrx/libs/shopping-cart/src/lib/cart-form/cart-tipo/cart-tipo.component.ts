@@ -22,10 +22,10 @@ import { TipoDePedido } from '@swrx/core-model';
   styles: [
     `
       .tipo-field {
-        width: 150px;
+        width: 100px;
         margin-left: 5px;
         margin-right: 5px;
-        font-size: 16px;
+        font-size: 14px;
       }
     `
   ],

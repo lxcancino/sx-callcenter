@@ -26,6 +26,7 @@ export interface CartState {
   selectedId?: string | number; // which cart record has been selected
   sucursal: string;
   cliente: Partial<Cliente>;
+  nombre: string;
   tipo: TipoDePedido;
   formaDePago: FormaDePago;
   usoDeCfdi?: string;
@@ -47,6 +48,7 @@ export const initialState: CartState = {
   loading: false,
   sucursal: 'CF5FEBRERO',
   cliente: clienteMostrador(),
+  nombre: 'MOSTRADOR',
   tipo: TipoDePedido.CONTADO,
   formaDePago: FormaDePago.EFECTIVO,
   items: keyBy([], 'id'),
@@ -72,12 +74,17 @@ const cartReducer = createReducer(
   on(CartActions.cambiarClienteSuccess, (state, { cliente }) => ({
     ...state,
     cliente,
+    nombre: cliente.nombre,
     cfdiMail: cliente.cfdiMail
   })),
   on(CartActions.cambiarClienteError, (state, { error }) => ({
     ...state,
     loading: false,
     error
+  })),
+  on(CartActions.cambiarNombreSuccess, (state, { nombre }) => ({
+    ...state,
+    nombre: nombre
   })),
   on(CartActions.cambiarTipo, (state, { tipo }) => ({ ...state, tipo })),
   on(CartActions.cambiarFormaDePago, (state, { formaDePago }) => {
@@ -136,6 +143,7 @@ const cartReducer = createReducer(
       loading: false,
       pedido,
       cliente: pedido.cliente,
+      nombre: pedido.nombre,
       tipo: pedido.tipo,
       formaDePago: pedido.formaDePago,
       sucursal: pedido.sucursal,

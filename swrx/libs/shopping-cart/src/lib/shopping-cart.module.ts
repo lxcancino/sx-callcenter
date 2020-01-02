@@ -35,6 +35,7 @@ import { EnvioComponent } from './envio/envio.component';
 import { EnvioPanelComponent } from './envio/envio-panel/envio-panel.component';
 import { CfdiTabComponent } from './cart-info/cfdi-tab/cfdi-tab.component';
 import { MatStepperModule } from '@angular/material';
+import { CartNombreComponent } from './cart-nombre/cart-nombre.component';
 
 const routes: Route[] = [
   {
@@ -81,13 +82,15 @@ const routes: Route[] = [
     CartEditPageComponent,
     EnvioComponent,
     EnvioPanelComponent,
-    CfdiTabComponent
+    CfdiTabComponent,
+    CartNombreComponent
   ],
   entryComponents: [
     CartAddItemComponent,
     CartCheckoutComponent,
     CartEditItemComponent,
-    EnvioComponent
+    EnvioComponent,
+    CartNombreComponent
   ],
   exports: [CartBtnComponent],
   providers: [CartFacade]
