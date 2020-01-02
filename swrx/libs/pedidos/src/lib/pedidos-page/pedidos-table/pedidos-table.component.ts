@@ -56,7 +56,18 @@ export class PedidosTableComponent implements OnInit {
     };
     this.gridOptions.getRowStyle = this.buildRowStyle.bind(this);
     this.gridOptions.onCellMouseOver = event => {
-      console.log('Mouse over: ', event);
+      if (event.colDef.field === 'folio') {
+        // console.log('Mouse over: ', event);
+      }
+    };
+    this.gridOptions.onCellDoubleClicked = event => {
+      if (event.colDef.field === 'folio') {
+        event.event.stopPropagation();
+        console.log('Consulta rapida de pedido: ', event.data);
+        event.event.stopImmediatePropagation();
+      } else {
+        this.selection.emit(event.data);
+      }
     };
   }
 
@@ -71,7 +82,8 @@ export class PedidosTableComponent implements OnInit {
   }
 
   onDoubleClick(event: RowDoubleClickedEvent) {
-    this.selection.emit(event.data);
+    // console.log('DblClick: ', event);
+    // this.selection.emit(event.data);
   }
 
   onGridReady(params: GridReadyEvent) {
@@ -94,6 +106,11 @@ export class PedidosTableComponent implements OnInit {
 
   private buildColsDef(): ColDef[] {
     return [
+      {
+        headerName: 'Folio',
+        field: 'folio',
+        pinned: 'left'
+      },
       {
         headerName: 'Sucursal',
         field: 'sucursal',

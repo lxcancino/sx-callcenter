@@ -229,6 +229,7 @@ export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
     rfc: cliente.rfc,
     partidas: items,
     kilos: sumBy(items, 'kilos'),
+    status: 'COTIZACION',
     ...sumary
   };
 }
