@@ -58,7 +58,7 @@ export const getPersistenceState = createSelector(
   getCartItems,
   getCartSumary,
   (state, cliente, nombre, items, summary): Pedido => {
-    return buildPedidoEntity(state, cliente, nombre,items, summary);
+    return buildPedidoEntity(state, cliente, nombre, items, summary);
   }
 );
 

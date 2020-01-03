@@ -147,6 +147,10 @@ export class CartPageComponent implements OnInit, OnDestroy {
   showDescuentos() {
     this.facade.mostrarDescuentos();
   }
+
+  goToNewCart() {
+    this.facade.cleanShoppingCartState();
+  }
   /** Insert item */
   @HostListener('document:keydown.meta.i', ['$event'])
   onHotKeyInsert(event) {

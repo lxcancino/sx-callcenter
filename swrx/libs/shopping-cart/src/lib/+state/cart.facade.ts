@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { select, Store } from '@ngrx/store';
 import * as fromCart from './cart.reducer';
@@ -27,6 +28,7 @@ export class CartFacade {
   descuento$ = this.store.pipe(select(CartSelectors.getDescuento));
   cartStateForm$ = this.store.pipe(select(CartSelectors.selectFormState));
   currentPedido = this.store.pipe(select(CartSelectors.selectCurrentPedido));
+
   errors$ = this.store.pipe(select(CartSelectors.getValidationErrors));
   errorsCount$ = this.errors$.pipe(map(errors => (errors ? errors.length : 0)));
   hasErrors$ = this.store.pipe(select(CartSelectors.hasErrors));
@@ -37,7 +39,10 @@ export class CartFacade {
   isPrintable$ = this.store.pipe(select(CartSelectors.isPrintable));
   envio$ = this.store.pipe(select(CartSelectors.selectEnvio));
 
-  constructor(private store: Store<fromCart.CartState>) {
+  constructor(
+    private store: Store<fromCart.CartState>,
+    private router: Router
+  ) {
     this.store.pipe(select(CartSelectors.getCartSumary));
   }
 
@@ -83,6 +88,8 @@ export class CartFacade {
    * Clean the ShoppingCartState
    */
   cleanShoppingCartState() {
+    const path = ['/shop/cart'];
+    this.router.navigate(path);
     this.store.dispatch(CartActions.cleanShoppingCart());
   }
 

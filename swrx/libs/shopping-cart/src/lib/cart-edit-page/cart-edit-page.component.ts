@@ -137,6 +137,10 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.facade.cerrarPedido(pedido);
   }
 
+  goToNewCart() {
+    this.facade.cleanShoppingCartState();
+  }
+
   @HostListener('document:keydown.meta.i', ['$event'])
   onHotKeyInsert(event) {
     this.addCartItem();

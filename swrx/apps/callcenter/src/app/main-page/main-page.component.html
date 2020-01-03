@@ -10,7 +10,10 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="wrapper">
-    <swrx-main-toolbar [cartItems]="cartItmes$ | async"></swrx-main-toolbar>
+    <swrx-main-toolbar
+      [cartItems]="cartItmes$ | async"
+      [currentPedidoId]="currentPedidoId"
+    ></swrx-main-toolbar>
     <main class="content">
       <router-outlet></router-outlet>
     </main>

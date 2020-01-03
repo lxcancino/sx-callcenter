@@ -45,7 +45,7 @@
       "
     >
       <div class="checkout-actions">
-        <button mat-raised-button color="accent" [routerLink]="['/shop/cart']">
+        <button mat-raised-button color="accent" (click)="goToNewCart()">
           <mat-icon>autorenew</mat-icon> Nuevo
         </button>
         <button mat-raised-button><mat-icon>print</mat-icon> Imprimir</button>

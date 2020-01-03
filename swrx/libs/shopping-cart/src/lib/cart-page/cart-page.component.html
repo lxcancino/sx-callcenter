@@ -42,7 +42,7 @@
       [disabled]="(facade.hasErrors$ | async) || cartForm.invalid"
     >
       <div class="checkout-actions">
-        <button mat-raised-button color="accent" [routerLink]="['/shop/cart']">
+        <button mat-raised-button color="accent" (click)="goToNewCart()">
           <mat-icon>autorenew</mat-icon> Nuevo
         </button>
         <ng-container *ngIf="pedido$ | async">

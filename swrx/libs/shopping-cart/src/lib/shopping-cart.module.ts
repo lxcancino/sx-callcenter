@@ -45,8 +45,8 @@ const routes: Route[] = [
       { path: '', redirectTo: 'cart', pathMatch: 'full' },
       {
         path: 'cart',
-        component: CartPageComponent,
-        canActivate: [NewCartGuard]
+        component: CartPageComponent
+        // canActivate: [NewCartGuard]
       },
       { path: 'cart/:id', component: CartEditPageComponent }
     ]

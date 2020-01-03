@@ -14,8 +14,15 @@ import { CartFacade } from '@swrx/shopping-cart';
 export class MainPageComponent implements OnInit {
   title = 'SIIPAP Rx Call Center';
   cartItmes$ = this.cartFacade.cartItemsCount$;
+  currentPedidoId = undefined;
 
   constructor(private cartFacade: CartFacade) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.cartFacade.currentPedido.subscribe(p => {
+      if (p) {
+        this.currentPedidoId = p.id;
+      }
+    });
+  }
 }
