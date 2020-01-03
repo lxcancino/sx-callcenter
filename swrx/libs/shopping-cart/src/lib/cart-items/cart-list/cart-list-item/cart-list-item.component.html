@@ -5,7 +5,7 @@
     alt="linea"
   />
   <div matLine>
-    <div class="producto" (click)="onEdit(item)">
+    <div class="producto" (click)="edit.emit(item)">
       <span class="clave">{{ item.clave }}</span>
       <span class="descripcion">{{ item.descripcion }}</span>
       <span class="cantidad">
@@ -42,12 +42,11 @@
     class="delete-button"
     color="warn"
     (click)="delete.emit(item)"
-    *ngIf="item.clave !== 'MANIOBRA'"
   >
     <mat-icon>delete</mat-icon>
   </button>
   <div matLine class="cortes" *ngIf="item.corte as corte">
-    <a (click)="onEdit(item)" mat-icon-button>
+    <a (click)="edit.emit(item)" mat-icon-button>
       <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
     </a>
     <span>{{ item.corte.instruccion }}</span>
@@ -67,7 +66,7 @@
       >Limpio: <fa-icon icon="check-circle"></fa-icon>
     </span>
   </div>
-  <div matLine class="propiedades" *ngIf="item.clave !== 'MANIOBRA'">
+  <div matLine class="propiedades">
     <span
       >Unidad: <strong>{{ item.unidad }}</strong></span
     >

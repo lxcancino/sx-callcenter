@@ -9,7 +9,6 @@ export function runValidation(state: CartState): CartValidationError[] {
   const errors: CartValidationError[] = [];
 
   minimoDeVenta(state, errors);
-  maximoEnEfectivo(state, errors);
   //Vta a credito
   const vtaCredito = ventaCredito(state);
   if (vtaCredito) {
@@ -17,30 +16,18 @@ export function runValidation(state: CartState): CartValidationError[] {
   }
   validarCod(state, errors);
   validarCheque(state, errors);
-  validarChequePsf(state, errors);
   validarJuridico(state, errors);
   validarChequesDevueltos(state, errors);
   return errors;
 }
 
 export function minimoDeVenta(state: CartState, errors: any[]) {
-  const importe = sumBy(Object.values(state.items), 'subtotal');
+  const importe = sumBy(Object.values(state.items), 'importe');
   if (importe < 10.0) {
     errors.push({
       error: 'MINIMO_DE_VENTA',
-      descripcion: '  EL IMPORTE MINIMO DE VENTA ES: $10.00'
+      descripcion: 'El importe mínimo de venta es $10.00'
     });
-  }
-}
-export function maximoEnEfectivo(state: CartState, errors: any[]) {
-  if (state.formaDePago === FormaDePago.EFECTIVO) {
-    const importe = sumBy(Object.values(state.items), 'subtotal');
-    if (importe > 100000.0) {
-      errors.push({
-        error: 'LIMITE_EFECTIVO',
-        descripcion: 'EL IMPORTE MAXIMO DE EFECTIVO ES: $100,000.00'
-      });
-    }
   }
 }
 
@@ -62,25 +49,15 @@ export function ventaCredito(state: CartState): CartValidationError | null {
 
 export function validarCod(state: CartState, errors: CartValidationError[]) {
   if (state.tipo === TipoDePedido.COD) {
-    const validas =
+    if (
       state.formaDePago === FormaDePago.CHEQUE ||
-      state.formaDePago === FormaDePago.EFECTIVO;
-    if (!validas) {
+      state.formaDePago === FormaDePago.EFECTIVO
+    ) {
       errors.push({
         error: 'VANTA_COD',
-        descripcion: 'EN COD SOLO CHEQUE o EFECTIVO'
+        descripcion: 'En COD solo CHEQUE o EFECTIVO'
       });
     }
-
-    // if (
-    //   !(state.formaDePago === FormaDePago.CHEQUE ||
-    //   state.formaDePago === FormaDePago.EFECTIVO)
-    // ) {
-    //   errors.push({
-    //     error: 'VANTA_COD',
-    //     descripcion: 'En COD solo CHEQUE o EFECTIVO'
-    //   });
-    // }
   }
 }
 
@@ -90,21 +67,6 @@ export function validarCheque(state: CartState, errors: CartValidationError[]) {
       errors.push({
         error: 'PERMITIR_CHEQUE',
         descripcion: 'CLIENTE NO AUTORIZADO PARA CHEQUE'
-      });
-    }
-  }
-}
-export function validarChequePsf(
-  state: CartState,
-  errors: CartValidationError[]
-) {
-  if (state.formaDePago === FormaDePago.CHEQUE_PSTF) {
-    const cliente = state.cliente;
-    const credito = cliente.credito;
-    if (!credito || !credito.postfechado) {
-      errors.push({
-        error: 'PERMITIR_CHEQUE_PSF',
-        descripcion: 'CLIENTE NO AUTORIZADO PARA CHEQUE POST FECHADO'
       });
     }
   }

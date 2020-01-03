@@ -13,7 +13,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
-import { Pedido, Cliente, FormaDePago } from '@swrx/core-model';
+import { Pedido, Cliente } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-cart-edit-page',
@@ -59,9 +59,6 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.addFormaDePagoListener();
     this.addTipoDePedidoListener();
     this.addUsoDeCfdiListener();
-    this.addCfdiMailListener();
-    this.addSucursallListener();
-    this.addClienteListener();
   }
 
   private addFormaDePagoListener() {
@@ -83,33 +80,6 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
       .get('usoDeCfdi')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(clave => this.facade.cambiarUso(clave));
-  }
-  private addCfdiMailListener() {
-    this.cartForm
-      .get('cfdiMail')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(email => this.facade.cambiarMail(email));
-  }
-  private addSucursallListener() {
-    this.cartForm
-      .get('sucursal')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(sucursal => this.facade.cambiarSucursal(sucursal));
-  }
-  private addClienteListener() {
-    this.facade.cliente$.pipe(takeUntil(this.destroy$)).subscribe(cte => {
-      if (cte.credito) {
-        if (cte.credito.postfechado) {
-          this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE_PSTF);
-          this.cartForm.get('formaDePago').disable();
-        } else {
-          this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE);
-          this.cartForm.get('formaDePago').enable();
-        }
-      }
-
-      this.cartForm.get('cfdiMail').setValue(cte.cfdiMail);
-    });
   }
 
   addCartItem() {

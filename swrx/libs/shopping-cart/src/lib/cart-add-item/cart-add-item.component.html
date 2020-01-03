@@ -11,20 +11,12 @@
   <div class="item-form" [formGroup]="form">
     <div class="corte-container" formGroupName="corte">
       <div class="corte-form">
-        <!-- <swrx-numeric-field
+        <swrx-numeric-field
           class="tantos"
           formControlName="tantos"
           label="Tamaños"
           decimals="0"
-        ></swrx-numeric-field> -->
-        <mat-form-field class="tantos">
-          <input
-            type="number"
-            matInput
-            placeholder="Tamaños"
-            formControlName="tantos"
-          />
-        </mat-form-field>
+        ></swrx-numeric-field>
         <mat-form-field class="instruccion">
           <input
             matInput
@@ -77,13 +69,33 @@
       <mat-form-field>
         <input
           matInput
-          placeholder="Sub Total"
-          value="{{ subtotal | currency }}"
+          placeholder="Importe"
+          value="{{ importe | currency }}"
           readonly
           tabindex="-1"
         />
       </mat-form-field>
     </div>
+    <!-- <div class="importes">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Descuento"
+          value="{{ descuento | currency }}"
+          readonly
+          tabindex="-1"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Subtotal"
+          value="{{ subtotal | currency }}"
+          readonly
+          tabindex="-1"
+        />
+      </mat-form-field>
+    </div> -->
   </div>
 
   <div class="exis-header">

@@ -140,6 +140,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   onCambiarNombre(cliente: Partial<Cliente>) {
     if (cliente.rfc === 'XAXX010101000') {
+      console.log('Cambiano nombre para cliente:', cliente);
       this.facade.cambiarNombre();
     }
   }

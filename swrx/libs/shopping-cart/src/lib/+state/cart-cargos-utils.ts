@@ -14,8 +14,7 @@ export function generarCargoPorTarjeta(
   }
   const netos = items.filter(item => item.modoVenta === 'N');
   if (netos.length > 0) {
-    console.log('Calculando maniobra para: ', netos);
-    const importeNeto = round(sumBy(netos, 'subtotal'), 2);
+    const importeNeto = round(sumBy(netos, 'importe'), 2);
     const cargo = fp === FormaDePago.TARJETA_CRE ? 0.02 : 0.01;
     const precio = round(importeNeto * cargo, 2);
     const importe = precio;

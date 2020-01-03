@@ -22,10 +22,4 @@ export class CartListItemComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-
-  onEdit(item: CartItem) {
-    if (item.clave !== 'MANIOBRA') {
-      this.edit.emit(item);
-    }
-  }
 }

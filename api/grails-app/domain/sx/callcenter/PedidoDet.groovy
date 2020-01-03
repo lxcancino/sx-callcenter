@@ -35,7 +35,6 @@ class PedidoDet {
     BigDecimal precioLista
     BigDecimal precioOriginal
     BigDecimal descuentoOriginal
-    String  modoVenta
     
 
     BigDecimal importeCortes = 0.0
@@ -61,7 +60,6 @@ class PedidoDet {
         id bindable: true
         unidad maxSize: 10
         presentacion nullable: true, maxSize: 100
-        modoVenta inList: ['B','N']
         comentario nullable: true
         corte nullable: true
         createUser nullable: true

@@ -115,40 +115,34 @@ const cartReducer = createReducer(
     ...state,
     cfdiMail: email
   })),
-  on(CartActions.cambiarSucursal, (state, { sucursal }) => ({
-    ...state,
-    sucursal
-  })),
   on(CartActions.registrarEnvioSuccess, (state, { envio }) => ({
     ...state,
     envio
   })),
   on(CartActions.recalcularPartidas, state => {
     const partidas = values(state.items);
-    const partidasActualizadas = aplicarDescuentos(
-      partidas,
-      state.tipo,
-      state.formaDePago,
-      state.cliente
+    const items = keyBy(
+      aplicarDescuentos(partidas, state.tipo, state.cliente),
+      'id'
     );
-    let items = keyBy(partidasActualizadas, 'id');
 
     if (
       state.formaDePago === FormaDePago.TARJETA_CRE ||
       state.formaDePago === FormaDePago.TARJETA_DEB
     ) {
-      console.log('Generando cargo por pago con tarjeta....', items);
+      console.log('Generando cargo por pago con tarjeta....');
 
       const cargo = generarCargoPorTarjeta(
-        partidasActualizadas,
+        partidas,
         state.tipo,
         state.formaDePago
       );
       if (cargo !== null) {
         console.log('Cargo por tarjeta generado: ', cargo);
-        items = { ...items, [cargo.id]: cargo };
+        // newPartidas = [...partidas, cargo];
       }
     }
+
     return { ...state, items };
   }),
   on(CartActions.editItemSuccess, (state, { item }) => {

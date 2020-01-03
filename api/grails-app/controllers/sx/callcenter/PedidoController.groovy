@@ -47,11 +47,6 @@ class PedidoController extends RestfulController<Pedido> {
         res.status = 'COTIZACION'
         res.createUser = 'TEMPO'
         res.updateUser = 'TEMPO'
-        log.info('Pedido nuevo : {}', res)
-        res.partidas.each{
-            log.info('Partida: {}', it)
-            log.info('Corte: {}', it.corte)
-        }
         return res
     }
 
