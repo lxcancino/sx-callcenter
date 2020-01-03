@@ -46,8 +46,8 @@ export class EnvioComponent implements OnInit {
     this.cliente = this.data.cliente;
     this.direcciones = this.cliente.direcciones || {};
     this.buildForm();
-    this.form.patchValue(this.envio);
     if (this.envio) {
+      this.form.patchValue(this.envio);
       const dd = this.envio.direccion;
       const calle = dd.calle.trim() || '';
       const key = `${calle.substr(0, 10)} #:${dd.numeroExterior} CP:${
