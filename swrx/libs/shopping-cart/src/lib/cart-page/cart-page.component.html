@@ -39,9 +39,7 @@
       *ngIf="sumary$ | async as sumary"
       [sumary]="sumary$ | async"
       (checkout)="onCheckout()"
-      [disabled]="
-        (facade.hasErrors$ | async) || sumary.total <= 0.0 || cartForm.invalid
-      "
+      [disabled]="(facade.hasErrors$ | async) || cartForm.invalid"
     >
       <div class="checkout-actions">
         <button mat-raised-button color="accent" [routerLink]="['/shop/cart']">

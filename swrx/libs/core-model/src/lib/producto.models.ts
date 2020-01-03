@@ -3,7 +3,7 @@ export interface Producto {
   clave: string;
   descripcion: string;
   unidad: string;
-  modoVenta: string;
+  modoVenta: 'B' | 'N';
   codigo: string;
   activo: boolean;
   kilos: number;

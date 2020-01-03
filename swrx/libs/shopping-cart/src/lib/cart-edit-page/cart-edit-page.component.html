@@ -7,6 +7,7 @@
   >
     <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
     <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
+    <swrx-sucursal-field [parent]="cartForm"></swrx-sucursal-field>
     <button mat-icon-button (click)="cambiarCliente()" class="action">
       <mat-icon>account_circle</mat-icon>
     </button>
@@ -37,7 +38,11 @@
     <swrx-cart-summary
       [sumary]="sumary$ | async"
       (checkout)="onCheckout()"
-      [disabled]="pedido.status === 'CERRADO'"
+      [disabled]="
+        (facade.hasErrors$ | async) ||
+        cartForm.invalid ||
+        pedido.status === 'CERRADO'
+      "
     >
       <div class="checkout-actions">
         <button mat-raised-button color="accent" [routerLink]="['/shop/cart']">

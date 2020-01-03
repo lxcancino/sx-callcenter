@@ -39,8 +39,8 @@ export class CartFpagoComponent implements OnInit {
     FormaDePago.TARJETA_CRE,
     FormaDePago.TARJETA_DEB,
     FormaDePago.CHEQUE,
-    FormaDePago.CHEQUE_PSTF,
-    FormaDePago.NO_DEFINIDO
+    FormaDePago.CHEQUE_PSTF
+    // FormaDePago.NO_DEFINIDO
   ];
   @Input() cartForm: FormGroup;
 
