@@ -42,9 +42,10 @@
   <mat-step>
     <ng-template matStepLabel>JSON</ng-template>
     <div class="json">
-      <!-- <pre>
-        {{ changes | json }}
-      </pre> -->
+      <pre>
+        <!-- {{ changes | json }} -->
+        {{changes.sucursal}}
+      </pre>
     </div>
     <div>
       <button mat-button mat-dialog-close>

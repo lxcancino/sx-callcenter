@@ -3,7 +3,8 @@ import {
   TipoDePedido,
   Pedido,
   Cliente,
-  Producto
+  Producto,
+  FormaDePago
 } from '@swrx/core-model';
 
 import { CartState } from './cart.reducer';
@@ -101,11 +102,16 @@ export function calcularDescuento(
 export function aplicarDescuentos(
   partidas: CartItem[],
   tipo: TipoDePedido,
+  fpago: FormaDePago,
   cliente: Partial<Cliente>
 ): CartItem[] {
-  console.log('Aplicando descuentos ', partidas, tipo, cliente);
   const items = normalize(partidas);
-  const descuento = calcularDescuento(items, tipo, cliente);
+  let descuento = calcularDescuento(items, tipo, cliente);
+  if (fpago === FormaDePago.TARJETA_CRE) {
+    descuento = descuento - 2;
+  } else if (fpago === FormaDePago.TARJETA_DEB) {
+    descuento = descuento - 1;
+  }
   const res: CartItem[] = [];
   items.map(item => {
     let rdesc: number;

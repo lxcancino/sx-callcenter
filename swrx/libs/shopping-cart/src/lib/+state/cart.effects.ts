@@ -86,6 +86,7 @@ export class CartEffects {
   validar$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.recalcularPartidas),
+      tap(() => console.log('Detonando validación de pedido')),
       map(() => CartActions.validarPedido())
     )
   );

@@ -59,7 +59,7 @@ export interface PedidoDet {
   presentacion?: string;
   gramos: number;
   nacional: boolean;
-  modoVenta: string;
+  modoVenta: 'B' | 'N';
   // Importes
   cantidad: number;
   precio: number;

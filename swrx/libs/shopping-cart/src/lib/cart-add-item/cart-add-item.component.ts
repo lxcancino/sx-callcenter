@@ -54,8 +54,12 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.buildForm();
     if (this.item) {
-      this.form.patchValue(this.item);
-      console.log('Editando CartItem: ', this.item);
+      const { producto, cantidad, precio, subtotal, corte } = this.item;
+      const pat = { producto, cantidad, precio, subtotal };
+      this.form.patchValue(pat);
+      if (corte) {
+        this.form.get('corte').patchValue(corte);
+      }
     }
     this.filteredOptions = this.form
       .get('corte')
@@ -77,7 +81,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
       producto: [null, Validators.required],
       cantidad: [0.0, [Validators.required, Validators.min(1)]],
       precio: [0.0, Validators.required],
-      importe: [0.0, Validators.required],
+      subtotal: [0.0, Validators.required],
       corte: this.fb.group({
         instruccion: [null],
         cantidad: [0],
@@ -126,14 +130,13 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   private actualizarImporte(cantidad: number) {
     const precio = this.precio;
     const bruto = cantidad * precio;
-    const importe = round(bruto, 2);
-    this.form.get('importe').setValue(importe);
+    const subtotal = round(bruto, 2);
+    this.form.get('subtotal').setValue(subtotal);
   }
 
   onSubmit() {
     if (this.form.valid) {
       const { producto, cantidad, precio, corte } = this;
-
       const emptyItem = this.item ? this.item : buildCartItem(producto);
 
       const item: PedidoDet = {
@@ -157,12 +160,12 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
     return this.form.get('precio').value;
   }
 
-  get importe() {
-    return this.form.get('importe').value;
+  get subtotal() {
+    return this.form.get('subtotal').value;
   }
   get corte(): Corte {
     const corte = this.form.get('corte').value;
-    if (corte.cantidad && corte.cantidad > 0) {
+    if (corte.cantidad > 0) {
       const { cantidad, precio, instruccion } = corte;
       corte.importe = cantidad * precio;
       corte.instruccion = instruccion.toUpperCase(); // small fix por que swrxUpperCase tiene un Bug
