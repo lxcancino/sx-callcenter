@@ -107,8 +107,9 @@ export class PedidosTableComponent implements OnInit {
   private buildColsDef(): ColDef[] {
     return [
       {
-        headerName: 'Folio',
+        headerName: 'No',
         field: 'folio',
+        width: 90,
         pinned: 'left'
       },
       {
@@ -131,7 +132,14 @@ export class PedidosTableComponent implements OnInit {
       {
         headerName: 'Tipo',
         field: 'tipo',
+        width: 100,
         valueGetter: params => params.data.tipo
+      },
+      {
+        headerName: 'Envio',
+        field: 'envio',
+        width: 100,
+        valueGetter: params => (params.data.envio ? 'ENVIO' : 'PASAN')
       },
       {
         headerName: 'F.Pago',
@@ -155,8 +163,16 @@ export class PedidosTableComponent implements OnInit {
         width: 200
       },
       {
+        headerName: 'Modificado',
+        field: 'lastUpdated',
+        width: 150,
+        valueFormatter: params =>
+          this.transformDate(params.value, 'dd/MM/yyyy hh:mm')
+      },
+      {
         headerName: 'Vendedor',
-        field: 'vendedor'
+        field: 'vendedor',
+        width: 150
       }
     ];
   }

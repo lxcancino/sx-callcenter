@@ -6,8 +6,8 @@
   .row {
     flex: 1;
     display: flex;
-    display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    // justify-content: space-between;
   }
 }
 .direccion {
@@ -22,5 +22,13 @@
   margin-right: 5px;
 }
 .comentario {
+  flex: 1;
+}
+
+.tipo {
+  flex: 1;
+  margin-right: 10px;
+}
+.transporte {
   flex: 1;
 }

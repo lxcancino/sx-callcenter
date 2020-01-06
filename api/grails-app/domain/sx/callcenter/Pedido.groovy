@@ -41,7 +41,7 @@ class Pedido {
     BigDecimal kilos 
     String status
     
-    // String envio PENDIENTE PARA IMPLEMENTAR DIRECCION DE ENVIO
+    
     String comprador
     String comentario
     String cfdiMail
@@ -51,11 +51,13 @@ class Pedido {
     Date lastUpdated
     String createUser
     String updateUser
-    
+
+    InstruccionDeEnvio envio
 
     static hasMany =[partidas:PedidoDet]
 
-    static hasOne = [envio: InstruccionDeEnvio, socio: PedidoSocio]
+    // static hasOne = [envio: InstruccionDeEnvio, socio: PedidoSocio]
+    static hasOne = [socio: PedidoSocio]
 
     static constraints = {
         rfc maxSize:13

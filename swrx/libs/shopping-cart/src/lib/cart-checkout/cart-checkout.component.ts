@@ -28,7 +28,9 @@ export class CartCheckoutComponent implements OnInit {
     this.changes = data.changes;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('Checkout pedido: ', this.changes);
+  }
 
   doSubmit() {
     this.dialogRef.close({ id: this.id, changes: this.changes });

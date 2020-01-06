@@ -27,20 +27,21 @@
           formControlName="codigoPostal"
         />
       </mat-form-field>
+
       <mat-form-field class="calle">
-        <input
-          matInput
-          type="text"
-          formControlName="colonia"
-          placeholder="Colonia"
-        />
+        <mat-select placeholder="Colonia" formControlName="colonia">
+          <mat-option *ngFor="let s of colonias" [value]="s">
+            {{ s }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field class="municipio">
         <input
           matInput
           type="text"
-          formControlName="monicipio"
+          formControlName="municipio"
           placeholder="Municipio"
+          readonly="true"
         />
       </mat-form-field>
     </div>
@@ -51,7 +52,7 @@
           type="text"
           formControlName="estado"
           placeholder="Estado"
-          swrxUpperCase
+          readonly="true"
         />
       </mat-form-field>
       <mat-form-field class="pais">
@@ -60,7 +61,7 @@
           type="text"
           formControlName="pais"
           placeholder="Pais"
-          swrxUpperCase
+          readonly="true"
         />
       </mat-form-field>
     </div>

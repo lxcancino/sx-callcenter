@@ -5,7 +5,13 @@ import {
   Inject,
   OnDestroy
 } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import {
+  FormGroup,
+  Validators,
+  FormBuilder,
+  ValidatorFn,
+  AbstractControl
+} from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
@@ -17,6 +23,16 @@ import {
   InstruccionDeEnvio
 } from '@swrx/core-model';
 import { buildDireccionForm } from '@swrx/form-utils';
+import { takeUntil } from 'rxjs/operators';
+
+const EnvioValidator: ValidatorFn = (fg: FormGroup) => {
+  const tipo = fg.get('tipo').value;
+  if (tipo && tipo === 'FORANEO') {
+    const transporte = fg.get('transporte').value;
+    return transporte ? null : { transporteRequerido: true };
+  }
+  return null;
+};
 
 @Component({
   selector: 'swrx-envio',
@@ -24,7 +40,7 @@ import { buildDireccionForm } from '@swrx/form-utils';
   styleUrls: ['./envio.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EnvioComponent implements OnInit {
+export class EnvioComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject();
   cliente: Cliente;
@@ -46,6 +62,7 @@ export class EnvioComponent implements OnInit {
     this.cliente = this.data.cliente;
     this.direcciones = this.cliente.direcciones || {};
     this.buildForm();
+
     if (this.envio) {
       this.form.patchValue(this.envio);
       const dd = this.envio.direccion;
@@ -60,16 +77,35 @@ export class EnvioComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
+
   buildForm() {
-    this.form = this.fb.group({
-      tipo: [],
-      contacto: [],
-      telefono: [],
-      horario: [],
-      comentario: [],
-      direccion: buildDireccionForm(this.fb)
-    });
+    this.form = this.fb.group(
+      {
+        tipo: ['ENVIO', [Validators.required]],
+        transporte: [{ value: null, disabled: true }],
+        contacto: [null, [Validators.required]],
+        telefono: [null, [Validators.required]],
+        horario: [null, [Validators.required]],
+        comentario: [],
+        direccion: buildDireccionForm(this.fb)
+      },
+      { validators: [] }
+    );
     // this.form.get('direccion').disable();
+    this.form
+      .get('tipo')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(value => {
+        if (value === 'FORANEO') {
+          this.form.get('transporte').enable();
+        } else {
+          this.form.get('transporte').disable();
+        }
+      });
   }
 
   onSelect(event: any) {

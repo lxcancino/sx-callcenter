@@ -51,7 +51,8 @@ export const reactiveCartActions = pipe(
     CartActions.addCartItemSuccess,
     CartActions.deleteItem,
     CartActions.editItemSuccess,
-    CartActions.cambiarFormaDePago
+    CartActions.cambiarFormaDePago,
+    CartActions.registrarEnvioSuccess
   )
 );
 

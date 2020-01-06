@@ -71,16 +71,13 @@ export function validarCod(state: CartState, errors: CartValidationError[]) {
         descripcion: 'EN COD SOLO CHEQUE o EFECTIVO'
       });
     }
-
-    // if (
-    //   !(state.formaDePago === FormaDePago.CHEQUE ||
-    //   state.formaDePago === FormaDePago.EFECTIVO)
-    // ) {
-    //   errors.push({
-    //     error: 'VANTA_COD',
-    //     descripcion: 'En COD solo CHEQUE o EFECTIVO'
-    //   });
-    // }
+    if(!state.envio) {
+      errors.push({
+        error: 'COD_SIN_ENVIO',
+        descripcion: 'VENTA COD REQUIERE INSTRUCCION DE ENVIO'
+      });
+    }
+    
   }
 }
 

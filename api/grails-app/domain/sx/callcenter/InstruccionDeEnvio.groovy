@@ -6,7 +6,7 @@ import groovy.transform.ToString
 import sx.core.Direccion
 import sx.core.Transporte
 
-@EqualsAndHashCode(includes='nombre')
+@EqualsAndHashCode()
 @ToString(includeNames=true,includePackage=false)
 class InstruccionDeEnvio {
 

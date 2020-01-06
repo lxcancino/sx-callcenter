@@ -11,7 +11,7 @@ export const buildDireccionForm = (fb: FormBuilder): FormGroup => {
         { validators: [Validators.required], updateOn: 'blur' }
       ],
       colonia: [null, [Validators.required]],
-      monicipio: [null],
+      municipio: [null],
       estado: [null, [Validators.required]],
       pais: ['MEXICO', [Validators.required]]
     },

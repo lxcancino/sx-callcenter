@@ -244,6 +244,7 @@ export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
     partidas: items,
     kilos: sumBy(items, 'kilos'),
     status: 'COTIZACION',
+    envio: state.envio,
     ...sumary
   };
 }

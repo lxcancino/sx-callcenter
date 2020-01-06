@@ -37,6 +37,7 @@ import { CfdiTabComponent } from './cart-info/cfdi-tab/cfdi-tab.component';
 import { MatStepperModule, MatTableModule } from '@angular/material';
 import { CartNombreComponent } from './cart-nombre/cart-nombre.component';
 import { CerrarComponent } from './cerrar/cerrar.component';
+import { TransporteFieldComponent } from './envio/transporte-field/transporte-field.component';
 
 const routes: Route[] = [
   {
@@ -86,7 +87,8 @@ const routes: Route[] = [
     EnvioPanelComponent,
     CfdiTabComponent,
     CartNombreComponent,
-    CerrarComponent
+    CerrarComponent,
+    TransporteFieldComponent
   ],
   entryComponents: [
     CartAddItemComponent,
