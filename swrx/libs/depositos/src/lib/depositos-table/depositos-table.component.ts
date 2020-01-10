@@ -1,0 +1,164 @@
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  Inject,
+  LOCALE_ID
+} from '@angular/core';
+import { formatCurrency, formatDate } from '@angular/common';
+
+import {
+  GridOptions,
+  GridApi,
+  ColDef,
+  GridReadyEvent,
+  RowDoubleClickedEvent,
+  ColumnApi
+} from 'ag-grid-community';
+
+import { spAgGridText } from '@swrx/ui-core';
+import { Deposito } from '../+state/depositos.models';
+
+@Component({
+  selector: 'swrx-depositos-table',
+  templateUrl: './depositos-table.component.html',
+  styleUrls: ['./depositos-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class DepositosTableComponent implements OnInit {
+  @Input() partidas: Deposito[] = [];
+  @Output() edit = new EventEmitter();
+
+  gridOptions: GridOptions;
+  gridApi: GridApi;
+  gridColumnApi: ColumnApi;
+  defaultColDef: any;
+  localeText = spAgGridText;
+
+  constructor(@Inject(LOCALE_ID) private locale: string) {}
+
+  ngOnInit() {
+    this.buildGridOptions();
+  }
+
+  buildGridOptions() {
+    this.gridOptions = <GridOptions>{};
+    this.gridOptions.columnDefs = this.buildColsDef();
+    this.defaultColDef = {
+      editable: false,
+      filter: 'agTextColumnFilter',
+      width: 150,
+      sortable: true,
+      resizable: true
+    };
+    this.gridOptions.getRowStyle = this.buildRowStyle.bind(this);
+    this.gridOptions.onCellMouseOver = event => {};
+    this.gridOptions.onCellDoubleClicked = event => {};
+  }
+
+  buildRowStyle(params: any) {
+    if (params.node.rowPinned) {
+      return { 'font-weight': 'bold' };
+    }
+    if (params.data.estado === 'RECHAZADO') {
+      return {
+        'font-weight': 'bold',
+        'font-style': 'italic',
+        color: 'red',
+        cursor: 'pointer'
+      };
+    }
+    if (params.data.estado === 'AUTORIZADO') {
+      return { 'font-weight': 'bold', 'font-style': 'italic', color: 'green' };
+    }
+    return {};
+  }
+
+  onDoubleClick(event: RowDoubleClickedEvent) {
+    if (event.data.estado === 'RECHAZADO') {
+      this.edit.emit(event.data);
+    }
+  }
+
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  onFirstDataRendered(params) {
+    // this.autoSizeAll();
+    params.api.sizeColumnsToFit();
+  }
+
+  autoSizeAll() {
+    const allColumnIds = [];
+    this.gridColumnApi.getAllColumns().forEach(function(column) {
+      allColumnIds.push(column.getColId());
+    });
+    this.gridColumnApi.autoSizeColumns(allColumnIds);
+  }
+
+  private buildColsDef(): ColDef[] {
+    return [
+      {
+        headerName: 'Folio',
+        field: 'folio',
+        width: 110,
+        pinned: 'left'
+      },
+      {
+        headerName: 'Fecha',
+        field: 'fecha',
+        width: 110,
+        pinned: 'left',
+        valueFormatter: params => this.transformDate(params.value)
+      },
+      {
+        headerName: 'Nombre',
+        field: 'nombre',
+        pinned: 'left',
+        width: 250
+      },
+      {
+        headerName: 'Cuenta',
+        field: 'cuenta',
+        valueGetter: params => `${params.data.cuenta.numero}`
+      },
+      {
+        headerName: 'Total',
+        field: 'total',
+        width: 130,
+        valueFormatter: params => this.transformCurrency(params.value)
+      },
+      {
+        headerName: 'Estatus',
+        field: 'estado',
+        width: 130
+      },
+      {
+        headerName: 'Referencia',
+        field: 'referencia',
+        width: 130
+      },
+      {
+        headerName: 'Comentario',
+        field: 'comentario',
+        width: 200
+      }
+    ];
+  }
+
+  transformCurrency(data: any) {
+    return formatCurrency(data, this.locale, '$');
+  }
+  transformDate(data: any, format: string = 'dd/MM/yyyy') {
+    if (data) {
+      return formatDate(data, format, this.locale);
+    } else {
+      return '';
+    }
+  }
+}
