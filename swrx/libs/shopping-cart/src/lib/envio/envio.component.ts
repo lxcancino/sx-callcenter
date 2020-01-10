@@ -3,7 +3,8 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Inject,
-  OnDestroy
+  OnDestroy,
+  ChangeDetectorRef
 } from '@angular/core';
 import {
   FormGroup,
@@ -54,7 +55,8 @@ export class EnvioComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<EnvioComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -67,13 +69,19 @@ export class EnvioComponent implements OnInit, OnDestroy {
       this.form.patchValue(this.envio);
       const dd = this.envio.direccion;
       const calle = dd.calle.trim() || '';
-      const key = `${calle.substr(0, 10)} #:${dd.numeroExterior} CP:${
+      const key = `${calle.substr(0, 10)} #:${dd.numeroExterior || ''} CP:${
         dd.codigoPostal
       }`;
       const direccion = this.direcciones[key];
       if (direccion) {
         this.selectedKey = key;
+        this.form.get('direccion').disable();
+        this.nueva = false;
       }
+      if (this.envio.transporte) {
+        this.form.get('transporte').setValue(this.envio.transporte);
+      }
+      this.cd.markForCheck();
     }
   }
 
@@ -100,7 +108,7 @@ export class EnvioComponent implements OnInit, OnDestroy {
       .get('tipo')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(value => {
-        if (value === 'FORANEO') {
+        if (value === 'FORANEO' || value === 'OCURRE') {
           this.form.get('transporte').enable();
         } else {
           this.form.get('transporte').disable();

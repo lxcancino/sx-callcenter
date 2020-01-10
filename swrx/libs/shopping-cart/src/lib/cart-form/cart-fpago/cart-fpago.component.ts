@@ -33,9 +33,11 @@ import { FormaDePago } from '@swrx/core-model';
 })
 export class CartFpagoComponent implements OnInit {
   @Input() formasDePago = [
-    FormaDePago.TRANSFERENCIA,
-    FormaDePago.DEPOSITO,
     FormaDePago.EFECTIVO,
+    FormaDePago.TRANSFERENCIA,
+    FormaDePago.DEPOSITO_EFECTIVO,
+    FormaDePago.DEPOSITO_CHEQUE,
+    FormaDePago.DEPOSITO_MIXTO,
     FormaDePago.TARJETA_CRE,
     FormaDePago.TARJETA_DEB,
     FormaDePago.CHEQUE,

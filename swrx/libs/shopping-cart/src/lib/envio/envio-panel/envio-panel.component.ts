@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { InstruccionDeEnvio } from '@swrx/core-model';
+import { InstruccionDeEnvio, Direccion } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-envio-panel',
@@ -17,6 +17,7 @@ import { InstruccionDeEnvio } from '@swrx/core-model';
 export class EnvioPanelComponent implements OnInit {
   @Input() envio: InstruccionDeEnvio;
   @Output() actualizar = new EventEmitter();
+  @Output() cancelar = new EventEmitter();
 
   constructor() {}
 
@@ -24,5 +25,9 @@ export class EnvioPanelComponent implements OnInit {
 
   get direccion() {
     return this.envio.direccion;
+  }
+
+  getDireccionLabel(direccion: Direccion) {
+    return `${direccion.calle} ${direccion.numeroExterior} Mpo: ${direccion.municipio} Cp:${direccion.codigoPostal}`;
   }
 }

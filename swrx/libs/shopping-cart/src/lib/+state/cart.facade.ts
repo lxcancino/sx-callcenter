@@ -38,6 +38,7 @@ export class CartFacade {
   hasWarnings$ = this.store.pipe(select(CartSelectors.hasWarnings));
   isPrintable$ = this.store.pipe(select(CartSelectors.isPrintable));
   envio$ = this.store.pipe(select(CartSelectors.selectEnvio));
+  dirty$ = this.store.pipe(select(CartSelectors.isDirty));
 
   constructor(
     private store: Store<fromCart.CartState>,
@@ -59,8 +60,9 @@ export class CartFacade {
   cambiarCliente() {
     this.store.dispatch(CartActions.cambiarCliente());
   }
-  startCheckout() {
-    this.store.dispatch(CartActions.startCheckout());
+  startCheckout(user: any) {
+    // const user = { displayName: 'Admin', email: 'admin@gmail.com' };
+    this.store.dispatch(CartActions.startCheckout({ user }));
   }
 
   cambiarTipo(tipo: TipoDePedido) {
@@ -83,6 +85,12 @@ export class CartFacade {
   cambiarNombre() {
     this.store.dispatch(CartActions.cambiarNombre());
   }
+  cambiarComprador(comprador: string) {
+    this.store.dispatch(CartActions.cambiarComprador({ comprador }));
+  }
+  cambiarComentario(comentario: string) {
+    this.store.dispatch(CartActions.cambiarComentario({ comentario }));
+  }
 
   /**
    * Clean the ShoppingCartState
@@ -99,6 +107,9 @@ export class CartFacade {
 
   registrarEnvio() {
     this.store.dispatch(CartActions.registrarEnvio());
+  }
+  cancelarEnvio() {
+    this.store.dispatch(CartActions.cancelarEnvio());
   }
 
   cerrarPedido(pedido: Pedido) {

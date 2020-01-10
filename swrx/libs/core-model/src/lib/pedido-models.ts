@@ -105,9 +105,11 @@ export enum TipoDePedido {
 }
 
 export enum FormaDePago {
-  TRANSFERENCIA = 'TRANSFERENCIA',
-  DEPOSITO = 'DEPOSITO',
   EFECTIVO = 'EFECTIVO',
+  TRANSFERENCIA = 'TRANSFERENCIA',
+  DEPOSITO_EFECTIVO = 'DEPOSITO_EFECTIVO',
+  DEPOSITO_CHEQUE = 'DEPOSITO_CHEQUE',
+  DEPOSITO_MIXTO = 'DEPOSITO_MIXTO',
   TARJETA_CRE = 'TARJETA_CREDITO',
   TARJETA_DEB = 'TARJETA_DEBITO',
   CHEQUE = 'CHEQUE',
@@ -118,7 +120,7 @@ export enum FormaDePago {
 export interface InstruccionDeEnvio {
   tipo: 'ENVIO' | 'FORANEO' | 'OCURRE' | 'ENVIO_CARGO';
   direccion: Direccion;
-  transporte?: Transporte;
+  transporte?: Partial<Transporte>;
   telefono: string;
   contacto: string;
   horario: string;

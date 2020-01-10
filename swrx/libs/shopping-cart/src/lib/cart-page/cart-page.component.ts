@@ -8,12 +8,16 @@ import {
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { CartFacade } from '../+state/cart.facade';
+// import { ClientesFacade } from 'libs/clientes/src/lib/+state/clientes.facade';
+import { ClientesFacade } from '@swrx/clientes';
 
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
 import { TipoDePedido, FormaDePago, Pedido, Cliente } from '@swrx/core-model';
+
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'swrx-cart-page',
@@ -26,25 +30,42 @@ export class CartPageComponent implements OnInit, OnDestroy {
   sumary$: Observable<CartSumary> = this.facade.sumary$;
   destroy$ = new Subject<boolean>();
   pedido$: Observable<Pedido>;
+  pedido: Pedido;
+  user: any;
 
-  constructor(private fb: FormBuilder, public facade: CartFacade) {}
+  constructor(
+    private fb: FormBuilder,
+    public facade: CartFacade,
+    private clientes: ClientesFacade,
+    private firebaseAuth: AngularFireAuth
+  ) {}
 
   ngOnInit() {
     this.buildForm();
     this.registerStateForm();
     this.registerPedido();
     this.addListeners();
+    this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
+      const { displayName, email } = usr;
+      this.user = { displayName, email };
+      console.log('Usuario: ', this.user);
+    });
   }
 
   private buildForm() {
-    this.cartForm = this.fb.group({
-      nombre: [null, [Validators.required]],
-      sucursal: [null, [Validators.required]],
-      tipo: [TipoDePedido.CONTADO, [Validators.required]],
-      formaDePago: [null, [Validators.required]],
-      usoDeCfdi: [null, [Validators.required]],
-      cfdiMail: [null, [Validators.email]]
-    });
+    this.cartForm = this.fb.group(
+      {
+        nombre: [null, [Validators.required]],
+        sucursal: [null, [Validators.required]],
+        tipo: [TipoDePedido.CONTADO, [Validators.required]],
+        formaDePago: [null, [Validators.required]],
+        usoDeCfdi: [null, [Validators.required]],
+        cfdiMail: [null, [Validators.email]],
+        comprador: [null],
+        comentario: [null]
+      },
+      { updateOn: 'blur' }
+    );
   }
 
   ngOnDestroy() {
@@ -56,6 +77,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.pedido$ = this.facade.currentPedido;
     this.pedido$.pipe(takeUntil(this.destroy$)).subscribe(value => {
       if (value) {
+        this.pedido = value;
         this.cartForm.patchValue(value, { emitEvent: false });
       }
     });
@@ -73,6 +95,11 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.addCfdiMailListener();
     this.addSucursallListener();
     this.addClienteListener();
+    this.addCompradorListener();
+    this.addComemtarioListener();
+    this.facade.dirty$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.cartForm.markAsDirty());
   }
 
   private addClienteListener() {
@@ -80,13 +107,20 @@ export class CartPageComponent implements OnInit, OnDestroy {
       if (cte.credito) {
         if (cte.credito.postfechado) {
           this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE_PSTF);
-          this.cartForm.get('formaDePago').disable();
+
+          this.cartForm.get('tipo').disable();
         } else {
-          this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE);
+          this.cartForm.get('formaDePago').setValue(FormaDePago.EFECTIVO);
           this.cartForm.get('formaDePago').enable();
         }
-      }
 
+        if (!this.pedido) {
+          this.cartForm
+            .get('usoDeCfdi')
+            .setValue(cte.credito.usoDeCfdi || 'G01');
+        }
+        this.cartForm.get('tipo').setValue(TipoDePedido.CREDITO);
+      }
       this.cartForm.get('cfdiMail').setValue(cte.cfdiMail);
     });
   }
@@ -95,7 +129,15 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.cartForm
       .get('formaDePago')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(formaDePago => this.facade.cambiarFormaDePago(formaDePago));
+      .subscribe(formaDePago => {
+        this.facade.cambiarFormaDePago(formaDePago);
+        if (formaDePago === FormaDePago.CHEQUE_PSTF) {
+          this.cartForm.get('tipo').setValue(TipoDePedido.CREDITO);
+          this.cartForm.get('tipo').disable();
+        } else {
+          this.cartForm.get('tipo').enable();
+        }
+      });
   }
 
   private addTipoDePedidoListener() {
@@ -125,6 +167,18 @@ export class CartPageComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(sucursal => this.facade.cambiarSucursal(sucursal));
   }
+  private addCompradorListener() {
+    this.cartForm
+      .get('comprador')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(comprador => this.facade.cambiarComprador(comprador));
+  }
+  private addComemtarioListener() {
+    this.cartForm
+      .get('comentario')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(comentario => this.facade.cambiarComentario(comentario));
+  }
 
   addCartItem() {
     this.facade.addCartItem();
@@ -135,7 +189,9 @@ export class CartPageComponent implements OnInit, OnDestroy {
   }
 
   onCheckout() {
-    this.facade.startCheckout();
+    if (this.user) {
+      this.facade.startCheckout(this.user);
+    }
   }
 
   onCambiarNombre(cliente: Partial<Cliente>) {
@@ -165,5 +221,26 @@ export class CartPageComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown.control.d', ['$event'])
   onHotKeyShowDescuentos(event) {
     this.showDescuentos();
+  }
+  isDisabled(pedido: Partial<Pedido>, hasErrors: boolean) {
+    if (pedido && pedido.status === 'CERRADO') {
+      return true;
+    } else if (hasErrors) {
+      return true;
+    } else {
+      return this.cartForm.invalid || this.cartForm.pristine;
+    }
+  }
+
+  /** Show descuentos */
+  @HostListener('document:keydown.control.c', ['$event'])
+  onHotKeyAltaDeCliente(event) {
+    this.clienteNuevo();
+  }
+  
+  clienteNuevo() {
+    if(this.user) {
+      this.clientes.createCliente(this.user);
+    }
   }
 }

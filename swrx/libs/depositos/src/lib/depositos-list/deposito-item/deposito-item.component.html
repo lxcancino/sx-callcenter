@@ -1,5 +1,6 @@
 <mat-list-item>
   <div class="main-line">
+    <span>{{ deposito.folio }}</span>
     <span class="nombre">
       {{ deposito.nombre }}
     </span>
@@ -16,9 +17,13 @@
         autorizado: deposito.estado === 'AUTORIZADO',
         rechazado: deposito.estado === 'RECHAZADO'
       }"
+      (click)="edit.emit(deposito)"
     >
       {{ deposito.estado }}
     </span>
+    <div class="referencia">
+      {{ deposito?.referencia }}
+    </div>
     <div class="comentario">
       <span
         class="rechazado"

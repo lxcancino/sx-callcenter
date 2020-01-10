@@ -30,7 +30,6 @@ import { CartCheckoutComponent } from './cart-checkout/cart-checkout.component';
 import { CartEditItemComponent } from './cart-edit-item/cart-edit-item.component';
 import { CartEditPageComponent } from './cart-edit-page/cart-edit-page.component';
 import { CartPersistenceEffects } from './+state/cart-persistence.effects';
-import { NewCartGuard } from './guards/new-cart.guard';
 import { EnvioComponent } from './envio/envio.component';
 import { EnvioPanelComponent } from './envio/envio-panel/envio-panel.component';
 import { CfdiTabComponent } from './cart-info/cfdi-tab/cfdi-tab.component';
@@ -38,6 +37,8 @@ import { MatStepperModule, MatTableModule } from '@angular/material';
 import { CartNombreComponent } from './cart-nombre/cart-nombre.component';
 import { CerrarComponent } from './cerrar/cerrar.component';
 import { TransporteFieldComponent } from './envio/transporte-field/transporte-field.component';
+
+import { NewCartGuard } from './guards/new-cart.guard';
 
 const routes: Route[] = [
   {

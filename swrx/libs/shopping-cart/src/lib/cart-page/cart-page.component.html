@@ -14,6 +14,10 @@
     <button mat-icon-button (click)="addCartItem()" class="action">
       <mat-icon>add_shopping_cart</mat-icon>
     </button>
+    <button mat-menu-item class="menu-item" (click)="clienteNuevo()">
+      <mat-icon>person_add</mat-icon>
+      <span>Alta de cliente (Ctr + C)</span>
+    </button>
     <button mat-menu-item class="menu-item">
       <mat-icon>monetization_on</mat-icon>
       <span>Descuento especial</span>
@@ -33,13 +37,19 @@
   </swrx-cart-toolbar>
 
   <swrx-cart-items></swrx-cart-items>
-
+  <div class="comentario-section">
+    <mat-form-field class="comentario-field" appearance="fill">
+      <mat-label>Comentario</mat-label>
+      <input matInput type="text" [formControl]="cartForm.get('comentario')" />
+      <mat-hint>Instrucciones y comentarios generales del pedido</mat-hint>
+    </mat-form-field>
+  </div>
   <div class="side-bar">
     <swrx-cart-summary
       *ngIf="sumary$ | async as sumary"
       [sumary]="sumary$ | async"
       (checkout)="onCheckout()"
-      [disabled]="(facade.hasErrors$ | async) || cartForm.invalid"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
     >
       <div class="checkout-actions">
         <button mat-raised-button color="accent" (click)="goToNewCart()">

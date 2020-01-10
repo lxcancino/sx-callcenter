@@ -30,7 +30,7 @@ class PedidoController extends RestfulController<Pedido> {
     @Override
     @CompileDynamic
     protected List<Pedido> listAllResources(Map params) {
-        log.debug('List: {}', params)
+        // log.debug('List: {}', params)
         params.sort = 'lastUpdated'
         params.order = 'desc'
         params.max = 1000
@@ -45,23 +45,34 @@ class PedidoController extends RestfulController<Pedido> {
         bindData res, getObjectToBind()
         res.folio = -1L
         res.status = 'COTIZACION'
-        res.createUser = 'TEMPO'
-        res.updateUser = 'TEMPO'
+        // res.createUser = 'TEMPO'
+        // res.updateUser = 'TEMPO'
         if(res.envio) {
-            log.info('Envio: {}' , res.envio)
+            log.info('Envio: {}' , res.envio) // Hack para salvar correctamente el envio *** ???
+            res.envio.pedido = res
         }
         return res
     }
 
+   
     @CompileDynamic
     def update() {
         String id = params.id as String
         Pedido pedido = Pedido.get(id)
+        def envioOrigen = pedido.envio
         bindData pedido, getObjectToBind()
-        log.info('Partidas: {}', pedido.partidas.size())
+        if(pedido.envio) {
+            if(!pedido.envio.pedido) {
+                pedido.envio.pedido = pedido
+            }
+        }
         pedido = pedidoService.save(pedido)
+        if(pedido.envio == null && envioOrigen) {
+            envioOrigen.delete flush: true // Hack por que el envio no se elimina de manera automárica.
+        }
         respond pedido, view: 'show'
     }
+   
 
     @Override
     protected Pedido saveResource(Pedido resource) {

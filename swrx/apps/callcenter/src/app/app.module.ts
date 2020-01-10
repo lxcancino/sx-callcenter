@@ -27,6 +27,8 @@ import { AppStateModule } from './+state/app.state.module';
 // tslint:disable-next-line: nx-enforce-module-boundaries
 import { ShoppingCartModule } from '@swrx/shopping-cart';
 
+import { NgxMaskModule } from 'ngx-mask';
+
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -41,7 +43,8 @@ import { ShoppingCartModule } from '@swrx/shopping-cart';
     AngularFirestoreModule,
     // Authorization
     AuthModule.forRoot(environment.firebase),
-    ShoppingCartModule
+    ShoppingCartModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [
     DataPersistence,

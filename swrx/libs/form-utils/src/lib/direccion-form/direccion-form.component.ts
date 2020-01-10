@@ -24,7 +24,7 @@ export class DireccionFormComponent implements OnInit, OnDestroy {
   @Input() propertyName = 'direccion';
   destroy$ = new Subject();
   apiUrl: string;
-  colonias = [];
+  @Input() colonias = [];
 
   constructor(private http: HttpClient, @Inject('apiUrl') api) {
     this.apiUrl = `${api}/zip`;
@@ -39,6 +39,15 @@ export class DireccionFormComponent implements OnInit, OnDestroy {
         filter(term => !!term)
       )
       .subscribe(zip => this.registrarCodigoPostal(zip));
+    const colonia = this.form.get('colonia').value;
+    this.parent
+      .get(this.propertyName)
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(val => {
+        if (colonia && this.colonias.length === 0) {
+          this.colonias.push(colonia);
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -66,7 +75,7 @@ export class DireccionFormComponent implements OnInit, OnDestroy {
   private update(zipData: any) {
     const { estado, municipio, pais, colonias } = zipData;
     this.form.patchValue({ estado, municipio, pais });
-    this.form.get('colonia').setValue(colonias[0]);
+    // this.form.get('colonia').setValue(colonias[0]);
   }
 
   get form() {

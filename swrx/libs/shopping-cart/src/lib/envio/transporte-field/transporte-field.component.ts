@@ -29,8 +29,12 @@ const TransporteValidator: ValidatorFn = (control: AbstractControl) => {
   selector: 'swrx-transporte-field',
   template: `
     <mat-form-field class="field" [formGroup]="parent" appearance="fill">
-      <mat-label>Seleccione un transporte</mat-label>
-      <mat-select placeholder="Transporte" formControlName="transporte">
+      <mat-label>Transporte</mat-label>
+      <mat-select
+        placeholder="Transporte"
+        formControlName="transporte"
+        [compareWith]="compareWith"
+      >
         <mat-option *ngFor="let s of transportes" [value]="s">
           {{ s.nombre }}
         </mat-option>
@@ -46,8 +50,7 @@ const TransporteValidator: ValidatorFn = (control: AbstractControl) => {
         width: 100%;
       }
     `
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
 })
 export class TransporteFieldComponent implements OnInit, OnDestroy {
   @Input() parent: FormGroup;
@@ -77,5 +80,12 @@ export class TransporteFieldComponent implements OnInit, OnDestroy {
 
   get transporte(): AbstractControl {
     return this.parent.get('transporte');
+  }
+  compareWith(itemA, itemB: any) {
+    if (itemA && itemB) {
+      return itemA.id === itemB.id;
+    } else {
+      return false;
+    }
   }
 }

@@ -32,7 +32,15 @@ import { DepositosListComponent } from './depositos-list/depositos-list.componen
 import { DepositoItemComponent } from './depositos-list/deposito-item/deposito-item.component';
 import { DepositoEditComponent } from './deposito-edit/deposito-edit.component';
 
-const routes: Route[] = [{ path: '', component: DepositosPageComponent }];
+export const routes: Route[] = [
+  {
+    path: '',
+    children: [
+      // { path: '', redirectTo: 'all', pathMatch: 'full' },
+      { path: 'list', component: DepositosPageComponent }
+    ]
+  }
+];
 
 @NgModule({
   imports: [

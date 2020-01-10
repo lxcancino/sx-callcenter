@@ -33,6 +33,8 @@ export interface CartFormState {
   usoDeCfdi: string;
   cfdiMail?: string;
   sucursal: string;
+  comprador?: string;
+  comentario?: string;
 }
 
 export interface AddCartItemDto {

@@ -52,7 +52,8 @@ export const reactiveCartActions = pipe(
     CartActions.deleteItem,
     CartActions.editItemSuccess,
     CartActions.cambiarFormaDePago,
-    CartActions.registrarEnvioSuccess
+    CartActions.registrarEnvioSuccess,
+    CartActions.cancelarEnvio
   )
 );
 
@@ -101,13 +102,14 @@ export const envioState = (store: Store<CartState>) =>
 
 export const pedidoState = (store: Store<CartState>) =>
   pipe(
-    concatMap(action =>
+    concatMap((action: { user: any }) =>
       of(action).pipe(
         withLatestFrom(store.pipe(select(CartSelectors.getPersistenceState))),
-        map(([, entity]) => {
+        map(([a, entity]) => {
           return {
             id: entity.id,
-            changes: entity
+            changes: entity,
+            user: action.user || 'noUser'
           };
         })
       )
@@ -121,13 +123,15 @@ export const decuentosState = (store: Store<CartState>) =>
         withLatestFrom(
           store.pipe(select(CartSelectors.getDescuentoPorVolumenImporte)),
           store.pipe(select(CartSelectors.getDescuentoPorVolumen)),
-          store.pipe(select(CartSelectors.getTipo))
+          store.pipe(select(CartSelectors.getTipo)),
+          store.pipe(select(CartSelectors.selectFormState))
         ),
-        map(([, importe, descuento, tipo]) => {
+        map(([, importe, descuento, tipo, formState]) => {
           return {
             importe,
             descuento,
-            tipo
+            tipo,
+            formState
           };
         })
       )

@@ -7,7 +7,8 @@ model {
 json g.render(cliente, [excludes: ['credito', 'cobrador', ''], resolveTemplate: false]) {
 	credito g.render(cliente.credito)
 	medios g.render(cliente.medios)
-	direcciones g.render(cliente.selectDirecciones())
+	direcciones g.render(cliente.selectDirecciones(), [excludes: []])
+	direccionesEntrega g.render(cliente.direcciones, [excludes: []])
 	cfdiMail cliente.getCfdiMail()
 	telefonos cliente.getTelefonos()
 }

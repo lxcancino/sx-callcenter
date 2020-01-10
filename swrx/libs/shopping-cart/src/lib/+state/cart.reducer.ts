@@ -3,7 +3,7 @@ import { createReducer, on, Action } from '@ngrx/store';
 import * as CartActions from './cart.actions';
 import { CartItem, CartValidationError } from './cart.models';
 
-import { clienteMostrador, aplicarDescuentos, normalize } from './cart.utils';
+import { clienteMostrador, aplicarDescuentos } from './cart.utils';
 import {
   Cliente,
   TipoDePedido,
@@ -35,7 +35,10 @@ export interface CartState {
   loading: boolean;
   pedido?: Pedido;
   envio?: InstruccionDeEnvio;
+  comprador?: string;
   error?: string | null; // last none error (if any)
+  dirty: boolean;
+  comentario?: string;
   validationErrors: CartValidationError[];
   warrnings: { error: string; descripcion: string }[];
 }
@@ -54,13 +57,15 @@ export const initialState: CartState = {
   items: keyBy([], 'id'),
   validationErrors: [],
   warrnings: [],
-  envio: undefined
+  envio: undefined,
+  dirty: false
 };
 
 const cartReducer = createReducer(
   initialState,
   on(CartActions.addCartItemSuccess, (state, { item }) => ({
     ...state,
+    dirty: true,
     items: { ...state.items, [item.id]: item },
     loading: false
   })),
@@ -68,6 +73,7 @@ const cartReducer = createReducer(
     const { [item.id]: result, ...items } = state.items;
     return {
       ...state,
+      dirty: true,
       items
     };
   }),
@@ -87,26 +93,10 @@ const cartReducer = createReducer(
     nombre: nombre
   })),
   on(CartActions.cambiarTipo, (state, { tipo }) => ({ ...state, tipo })),
-  on(CartActions.cambiarFormaDePago, (state, { formaDePago }) => {
-    const partidas = values(state.items);
-    let newPartidas = normalize(partidas);
-    if (
-      formaDePago === FormaDePago.TARJETA_CRE ||
-      formaDePago === FormaDePago.TARJETA_DEB
-    ) {
-      const cargo = generarCargoPorTarjeta(partidas, state.tipo, formaDePago);
-      if (cargo !== null) {
-        console.log('Cargo por tarjeta generado: ', cargo);
-        newPartidas = [...partidas, cargo];
-      }
-    }
-    const items = keyBy(newPartidas, 'id');
-    return {
-      ...state,
-      formaDePago,
-      items
-    };
-  }),
+  on(CartActions.cambiarFormaDePago, (state, { formaDePago }) => ({
+    ...state,
+    formaDePago
+  })),
   on(CartActions.cambiarUsoDeCfdi, (state, { clave }) => ({
     ...state,
     usoDeCfdi: clave
@@ -119,9 +109,21 @@ const cartReducer = createReducer(
     ...state,
     sucursal
   })),
+  on(CartActions.cambiarComprador, (state, { comprador }) => ({
+    ...state,
+    comprador
+  })),
+  on(CartActions.cambiarComentario, (state, { comentario }) => ({
+    ...state,
+    comentario
+  })),
   on(CartActions.registrarEnvioSuccess, (state, { envio }) => ({
     ...state,
     envio
+  })),
+  on(CartActions.cancelarEnvio, state => ({
+    ...state,
+    envio: null
   })),
   on(CartActions.recalcularPartidas, state => {
     const partidas = values(state.items);
@@ -137,15 +139,12 @@ const cartReducer = createReducer(
       state.formaDePago === FormaDePago.TARJETA_CRE ||
       state.formaDePago === FormaDePago.TARJETA_DEB
     ) {
-      console.log('Generando cargo por pago con tarjeta....', items);
-
       const cargo = generarCargoPorTarjeta(
         partidasActualizadas,
         state.tipo,
         state.formaDePago
       );
       if (cargo !== null) {
-        console.log('Cargo por tarjeta generado: ', cargo);
         items = { ...items, [cargo.id]: cargo };
       }
     }

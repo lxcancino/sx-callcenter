@@ -45,6 +45,10 @@ export const getTipo = createSelector(
   getCartState,
   state => state.tipo
 );
+export const isDirty = createSelector(
+  getCartState,
+  state => state.dirty
+);
 
 export const getCartSumary = createSelector(
   getCartItems,
@@ -134,7 +138,9 @@ export const selectFormState = createSelector(
       formaDePago: state.formaDePago,
       usoDeCfdi: state.usoDeCfdi,
       cfdiMail: state.cfdiMail,
-      sucursal: state.sucursal
+      sucursal: state.sucursal,
+      comprador: state.comprador,
+      comentario: state.comprador
     };
   }
 );

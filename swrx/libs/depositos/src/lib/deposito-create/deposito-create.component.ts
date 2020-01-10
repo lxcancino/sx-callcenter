@@ -68,7 +68,8 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
           tarjeta: new FormControl(0.0, [Validators.min(0.0)])
         },
         depositoValidator
-      )
+      ),
+      referencia: new FormControl(null, [Validators.required])
     });
     this.form.get('importes').disable();
     this.transfernciaListener();

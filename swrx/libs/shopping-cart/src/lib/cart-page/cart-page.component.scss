@@ -28,6 +28,14 @@ swrx-cart-items {
   grid-column: 1 / 2;
   grid-row: 3 / 6;
 }
+.comentario-section {
+  grid-column: 1 / 2;
+  grid-row: 6 / 7;
+  .comentario-field {
+    padding: 10px;
+    width: 97%;
+  }
+}
 
 swrx-cart-footer {
   grid-column: 1 / 2;
@@ -64,4 +72,3 @@ swrx-cart-footer {
     }
   }
 }
-

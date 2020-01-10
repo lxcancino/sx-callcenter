@@ -1,7 +1,7 @@
 <div class="form" [formGroup]="parent">
   <div [formGroupName]="propertyName">
     <div class="row">
-      <mat-form-field class="calle">
+      <!-- <mat-form-field class="calle">
         <input
           matInput
           type="text"
@@ -9,7 +9,13 @@
           placeholder="Calle"
           swrxUpperCase
         />
-      </mat-form-field>
+      </mat-form-field> -->
+      <swrx-upper-case-field
+        formControlName="calle"
+        placeholder="Calle"
+        class="calle"
+      >
+      </swrx-upper-case-field>
       <mat-form-field id="numeroExterior">
         <input matInput formControlName="numeroExterior" placeholder="# Ext" />
       </mat-form-field>

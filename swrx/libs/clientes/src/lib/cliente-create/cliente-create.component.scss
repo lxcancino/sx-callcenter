@@ -1,0 +1,21 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  .row {
+    display: flex;
+    justify-content: space-evenly;
+    .mat-form-field {
+      flex: 1;
+    }
+    *:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+  .telefonos {
+    display: flex;
+    justify-content: space-between;
+    *:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}

@@ -20,6 +20,10 @@ class PedidoService implements FolioLog{
         if(!pedido.id )
             pedido.folio = nextFolio('PEDIDO', 'CALLCENTER')
         // logEntity(pedido)
+        if(pedido.envio) {
+            log.info('Envio: {}' , pedido.envio) // Hack para salvar correctamente el envio *** ???
+            pedido.envio.pedido = pedido
+        }
         pedido.save failOnError: true, flush: true
         return pedido
     }

@@ -83,7 +83,8 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
           efectivo: new FormControl(0.0, [Validators.min(0.0)]),
           cheque: new FormControl(0.0, [Validators.min(0.0)]),
           tarjeta: new FormControl(0.0, [Validators.min(0.0)])
-        })
+        }),
+        referencia: new FormControl(null, [Validators.required])
       },
       depositoValidator
     );

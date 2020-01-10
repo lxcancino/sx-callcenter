@@ -8,12 +8,15 @@ import {
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { CartFacade } from '../+state/cart.facade';
+import { ClientesFacade } from '@swrx/clientes';
 
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
-import { Pedido, Cliente, FormaDePago } from '@swrx/core-model';
+import { Pedido, Cliente, FormaDePago, TipoDePedido } from '@swrx/core-model';
+
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'swrx-cart-edit-page',
@@ -26,8 +29,14 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   cartForm: FormGroup;
   sumary$: Observable<CartSumary> = this.facade.sumary$;
   destroy$ = new Subject<boolean>();
+  user: any;
 
-  constructor(private fb: FormBuilder, public facade: CartFacade) {}
+  constructor(
+    private fb: FormBuilder,
+    public facade: CartFacade,
+    private firebaseAuth: AngularFireAuth,
+    private clientes: ClientesFacade
+  ) {}
 
   ngOnInit() {
     this.buildForm();
@@ -38,6 +47,11 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
         this.cartForm.patchValue(value, { emitEvent: false });
       }
     });
+    this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
+      const { displayName, email } = usr;
+      this.user = { displayName, email };
+      console.log('Usuario: ', this.user);
+    });
   }
 
   ngOnDestroy() {
@@ -46,13 +60,18 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   }
 
   private buildForm() {
-    this.cartForm = this.fb.group({
-      sucursal: [null],
-      tipo: [null, [Validators.required]],
-      formaDePago: [null, [Validators.required]],
-      usoDeCfdi: [null, [Validators.required]],
-      cfdiMail: [null]
-    });
+    this.cartForm = this.fb.group(
+      {
+        sucursal: [null],
+        tipo: [null, [Validators.required]],
+        formaDePago: [null, [Validators.required]],
+        usoDeCfdi: [null, [Validators.required]],
+        cfdiMail: [null],
+        comprador: [null],
+        comentario: [null]
+      },
+      { updateOn: 'blur' }
+    );
   }
 
   private addListeners() {
@@ -62,13 +81,26 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.addCfdiMailListener();
     this.addSucursallListener();
     this.addClienteListener();
+    this.addCompradorListener();
+    this.addComemtarioListener();
+    this.facade.dirty$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.cartForm.markAsDirty());
   }
 
   private addFormaDePagoListener() {
     this.cartForm
       .get('formaDePago')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(formaDePago => this.facade.cambiarFormaDePago(formaDePago));
+      .subscribe(formaDePago => {
+        this.facade.cambiarFormaDePago(formaDePago);
+        if (formaDePago === FormaDePago.CHEQUE_PSTF) {
+          this.cartForm.get('tipo').setValue(TipoDePedido.CREDITO);
+          this.cartForm.get('tipo').disable();
+        } else {
+          this.cartForm.get('tipo').enable();
+        }
+      });
   }
 
   private addTipoDePedidoListener() {
@@ -96,16 +128,33 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(sucursal => this.facade.cambiarSucursal(sucursal));
   }
+
+  private addCompradorListener() {
+    this.cartForm
+      .get('comprador')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(comprador => this.facade.cambiarComprador(comprador));
+  }
+  private addComemtarioListener() {
+    this.cartForm
+      .get('comentario')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(comentario => this.facade.cambiarComentario(comentario));
+  }
+
   private addClienteListener() {
     this.facade.cliente$.pipe(takeUntil(this.destroy$)).subscribe(cte => {
       if (cte.credito) {
         if (cte.credito.postfechado) {
           this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE_PSTF);
-          this.cartForm.get('formaDePago').disable();
+          this.cartForm.get('tipo').setValue(TipoDePedido.CREDITO);
+          this.cartForm.get('tipo').disable();
         } else {
           this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE);
           this.cartForm.get('formaDePago').enable();
         }
+
+        this.cartForm.get('usoDeCfdi').setValue(cte.credito.usoDeCfdi || 'G01');
       }
 
       this.cartForm.get('cfdiMail').setValue(cte.cfdiMail);
@@ -121,7 +170,9 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   }
 
   onCheckout() {
-    this.facade.startCheckout();
+    if (this.user) {
+      this.facade.startCheckout(this.user);
+    }
   }
   onCambiarNombre(cliente: Partial<Cliente>) {
     if (cliente.rfc === 'XAXX010101000') {
@@ -153,5 +204,27 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown.control.d', ['$event'])
   onHotKeyShowDescuentos(event) {
     this.showDescuentos();
+  }
+
+  isDisabled(pedido: Partial<Pedido>, hasErrors: boolean) {
+    if (pedido.status === 'CERRADO') {
+      return true;
+    } else if (hasErrors) {
+      return true;
+    } else {
+      return this.cartForm.invalid || this.cartForm.pristine;
+    }
+  }
+
+  /** Show descuentos */
+  @HostListener('document:keydown.control.c', ['$event'])
+  onHotKeyAltaDeCliente(event) {
+    this.clienteNuevo();
+  }
+
+  clienteNuevo() {
+    if (this.user) {
+      this.clientes.createCliente(this.user);
+    }
   }
 }

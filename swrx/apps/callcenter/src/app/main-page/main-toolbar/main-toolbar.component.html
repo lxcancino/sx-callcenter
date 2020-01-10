@@ -18,7 +18,7 @@
     </a>
     <a
       mat-button
-      [routerLink]="'/depositos'"
+      [routerLink]="'/depositos/list'"
       routerLinkActive="router-link-active"
     >
       <fa-icon icon="hand-holding-usd"></fa-icon>
@@ -32,19 +32,16 @@
       <fa-icon icon="users"></fa-icon>
       <span>Clientes</span>
     </a>
+
+    <!-- <a mat-button (click)="lookupCliente()">
+      <fa-icon icon="users"></fa-icon>
+      <span>Clientes</span>
+    </a> -->
     <a mat-button (click)="showProductos()">
       <fa-icon icon="layer-group"></fa-icon>
       <span>Productos</span>
     </a>
   </div>
-  <!-- <a mat-icon-button [routerLink]="['/shop/cart', currentPedidoId]">
-    <mat-icon
-      [matBadge]="cartItems"
-      matBadgeColor="accent"
-      [matBadgeHidden]="!cartItems && cartItems <= 0"
-      >shopping_cart</mat-icon
-    >
-  </a> -->
 
   <a mat-icon-button (click)="goToCart()">
     <mat-icon
@@ -59,7 +56,32 @@
     <mat-icon>notifications</mat-icon>
   </a>
 
-  <button mat-icon-button (click)="toogle.emit()">
+  <!-- <button mat-icon-button (click)="toogle.emit()">
     <fa-icon icon="cogs" size="lg"></fa-icon>
+  </button> -->
+  <button mat-button [matMenuTriggerFor]="accountMenu">
+    <mat-icon>account_box</mat-icon>
+
+    <span>{{ user?.displayName }}</span>
   </button>
+
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item>
+      <img [src]="user?.photoURL" alt="User Avatar" class="avatar" />
+      <span>{{ user?.email }}</span>
+    </button>
+    <button mat-menu-item disabled>
+      <mat-icon>smartphone</mat-icon>
+      <span>Celular</span>
+    </button>
+    <button mat-menu-item disabled>
+      <mat-icon>notifications</mat-icon>
+      <span>Notificaciones</span>
+    </button>
+
+    <button mat-menu-item (click)="exitApp.emit()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Terminar sesión</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>

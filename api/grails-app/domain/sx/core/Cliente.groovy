@@ -92,8 +92,8 @@ class Cliente {
             dirs << ["${dd?.calle?.trim()?.take(10)} #:${dd?.numeroExterior} CP:${dd?.codigoPostal}": dd ]
         } 
         direcciones.each {
-            def d = it.direccion
-            dirs << ["${d.trim().take(10)} Y#:${d.numeroExterior} CP:${d.codigoPostal}": d ]
+            def dir = it.direccion
+            dirs << ["${dir?.calle?.trim()?.take(10)} #:${dir?.numeroExterior} CP:${dir?.codigoPostal}": dir ]
         }
         return dirs
     }

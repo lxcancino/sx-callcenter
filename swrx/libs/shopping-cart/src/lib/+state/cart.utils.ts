@@ -218,6 +218,8 @@ export function buildPedidoEntity(
       partidas: items,
       kilos: sumBy(items, 'kilos'),
       envio: state.envio,
+      comprador: state.comprador,
+      comentario: state.comentario,
       ...sumary
     };
     return pedido;
@@ -245,6 +247,8 @@ export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
     kilos: sumBy(items, 'kilos'),
     status: 'COTIZACION',
     envio: state.envio,
+    comprador: state.comprador,
+    comentario: state.comentario,
     ...sumary
   };
 }

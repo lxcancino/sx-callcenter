@@ -13,6 +13,8 @@
     <swrx-main-toolbar
       [cartItems]="cartItmes$ | async"
       [currentPedidoId]="currentPedidoId"
+      [user]="user"
+      (exitApp)="signOut()"
     ></swrx-main-toolbar>
     <main class="content">
       <router-outlet></router-outlet>

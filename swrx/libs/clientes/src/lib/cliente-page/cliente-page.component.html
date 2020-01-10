@@ -1,0 +1,118 @@
+<div class="container">
+  <mat-card class="header">
+    <mat-card-title-group>
+      <mat-card-title>
+        {{ cliente ? cliente.nombre : 'Seleccione un cliente' }}
+      </mat-card-title>
+      <button
+        mat-icon-button
+        matTooltip="Cambiar de cliente"
+        (click)="lookup()"
+      >
+        <mat-icon matSuffix>account_circle</mat-icon>
+      </button>
+    </mat-card-title-group>
+  </mat-card>
+
+  <mat-card class="generales-card">
+    <mat-card-title>Datos generales</mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-list [formGroup]="form" class="generales-content">
+      <mat-list-item>
+        <h3 matLine>RFC:</h3>
+        {{ cliente?.rfc }}
+      </mat-list-item>
+      <mat-divider inset></mat-divider>
+      <mat-list-item>
+        <h3 matLine>Email CFDI:</h3>
+        <input matInput type="text" formControlName="cfdiMail" type="email" />
+      </mat-list-item>
+      <mat-divider inset></mat-divider>
+      <mat-list-item>
+        <h3 matLine>Estado:</h3>
+        <span>{{ cliente?.activo ? 'ACTIVO' : 'SUSPENDIDO' }}</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <h3 matSubheader>Teléfonos</h3>
+      <mat-list-item *ngFor="let item of telefonos?.controls; index as i">
+        <h3 matLine>Tel {{ i + 1 }}</h3>
+        <input
+          type="text"
+          matInput
+          [formControl]="item"
+          mask="(009) 000-00-00"
+        />
+        <button mat-icon-button (click)="deleteTelefono(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <mat-divider inset></mat-divider>
+      </mat-list-item>
+    </mat-list>
+    <div class="new-telefono">
+      <mat-form-field>
+        <input
+          matInput
+          type="tel"
+          placeholder="Agregar teléfono"
+          mask="(009) 000-00-00"
+          [showMaskTyped]="false"
+          [clearIfNotMatch]="true"
+          [formControl]="newTelefono"
+          tabindex="10"
+        />
+      </mat-form-field>
+      <button
+        *ngIf="cliente"
+        mat-button
+        [disabled]="newTelefono.invalid || newTelefono.pristine"
+        tabindex="11"
+        (click)="agregarTelefono(cliente)"
+      >
+        Agregar
+      </button>
+    </div>
+    <mat-card-actions>
+      <button
+        mat-stroked-button
+        (click)="actualizar(cliente)"
+        color="accent"
+        [disabled]="form.invalid || form.pristine"
+      >
+        Actualizar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="direcciones-card">
+    <mat-card-title>Dirección Fiscal</mat-card-title>
+    <mat-divider></mat-divider>
+    <div class="direccion-form">
+      <swrx-direccion-form [parent]="form"></swrx-direccion-form>
+    </div>
+    <div class="direcciones-entrega">
+      <mat-form-field appearance="fill">
+        <mat-label>Direcciones de entrega</mat-label>
+        <mat-select
+          (selectionChange)="seleccionarDireccion($event.value)"
+          placeholder="Seleccione una direccion registrada"
+        >
+          <mat-option *ngFor="let d of direcciones" [value]="d">
+            {{ d.nombre }}
+          </mat-option>
+          <mat-option [value]="null">Nueva dirección</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <swrx-direccion-form [parent]="direccionForm"></swrx-direccion-form>
+    </div>
+    <mat-card-actions>
+      <button
+        mat-stroked-button
+        [disabled]="direccionForm.invalid || direccionForm.pristine"
+        (click)="actualizarDireccionEntrega()"
+      >
+        {{ direccionSelected ? 'Actualizar' : 'Agregar' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+ 

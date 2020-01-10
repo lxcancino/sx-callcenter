@@ -3,7 +3,7 @@ package sx.core
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
-@EqualsAndHashCode(includes='nombre')
+@EqualsAndHashCode(includes = 'id, nombre')
 @ToString(includeNames=true,includePackage=false)
 class ClienteDireccion {
 
@@ -11,14 +11,14 @@ class ClienteDireccion {
     String nombre
     Direccion direccion
 
-    static constraints = {
-    }
+    static belongsTo = [cliente: Cliente]
+
+    static constraints = {}
 
     static embedded = ['direccion']
-
-    // static belongsTo = [cliente: Cliente]
 
     static mapping= {
         id generator: 'uuid'
     }
+    
 }

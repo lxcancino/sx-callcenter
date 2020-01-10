@@ -36,6 +36,10 @@ const routes: Route[] = [
         loadChildren: () => import('@swrx/pedidos').then(m => m.PedidosModule)
       },
       {
+        path: 'clientes',
+        loadChildren: () => import('@swrx/clientes').then(m => m.ClientesModule)
+      },
+      {
         path: 'depositos',
         loadChildren: () =>
           import('@swrx/depositos').then(m => m.DepositosModule)
@@ -44,12 +48,12 @@ const routes: Route[] = [
       {
         path: 'profile',
         component: ProfileComponent
-      },
-      {
-        path: '',
-        redirectTo: 'inicio',
-        pathMatch: 'full'
       }
+      // {
+      //   path: '',
+      //   redirectTo: 'inicio',
+      //   pathMatch: 'full'
+      // }
     ]
   }
 ];

@@ -43,8 +43,8 @@ export class NumericFieldComponent implements OnInit, ControlValueAccessor {
   onChangeValue(event) {
     if (!this.disabled) {
       const va = parseFloat(event.target.value).toFixed(this.decimals);
-      const value = parseFloat(va);
-      // console.log('ON CHANGE: ', value);
+      const value = parseFloat(va) || 0.0;
+
       this._value = value;
       this.onChange(this._value);
       this.onTouched();

@@ -3,6 +3,13 @@
     <label>Tipo:</label>
     <span>{{ envio.tipo }}</span>
   </div>
+  <div class="row" *ngIf="envio.tipo === 'FORANEO' && envio.transporte">
+    <label>Transporte:</label>
+    <span matTooltip="{{ getDireccionLabel(envio.transporte.direccion) }}">{{
+      envio.transporte.nombre
+    }}</span>
+  </div>
+
   <address>
     <div class="row">
       <label>Calle: </label> <span>{{ direccion.calle }}</span>
@@ -30,12 +37,16 @@
   <div class="row" *ngIf="envio.comentario">
     <label>Comentario: </label> <span>{{ envio.comentario }}</span>
   </div>
-</div>
-<div class="row" *ngIf="envio">
-  <button mat-flat-button (click)="actualizar.emit()" color="accent">
-    <fa-icon icon="truck"></fa-icon>
-    Actualizar
-  </button>
+  <div class="actions" *ngIf="envio">
+    <button mat-flat-button (click)="actualizar.emit()" color="accent">
+      <fa-icon icon="truck"></fa-icon>
+      Actualizar
+    </button>
+    <button mat-flat-button class="pad-left" (click)="cancelar.emit()">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+  </div>
 </div>
 <ng-template #newEnvio>
   <div class="envio-create">

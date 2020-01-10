@@ -60,6 +60,7 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
     logger("grails.plugin.springsecurity", OFF, ['STDOUT'], false)
     logger("org.pac4j", OFF, ['STDOUT'], false)
 
+    logger("sx.core", DEBUG, ['STDOUT'], false)
     logger("sx.compras", DEBUG, ['STDOUT'], false)
     logger("sx.reports", DEBUG, ['STDOUT'], false)
 

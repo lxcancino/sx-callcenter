@@ -52,18 +52,18 @@ class Pedido {
     String createUser
     String updateUser
 
-    InstruccionDeEnvio envio
+    // InstruccionDeEnvio envio
 
     static hasMany =[partidas:PedidoDet]
 
-    // static hasOne = [envio: InstruccionDeEnvio, socio: PedidoSocio]
-    static hasOne = [socio: PedidoSocio]
+    static hasOne = [envio: InstruccionDeEnvio, socio: PedidoSocio]
+    
 
     static constraints = {
         rfc maxSize:13
         folio unique: true
         tipo  inList:['CON','COD','CRE','PSF','INE','OTR','ACF','ANT','AND']
-        formaDePago inList: ['DEPOSITO', 'TRANSFERENCIA', 'EFECTIVO', 'TARJETA_DEBITO', 'TARJETA_CREDITO', 'CHEQUE','CHEQUE_PSTF', 'NO_DEFINIDO']
+        formaDePago inList: ['DEPOSITO_EFECTIVO', 'DEPOSITO_CHEQUE', 'DEPOSITO_MIXTO', 'TRANSFERENCIA', 'EFECTIVO', 'TARJETA_DEBITO', 'TARJETA_CREDITO', 'CHEQUE','CHEQUE_PSTF', 'NO_DEFINIDO']
         moneda inList: ['MXN', 'USD', 'EUR']
         tipoDeCambio scale:6
         usoDeCfdi maxSize:3

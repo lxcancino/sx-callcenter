@@ -1,10 +1,16 @@
-<span matDialogTitle>
+<span matDialogTitle class="title">
   <span *ngIf="id; else alta">
     Revisar y actualizar pedido: {{ changes.folio }}
   </span>
   <ng-template #alta>
     Generando pedido
   </ng-template>
+  <span class="user">
+    <span>Vendedor: </span>
+    <strong>
+      {{ user.displayName }}
+    </strong>
+  </span>
 </span>
 <mat-divider></mat-divider>
 
@@ -30,7 +36,7 @@
       <button mat-stroked-button matStepperNext>Siguiente</button>
     </div>
   </mat-step>
-  <mat-step label="Envío">
+  <mat-step label="Envío" *ngIf="changes.envio">
     <pre>
       {{ changes.envio | json }}
     </pre>
@@ -40,12 +46,19 @@
     </div>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>JSON</ng-template>
+    <ng-template matStepLabel>Resumen</ng-template>
     <div class="json">
-      <pre>
-        <!-- {{ changes | json }} -->
-        {{changes.envio}}
+      <!-- <pre>
+        Ejecutivo: <strong>
+          {{ user.displayName }}
+        </strong>
       </pre>
+      <pre>
+        Comentario: {{ changes.comentario }}
+      </pre>
+      <pre>
+        Cpomprador: {{ changes.comprador }}
+      </pre> -->
     </div>
     <div>
       <button mat-button mat-dialog-close>

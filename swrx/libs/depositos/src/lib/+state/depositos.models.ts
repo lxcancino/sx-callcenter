@@ -1,5 +1,6 @@
 export interface Deposito {
   id?: string;
+  folio?: number;
   sucursal?: string;
   cliente: any;
   nombre: string;
@@ -15,6 +16,7 @@ export interface Deposito {
   rechazo?: any;
   estado: 'PENDIENTE' | 'AUTORIZADO' | 'RECHAZADO';
   vendedor: string;
+  referencia?: string;
   createUser?: string;
   updateUser?: string;
 }

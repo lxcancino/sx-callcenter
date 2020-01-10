@@ -8,6 +8,7 @@ json g.render(cliente, [excludes: ['credito', 'cobrador', 'medios'], resolveTemp
 	credito g.render(cliente.credito)
 	medios g.render(cliente.medios)
 	direcciones g.render(cliente.selectDirecciones())
+	direccionesEntrega g.render(cliente.direcciones)
 	cfdiMail cliente.getCfdiMail()
 	telefonos cliente.getTelefonos()
 }

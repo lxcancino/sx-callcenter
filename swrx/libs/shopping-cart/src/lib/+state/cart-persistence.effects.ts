@@ -46,9 +46,10 @@ export class CartPersistenceEffects {
           // console.log('Pedido persistido: ', action.pedido);
           // this.router.navigate(['/shop/cart', action.pedido.id]);
           this.router.navigate(['/pedidos']);
-        })
+        }),
+        map(() => CartActions.cleanShoppingCart())
       ),
-    { dispatch: false }
+    { dispatch: true }
   );
 
   cerrarPedidoSuccess$ = createEffect(
@@ -59,9 +60,10 @@ export class CartPersistenceEffects {
           // console.log('Pedido persistido: ', action.pedido);
           // this.router.navigate(['/shop/cart', action.pedido.id]);
           this.router.navigate(['/pedidos']);
-        })
+        }),
+        map(() => CartActions.cleanShoppingCart())
       ),
-    { dispatch: false }
+    { dispatch: true }
   );
 
   constructor(

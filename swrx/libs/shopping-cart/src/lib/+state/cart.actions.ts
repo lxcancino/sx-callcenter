@@ -68,10 +68,21 @@ export const cambiarSucursal = createAction(
   '[ShoppingCartPage] Cambiar Sucursal',
   props<{ sucursal: string }>()
 );
+export const cambiarComprador = createAction(
+  '[ShoppingCartPage] Cambiar Comprador',
+  props<{ comprador: string }>()
+);
+export const cambiarComentario = createAction(
+  '[ShoppingCartPage] Cambiar comentario',
+  props<{ comentario: string }>()
+);
 export const recalcularPartidas = createAction(
   '[ShoppingCart Effects] Recalcular Partidas'
 );
-export const startCheckout = createAction('[ShoppingCartPage] Start Checkout');
+export const startCheckout = createAction(
+  '[ShoppingCartPage] Start Checkout',
+  props<{ user: any }>()
+);
 
 export const loadPedidoSucces = createAction(
   '[CartEffects] Load pedido success',
@@ -89,6 +100,8 @@ export const registrarEnvioSuccess = createAction(
   '[CartEffects] Registrar envio success',
   props<{ envio: InstruccionDeEnvio }>()
 );
+
+export const cancelarEnvio = createAction('[CartEffects] Cancelar envio');
 
 export const mostrarDescuentos = createAction(
   '[CartEffects] Mostrar Descuentos'

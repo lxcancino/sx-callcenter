@@ -6,8 +6,8 @@ import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { CartState } from './cart.reducer';
 import * as CartActions from './cart.actions';
 
-import { mergeMap, filter, map, tap, concatMap } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { mergeMap, filter, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import {
   notNull,
@@ -24,7 +24,12 @@ import { PedidosFacade } from '@swrx/pedidos';
 import { CartAddItemComponent } from '../cart-add-item/cart-add-item.component';
 import { CartCheckoutComponent } from '../cart-checkout/cart-checkout.component';
 import { EnvioComponent } from '../envio/envio.component';
-import { InstruccionDeEnvio, Pedido } from '@swrx/core-model';
+import {
+  InstruccionDeEnvio,
+  Pedido,
+  TipoDePedido,
+  FormaDePago
+} from '@swrx/core-model';
 import { CartNombreComponent } from '../cart-nombre/cart-nombre.component';
 import { CartDescuentosComponent } from '../cart-form/cart-descuentos/cart-descuentos.component';
 import { CerrarComponent } from '../cerrar/cerrar.component';
@@ -95,6 +100,7 @@ export class CartEffects {
     this.actions$.pipe(
       ofType(CartActions.startCheckout),
       pedidoState(this.store),
+      tap(state => console.log('Cheqckout with persisten state: ', state)),
       this.inDialog(CartCheckoutComponent),
       notNull(),
       map((data: any) =>
@@ -102,7 +108,8 @@ export class CartEffects {
           id: data.id,
           changes: data.changes
         })
-      )
+      ),
+      tap(res => console.log('SaveOrUpdate: ', res))
     )
   );
 
@@ -130,6 +137,11 @@ export class CartEffects {
       this.actions$.pipe(
         ofType(CartActions.mostrarDescuentos),
         decuentosState(this.store),
+        filter(
+          data =>
+            data.tipo !== TipoDePedido.CREDITO ||
+            data.formState.formaDePago === FormaDePago.CHEQUE_PSTF
+        ),
         this.inDialog(CartDescuentosComponent)
         // filter(nombre => !!nombre)
       ),

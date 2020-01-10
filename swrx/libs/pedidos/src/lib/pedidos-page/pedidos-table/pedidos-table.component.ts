@@ -172,7 +172,8 @@ export class PedidosTableComponent implements OnInit {
       {
         headerName: 'Vendedor',
         field: 'vendedor',
-        width: 150
+        width: 150,
+        valueGetter: params => params.data.updateUser
       }
     ];
   }

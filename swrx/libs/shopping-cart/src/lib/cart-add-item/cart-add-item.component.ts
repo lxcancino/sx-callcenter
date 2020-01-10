@@ -138,7 +138,6 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const { producto, cantidad, precio, corte } = this;
       const emptyItem = this.item ? this.item : buildCartItem(producto);
-
       const item: PedidoDet = {
         ...emptyItem,
         cantidad,

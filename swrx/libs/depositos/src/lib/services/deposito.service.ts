@@ -4,8 +4,13 @@ import { Observable, of } from 'rxjs';
 
 import {
   AngularFirestore,
-  AngularFirestoreCollection
+  AngularFirestoreCollection,
 } from '@angular/fire/firestore';
+
+// import FieldValue from 'firebase/FieldValue';
+// import { firebase } from '@firebase/app';
+//import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 
 import { DepositosEntity, Deposito } from '../+state/depositos.models';
 import { map } from 'rxjs/operators';
@@ -78,6 +83,7 @@ export class DepositoService {
       .add(deposito)
       .then(docRef => {
         console.log('DocRef: ', docRef.id);
+        docRef.update({'folio': firebase.firestore.FieldValue.increment(1)})
       })
       .catch(reason => {
         console.error('Error agregando deposito: ', reason);

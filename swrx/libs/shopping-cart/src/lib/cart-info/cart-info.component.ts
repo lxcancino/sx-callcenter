@@ -38,4 +38,14 @@ export class CartInfoComponent implements OnInit, OnDestroy {
     this.destroy$.next(true);
     this.destroy$.complete();
   }
+
+  actualizarEnvio() {
+    this.facade.registrarEnvio();
+    this.cartForm.markAsDirty();
+  }
+
+  cancelarEnvio() {
+    this.facade.cancelarEnvio();
+    this.cartForm.markAsDirty();
+  }
 }

@@ -59,6 +59,7 @@
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "ngx-auth-firebaseui": "^3.4.2",
+    "ngx-mask": "^8.1.7",
     "rxjs": "~6.4.0",
     "uuid": "^3.3.3",
     "zone.js": "^0.9.1"

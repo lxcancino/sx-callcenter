@@ -1,5 +1,5 @@
 export interface Cliente {
-  id: string | number;
+  id: string;
   nombre: string;
   clave: string;
   rfc: string;
@@ -10,9 +10,10 @@ export interface Cliente {
   chequeDevuelto: number;
   activo: true;
   juridico: false;
-  medios: [];
+  medios?: any[];
   direccion: Direccion;
   direcciones?: ClienteDireccion[];
+  direccionesEntrega?: ClienteDireccion[];
   dateCreated?: string;
   lastUpdated?: string;
   telefonos?: string | number;
@@ -28,10 +29,11 @@ export interface ClienteCredito {
   saldo: number;
   atrasoMaximo: number;
   creditoActivo: boolean;
+  usoDeCfdi?: string;
 }
 
 export interface ClienteDireccion {
-  id: string;
+  id?: string;
   nombre: string;
   direccion: Direccion;
 }
@@ -64,11 +66,42 @@ export const buildDireccionEmpty = (): Direccion => {
     municipio: null,
     estado: null,
     pais: 'MEXICO'
-  }
-}
+  };
+};
 
 export interface Transporte {
   id?: string;
   nombre: string;
   direccion: Direccion;
+}
+
+export class User {
+  displayName: string;
+  email: string;
+  uid?: string;
+  photoURL?: string;
+  emailVerified: boolean;
+  phoneNumber?: string;
+  isAnonymous?: boolean;
+
+  static fromFirebaseUser(usr: any): User {
+    const {
+      displayName,
+      email,
+      uid,
+      photoURL,
+      emailVerified,
+      phoneNumber,
+      isAnonymous
+    } = usr;
+    return {
+      displayName,
+      email,
+      uid,
+      photoURL,
+      emailVerified,
+      phoneNumber,
+      isAnonymous
+    };
+  }
 }

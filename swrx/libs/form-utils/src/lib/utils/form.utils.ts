@@ -18,3 +18,12 @@ export const buildDireccionForm = (fb: FormBuilder): FormGroup => {
     { updateOn: 'blur' }
   );
 };
+
+export const getDireccionKey = (dd: any): string => {
+  console.log('Generando Direccion key para: ', dd);
+  const calle = dd.calle.trim() || '';
+  const key = `${calle.substr(0, 10)} #:${dd.numeroExterior || ''} CP:${
+    dd.codigoPostal
+  }`;
+  return key;
+};

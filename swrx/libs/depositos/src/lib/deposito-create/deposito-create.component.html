@@ -6,7 +6,13 @@
   <div class="create-cliente-form" [formGroup]="form">
     <swrx-cliente-field formControlName="cliente"></swrx-cliente-field>
     <swrx-cuenta-field formControlName="cuenta"></swrx-cuenta-field>
-    <swrx-banco-field formControlName="banco"></swrx-banco-field>
+    <div class="row">
+      <swrx-banco-field formControlName="banco"></swrx-banco-field>
+      <mat-form-field>
+        <input matInput formControlName="referencia" placeholder="Referencia" />
+      </mat-form-field>
+    </div>
+    
     <div class="row">
       <swrx-fecha-field
         class="item"

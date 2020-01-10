@@ -33,6 +33,13 @@
             </span>
           </div>
         </section>
+        <div [formGroup]="cartForm">
+          <swrx-upper-case-field
+            formControlName="comprador"
+            placeholder="Comprador"
+          >
+          </swrx-upper-case-field>
+        </div>
       </div>
     </mat-tab>
 
@@ -40,7 +47,9 @@
       <ng-template mat-tab-label>
         <span
           matBadgeOverlap="false"
-          [matBadge]="(cartForm.get('usoDeCfdi').invalid || cartForm.pristine) ? 1 : 0"
+          [matBadge]="
+            cartForm.get('usoDeCfdi').invalid || cartForm.pristine ? 1 : 0
+          "
           matBadgeColor="warn"
           [matBadgeHidden]="cartForm.get('usoDeCfdi').valid"
           >Cfdi</span
@@ -62,7 +71,8 @@
     <mat-tab label="Envío">
       <swrx-envio-panel
         [envio]="facade.envio$ | async"
-        (actualizar)="facade.registrarEnvio()"
+        (actualizar)="actualizarEnvio()"
+        (cancelar)="cancelarEnvio()"
       ></swrx-envio-panel>
     </mat-tab>
 
