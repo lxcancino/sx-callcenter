@@ -14,6 +14,7 @@ import { User } from '@swrx/core-model';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'swrx-main-page',
@@ -30,7 +31,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private cartFacade: CartFacade,
-    private firebaseAuth: AngularFireAuth
+    private firebaseAuth: AngularFireAuth,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -57,7 +59,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
   signOut() {
     this.firebaseAuth.auth
       .signOut()
-      .then(() => console.log('Logout success'))
+      .then(() => {
+        console.log('Logout success');
+        this.router.navigate(['/loginx']);
+      })
       .catch(e => console.error('An error happened while signing out!', e));
   }
 }

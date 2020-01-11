@@ -117,6 +117,11 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
     const { cliente, cuenta } = data;
     const deposito = { ...data };
     deposito.nombre = cliente.nombre;
+    deposito.cliente = {
+      id: cliente.id,
+      nombre: cliente.nombre,
+      rfc: cliente.rfc
+    };
     deposito.rfc = cliente.rfc;
     deposito.cuenta = {
       id: cuenta.id,

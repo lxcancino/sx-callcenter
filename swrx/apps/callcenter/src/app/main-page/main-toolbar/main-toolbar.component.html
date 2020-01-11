@@ -79,9 +79,13 @@
       <span>Notificaciones</span>
     </button>
 
-    <button mat-menu-item (click)="exitApp.emit()">
+    <!-- <button mat-menu-item (click)="exitApp.emit()" >
       <mat-icon>exit_to_app</mat-icon>
       <span>Terminar sesión</span>
-    </button>
+    </button> -->
+    <a mat-menu-item routerLink="/loginx">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Terminar sesión</span>
+    </a>
   </mat-menu>
 </mat-toolbar>

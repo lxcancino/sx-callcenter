@@ -23,7 +23,9 @@ export class BancoFieldComponent implements OnInit, ControlValueAccessor {
   disabled = false;
 
   bancos = [...BANCOS].sort((itemA, itemB) =>
-    itemA.clave.toLowerCase().localeCompare(itemB.clave.toLowerCase())
+    itemA.nombreCorto
+      .toLowerCase()
+      .localeCompare(itemB.nombreCorto.toLowerCase())
   );
 
   @Input() placeholder = 'Seleccione un banco';

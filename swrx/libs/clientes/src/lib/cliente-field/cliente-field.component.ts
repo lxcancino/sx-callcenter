@@ -47,7 +47,7 @@ export class ClienteFieldComponent implements OnInit, ControlValueAccessor {
   ngOnInit() {
     this.filteredClientes$ = this.control.valueChanges.pipe(
       // startWith(''),
-      debounceTime(1000),
+      debounceTime(400),
       distinctUntilChanged(),
       switchMap(value => this.lookUp(value))
     );

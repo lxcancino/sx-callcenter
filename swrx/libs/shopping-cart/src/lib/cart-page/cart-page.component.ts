@@ -108,10 +108,10 @@ export class CartPageComponent implements OnInit, OnDestroy {
         if (cte.credito.postfechado) {
           this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE_PSTF);
 
-          this.cartForm.get('tipo').disable();
+          // this.cartForm.get('tipo').disable();
         } else {
           this.cartForm.get('formaDePago').setValue(FormaDePago.EFECTIVO);
-          this.cartForm.get('formaDePago').enable();
+          // this.cartForm.get('formaDePago').enable();
         }
 
         if (!this.pedido) {
@@ -133,9 +133,9 @@ export class CartPageComponent implements OnInit, OnDestroy {
         this.facade.cambiarFormaDePago(formaDePago);
         if (formaDePago === FormaDePago.CHEQUE_PSTF) {
           this.cartForm.get('tipo').setValue(TipoDePedido.CREDITO);
-          this.cartForm.get('tipo').disable();
+          // this.cartForm.get('tipo').disable();
         } else {
-          this.cartForm.get('tipo').enable();
+          // this.cartForm.get('tipo').enable();
         }
       });
   }
@@ -144,7 +144,16 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.cartForm
       .get('tipo')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(tipo => this.facade.cambiarTipo(tipo));
+      .subscribe(tipo => {
+        this.facade.cambiarTipo(tipo);
+        if(tipo !== TipoDePedido.CREDITO) {
+          const fp = this.cartForm.get('formaDePago').value;
+          if(fp === FormaDePago.CHEQUE_PSTF || fp === FormaDePago.CHEQUE_PSTF) {
+            this.cartForm.get('formaDePago').setValue(FormaDePago.EFECTIVO);
+          }
+        }
+        
+      });
   }
 
   private addUsoDeCfdiListener() {
@@ -237,9 +246,9 @@ export class CartPageComponent implements OnInit, OnDestroy {
   onHotKeyAltaDeCliente(event) {
     this.clienteNuevo();
   }
-  
+
   clienteNuevo() {
-    if(this.user) {
+    if (this.user) {
       this.clientes.createCliente(this.user);
     }
   }

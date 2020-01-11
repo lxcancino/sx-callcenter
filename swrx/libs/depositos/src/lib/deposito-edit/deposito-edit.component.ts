@@ -55,9 +55,13 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.buildForm();
-    this.form.patchValue(this.deposito);
     this.transfernciaListener();
+    this.form.patchValue(this.deposito);
     this.totalListener();
+
+    if (!this.isEditable()) {
+      this.form.disable();
+    }
   }
   ngOnDestroy() {
     this.destroy$.next(true);
@@ -134,8 +138,13 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
     const data: any = this.form.getRawValue();
     const { cliente, cuenta } = data;
     const deposito = { ...data };
+    deposito.cliente = {
+      id: cliente.id,
+      nombre: cliente.nombre,
+      rfc: cliente.rfc
+    };
     deposito.nombre = cliente.nombre;
-    deposito.rfc = cliente.rfc;
+    deposito.rfc = this.deposito.rfc;
     deposito.cuenta = {
       id: cuenta.id,
       descripcion: cuenta.descripcion,
@@ -152,5 +161,9 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
 
   isTransferencia() {
     return this.form.get('transferencia').value;
+  }
+
+  isEditable() {
+    return this.deposito.estado === 'RECHAZADO';
   }
 }

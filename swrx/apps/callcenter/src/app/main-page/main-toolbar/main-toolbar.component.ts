@@ -19,7 +19,7 @@ import { User } from '@swrx/core-model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainToolbarComponent implements OnInit {
-  @Input() title = 'SIIPAPX CALLCENTER';
+  @Input() title = 'SX CALLCENTER';
 
   @Output() toogle = new EventEmitter();
   @Output() exitApp = new EventEmitter();

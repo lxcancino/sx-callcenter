@@ -1,8 +1,9 @@
 <div class="cart-item-list">
   <mat-list>
     <swrx-cart-list-item
-      *ngFor="let item of items$ | async"
+      *ngFor="let item of items$ | async; let idx; of: index"
       [item]="item"
+      [index]="idx"
       (delete)="onDelete($event)"
       (edit)="onEdit($event)"
     >

@@ -96,9 +96,9 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
         this.facade.cambiarFormaDePago(formaDePago);
         if (formaDePago === FormaDePago.CHEQUE_PSTF) {
           this.cartForm.get('tipo').setValue(TipoDePedido.CREDITO);
-          this.cartForm.get('tipo').disable();
+          // this.cartForm.get('tipo').disable();
         } else {
-          this.cartForm.get('tipo').enable();
+          // this.cartForm.get('tipo').enable();
         }
       });
   }
@@ -146,12 +146,12 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.facade.cliente$.pipe(takeUntil(this.destroy$)).subscribe(cte => {
       if (cte.credito) {
         if (cte.credito.postfechado) {
-          this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE_PSTF);
-          this.cartForm.get('tipo').setValue(TipoDePedido.CREDITO);
-          this.cartForm.get('tipo').disable();
+          // this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE_PSTF);
+          // this.cartForm.get('tipo').setValue(TipoDePedido.CREDITO);
+          // this.cartForm.get('tipo').disable();
         } else {
-          this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE);
-          this.cartForm.get('formaDePago').enable();
+          // this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE);
+          // this.cartForm.get('formaDePago').enable();
         }
 
         this.cartForm.get('usoDeCfdi').setValue(cte.credito.usoDeCfdi || 'G01');

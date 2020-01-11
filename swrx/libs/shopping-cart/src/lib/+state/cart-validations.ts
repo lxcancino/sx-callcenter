@@ -55,10 +55,22 @@ export function ventaCredito(state: CartState): CartValidationError | null {
         error: 'NO_ES_CLIENTE_CREDITO',
         descripcion: 'EL CLIENTE NO TIENE LINEA DE CREDITO'
       };
+    } else {
+      if (credito.postfechado) {
+        if (state.formaDePago !== FormaDePago.CHEQUE_PSTF) {
+          return {
+            error: 'SOLO_CHEQUE_POSTFECHADO',
+            descripcion:
+              'EL CLIENTE EN CREDITO SOLO PERMITE CHEQUE POST FECHADO'
+          };
+        }
+      }
     }
   }
   return null;
 }
+
+
 
 export function validarCod(state: CartState, errors: CartValidationError[]) {
   if (state.tipo === TipoDePedido.COD) {
@@ -71,13 +83,12 @@ export function validarCod(state: CartState, errors: CartValidationError[]) {
         descripcion: 'EN COD SOLO CHEQUE o EFECTIVO'
       });
     }
-    if(!state.envio) {
+    if (!state.envio) {
       errors.push({
         error: 'COD_SIN_ENVIO',
         descripcion: 'VENTA COD REQUIERE INSTRUCCION DE ENVIO'
       });
     }
-    
   }
 }
 
@@ -102,6 +113,12 @@ export function validarChequePsf(
       errors.push({
         error: 'PERMITIR_CHEQUE_PSF',
         descripcion: 'CLIENTE NO AUTORIZADO PARA CHEQUE POST FECHADO'
+      });
+    }
+    if (state.tipo !== TipoDePedido.CREDITO) {
+      errors.push({
+        error: 'CHEQUE_PSF_SOLO_CREDITO',
+        descripcion: 'CHEQUE POST FECHADO SOLO SE PERMITE EN TIPO CREDITO'
       });
     }
   }

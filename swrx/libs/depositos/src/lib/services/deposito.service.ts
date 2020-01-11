@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import {
   AngularFirestore,
-  AngularFirestoreCollection,
+  AngularFirestoreCollection
 } from '@angular/fire/firestore';
-
-// import FieldValue from 'firebase/FieldValue';
-// import { firebase } from '@firebase/app';
-//import * as firebase from 'firebase';
-import * as firebase from 'firebase/app';
 
 import { DepositosEntity, Deposito } from '../+state/depositos.models';
 import { map } from 'rxjs/operators';
 import { Update } from '@ngrx/entity';
+
+import uuidv4 from 'uuid/v4';
 
 @Injectable({
   providedIn: 'root'
@@ -65,11 +62,11 @@ export class DepositoService {
   }
 
   update(deposito: Update<Deposito>) {
-    this.logEntity(deposito.changes);
     const path = `depositos/${deposito.id}`;
+    const data = { ...deposito.changes };
     this.afs
       .doc(path)
-      .update(deposito.changes)
+      .update(data)
       .then(value => console.log('Deposito actualizado satisfactriamente '))
       .catch(reason => {
         console.error('Error actualizando deposito: ', reason);
@@ -78,32 +75,30 @@ export class DepositoService {
 
   save(deposito: Deposito) {
     deposito.estado = 'PENDIENTE';
-    this.logEntity(deposito);
-    this._collection
-      .add(deposito)
-      .then(docRef => {
-        console.log('DocRef: ', docRef.id);
-        docRef.update({'folio': firebase.firestore.FieldValue.increment(1)})
-      })
-      .catch(reason => {
-        console.error('Error agregando deposito: ', reason);
-      });
-  }
+    deposito.id = uuidv4();
+    const folioRef = this.afs.collection('config').doc('folios').ref;
+    const depositoRef = this._collection.doc(deposito.id).ref;
 
-  logEntity(deposito: Partial<Deposito>) {
-    const user = this.getUsuario();
-    if (!deposito.id) {
-      deposito.createUser = user;
-      deposito.sucursal = this.getSucursal();
-    }
-    deposito.vendedor = user;
-    deposito.updateUser = this.getUsuario();
-  }
-
-  private getSucursal(): string {
-    return 'CALLCENTEr';
-  }
-  private getUsuario(): string {
-    return 'admin';
+    this.afs.firestore.runTransaction(transacion => {
+      return transacion
+        .get(folioRef)
+        .then(sDoc => {
+          if (!sDoc.exists) {
+            transacion.set(folioRef, { depositos: 1 });
+            deposito.folio = 1;
+            transacion.set(depositoRef, deposito);
+            return 1;
+          } else {
+            const fols = sDoc.data();
+            const folio = (fols.depositos || 0) + 1;
+            transacion.update(folioRef, { depositos: folio });
+            deposito.folio = folio;
+            transacion.set(depositoRef, deposito);
+            return folio;
+          }
+        })
+        .then(newFolio => console.log('Deposito generado: ', newFolio))
+        .catch(error => console.error('Error :', error));
+    });
   }
 }

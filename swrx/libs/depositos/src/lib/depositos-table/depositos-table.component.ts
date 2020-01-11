@@ -78,9 +78,7 @@ export class DepositosTableComponent implements OnInit {
   }
 
   onDoubleClick(event: RowDoubleClickedEvent) {
-    if (event.data.estado === 'RECHAZADO') {
-      this.edit.emit(event.data);
-    }
+    this.edit.emit(event.data);
   }
 
   onGridReady(params: GridReadyEvent) {
@@ -130,23 +128,28 @@ export class DepositosTableComponent implements OnInit {
       {
         headerName: 'Total',
         field: 'total',
-        width: 130,
+        width: 110,
         valueFormatter: params => this.transformCurrency(params.value)
       },
       {
         headerName: 'Estatus',
         field: 'estado',
-        width: 130
+        width: 110
       },
       {
         headerName: 'Referencia',
         field: 'referencia',
-        width: 130
+        width: 100
+      },
+      {
+        headerName: 'Vendedor',
+        field: 'updateUser',
+        width: 100
       },
       {
         headerName: 'Comentario',
         field: 'comentario',
-        width: 200
+        width: 150
       }
     ];
   }

@@ -74,16 +74,17 @@ export function calcularDescuento(
 ): number {
   switch (tipo) {
     case TipoDePedido.CREDITO: {
-      return cliente.credito ? cliente.credito.descuentoFijo || 0.0 : 0.0;
+      if(cliente.credito.postfechado) {
+        const importe = calcularImporteBruto(items);
+        return calcularDescuentoPorVolumen(importe) - 4;
+      } else {
+        return cliente.credito ? cliente.credito.descuentoFijo || 0.0 : 0.0;
+      }
     }
     case TipoDePedido.CONTADO:
     case TipoDePedido.COD: {
       const importe = calcularImporteBruto(items);
       return calcularDescuentoPorVolumen(importe);
-    }
-    case TipoDePedido.POST_FECHADO: {
-      const importe = calcularImporteBruto(items);
-      return calcularDescuentoPorVolumen(importe) - 4;
     }
     default: {
       console.log('Tipo de venta no califica para descuento tipo: ', tipo);
