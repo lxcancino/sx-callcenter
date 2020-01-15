@@ -31,6 +31,9 @@
       <strong>RFC: {{ changes.rfc }}</strong>
       <span>Uso de CFDI: {{ changes.usoDeCfdi }}</span>
     </div>
+    <div *ngIf="changes.socio">
+      <strong>Socio: {{changes.socio.nombre}}</strong>
+    </div>
 
     <div>
       <button mat-stroked-button matStepperNext>Siguiente</button>

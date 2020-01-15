@@ -51,7 +51,7 @@ export interface Pedido {
 }
 
 export interface PedidoDet {
-  id: string;
+  id?: string;
   clave: string;
   descripcion: string;
   producto: Partial<Producto>;

@@ -97,6 +97,13 @@ class Cliente {
         }
         return dirs
     }
+
+    def findSocios() {
+        if(clave == 'U050008') 
+            return Socio.where{ cliente == this}.list()
+        else
+            return null
+    }
     
 
 }

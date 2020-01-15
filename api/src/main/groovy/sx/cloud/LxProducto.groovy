@@ -9,45 +9,63 @@ import sx.core.Producto
 
 @ToString(includeNames=true,includePackage=false)
 @EqualsAndHashCode(includes = 'id, clave, unidad')
-class LxProducto implements WebDataBinding{
+class LxProducto {
 
     String id
     String clave
     String descripcion
-    String descripcionLarga
     String unidad
-    String precioContado
-    String precioCredito
-    boolean activo
+    Double precioContado
+    Double precioCredito
+    
+    Boolean activo
     String	modoVenta
     String presentacion
     double kilos
     double gramos
     double calibre
     String color
-    boolean nacional
+    Boolean nacional
     double ancho
     double largo
     double m2XMillar 
-    boolean inventariable
+    Boolean inventariable
 
     String linea
     String marca
     String clase
-    String imageUrl
 
-    Date dateCreated
+    String imageUrl
     Date lastUpdated
 
     String claveSat
     String unidadSat
 
-    Set<LxExistencia> existencias
     double disponible
 
+    List<LxExistencia> existencias = []
+    
+
     LxProducto(Producto prod) {
-        this.properties = prod.properties
+        copyProperties(prod, this)
+        this.id = prod.id
+        /*
+        clave = prod.clave
+        descripcion = prod.descripcion
+        unidad = prod.unidad
+        precioContado = prod.precioContado
+        precioCredito = prod.precioCredito
+        // activo = prod.activo
+        */
+
     }
+    
+    def copyProperties(source, target) {
+        def (sProps, tProps) = [source, target]*.properties*.keySet()
+        def commonProps = sProps.intersect(tProps) - ['class', 'metaClass', 'additionalMetaMethods']
+        commonProps.each { target[it] = source[it] }
+    }
+    
 
 }
 

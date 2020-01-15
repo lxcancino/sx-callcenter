@@ -1,12 +1,12 @@
 import { createAction, props } from '@ngrx/store';
-import { CartItem, CartItemDto } from './cart.models';
+import { CartItem } from './cart.models';
 import {
   Cliente,
   Pedido,
   TipoDePedido,
-  PedidoDet,
   FormaDePago,
-  InstruccionDeEnvio
+  InstruccionDeEnvio,
+  Socio
 } from '@swrx/core-model';
 
 export const addCartItem = createAction('[ShoppingCartPage] Add CartItem');
@@ -20,7 +20,7 @@ export const deleteItem = createAction(
 );
 export const editItem = createAction(
   '[CartListComponent] Edit CartItem',
-  props<{ item: CartItem }>()
+  props<{ item: CartItem; index: number }>()
 );
 export const editItemSuccess = createAction(
   '[CartEffects] Edit CartItem Success',
@@ -110,4 +110,9 @@ export const mostrarDescuentos = createAction(
 export const iniciarCierreDePedido = createAction(
   '[ShoppingCartPage] Solicitar cierre de pedido',
   props<{ pedido: Partial<Pedido> }>()
+);
+
+export const asignarSocio = createAction(
+  '[ShoppingCartFacade] Asignar socio',
+  props<{ socio: Socio }>()
 );

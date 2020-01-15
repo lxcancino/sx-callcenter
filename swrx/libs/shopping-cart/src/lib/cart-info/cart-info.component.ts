@@ -23,11 +23,21 @@ export class CartInfoComponent implements OnInit, OnDestroy {
   @Input() cartForm: FormGroup;
   @ViewChild(MatTabGroup, { static: true }) tabGroup: MatTabGroup;
   @ViewChild('errorsTab', { static: true }) errorsTab: MatTab;
+  @ViewChild('warningsTab', { static: true }) warningsTab: MatTab;
+
   destroy$ = new Subject();
 
   constructor(public facade: CartFacade) {}
 
   ngOnInit() {
+    this.facade.hasWarnings$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(invalid => {
+        if (invalid) {
+          this.tabGroup.selectedIndex = this.warningsTab.position;
+        }
+      });
+
     this.facade.hasErrors$.pipe(takeUntil(this.destroy$)).subscribe(invalid => {
       if (invalid) {
         this.tabGroup.selectedIndex = this.errorsTab.position;

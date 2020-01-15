@@ -108,6 +108,7 @@ export class CartEditItemComponent implements OnInit, OnDestroy {
       .get('producto')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(prod => {
+        console.log('Producto : ', prod);
         if (prod) {
           this.updateProductoProperties(prod);
         }

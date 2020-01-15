@@ -69,6 +69,7 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
     logger("sx.reports", OFF, ['STDOUT'], false)
     logger("sx.tasks", DEBUG, ['STDOUT', 'TASKJOBS'], false)
     logger("sx.firebase", DEBUG, ['STDOUT', 'TASKJOBS'], false)
+    logger("sx.cloud", DEBUG, ['STDOUT', 'TASKJOBS'], false)
     logger("sx.callcenter", DEBUG, ['STDOUT', 'TASKJOBS'], false)
     
 } else {

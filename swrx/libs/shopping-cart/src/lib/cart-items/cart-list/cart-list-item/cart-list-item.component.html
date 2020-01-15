@@ -1,11 +1,12 @@
 <mat-list-item>
+  <span matListIcon>{{ index + 1 }}</span>
   <img
     matListAvatar
     [src]="item.producto.imageUrl || 'assets/images/1273567240.jpg'"
     alt="linea"
   />
+
   <div matLine>
-    <div class="renglon">{{ index }}</div>
     <div class="producto" (click)="onEdit(item)">
       <span class="clave">{{ item.clave }}</span>
       <span class="descripcion">{{ item.descripcion }}</span>
@@ -43,7 +44,7 @@
     class="delete-button"
     color="warn"
     (click)="delete.emit(item)"
-    *ngIf="item.clave !== 'MANIOBRA'"
+    *ngIf="item.clave !== 'MANIOBRA' && item.clave !== 'CORTE'"
   >
     <mat-icon>delete</mat-icon>
   </button>
@@ -51,7 +52,11 @@
     <a (click)="onEdit(item)" mat-icon-button>
       <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
     </a>
-    <span>{{ item.corte.instruccion }}</span>
+    <span class="instruccion">
+      <strong>
+        {{ item.corte.instruccion }}
+      </strong>
+    </span>
     <span
       >Tamaños: <strong>{{ item.corte.tantos }}</strong></span
     >
@@ -68,7 +73,11 @@
       >Limpio: <fa-icon icon="check-circle"></fa-icon>
     </span>
   </div>
-  <div matLine class="propiedades" *ngIf="item.clave !== 'MANIOBRA'">
+  <div
+    matLine
+    class="propiedades"
+    *ngIf="item.clave !== 'MANIOBRA' && item.clave !== 'CORTE'"
+  >
     <span
       >Unidad: <strong>{{ item.unidad }}</strong></span
     >

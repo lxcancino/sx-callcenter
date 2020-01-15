@@ -9,6 +9,7 @@ import {
 
 import { CartState } from './cart.reducer';
 import { CartSumary, CartItem } from './cart.models';
+import { generarCargoPorCorte } from './cart-cargos-utils';
 
 import round from 'lodash/round';
 import sumBy from 'lodash/sumBy';
@@ -51,7 +52,7 @@ export function calcularImporteBruto(partidas: CartItem[]): number {
   return importe;
 }
 
-export function calcularDescuentoPorVolumen(importe: number) {
+export function findDescuentoPorVolumen(importe: number) {
   const mayores = DESCUENTOS.filter(item => item.importe >= importe);
   if (mayores.length > 0) {
     return mayores[0].descuento;
@@ -74,9 +75,9 @@ export function calcularDescuento(
 ): number {
   switch (tipo) {
     case TipoDePedido.CREDITO: {
-      if(cliente.credito.postfechado) {
+      if (cliente.credito.postfechado) {
         const importe = calcularImporteBruto(items);
-        return calcularDescuentoPorVolumen(importe) - 4;
+        return findDescuentoPorVolumen(importe) - 4;
       } else {
         return cliente.credito ? cliente.credito.descuentoFijo || 0.0 : 0.0;
       }
@@ -84,13 +85,39 @@ export function calcularDescuento(
     case TipoDePedido.CONTADO:
     case TipoDePedido.COD: {
       const importe = calcularImporteBruto(items);
-      return calcularDescuentoPorVolumen(importe);
+      return findDescuentoPorVolumen(importe);
     }
     default: {
       console.log('Tipo de venta no califica para descuento tipo: ', tipo);
       return 0;
     }
   }
+}
+
+/**
+ * Pure function para recalcular las  partidas del pedido y registrar los cargos
+ * correspondientes. Esto en funcion del estado actual (CartState)
+ *
+ * @param state
+ */
+export function recalcularPartidas(
+  partidas: CartItem[],
+  tipo: TipoDePedido,
+  fpago: FormaDePago,
+  cliente: Partial<Cliente>
+): Partial<PedidoDet>[] {
+  const partidasActualizadas = aplicarDescuentos(
+    partidas,
+    tipo,
+    fpago,
+    cliente
+  );
+
+  const corteItem = generarCargoPorCorte(partidasActualizadas);
+  if (corteItem) {
+    partidasActualizadas.push(corteItem);
+  }
+  return partidasActualizadas;
 }
 
 /**
@@ -221,6 +248,7 @@ export function buildPedidoEntity(
       envio: state.envio,
       comprador: state.comprador,
       comentario: state.comentario,
+      socio: state.socio,
       ...sumary
     };
     return pedido;
@@ -250,6 +278,7 @@ export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
     envio: state.envio,
     comprador: state.comprador,
     comentario: state.comentario,
+    socio: state.socio,
     ...sumary
   };
 }
@@ -296,7 +325,42 @@ export function buildCartItem(producto: Producto): CartItem {
     descuentoOriginal: 0
   };
 }
+export function updateItemProduct(
+  item: CartItem,
+  producto: Producto
+): CartItem {
+  return {
+    ...item,
+    producto: producto,
+    ...extracProductDataForCartItem(producto)
+  };
+}
+
+export function extracProductDataForCartItem(producto: Producto) {
+  const {
+    clave,
+    descripcion,
+    kilos,
+    gramos,
+    unidad,
+    modoVenta,
+    presentacion,
+    nacional
+  } = producto;
+  return {
+    clave,
+    descripcion,
+    kilos,
+    gramos,
+    unidad,
+    modoVenta,
+    presentacion,
+    nacional
+  };
+}
 
 export function normalize(partidas: CartItem[]) {
-  return partidas.filter(item => !item.clave.startsWith('MANIOBRA'));
+  return partidas
+    .filter(item => !item.clave.includes('CORTE'))
+    .filter(item => !item.clave.startsWith('MANIOBRA'));
 }

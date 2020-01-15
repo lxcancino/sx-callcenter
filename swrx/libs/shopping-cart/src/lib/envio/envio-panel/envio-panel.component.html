@@ -3,7 +3,7 @@
     <label>Tipo:</label>
     <span>{{ envio.tipo }}</span>
   </div>
-  <div class="row" *ngIf="envio.tipo === 'FORANEO' && envio.transporte">
+  <div class="row" *ngIf="(envio.tipo === 'FORANEO' || envio.tipo === 'OCURRE') && envio.transporte">
     <label>Transporte:</label>
     <span matTooltip="{{ getDireccionLabel(envio.transporte.direccion) }}">{{
       envio.transporte.nombre

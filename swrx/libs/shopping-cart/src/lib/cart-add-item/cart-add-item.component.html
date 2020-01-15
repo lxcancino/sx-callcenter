@@ -1,5 +1,5 @@
 <h3 *ngIf="item; else addItem">
-  Modificar: {{ item?.producto?.clave }} ({{
+  Partida:{{ index + 1 }} {{ producto?.clave }} ({{
     tipo === 'CON' ? 'CONTADO' : 'CEREDITO'
   }})
 </h3>
@@ -9,6 +9,42 @@
 <mat-dialog-content>
   <mat-divider></mat-divider>
   <div class="item-form" [formGroup]="form">
+    <div class="row" formGroupName="corte">
+      <mat-form-field class="tantos">
+        <input
+          type="number"
+          matInput
+          placeholder="Tamaños"
+          formControlName="tantos"
+        />
+      </mat-form-field>
+    </div>
+    <swrx-producto-field formControlName="producto"></swrx-producto-field>
+    <div class="importes">
+      <swrx-numeric-field
+        formControlName="cantidad"
+        label="Cantidad"
+        decimals="3"
+      ></swrx-numeric-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Precio"
+          value="{{ precio | currency }}"
+          readonly
+          tabindex="-1"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Sub Total"
+          value="{{ subtotal | currency }}"
+          readonly
+          tabindex="-1"
+        />
+      </mat-form-field>
+    </div>
     <div class="corte-container" formGroupName="corte">
       <div class="corte-form">
         <!-- <swrx-numeric-field
@@ -17,14 +53,14 @@
           label="Tamaños"
           decimals="0"
         ></swrx-numeric-field> -->
-        <mat-form-field class="tantos">
+        <!-- <mat-form-field class="tantos">
           <input
             type="number"
             matInput
             placeholder="Tamaños"
             formControlName="tantos"
           />
-        </mat-form-field>
+        </mat-form-field> -->
         <mat-form-field class="instruccion">
           <input
             matInput
@@ -58,32 +94,6 @@
         <mat-checkbox formControlName="limpio">Limpio</mat-checkbox>
       </div>
     </div>
-    <swrx-producto-field formControlName="producto"></swrx-producto-field>
-    <div class="importes">
-      <swrx-numeric-field
-        formControlName="cantidad"
-        label="Cantidad"
-        decimals="3"
-      ></swrx-numeric-field>
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Precio"
-          value="{{ precio | currency }}"
-          readonly
-          tabindex="-1"
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Sub Total"
-          value="{{ subtotal | currency }}"
-          readonly
-          tabindex="-1"
-        />
-      </mat-form-field>
-    </div>
   </div>
 
   <div class="exis-header">
@@ -111,7 +121,7 @@
 
   <mat-card-actions>
     <button
-      mat-stroked-button
+      mat-raised-button
       (click)="onSubmit()"
       [disabled]="form.invalid"
       color="accent"

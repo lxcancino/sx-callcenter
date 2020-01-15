@@ -39,6 +39,7 @@ import { CerrarComponent } from './cerrar/cerrar.component';
 import { TransporteFieldComponent } from './envio/transporte-field/transporte-field.component';
 
 import { NewCartGuard } from './guards/new-cart.guard';
+import { CartSocioComponent } from './cart-socio/cart-socio.component';
 
 const routes: Route[] = [
   {
@@ -89,7 +90,8 @@ const routes: Route[] = [
     CfdiTabComponent,
     CartNombreComponent,
     CerrarComponent,
-    TransporteFieldComponent
+    TransporteFieldComponent,
+    CartSocioComponent
   ],
   entryComponents: [
     CartAddItemComponent,

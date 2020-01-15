@@ -11,4 +11,5 @@ json g.render(cliente, [excludes: ['credito', 'cobrador', 'medios'], resolveTemp
 	direccionesEntrega g.render(cliente.direcciones)
 	cfdiMail cliente.getCfdiMail()
 	telefonos cliente.getTelefonos()
+	socios g.render(cliente.findSocios())
 }

@@ -14,7 +14,13 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
-import { Pedido, Cliente, FormaDePago, TipoDePedido } from '@swrx/core-model';
+import {
+  Pedido,
+  Cliente,
+  FormaDePago,
+  TipoDePedido,
+  Socio
+} from '@swrx/core-model';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 
@@ -50,7 +56,6 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
       const { displayName, email } = usr;
       this.user = { displayName, email };
-      console.log('Usuario: ', this.user);
     });
   }
 
@@ -226,5 +231,8 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.clientes.createCliente(this.user);
     }
+  }
+  onSocio(event: Socio) {
+    this.facade.asignarSocio(event);
   }
 }

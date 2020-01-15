@@ -4,6 +4,7 @@ import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
 
 import sx.core.Cliente
+import sx.core.Socio
 
 
 @ToString(includes='nombre, fecha, sucursal, subtotal total',includeNames=true,includePackage=false)
@@ -17,7 +18,7 @@ class Pedido {
     Cliente cliente // 2
     String nombre
     String rfc
-    String socio
+    
     String tipo
     String  formaDePago
     String moneda = 'MXN'
@@ -46,6 +47,8 @@ class Pedido {
     String comentario
     String cfdiMail
     String usoDeCfdi
+
+    Socio socio
     
     Date dateCreated
     Date lastUpdated
@@ -56,7 +59,7 @@ class Pedido {
 
     static hasMany =[partidas:PedidoDet]
 
-    static hasOne = [envio: InstruccionDeEnvio, socio: PedidoSocio]
+    static hasOne = [envio: InstruccionDeEnvio]
     
 
     static constraints = {

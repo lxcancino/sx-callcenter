@@ -31,13 +31,14 @@ export class CartCheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Checkout pedido: ', this.changes);
-    console.log('User: ', this.user);
+    console.log('Checkout data:', this.data);
+    // console.log('Checkout pedido: ', this.changes);
+    // console.log('User: ', this.user);
   }
 
   doSubmit() {
     this.changes.updateUser = this.user.displayName;
-    if(!this.changes.createUser) {
+    if (!this.changes.createUser) {
       this.changes.createUser = this.user.displayName;
     }
     this.dialogRef.close({ id: this.id, changes: this.changes });

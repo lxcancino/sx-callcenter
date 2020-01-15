@@ -32,7 +32,7 @@ export const notNull = () => pipe(filter(input => !!input));
  */
 export const cartState = (store: Store<CartState>) =>
   pipe(
-    concatMap((action: { item: CartItem }) =>
+    concatMap((action: { item: CartItem; index?: number }) =>
       of(action).pipe(
         withLatestFrom(store.pipe(select(CartSelectors.getCartState)))
       )
@@ -54,6 +54,7 @@ export const reactiveCartActions = pipe(
     CartActions.cambiarFormaDePago,
     CartActions.registrarEnvioSuccess,
     CartActions.cancelarEnvio
+    // CartActions.asignarSocio
   )
 );
 

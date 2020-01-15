@@ -12,10 +12,16 @@ import { CartFacade } from '../+state/cart.facade';
 import { ClientesFacade } from '@swrx/clientes';
 
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
-import { TipoDePedido, FormaDePago, Pedido, Cliente } from '@swrx/core-model';
+import {
+  TipoDePedido,
+  FormaDePago,
+  Pedido,
+  Cliente,
+  Socio
+} from '@swrx/core-model';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 
@@ -119,6 +125,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
             .get('usoDeCfdi')
             .setValue(cte.credito.usoDeCfdi || 'G01');
         }
+        //
+        console.log('Cliente credito: ', cte);
         this.cartForm.get('tipo').setValue(TipoDePedido.CREDITO);
       }
       this.cartForm.get('cfdiMail').setValue(cte.cfdiMail);
@@ -146,13 +154,15 @@ export class CartPageComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(tipo => {
         this.facade.cambiarTipo(tipo);
-        if(tipo !== TipoDePedido.CREDITO) {
+        if (tipo !== TipoDePedido.CREDITO) {
           const fp = this.cartForm.get('formaDePago').value;
-          if(fp === FormaDePago.CHEQUE_PSTF || fp === FormaDePago.CHEQUE_PSTF) {
+          if (
+            fp === FormaDePago.CHEQUE_PSTF ||
+            fp === FormaDePago.CHEQUE_PSTF
+          ) {
             this.cartForm.get('formaDePago').setValue(FormaDePago.EFECTIVO);
           }
         }
-        
       });
   }
 
@@ -251,5 +261,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.clientes.createCliente(this.user);
     }
+  }
+  onSocio(event: Socio) {
+    this.facade.asignarSocio(event);
   }
 }

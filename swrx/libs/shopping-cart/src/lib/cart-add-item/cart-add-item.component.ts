@@ -14,7 +14,11 @@ import { takeUntil, map, startWith } from 'rxjs/operators';
 import round from 'lodash/round';
 
 import { PedidoDet, Corte, TipoDePedido } from '@swrx/core-model';
-import { buildCartItem } from '../+state/cart.utils';
+import {
+  buildCartItem,
+  updateItemProduct,
+  extracProductDataForCartItem
+} from '../+state/cart.utils';
 import { CartItem } from '../+state/cart.models';
 
 @Component({
@@ -29,17 +33,18 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   tipo: TipoDePedido;
   destroy$ = new Subject<boolean>();
   filteredOptions: Observable<string[]>;
+  index: number;
 
   tiposDeCorte = [
     'CARTA',
-    'CALCULADO',
-    'CROQUIS',
-    'CRUZ',
-    'DOBLE_CARTA',
-    'MEDIA_CARTA',
-    'MITAD',
     'OFICIO',
-    '1/8'
+    '***',
+    'MITAD',
+    'CRUZ',
+    'CROQUIS',
+    'DOBLE CARTA',
+    '1/8',
+    '1/9'
   ];
 
   constructor(
@@ -49,6 +54,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   ) {
     this.tipo = data.tipo;
     this.item = data.item || null;
+    this.index = data.index || null;
   }
 
   ngOnInit() {
@@ -86,7 +92,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
         instruccion: [null],
         cantidad: [0],
         tantos: [null],
-        precio: [0.0],
+        precio: [10.0],
         refinado: false,
         limpio: false
       })
@@ -108,6 +114,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
         } else {
           this.form.get('precio').setValue(prod.precioContado);
         }
+        this.actualizarImporte(this.cantidad || 0);
       });
   }
 
@@ -115,19 +122,22 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
     this.form
       .get('cantidad')
       .valueChanges.pipe(
-        map(can => {
-          if (this.producto && this.producto.unidad === 'MIL') {
-            return can / 1000;
-          } else {
-            return can;
-          }
-        }),
+        // map(can => {
+        //   if (this.producto && this.producto.unidad === 'MIL') {
+        //     return can / 1000;
+        //   } else {
+        //     return can;
+        //   }
+        // }),
         takeUntil(this.destroy$)
       )
       .subscribe(cantidad => this.actualizarImporte(cantidad));
   }
 
   private actualizarImporte(cantidad: number) {
+    if (this.producto && this.producto.unidad === 'MIL') {
+      cantidad = cantidad / 1000;
+    }
     const precio = this.precio;
     const bruto = cantidad * precio;
     const subtotal = round(bruto, 2);
@@ -137,19 +147,30 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.form.valid) {
       const { producto, cantidad, precio, corte } = this;
-      const emptyItem = this.item ? this.item : buildCartItem(producto);
-      const item: PedidoDet = {
-        ...emptyItem,
-        cantidad,
-        precio,
-        corte
-      };
+      let item: PedidoDet;
+      if (!this.item) {
+        item = {
+          ...buildCartItem(producto),
+          cantidad,
+          precio,
+          corte
+        };
+      } else {
+        item = {
+          ...this.item,
+          ...extracProductDataForCartItem(producto),
+          producto,
+          cantidad,
+          precio,
+          corte
+        };
+      }
       this.dialoRef.close(item);
     }
   }
 
   get producto() {
-    return this.getValue('producto');
+    return this.form.get('producto').value;
   }
 
   get cantidad() {

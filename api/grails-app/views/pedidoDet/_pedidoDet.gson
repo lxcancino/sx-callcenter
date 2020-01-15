@@ -4,7 +4,7 @@ model {
 	PedidoDet pedidoDet
 }
 
-json g.render(pedidoDet, [ excludes: ['producto', 'corte'], resolveTemplate: false]){
+json g.render(pedidoDet, [ excludes: ['producto', 'corte', 'socio'], resolveTemplate: false]){
 	producto g.render(pedidoDet.producto)
 	corte g.render(pedidoDet.corte)
 }

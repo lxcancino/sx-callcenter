@@ -11,7 +11,6 @@ export function runWarnings(state: CartState): CartValidationError[] {
   validarClienteActivo(state, errors);
   validarCreditoVigente(state, errors);
   validarAtrasoMaximo(state, errors);
-  validarCreditoVigente(state, errors);
   validarCreditoDisponible(state, errors);
   return errors;
 }

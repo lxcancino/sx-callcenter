@@ -7,7 +7,7 @@ import * as CartActions from './cart.actions';
 import * as CartSelectors from './cart.selectors';
 import * as fromPedido from '@swrx/pedidos';
 
-import { TipoDePedido, FormaDePago, Pedido } from '@swrx/core-model';
+import { TipoDePedido, FormaDePago, Pedido, Socio } from '@swrx/core-model';
 import { CartItem } from './cart.models';
 import { map } from 'rxjs/operators';
 
@@ -39,7 +39,7 @@ export class CartFacade {
   isPrintable$ = this.store.pipe(select(CartSelectors.isPrintable));
   envio$ = this.store.pipe(select(CartSelectors.selectEnvio));
   dirty$ = this.store.pipe(select(CartSelectors.isDirty));
-
+  socio$ = this.store.pipe(select(CartSelectors.selectSocio));
   constructor(
     private store: Store<fromCart.CartState>,
     private router: Router
@@ -50,8 +50,9 @@ export class CartFacade {
   addCartItem() {
     this.store.dispatch(CartActions.addCartItem());
   }
-  editItem(item: CartItem) {
-    this.store.dispatch(CartActions.editItem({ item }));
+  editItem(index: number, item: CartItem) {
+    console.log('Editando partida: ', index);
+    this.store.dispatch(CartActions.editItem({ item, index }));
   }
   deleteItem(item: Partial<CartItem>) {
     this.store.dispatch(CartActions.deleteItem({ item }));
@@ -118,5 +119,9 @@ export class CartFacade {
 
   mostrarDescuentos() {
     this.store.dispatch(CartActions.mostrarDescuentos());
+  }
+
+  asignarSocio(socio: Socio) {
+    this.store.dispatch(CartActions.asignarSocio({ socio }));
   }
 }

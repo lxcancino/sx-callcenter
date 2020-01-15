@@ -4,6 +4,8 @@ import { CartItem } from './cart.models';
 import round from 'lodash/round';
 import sumBy from 'lodash/sumBy';
 
+import uuidv4 from 'uuid/v4';
+
 export function generarCargoPorTarjeta(
   items: CartItem[],
   tipo: TipoDePedido,
@@ -23,7 +25,7 @@ export function generarCargoPorTarjeta(
     const impuesto = round(importe * 0.016, 2);
     const total = subtotal + impuesto;
     return {
-      id: '402880fc5e4ec411015e4ecdb4bb06a0',
+      id: uuidv4(),
       cantidad: 1,
       precio,
       importe,
@@ -41,6 +43,52 @@ export function generarCargoPorTarjeta(
       },
       clave: 'MANIOBRA',
       descripcion: 'M A N I O B R A',
+      kilos: 0,
+      gramos: 0,
+      unidad: 'PZA',
+      modoVenta: 'N',
+      presentacion: 'ND',
+      nacional: true,
+      descuento: 0.0,
+      descuentoImporte: 0.0,
+      impuestoTasa: 0.16,
+      precioOriginal: 0.0,
+      precioLista: 0.0,
+      descuentoOriginal: 0
+    };
+  } else {
+    return null;
+  }
+}
+
+export function generarCargoPorCorte(items: CartItem[]): CartItem | null {
+  const found = items.filter(item => item.corte);
+  if (found && found.length > 0) {
+    const cortes = found.map(item => item.corte);
+    const importeNeto = sumBy(cortes, item => item.cantidad * item.precio);
+    const precio = round(importeNeto, 2);
+    const importe = precio;
+    const subtotal = importe;
+    const impuesto = round(importe * 0.016, 2);
+    const total = subtotal + impuesto;
+    return {
+      id: uuidv4(),
+      cantidad: 1,
+      precio: importe,
+      importe,
+      impuesto,
+      subtotal,
+      total,
+      producto: {
+        id: '402880fc5e4ec411015e4ecc6cc60571',
+        clave: 'CORTE',
+        descripcion: 'CORTE',
+        modoVenta: 'N',
+        precioCredito: precio,
+        precioContado: precio
+      },
+      clave: 'CORTE',
+      descripcion: 'CORTE',
       kilos: 0,
       gramos: 0,
       unidad: 'PZA',

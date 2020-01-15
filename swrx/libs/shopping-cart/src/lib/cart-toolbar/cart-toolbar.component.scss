@@ -1,6 +1,6 @@
 .mat-toolbar {
   //height: 50px;
-  max-height: 50px;
+  // max-height: 50px;
   font-size: 16px;
   h3 {
     display: inline;
@@ -41,5 +41,23 @@
   }
   .menu {
     justify-content: flex-end;
+  }
+}
+.cliente {
+  display: flex;
+  flex-direction: column;
+}
+.socio-row {
+  width: 100%;
+  padding-top: 10px;
+  display: flex;
+  font-size: 14px;
+  .socio {
+    flex: 3;
+  }
+  .socio-direccion {
+    flex: 2;
+    margin-left: 20px;
+    text-align: center;
   }
 }

@@ -4,6 +4,8 @@
     [cliente]="facade.cliente$ | async"
     [nombre]="facade.nombre$ | async"
     (cambiarNombre)="onCambiarNombre($event)"
+    (seleccionarSocio)="onSocio($event)"
+    [socio]="facade.socio$ | async"
   >
     <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
     <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>

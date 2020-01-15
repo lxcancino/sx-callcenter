@@ -21,7 +21,7 @@ export class CartListComponent implements OnInit {
   onDelete(item: Partial<CartItem>) {
     this.cartFacade.deleteItem(item);
   }
-  onEdit(item: CartItem) {
-    this.cartFacade.editItem(item);
+  onEdit(index: number, item: CartItem) {
+    this.cartFacade.editItem(index, item);
   }
 }

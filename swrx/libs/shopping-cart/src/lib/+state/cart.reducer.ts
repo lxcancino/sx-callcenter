@@ -3,9 +3,14 @@ import { createReducer, on, Action } from '@ngrx/store';
 import * as CartActions from './cart.actions';
 import { CartItem, CartValidationError } from './cart.models';
 
-import { clienteMostrador, aplicarDescuentos } from './cart.utils';
+import {
+  clienteMostrador,
+  recalcularPartidas,
+  aplicarDescuentos
+} from './cart.utils';
 import {
   Cliente,
+  Socio,
   TipoDePedido,
   FormaDePago,
   Pedido,
@@ -15,7 +20,10 @@ import {
 import keyBy from 'lodash/keyBy';
 import values from 'lodash/values';
 
-import { generarCargoPorTarjeta } from './cart-cargos-utils';
+import {
+  generarCargoPorTarjeta,
+  generarCargoPorCorte
+} from './cart-cargos-utils';
 
 import { runValidation } from './cart-validations';
 import { runWarnings } from './cart-warnings';
@@ -36,6 +44,7 @@ export interface CartState {
   pedido?: Pedido;
   envio?: InstruccionDeEnvio;
   comprador?: string;
+  socio?: Socio;
   error?: string | null; // last none error (if any)
   dirty: boolean;
   comentario?: string;
@@ -77,6 +86,18 @@ const cartReducer = createReducer(
       items
     };
   }),
+
+  on(CartActions.editItemSuccess, (state, { item }) => {
+    const items = {
+      ...state.items,
+      [item.id]: item
+    };
+    return {
+      ...state,
+      items
+    };
+  }),
+
   on(CartActions.cambiarClienteSuccess, (state, { cliente }) => ({
     ...state,
     cliente,
@@ -133,6 +154,8 @@ const cartReducer = createReducer(
       state.formaDePago,
       state.cliente
     );
+
+    //const partidasActualizadas = recalcularPartidas(state);
     let items = keyBy(partidasActualizadas, 'id');
 
     if (
@@ -148,18 +171,13 @@ const cartReducer = createReducer(
         items = { ...items, [cargo.id]: cargo };
       }
     }
+    const corteItem = generarCargoPorCorte(partidasActualizadas);
+    if (corteItem) {
+      items = { ...items, [corteItem.id]: corteItem };
+    }
     return { ...state, items };
   }),
-  on(CartActions.editItemSuccess, (state, { item }) => {
-    const items = {
-      ...state.items,
-      [item.id]: item
-    };
-    return {
-      ...state,
-      items
-    };
-  }),
+
   on(CartActions.loadPedidoSucces, (state, { pedido }) => {
     const items = keyBy(pedido.partidas, 'id');
     return {
@@ -174,7 +192,8 @@ const cartReducer = createReducer(
       usoDeCfdi: pedido.usoDeCfdi,
       cfdiMail: pedido.cfdiMail,
       items,
-      envio: pedido.envio
+      envio: pedido.envio,
+      socio: pedido.socio
     };
   }),
   on(CartActions.cleanShoppingCart, state => ({
@@ -184,7 +203,14 @@ const cartReducer = createReducer(
     ...state,
     validationErrors: runValidation(state),
     warrnings: runWarnings(state)
-  }))
+  })),
+  on(CartActions.asignarSocio, (state, { socio }) => {
+    return {
+      ...state,
+      dirty: true,
+      socio
+    };
+  })
 );
 
 export function reducer(state: CartState | undefined, action: Action) {

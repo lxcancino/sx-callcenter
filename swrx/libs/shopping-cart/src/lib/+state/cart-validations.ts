@@ -20,6 +20,7 @@ export function runValidation(state: CartState): CartValidationError[] {
   validarChequePsf(state, errors);
   validarJuridico(state, errors);
   validarChequesDevueltos(state, errors);
+  validarUnionDeCredito(state, errors);
   return errors;
 }
 
@@ -69,8 +70,6 @@ export function ventaCredito(state: CartState): CartValidationError | null {
   }
   return null;
 }
-
-
 
 export function validarCod(state: CartState, errors: CartValidationError[]) {
   if (state.tipo === TipoDePedido.COD) {
@@ -145,5 +144,19 @@ export function validarChequesDevueltos(
       error: 'CHEQUES_DEVUELTOS',
       descripcion: 'CLIENTE CON CHEQUES DEVUELTOS'
     });
+  }
+}
+
+export function validarUnionDeCredito(
+  state: CartState,
+  errors: CartValidationError[]
+) {
+  if (state.cliente.clave === 'U050008') {
+    if (!state.socio) {
+      errors.push({
+        error: 'SOCIO_DE_UNION',
+        descripcion: 'DEBE REGISTRAR UN SOCIO PARA LA UNION DE CREDITO'
+      });
+    }
   }
 }

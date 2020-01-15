@@ -4,6 +4,8 @@
     [pedido]="pedido"
     [nombre]="facade.nombre$ | async"
     (cambiarNombre)="onCambiarNombre($event)"
+    (seleccionarSocio)="onSocio($event)"
+    [socio]="facade.socio$ | async"
   >
     <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
     <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
@@ -62,6 +64,8 @@
             mat-raised-button
             color="primary"
             (click)="cerrarPedido(pedido)"
+            [disabled]="facade.hasWarnings$ | async"
+            matTooltip="HOLA"
           >
             <mat-icon>send</mat-icon>Cerrar
           </button>

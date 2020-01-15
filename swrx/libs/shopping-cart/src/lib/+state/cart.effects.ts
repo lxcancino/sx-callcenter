@@ -71,7 +71,11 @@ export class CartEffects {
     this.actions$.pipe(
       ofType(CartActions.editItem),
       cartState(this.store),
-      map(([action, state]) => ({ item: action.item, tipo: state.tipo })),
+      map(([action, state]) => ({
+        item: action.item,
+        tipo: state.tipo,
+        index: action.index
+      })),
       this.inDialog(CartAddItemComponent),
       notNull(),
       map(item => CartActions.editItemSuccess({ item }))
@@ -132,6 +136,13 @@ export class CartEffects {
     )
   );
 
+  asignarSocio$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.asignarSocio),
+      map(() => CartActions.validarPedido())
+    )
+  );
+
   mostrarDescuentos$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -161,6 +172,7 @@ export class CartEffects {
       map((pedido: Pedido) => this.pedidoFacade.cerrarPedido(pedido))
     )
   );
+  
 
   constructor(
     private actions$: Actions,

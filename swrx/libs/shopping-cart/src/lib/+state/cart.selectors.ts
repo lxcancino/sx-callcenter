@@ -9,7 +9,7 @@ import round from 'lodash/round';
 import maxBy from 'lodash/maxBy';
 import values from 'lodash/values';
 import {
-  calcularDescuentoPorVolumen,
+  findDescuentoPorVolumen,
   buildPedidoEntity,
   buildCartSumary
 } from './cart.utils';
@@ -98,7 +98,7 @@ export const getDescuentoPorVolumen = createSelector(
     ) {
       return 0.0;
     }
-    return calcularDescuentoPorVolumen(importe);
+    return findDescuentoPorVolumen(importe);
   }
 );
 
@@ -182,4 +182,8 @@ export const isPrintable = createSelector(
 export const selectEnvio = createSelector(
   getCartState,
   state => state.envio
+);
+export const selectSocio = createSelector(
+  getCartState,
+  state => state.socio
 );

@@ -19,6 +19,7 @@ export interface Cliente {
   telefonos?: string | number;
   createUser?: string;
   updateUser?: string;
+  socios?: Socio[];
 }
 
 export interface ClienteCredito {
@@ -104,4 +105,12 @@ export class User {
       isAnonymous
     };
   }
+}
+
+export interface Socio {
+  id: string;
+  clave?: string;
+  nombre: string;
+  direccion?: string;
+  direccionFiscal: Direccion
 }

@@ -11,4 +11,5 @@ json g.render(pedido, [ excludes: ['cliente', 'partidas'], resolveTemplate: fals
 		if(pedido.envio.transporte)
 			transporte g.render(pedido.envio.transporte)
 	}
+	socio g.render(pedido.socio)
 }

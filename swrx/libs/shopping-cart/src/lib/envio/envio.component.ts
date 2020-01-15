@@ -21,7 +21,8 @@ import {
   Direccion,
   Cliente,
   buildDireccionEmpty,
-  InstruccionDeEnvio
+  InstruccionDeEnvio,
+  Socio
 } from '@swrx/core-model';
 import { buildDireccionForm } from '@swrx/form-utils';
 import { takeUntil } from 'rxjs/operators';
@@ -60,9 +61,13 @@ export class EnvioComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    console.log('Envio para: ', this.data);
     this.envio = this.data.envio;
     this.cliente = this.data.cliente;
     this.direcciones = this.cliente.direcciones || {};
+    if (this.data.pedido && this.data.pedido.socio) {
+      this._buildDireccionDesocio(this.data.pedido.socio);
+    }
     this.buildForm();
 
     if (this.envio) {
@@ -142,5 +147,17 @@ export class EnvioComponent implements OnInit, OnDestroy {
 
   isDirectionValid() {
     return this.form.get('direccion').valid;
+  }
+
+  _buildDireccionDesocio(socio: Socio) {
+    if (socio.direccionFiscal) {
+      const dd = socio.direccionFiscal;
+      const calle = dd.calle.trim() || '';
+      const key = `${calle.substr(0, 10)} #:${dd.numeroExterior || ''} CP:${
+        dd.codigoPostal
+      }`;
+      this.direcciones = {};
+      this.direcciones[key] = dd;
+    }
   }
 }
