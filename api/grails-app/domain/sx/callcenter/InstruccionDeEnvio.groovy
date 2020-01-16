@@ -22,6 +22,8 @@ class InstruccionDeEnvio {
     String horario
     String comentario
 
+    Date fechaDeEntrega = new Date()
+
     static embedded = ['direccion']
     
 
@@ -32,6 +34,7 @@ class InstruccionDeEnvio {
         contacto nullable: true
         horario nullable: true
         comentario nullable: true
+        fechaDeEntrega nullable: true
     }
 
     static belongsTo = [pedido: Pedido]

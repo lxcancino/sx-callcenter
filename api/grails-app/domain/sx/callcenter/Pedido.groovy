@@ -55,6 +55,8 @@ class Pedido {
     String createUser
     String updateUser
 
+    Date cerrado
+
     // InstruccionDeEnvio envio
 
     static hasMany =[partidas:PedidoDet]
@@ -77,6 +79,7 @@ class Pedido {
         socio nullable: true
         envio nullable: true
         status maxSize: 20
+        cerrado nullable: true
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
     }

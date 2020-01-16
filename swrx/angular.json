@@ -594,6 +594,37 @@
           "styleext": "scss"
         }
       }
+    },
+    "existencias": {
+      "projectType": "library",
+      "root": "libs/existencias",
+      "sourceRoot": "libs/existencias/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/existencias/tsconfig.lib.json",
+              "libs/existencias/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/existencias/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/existencias/jest.config.js",
+            "tsConfig": "libs/existencias/tsconfig.spec.json",
+            "setupFile": "libs/existencias/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

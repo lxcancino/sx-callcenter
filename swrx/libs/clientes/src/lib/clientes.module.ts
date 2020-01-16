@@ -25,7 +25,7 @@ const routes2: Route[] = [
 
 export const routes: Route[] = [
   {
-    path: '',
+    path: 'list',
     children: [
       // { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: '', component: ClientePageComponent }

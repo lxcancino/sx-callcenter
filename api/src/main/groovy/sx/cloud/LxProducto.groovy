@@ -43,20 +43,14 @@ class LxProducto {
 
     double disponible
 
-    List<LxExistencia> existencias = []
+    // List<LxExistencia> existencias = []
     
 
     LxProducto(Producto prod) {
         copyProperties(prod, this)
         this.id = prod.id
-        /*
-        clave = prod.clave
-        descripcion = prod.descripcion
-        unidad = prod.unidad
-        precioContado = prod.precioContado
-        precioCredito = prod.precioCredito
-        // activo = prod.activo
-        */
+        this.claveSat = prod.productoSat ? prod.productoSat.claveProdServ : null
+        this.unidadSat = prod.unidadSat ? prod.unidadSat.claveUnidadSat : null
 
     }
     

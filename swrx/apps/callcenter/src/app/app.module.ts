@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NotificationsModule } from '@swrx/notifications';
 import { ProductosModule } from '@swrx/productos';
+import { ExistenciasModule } from '@swrx/existencias';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -34,16 +35,19 @@ import { NgxMaskModule } from 'ngx-mask';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    // Firebase configuration
+    AngularFireModule.initializeApp(environment.firebase, 'swrx-callcenter'),
+    AngularFirestoreModule,
+
     AppRoutingModule,
     NotificationsModule,
     ProductosModule,
     AppStateModule,
-    // Firebase configuration
-    AngularFireModule.initializeApp(environment.firebase, 'swrx-callcenter'),
-    AngularFirestoreModule,
+    ShoppingCartModule,
+    ExistenciasModule,
+
     // Authorization
     AuthModule.forRoot(environment.firebase),
-    ShoppingCartModule,
     NgxMaskModule.forRoot()
   ],
   providers: [

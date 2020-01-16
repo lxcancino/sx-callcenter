@@ -10,128 +10,75 @@ import grails.gorm.transactions.Transactional
 import grails.compiler.GrailsCompileStatic
 
 import com.google.firebase.cloud.FirestoreClient
-
+import com.google.cloud.firestore.Query
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.SetOptions
 import com.google.cloud.firestore.WriteResult
-import com.google.cloud.firestore.Query
-
+import com.google.cloud.firestore.DocumentReference
+import com.google.cloud.firestore.DocumentSnapshot
 import com.google.api.core.ApiFuture
-
-
 
 import sx.core.LogUser
 import sx.core.FolioLog
 import sx.core.Producto
 import sx.core.Existencia
+import sx.core.Sucursal
 import sx.utils.Periodo
 
 @Slf4j
 // @GrailsCompileStatic
 class LxProductoService {
 
-    private Firestore firestoreDb;
+    FirebaseService firebaseService
 
-    @PostConstruct
-    void startFirestore() {
-        log.info("Inicializando FireBase en PostConstruct")
+    def push(Producto prod, Map<String, Object> changes = null) {
+        DocumentReference docRef = firebaseService
+            .getFirestore()
+            .collection('productos')
+            .document(prod.clave)
+        DocumentSnapshot snapShot = docRef.get().get()
+        ApiFuture<WriteResult> result = null
+        if (snapShot.exists()) {
+            if(!changes){
+                log.debug('No hay cambios por aplicar {}', prod.clave)
+                return prod
+            }
+            log.info('Actualizando entidad existente changes: {}', changes)
+            result = docRef.update(changes)
+        } else {
+            changes = resolveProperties(prod)
+            log.info('Registrando producto nuevo : {}', changes)
+            result = docRef.set(changes)
+        }
+        return prod
+        
     }
 
+    void delete(Producto p) {}
 
-    def push(Producto source) {
-        log.info('Pushing {} to de cloud', source.clave)
+    private Map<String, Object> resolveProperties(Producto source) {
         LxProducto producto = new LxProducto(source)
-        Map data = producto.properties //.removeAll { k, v -> k == 'class'} 
+        Map<String, Object> data = producto.properties 
         data = data.findAll{ k, v -> k != 'class'}
-        resolveExistencias(data.clave)
-        
-        // To Firestore
-        /*
-        def collRef = getFirestore().collection('productos')
-        log.info('ColRef: {}', collRef)
-        ApiFuture<WriteResult> future = collRef
-        .document(producto.clave)
-        .set(data)
-        log.info('Product updated: {}', future.get().getUpdateTime())
-        
-        // log.info('Properties: {}', data)
-        */
-        return producto
-
+        return data
     }
 
-    void delete(Producto p) {
-
-    }
-
-	def selectCloudProducts() {
-		return Producto.where{activo == true &&  inventariable == true}.list([sort: 'clave', order: 'asc', max: 1])
-	}
-
-    def resolveExistencias(String clave) {
+    def resolveExistencias() {
         def year = Periodo.obtenerYear(new Date())
         def mes = Periodo.obtenerMes(new Date()) + 1
-        log.info('Existencias de {} - {}', year, mes)
-    }
-
-    Map resolveData(LxProducto p) {
-        return [
-            id: p.id, 
-            clave: p.clave, 
-            descripcion: p.descripcion,
-            unidad: p.unidad,
-            precioContado: p.precioContado,
-            precioCredito: p.precioCredito,
-            activo: p.activo,
-            modoVenta: p.modoVenta,
-            presentacion: p.presentacion,
-            kilos: p.kilos,
-            gramos: p.gramos,
-            calibre: p.calibre,
-            color: p.color,
-            nacional: p.nacional,
-            ancho: p.ancho,
-            largo: p.largo,
-            m2XMillar: p.m2XMillar ,
-            inventariable: p.inventariable
-            ]
-    }
-    /*
-    Boolean activo
-    String  modoVenta
-    String presentacion
-    double kilos
-    double gramos
-    double calibre
-    String color
-    Boolean nacional
-    double ancho
-    double largo
-    double m2XMillar 
-    Boolean inventariable
-
-    String linea
-    String marca
-    String clase
-
-    String imageUrl
-    Date lastUpdated
-
-    String claveSat
-    String unidadSat
-
-    double disponible
-            ]
-
-    }
-    */
-
-    Firestore getFirestore() {
-        if(!this.firestoreDb) {
-            this.firestoreDb = FirestoreClient.getFirestore()
+        List<Map> result = []
+        List<Sucursal> sucursales = Sucursal.where{almacen == true}.list()
+        return sucursales.collect{
+            [almacen: it.nombre, 'cantidad': 0, 'apartados': 0, 'disponible': 0]
         }
-        return this.firestoreDb
     }
+
+    def selectCloudProducts() {
+        return Producto.where{activo == true &&  inventariable == true}.list([sort: 'clave', order: 'asc', max: 3])
+    }
+    
+
+    
 
     
 }

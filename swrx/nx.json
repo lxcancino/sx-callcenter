@@ -52,6 +52,9 @@
     },
     "pedidos": {
       "tags": []
+    },
+    "existencias": {
+      "tags": []
     }
   }
 }

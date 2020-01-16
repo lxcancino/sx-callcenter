@@ -76,6 +76,7 @@ export interface PedidoDet {
   precioLista: number;
   descuentoOriginal: number; // % Calculado por el sistema
   importeCortes?: number;
+  faltante?: number;
 
   corte?: Partial<Corte>;
   comentario?: string;

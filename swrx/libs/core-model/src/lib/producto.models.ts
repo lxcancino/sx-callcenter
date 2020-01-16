@@ -36,7 +36,7 @@ export interface Producto {
 
 export interface Existencia {
   almacen: string;
-  existencia: number;
+  cantidad: number;
   apartados: number;
   disponible: number;
 }

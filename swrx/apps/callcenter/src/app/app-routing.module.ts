@@ -48,12 +48,17 @@ const routes: Route[] = [
       {
         path: 'profile',
         component: ProfileComponent
-      }
+      },
       // {
-      //   path: '',
-      //   redirectTo: 'inicio',
-      //   pathMatch: 'full'
+      //   path: 'existencias',
+      //   loadChildren: () =>
+      //     import('@swrx/existencias').then(m => m.ExistenciasModule)
       // }
+      {
+        path: '',
+        redirectTo: 'inicio',
+        pathMatch: 'full'
+      }
     ]
   }
 ];

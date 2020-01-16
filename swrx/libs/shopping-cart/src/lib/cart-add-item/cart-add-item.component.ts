@@ -34,6 +34,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<boolean>();
   filteredOptions: Observable<string[]>;
   index: number;
+  disponible = 0;
 
   tiposDeCorte = [
     'CARTA',
@@ -153,7 +154,8 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
           ...buildCartItem(producto),
           cantidad,
           precio,
-          corte
+          corte,
+          faltante: this.faltante
         };
       } else {
         item = {
@@ -162,7 +164,8 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
           producto,
           cantidad,
           precio,
-          corte
+          corte,
+          faltante: this.faltante
         };
       }
       this.dialoRef.close(item);
@@ -204,5 +207,15 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
     return this.tiposDeCorte.filter(option =>
       option.toLowerCase().includes(filterValue)
     );
+  }
+
+  setDisponible(value: number) {
+    console.log('Disponible: ', value);
+    this.disponible = value;
+  }
+
+  get faltante() {
+    const dif = this.cantidad - this.disponible;
+    return dif < 0 ? 0 : dif;
   }
 }

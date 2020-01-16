@@ -43,6 +43,7 @@ class PedidoDet {
     String comentario
     CorteUnitario corte
     
+    BigDecimal faltante = 0.0
 
     Date dateCreated
     Date lastUpdated
@@ -64,6 +65,7 @@ class PedidoDet {
         modoVenta inList: ['B','N']
         comentario nullable: true
         corte nullable: true
+        faltante nullable: true
         createUser nullable: true
         updateUser nullable: true
     }

@@ -54,7 +54,6 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
       const { displayName, email } = usr;
       this.user = { displayName, email };
-      console.log('Usuario: ', this.user);
     });
   }
 

@@ -1,0 +1,33 @@
+.exis-header {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 5px;
+  padding: 10px;
+  background-color: rgb(241, 239, 239);
+}
+.existencias {
+  display: flex;
+  box-sizing: border-box;
+  border-bottom: 0.5px solid black;
+  margin-bottom: 10px;
+  .exis {
+    flex-basis: 20%;
+    margin: 0px 5px 10px 0px;
+    padding: 5px;
+    text-align: center;
+    // background-color: rgba(228, 244, 250, 0.788);
+    span {
+      display: block;
+      padding: 5px;
+      font-size: 14;
+      font-weight: bold;
+      line-height: 14px;
+    }
+    .recorte {
+      font-size: 12px;
+      font-style: italic;
+    }
+  }
+}

@@ -30,6 +30,7 @@ class PedidoService implements FolioLog{
 
     Pedido cerrar(Pedido pedido) {
         pedido.status = 'CERRADO'
+        pedido.cerrado = new Date()
         return save(pedido)
     }
 

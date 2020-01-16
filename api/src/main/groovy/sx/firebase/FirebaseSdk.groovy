@@ -35,19 +35,10 @@ import javax.annotation.PreDestroy
 class FirebaseSdk {
 
 	@PostConstruct
-    void doLog() {
-        log.info("Inicializando FireBase en PostConstruct")
-        init()
-        // registerFirestoreListeners()
-    }
+    void doLog() {}
 
     @PreDestroy
-    void closeSession() {
-    	if(registration) {
-    		registration.remove();
-    	}
-    	log.ifo('Clossing Firebase session.....');
-    }
+    void closeSession() {}
 
     def init() {
     	// FileInputStream serviceAccount = new FileInputStream("/Users/rubencancino/Desktop/firebase/siipapx-436ce-firebase-adminsdk-ci4eg-779346f0c5.json");
@@ -61,25 +52,7 @@ class FirebaseSdk {
 		log.info('Firebase APP: ', app)
 
     }
-    /*
-    def registerFirestoreListeners() {
-    	DatabaseReference ref = FirebaseDatabase.getInstance()
-    	.getReference("/depositos");
-    	log.info('Database referencia: {}', ref)
-    	ref.addValueEventListener(new ValueEventListener() {
-  			@Override
-  			public void onDataChange(DataSnapshot dataSnapshot) {
-    			Object document = dataSnapshot.getValue();
-    			log.info('Data changed: {}', document)
-  			}
-
-  			@Override
-  			public void onCancelled(DatabaseError error) {
-  				System.out.println("The read failed: " + databaseError.getCode());
-  			}
-		});
-    }
-    */
+    
      def registerFirestoreListeners2() {
      	def db = FirestoreClient.getFirestore()
      	// log.info('FireStore: {}', db)
