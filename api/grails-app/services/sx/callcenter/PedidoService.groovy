@@ -56,7 +56,8 @@ class PedidoService implements FolioLog {
             def docRef = firebaseService
             .getFirestore()
             .collection('pedidos')
-            .add()
+            .document(pedido.id)
+            .set(pedido)
         }
 
     }
