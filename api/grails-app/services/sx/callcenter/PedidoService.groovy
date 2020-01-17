@@ -9,14 +9,14 @@ import grails.compiler.GrailsCompileStatic
 
 import sx.core.LogUser
 import sx.core.FolioLog
-import sx.cloud.FirebaseService
+import sx.cloud.LxPedidoService
 
 @Slf4j
 @Transactional
 // @GrailsCompileStatic
 class PedidoService implements FolioLog {
 
-    FirebaseService firebaseService
+    LxPedidoService lxPedidoService
 
     Pedido save(Pedido pedido) {
     	log.debug("Salvando pedido {}", pedido)
@@ -44,7 +44,9 @@ class PedidoService implements FolioLog {
     Pedido cerrar(Pedido pedido) {
         pedido.status = 'CERRADO'
         pedido.cerrado = new Date()
-        return save(pedido)
+        pedido = save(pedido)
+        lxPedidoService.push(pedido)
+        return pedido
     }
 
     void delete(Pedido pedido) {
