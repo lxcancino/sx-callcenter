@@ -56,6 +56,7 @@ class Pedido {
     String updateUser
 
     Date cerrado
+    Date inicio 
 
     // InstruccionDeEnvio envio
 
@@ -80,6 +81,7 @@ class Pedido {
         envio nullable: true
         status maxSize: 20
         cerrado nullable: true
+        inicio nullable: true
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
     }
