@@ -51,7 +51,7 @@ class PedidoService implements FolioLog {
     	pedido.delete flush: true
     }
 
-    def publishToFirebase(pedido Pedido) {
+    def publishToFirebase(Pedido pedido) {
         if(pedido.cerrado) {
             def docRef = firebaseService
             .getFirestore()
