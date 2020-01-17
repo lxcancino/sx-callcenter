@@ -58,6 +58,8 @@ class Pedido {
     Date cerrado
     Date inicio 
 
+    PedidoAutorizacion autorizacion
+
     // InstruccionDeEnvio envio
 
     static hasMany =[partidas:PedidoDet]
@@ -84,6 +86,7 @@ class Pedido {
         inicio nullable: true
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
+        autorizacion nullable: true
     }
     
      static mapping = {

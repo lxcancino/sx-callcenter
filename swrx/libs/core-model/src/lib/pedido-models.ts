@@ -126,4 +126,5 @@ export interface InstruccionDeEnvio {
   contacto: string;
   horario: string;
   comentario: string;
+  fechaDeEntrega?: string;
 }
