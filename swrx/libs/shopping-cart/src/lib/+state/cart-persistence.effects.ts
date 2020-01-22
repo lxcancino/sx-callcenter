@@ -7,7 +7,8 @@ import * as CartActions from './cart.actions';
 import {
   createPedidoSuccess,
   cerrarPedidoSuccess,
-  updatePedidoSuccess
+  updatePedidoSuccess,
+  autorizarPedidoSuccess
 } from '@swrx/pedidos';
 
 import { map, tap } from 'rxjs/operators';
@@ -59,6 +60,18 @@ export class CartPersistenceEffects {
         tap(action => {
           // console.log('Pedido persistido: ', action.pedido);
           // this.router.navigate(['/shop/cart', action.pedido.id]);
+          this.router.navigate(['/pedidos']);
+        }),
+        map(() => CartActions.cleanShoppingCart())
+      ),
+    { dispatch: true }
+  );
+
+  autorizarPedidoSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(autorizarPedidoSuccess),
+        tap(action => {
           this.router.navigate(['/pedidos']);
         }),
         map(() => CartActions.cleanShoppingCart())

@@ -53,7 +53,8 @@ export const reactiveCartActions = pipe(
     CartActions.editItemSuccess,
     CartActions.cambiarFormaDePago,
     CartActions.registrarEnvioSuccess,
-    CartActions.cancelarEnvio
+    CartActions.cancelarEnvio,
+    CartActions.assignarDescuentoEspecialSuccess
     // CartActions.asignarSocio
   )
 );

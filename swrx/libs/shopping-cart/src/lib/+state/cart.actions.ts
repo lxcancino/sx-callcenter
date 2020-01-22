@@ -76,6 +76,13 @@ export const cambiarComentario = createAction(
   '[ShoppingCartPage] Cambiar comentario',
   props<{ comentario: string }>()
 );
+export const assignarDescuentoEspecial = createAction(
+  '[CartFacade] Asignar descuento especial'
+);
+export const assignarDescuentoEspecialSuccess = createAction(
+  '[CartEffects] Asignar descuento especial success',
+  props<{ descuentoEspecial: number }>()
+);
 export const recalcularPartidas = createAction(
   '[ShoppingCart Effects] Recalcular Partidas'
 );

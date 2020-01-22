@@ -235,4 +235,14 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   onSocio(event: Socio) {
     this.facade.asignarSocio(event);
   }
+
+  onDescuentoEspecial() {
+    this.facade.asignarDescuentoEspecial();
+  }
+
+  onAutorizar(pedido: Partial<Pedido>, event: any) {
+    if (this.user) {
+      this.facade.autorizarPedido(pedido, this.user, event);
+    }
+  }
 }

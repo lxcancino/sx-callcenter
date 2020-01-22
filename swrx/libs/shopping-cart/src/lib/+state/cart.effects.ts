@@ -33,6 +33,7 @@ import {
 import { CartNombreComponent } from '../cart-nombre/cart-nombre.component';
 import { CartDescuentosComponent } from '../cart-form/cart-descuentos/cart-descuentos.component';
 import { CerrarComponent } from '../cerrar/cerrar.component';
+import { CartDescuentoeComponent } from '../cart-descuentoe/cart-descuentoe.component';
 
 @Injectable()
 export class CartEffects {
@@ -159,6 +160,28 @@ export class CartEffects {
     { dispatch: false }
   );
 
+  descuentoEspecial$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.assignarDescuentoEspecial),
+        pedidoState(this.store),
+        map(state => {
+          const descuento = state.changes.descuento;
+          const descuentoEspecial = state.changes.descuentoEspecial;
+          const descuentoOriginal = state.changes.descuentoOriginal;
+          const tipo = state.changes.tipo;
+          return { descuento, descuentoEspecial, descuentoOriginal, tipo };
+        }),
+        filter(state => state.tipo !== TipoDePedido.CREDITO),
+        this.inDialog(CartDescuentoeComponent, '400px'),
+        notNull(),
+        map((descuentoEspecial: number) =>
+          CartActions.assignarDescuentoEspecialSuccess({ descuentoEspecial })
+        )
+      ),
+    { dispatch: true }
+  );
+
   iniciarCierre$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.iniciarCierreDePedido),
@@ -172,7 +195,6 @@ export class CartEffects {
       map((pedido: Pedido) => this.pedidoFacade.cerrarPedido(pedido))
     )
   );
-  
 
   constructor(
     private actions$: Actions,

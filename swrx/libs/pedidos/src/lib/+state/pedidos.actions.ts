@@ -65,3 +65,17 @@ export const cerrarPedidoSuccess = createAction(
   '[PedidosEffects] Cerrar pedido success',
   props<{ pedido: Pedido }>()
 );
+
+export const autorizarPedido = createAction(
+  '[Pedido Facade] Autorizar Pedido',
+  props<{ pedido: Partial<Pedido>; user: any; comentario: string }>()
+);
+
+export const autorizarPedidoError = createAction(
+  '[PedidosEffects] Autorizar pedido error',
+  props<{ error: any }>()
+);
+export const autorizarPedidoSuccess = createAction(
+  '[PedidosEffects] Autorizar pedido success',
+  props<{ pedido: Pedido }>()
+);

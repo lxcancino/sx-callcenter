@@ -3,11 +3,7 @@ import { createReducer, on, Action } from '@ngrx/store';
 import * as CartActions from './cart.actions';
 import { CartItem, CartValidationError } from './cart.models';
 
-import {
-  clienteMostrador,
-  recalcularPartidas,
-  aplicarDescuentos
-} from './cart.utils';
+import { clienteMostrador, aplicarDescuentos } from './cart.utils';
 import {
   Cliente,
   Socio,
@@ -44,12 +40,14 @@ export interface CartState {
   pedido?: Pedido;
   envio?: InstruccionDeEnvio;
   comprador?: string;
+  descuentoEspecial?: number;
   socio?: Socio;
   error?: string | null; // last none error (if any)
   dirty: boolean;
   comentario?: string;
   validationErrors: CartValidationError[];
   warrnings: { error: string; descripcion: string }[];
+  autorizacionesRequeridas?: string;
 }
 
 export interface CartPartialState {
@@ -148,11 +146,13 @@ const cartReducer = createReducer(
   })),
   on(CartActions.recalcularPartidas, state => {
     const partidas = values(state.items);
+    console.log('State: ', state);
     const partidasActualizadas = aplicarDescuentos(
       partidas,
       state.tipo,
       state.formaDePago,
-      state.cliente
+      state.cliente,
+      state.descuentoEspecial
     );
 
     //const partidasActualizadas = recalcularPartidas(state);
@@ -193,7 +193,8 @@ const cartReducer = createReducer(
       cfdiMail: pedido.cfdiMail,
       items,
       envio: pedido.envio,
-      socio: pedido.socio
+      socio: pedido.socio,
+      descuentoEspecial: pedido.descuentoEspecial
     };
   }),
   on(CartActions.cleanShoppingCart, state => ({
@@ -210,7 +211,14 @@ const cartReducer = createReducer(
       dirty: true,
       socio
     };
-  })
+  }),
+  on(
+    CartActions.assignarDescuentoEspecialSuccess,
+    (state, { descuentoEspecial }) => ({
+      ...state,
+      descuentoEspecial
+    })
+  )
 );
 
 export function reducer(state: CartState | undefined, action: Action) {

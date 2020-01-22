@@ -22,7 +22,7 @@ export function generarCargoPorTarjeta(
     const precio = round(importeNeto * cargo, 2);
     const importe = precio;
     const subtotal = importe;
-    const impuesto = round(importe * 0.016, 2);
+    const impuesto = round(importe * 0.16, 2);
     const total = subtotal + impuesto;
     return {
       id: uuidv4(),
@@ -69,7 +69,7 @@ export function generarCargoPorCorte(items: CartItem[]): CartItem | null {
     const precio = round(importeNeto, 2);
     const importe = precio;
     const subtotal = importe;
-    const impuesto = round(importe * 0.016, 2);
+    const impuesto = round(importe * 0.16, 2);
     const total = subtotal + impuesto;
     return {
       id: uuidv4(),

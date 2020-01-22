@@ -4,4 +4,6 @@ model {
 	Pedido pedido
 }
 
-json g.render(pedido, [resolveTemplate: false])
+json g.render(pedido, [resolveTemplate: false, exludes: ['autorizacion']]) {
+	autorizacion g.render(pedido.autorizacion)
+}

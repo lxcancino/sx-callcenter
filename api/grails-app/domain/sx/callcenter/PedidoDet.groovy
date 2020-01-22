@@ -35,6 +35,7 @@ class PedidoDet {
     BigDecimal precioLista
     BigDecimal precioOriginal
     BigDecimal descuentoOriginal
+    BigDecimal descuentoEspecial = 0.0
     String  modoVenta
     
 
@@ -68,6 +69,7 @@ class PedidoDet {
         faltante nullable: true
         createUser nullable: true
         updateUser nullable: true
+        descuentoEspecial nullable: true
     }
 
      static mapping = {

@@ -11,6 +11,7 @@ import * as fromPedidos from './+state/pedidos.reducer';
 import { PedidosEffects } from './+state/pedidos.effects';
 import { PedidosFacade } from './+state/pedidos.facade';
 import { AltPedidoComponent } from './alt-pedido/alt-pedido.component';
+import { AutorizacionesPageComponent } from './autorizaciones-page/autorizaciones-page.component';
 
 export const routes: Route[] = [
   {
@@ -26,7 +27,8 @@ export const routes: Route[] = [
   declarations: [
     PedidosPageComponent,
     PedidosTableComponent,
-    AltPedidoComponent
+    AltPedidoComponent,
+    AutorizacionesPageComponent
   ],
   entryComponents: [AltPedidoComponent],
   imports: [

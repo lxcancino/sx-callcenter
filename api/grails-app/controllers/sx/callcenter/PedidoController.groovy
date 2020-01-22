@@ -103,6 +103,17 @@ class PedidoController extends RestfulController<Pedido> {
         respond pedido
     }
 
+    def autorizar(Pedido pedido) {
+        if(pedido == null) {
+            notFound()
+            return
+        }
+        String comentario = params.comentario
+        String usuario = params.usuario
+        pedido = pedidoService.autorizar(pedido, usuario, comentario)
+        respond pedido
+    }
+
     def print(Pedido pedido ) {
         if(pedido == null){
             notFound()

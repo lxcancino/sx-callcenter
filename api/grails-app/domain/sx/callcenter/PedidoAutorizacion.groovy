@@ -12,30 +12,18 @@ class PedidoAutorizacion {
 
     String sucursal
 
-    String tipo
-
-    String description
-
-    String status
+    String tags
 
     String comentario
 
     String solicita
 
-    String autorizo
-
-    Date fechaDeAutorizacion
+    String autoriza
 
     Date dateCreated
-    Date lastUpdated
-    String createUser
-    String updateUser
+    
 
-    static constraints = {
-        comentario nullable: true
-        createUser nullable: true
-        updateUser nullable: true
-    }
+    static constraints = {}
 
     Map toFirebaseMap() {
         Map data = this.properties

@@ -11,6 +11,9 @@ import { TipoDePedido, FormaDePago, Pedido, Socio } from '@swrx/core-model';
 import { CartItem } from './cart.models';
 import { map } from 'rxjs/operators';
 
+import { MatDialog } from '@angular/material';
+import { CartAutorizacionComponent } from '../cart-autorizacion/cart-autorizacion.component';
+
 @Injectable()
 export class CartFacade {
   loading$ = this.store.pipe(select(CartSelectors.getCartLoading));
@@ -40,9 +43,19 @@ export class CartFacade {
   envio$ = this.store.pipe(select(CartSelectors.selectEnvio));
   dirty$ = this.store.pipe(select(CartSelectors.isDirty));
   socio$ = this.store.pipe(select(CartSelectors.selectSocio));
+  descuentoEspecial$ = this.store.pipe(
+    select(CartSelectors.selectDescuentoEspecial)
+  );
+  descuentoEspecialPosible$ = this.store.pipe(
+    select(CartSelectors.selectDescuentoEspecialPosible)
+  );
+  autorizaciones$ = this.store.pipe(
+    select(CartSelectors.selectAutorizacionesPendientes)
+  );
   constructor(
     private store: Store<fromCart.CartState>,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     this.store.pipe(select(CartSelectors.getCartSumary));
   }
@@ -123,5 +136,25 @@ export class CartFacade {
 
   asignarSocio(socio: Socio) {
     this.store.dispatch(CartActions.asignarSocio({ socio }));
+  }
+
+  asignarDescuentoEspecial() {
+    this.store.dispatch(CartActions.assignarDescuentoEspecial());
+  }
+
+  autorizarPedido(pedido: Partial<Pedido>, user: any, tags: string) {
+    this.dialog
+      .open(CartAutorizacionComponent, {
+        data: { pedido, tags, user },
+        width: '450px'
+      })
+      .afterClosed()
+      .subscribe(auth => {
+        if (auth) {
+          this.store.dispatch(
+            fromPedido.autorizarPedido({ pedido, user, comentario: auth })
+          );
+        }
+      });
   }
 }

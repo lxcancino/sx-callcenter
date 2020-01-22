@@ -34,6 +34,7 @@ class Pedido {
     BigDecimal total
 
     // Precios y descuentos historicos
+    BigDecimal descuentoEspecial = 0.0
     BigDecimal descuentoOriginal = 0.0
     BigDecimal cargosPorManiobra = 0.0
     BigDecimal comisionTarjeta = 0.0
@@ -59,6 +60,8 @@ class Pedido {
     Date inicio 
 
     PedidoAutorizacion autorizacion
+    
+    String autorizacionesRequeridas
 
     // InstruccionDeEnvio envio
 
@@ -87,6 +90,8 @@ class Pedido {
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
         autorizacion nullable: true
+        autorizacionesRequeridas nullable: true
+        descuentoEspecial nullable: true
     }
     
      static mapping = {

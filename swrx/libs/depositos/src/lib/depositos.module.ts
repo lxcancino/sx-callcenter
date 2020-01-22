@@ -37,8 +37,8 @@ export const routes: Route[] = [
   {
     path: '',
     children: [
-      // { path: '', redirectTo: 'all', pathMatch: 'full' },
-      { path: 'list', component: DepositosPageComponent }
+      { path: '', redirectTo: 'all', pathMatch: 'full' },
+      { path: 'all', component: DepositosPageComponent }
     ]
   }
 ];

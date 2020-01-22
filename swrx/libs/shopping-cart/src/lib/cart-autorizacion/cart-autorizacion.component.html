@@ -1,0 +1,31 @@
+<h4>
+  Autorización:
+  <strong>{{ tags }}</strong>
+</h4>
+
+<mat-dialog-content>
+  <mat-form-field [style.width.%]="100">
+    <mat-label>Comentario</mat-label>
+    <input matInput [formControl]="control" autocomplete="OFF" autofocus />
+  </mat-form-field>
+  <mat-form-field [style.width.%]="100">
+    <mat-label>Solicita:</mat-label>
+    <input matInput type="text" disabled [value]="pedido.updateUser" />
+  </mat-form-field>
+  <mat-form-field [style.width.%]="100">
+    <mat-label>Autoriza:</mat-label>
+    <input matInput type="text" disabled [value]="user.displayName" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button [mat-dialog-close]>Cancelar</button>
+  <button
+    mat-raised-button
+    color="accent"
+    (click)="onSubmit()"
+    [disabled]="control.invalid || control.pristine"
+  >
+    Autorizar
+  </button>
+</mat-dialog-actions>

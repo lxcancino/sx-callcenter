@@ -1,5 +1,5 @@
 import { CartState } from './cart.reducer';
-import { TipoDePedido, FormaDePago } from '@swrx/core-model';
+import { TipoDePedido, FormaDePago, TipoDeAutorizacion } from '@swrx/core-model';
 
 import sumBy from 'lodash/sumBy';
 import round from 'lodash/round';
@@ -12,6 +12,7 @@ export function runWarnings(state: CartState): CartValidationError[] {
   validarCreditoVigente(state, errors);
   validarAtrasoMaximo(state, errors);
   validarCreditoDisponible(state, errors);
+  validarDescuentoEspecial(state, errors);
   return errors;
 }
 
@@ -74,5 +75,25 @@ export function validarCreditoDisponible(
         });
       }
     }
+  }
+}
+
+export function validarDescuentoEspecial(
+  state: CartState,
+  errors: CartValidationError[]
+) {
+  if (state.descuentoEspecial > 0) {
+    if (
+      state.pedido &&
+      state.pedido.autorizacion &&
+      state.pedido.autorizacion.autorizado
+    ) {
+      // console.log('Autorizacion: ', state.pedido.autorizacion.autorizado);
+      return;
+    }
+    errors.push({
+      error: TipoDeAutorizacion.DESCUENTO,
+      descripcion: 'DESCUENTO ESPECIAL REQUIERE AUTORIZACION'
+    });
   }
 }

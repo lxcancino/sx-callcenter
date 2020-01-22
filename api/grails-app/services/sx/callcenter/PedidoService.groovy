@@ -28,6 +28,7 @@ class PedidoService implements FolioLog {
             pedido.envio.pedido = pedido
         }
         actualizarKilos(pedido)
+        // registrarAutorizaciones(pedido)
         pedido.save failOnError: true, flush: true
         return pedido
     }
@@ -40,10 +41,38 @@ class PedidoService implements FolioLog {
         }
         pedido.kilos = kilos
     }
+    /*
+    void registrarAutorizaciones(Pedido pedido) {
+        if(pedido.descuentoEspecial > 0) {
+            if(!pedido.autorizacion) {
+                pedido.autorizacion = new PedidoAutorizacion(
+                        sucursal: 'CALLCENTER',
+                        tipo: 'DESCUENTO_ESPECIAL',
+                        descripcion: 'Pedido con descuento especial',
+                        solicita: pedido.updateUser,
+                        comentario: 'Pedido especial',
+                        status: 'PENDIENTE'
+                    )
+            }
+        }
+    }
+    */
 
     Pedido cerrar(Pedido pedido) {
         pedido.status = 'CERRADO'
         pedido.cerrado = new Date()
+        pedido = save(pedido)
+        lxPedidoService.push(pedido)
+        return pedido
+    }
+
+    Pedido autorizar(Pedido pedido, String usuario, String comentario) {
+        log.info('Autorizando pedido: {} User: {} Comentario:{}', pedido.folio, usuario, comentario)
+        def auth = pedido.autorizacion
+        auth.status = 'AUTORIZADO'
+        auth.autorizo = usuario
+        auth.autorizado = new Date()
+        auth.comentario = comentario
         pedido = save(pedido)
         lxPedidoService.push(pedido)
         return pedido

@@ -41,6 +41,8 @@ import { TransporteFieldComponent } from './envio/transporte-field/transporte-fi
 import { NewCartGuard } from './guards/new-cart.guard';
 import { CartSocioComponent } from './cart-socio/cart-socio.component';
 import { CartExistenciasComponent } from './cart-existencias/cart-existencias.component';
+import { CartDescuentoeComponent } from './cart-descuentoe/cart-descuentoe.component';
+import { CartAutorizacionComponent } from './cart-autorizacion/cart-autorizacion.component';
 
 const routes: Route[] = [
   {
@@ -93,7 +95,9 @@ const routes: Route[] = [
     CerrarComponent,
     TransporteFieldComponent,
     CartSocioComponent,
-    CartExistenciasComponent
+    CartExistenciasComponent,
+    CartDescuentoeComponent,
+    CartAutorizacionComponent
   ],
   entryComponents: [
     CartAddItemComponent,
@@ -101,7 +105,9 @@ const routes: Route[] = [
     CartEditItemComponent,
     EnvioComponent,
     CartNombreComponent,
-    CerrarComponent
+    CerrarComponent,
+    CartDescuentoeComponent,
+    CartAutorizacionComponent
   ],
   exports: [CartBtnComponent],
   providers: [CartFacade]

@@ -14,6 +14,7 @@ import { generarCargoPorCorte } from './cart-cargos-utils';
 import round from 'lodash/round';
 import sumBy from 'lodash/sumBy';
 import maxBy from 'lodash/maxBy';
+import values from 'lodash/values';
 
 export function clienteMostrador(): Partial<Cliente> {
   return {
@@ -82,6 +83,7 @@ export function calcularDescuento(
         return cliente.credito ? cliente.credito.descuentoFijo || 0.0 : 0.0;
       }
     }
+    case TipoDePedido.INE:
     case TipoDePedido.CONTADO:
     case TipoDePedido.COD: {
       const importe = calcularImporteBruto(items);
@@ -100,17 +102,14 @@ export function calcularDescuento(
  *
  * @param state
  */
-export function recalcularPartidas(
-  partidas: CartItem[],
-  tipo: TipoDePedido,
-  fpago: FormaDePago,
-  cliente: Partial<Cliente>
-): Partial<PedidoDet>[] {
+export function recalcularPartidas(state: CartState): Partial<PedidoDet>[] {
+  const partidas = values(state.items);
   const partidasActualizadas = aplicarDescuentos(
     partidas,
-    tipo,
-    fpago,
-    cliente
+    state.tipo,
+    state.formaDePago,
+    state.cliente,
+    state.descuentoEspecial
   );
 
   const corteItem = generarCargoPorCorte(partidasActualizadas);
@@ -131,23 +130,49 @@ export function aplicarDescuentos(
   partidas: CartItem[],
   tipo: TipoDePedido,
   fpago: FormaDePago,
-  cliente: Partial<Cliente>
+  cliente: Partial<Cliente>,
+  descuentoEspecial: number
 ): CartItem[] {
   const items = normalize(partidas);
   let descuento = calcularDescuento(items, tipo, cliente);
+  let descuentoOriginal = descuento;
+  console.log('Descuento especial: ', descuentoEspecial);
+  if (descuentoEspecial > 0) {
+    if (
+      tipo === TipoDePedido.CONTADO ||
+      tipo === TipoDePedido.COD ||
+      tipo === TipoDePedido.INE
+    ) {
+      descuento = descuentoEspecial;
+    }
+  }
   if (fpago === FormaDePago.TARJETA_CRE) {
     descuento = descuento - 2;
   } else if (fpago === FormaDePago.TARJETA_DEB) {
     descuento = descuento - 1;
   }
+
   const res: CartItem[] = [];
   items.map(item => {
     let rdesc: number;
     if (tipo === TipoDePedido.CREDITO) {
       rdesc = descuento;
     } else {
-      rdesc = item.modoVenta === 'B' ? descuento : 0;
+      if (item.modoVenta === 'B') {
+        rdesc = descuento;
+        descuentoOriginal = descuento;
+        descuentoEspecial = 0;
+      } else {
+        rdesc = 0;
+        descuentoOriginal = 0;
+        descuentoEspecial = 0;
+      }
+      // rdesc = item.modoVenta === 'B' ? descuento : 0;
     }
+    const det: PedidoDet = recalculaPartida(item, tipo, rdesc);
+    det.descuentoOriginal = rdesc;
+    det.descuentoEspecial = descuentoEspecial > 0 ? descuentoEspecial : 0;
+
     res.push(recalculaPartida(item, tipo, rdesc));
   });
   return res;
@@ -175,6 +200,7 @@ export function recalculaPartida(
     precioLista: precio,
     importe,
     descuento,
+    descuentoOriginal: descuento,
     descuentoImporte,
     subtotal,
     impuesto,
@@ -249,6 +275,8 @@ export function buildPedidoEntity(
       comprador: state.comprador,
       comentario: state.comentario,
       socio: state.socio,
+      descuentoEspecial: state.descuentoEspecial || 0.0,
+      autorizacionesRequeridas: state.autorizacionesRequeridas,
       ...sumary
     };
     return pedido;
@@ -279,6 +307,7 @@ export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
     comprador: state.comprador,
     comentario: state.comentario,
     socio: state.socio,
+    descuentoEspecial: state.descuentoEspecial || 0.0,
     ...sumary
   };
 }

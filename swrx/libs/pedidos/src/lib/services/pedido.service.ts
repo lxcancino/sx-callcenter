@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Pedido, Periodo } from '@swrx/core-model';
+import { Pedido, Periodo, User } from '@swrx/core-model';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Update } from '@ngrx/entity';
@@ -39,6 +39,7 @@ export class PedidoService {
       .put<Pedido>(url, update.changes)
       .pipe(catchError((error: any) => throwError(error)));
   }
+
   cerrar(pedido: Partial<Pedido>): Observable<Pedido> {
     const url = `${this.apiUrl}/cerrar/${pedido.id}`;
     return this.http
@@ -46,10 +47,31 @@ export class PedidoService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  autorizar(
+    pedido: Partial<Pedido>,
+    user: User,
+    comentario: string
+  ): Observable<Pedido> {
+    const url = `${this.apiUrl}/autorizar/${pedido.id}`;
+    const params = new HttpParams()
+      .set('usuario', user.displayName)
+      .set('comentario', comentario);
+    return this.http
+      .put<Pedido>(url, null, {params})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   delete(id: string) {
     const url = `${this.apiUrl}/${id}`;
     return this.http
       .delete(url)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  porAutorizar(): Observable<any[]> {
+    const url = `${this.apiUrl}/porAutorizar`;
+    return this.http
+      .get<Pedido[]>(url)
       .pipe(catchError((error: any) => throwError(error)));
   }
 }

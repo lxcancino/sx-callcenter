@@ -91,6 +91,28 @@ export class PedidosEffects {
     })
   );
 
+  autorizarPedido$ = createEffect(() =>
+    this.dataPersistence.pessimisticUpdate(PedidosActions.autorizarPedido, {
+      run: (
+        action: ReturnType<typeof PedidosActions.autorizarPedido>,
+        state: PedidosPartialState
+      ) => {
+        return this.service
+          .autorizar(action.pedido, action.user, action.comentario)
+          .pipe(
+            map(pedido => PedidosActions.autorizarPedidoSuccess({ pedido }))
+          );
+      },
+      onError: (
+        action: ReturnType<typeof PedidosActions.autorizarPedido>,
+        error
+      ) => {
+        console.error('Errir al autorizar pedido: ', error);
+        return PedidosActions.autorizarPedidoError({ error });
+      }
+    })
+  );
+
   constructor(
     private actions$: Actions,
     private dataPersistence: DataPersistence<PedidosPartialState>,

@@ -32,4 +32,11 @@ export class PedidosFacade {
   cerrarPedido(pedido: Pedido) {
     return PedidosActions.cerrarPedido({ pedido });
   }
+  autorizarPedido(pedido: Partial<Pedido>, usuario: any, comentario: string) {
+    return PedidosActions.autorizarPedido({
+      pedido,
+      user: usuario,
+      comentario
+    });
+  }
 }

@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CART_FEATURE_KEY, CartState } from './cart.reducer';
 
-import { Pedido, TipoDePedido } from '@swrx/core-model';
+import { Pedido, TipoDePedido, TipoDeAutorizacion } from '@swrx/core-model';
 import { CartSumary, CartItem, CartFormState } from './cart.models';
 
 import sumBy from 'lodash/sumBy';
@@ -186,4 +186,30 @@ export const selectEnvio = createSelector(
 export const selectSocio = createSelector(
   getCartState,
   state => state.socio
+);
+
+export const selectDescuentoEspecial = createSelector(
+  getCartState,
+  state => state.descuentoEspecial
+);
+
+export const selectDescuentoEspecialPosible = createSelector(
+  getCartState,
+  state =>
+    state.tipo === TipoDePedido.CONTADO ||
+    state.tipo === TipoDePedido.COD ||
+    state.tipo === TipoDePedido.INE
+);
+
+export const selectAutorizacionesPendientes = createSelector(
+  getWarnings,
+  warnings =>
+    warnings
+      .filter(
+        item =>
+          item.error === TipoDeAutorizacion.DESCUENTO ||
+          item.error === TipoDeAutorizacion.EXISTENCIA
+      )
+      .map(item => item.error)
+      .join(',')
 );

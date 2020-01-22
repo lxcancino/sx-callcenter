@@ -1,5 +1,5 @@
 <div class="cart-info-container">
-  <mat-tab-group [dynamicHeight]="false" selectedIndex="2">
+  <mat-tab-group [dynamicHeight]="false" [selectedIndex]="currentTab">
     <mat-tab label="Cliente">
       <div class="cliente" *ngIf="facade.cliente$ | async as cliente">
         <section class="direccion" *ngIf="cliente.direccion as direccion">
@@ -110,6 +110,19 @@
           {{ err.descripcion }}
         </mat-list-item>
       </mat-list>
+      <div
+        class="autorizacion-panel"
+        *ngIf="facade.autorizaciones$ | async as autorizaciones"
+      >
+        <button
+          mat-stroked-button
+          color="accent"
+          (click)="autorizar.emit(autorizaciones)"
+          *ngIf="autorizaciones"
+        >
+          Autorizar
+        </button>
+      </div>
     </mat-tab>
   </mat-tab-group>
 </div>

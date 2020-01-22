@@ -29,6 +29,7 @@ export interface Pedido {
   impuesto: number;
   total: number;
   descuentoOriginal?: number;
+  descuentoEspecial?: number;
   cargosPorManiobra?: number;
   comisionTarjeta?: number;
   comisionTarjetaImporte?: number;
@@ -48,6 +49,8 @@ export interface Pedido {
   lastUpdated?: string;
   createUser?: string;
   updateUser?: string;
+  autorizacion?: PedidoAutorizacion;
+  autorizacionesRequeridas?: string;
 }
 
 export interface PedidoDet {
@@ -75,6 +78,7 @@ export interface PedidoDet {
   precioOriginal: number;
   precioLista: number;
   descuentoOriginal: number; // % Calculado por el sistema
+  descuentoEspecial?: number;
   importeCortes?: number;
   faltante?: number;
 
@@ -127,4 +131,21 @@ export interface InstruccionDeEnvio {
   horario: string;
   comentario: string;
   fechaDeEntrega?: string;
+}
+
+export interface PedidoAutorizacion {
+  id?: number;
+  sucursal: string;
+  tags: string;
+  comentario?: string;
+  solicita: string;
+  autoriza: string;
+  dateCreated: string;
+}
+
+// export type TipoDeAutorizacion = 'DESCUENTO_ESPECIAL' | 'SIN_EXISTENCIA';
+
+export enum TipoDeAutorizacion {
+  DESCUENTO = 'DESCUENTO_ESPECIAL',
+  EXISTENCIA = 'EXISTENCIA'
 }
