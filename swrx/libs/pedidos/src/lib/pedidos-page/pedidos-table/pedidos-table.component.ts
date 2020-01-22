@@ -78,20 +78,22 @@ export class PedidosTableComponent implements OnInit {
     if (params.data.status === 'CERRADO') {
       return { 'font-weight': 'bold', 'font-style': 'italic', color: 'green' };
     }
-    if (params.data.autorizacion && !params.data.autorizacion.autorizado) {
-      return {
-        'font-weight': 'bold',
-        'font-style': 'italic',
-        color: 'rgb(190, 119, 26)'
-      };
+    if (params.data.autorizacionesRequeridas) {
+      if (params.data.autorizacion) {
+        return {
+          'font-weight': 'bold',
+          'font-style': 'italic',
+          color: 'rgb(25, 88, 131)'
+        };
+      } else {
+        return {
+          'font-weight': 'bold',
+          'font-style': 'italic',
+          color: 'rgb(190, 119, 26)'
+        };
+      }
     }
-    if (params.data.autorizacion && params.data.autorizacion.autorizado) {
-      return {
-        'font-weight': 'bold',
-        'font-style': 'italic',
-        color: 'rgb(25, 88, 131)'
-      };
-    }
+
     return {};
   }
 
@@ -171,7 +173,7 @@ export class PedidosTableComponent implements OnInit {
         field: 'status',
         width: 130,
         valueGetter: params => {
-          if (params.data.autorizacion) {
+          if (params.data.autorizacionesRequeridas) {
             return `${params.data.status} (A)`;
           } else {
             return params.data.status;

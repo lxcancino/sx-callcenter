@@ -200,16 +200,7 @@ export const selectDescuentoEspecialPosible = createSelector(
     state.tipo === TipoDePedido.COD ||
     state.tipo === TipoDePedido.INE
 );
-
 export const selectAutorizacionesPendientes = createSelector(
-  getWarnings,
-  warnings =>
-    warnings
-      .filter(
-        item =>
-          item.error === TipoDeAutorizacion.DESCUENTO ||
-          item.error === TipoDeAutorizacion.EXISTENCIA
-      )
-      .map(item => item.error)
-      .join(',')
+  getCartState,
+  state => state.autorizacionesRequeridas
 );

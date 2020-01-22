@@ -10,14 +10,29 @@
     <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
     <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
     <swrx-sucursal-field [parent]="cartForm"></swrx-sucursal-field>
-    <button mat-icon-button (click)="cambiarCliente()" class="action">
+    <button
+      mat-icon-button
+      (click)="cambiarCliente()"
+      class="action"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
       <mat-icon>account_circle</mat-icon>
     </button>
-    <button mat-icon-button (click)="addCartItem()" class="action">
+    <button
+      mat-icon-button
+      (click)="addCartItem()"
+      class="action"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
       <mat-icon>add_shopping_cart</mat-icon>
     </button>
 
-    <button mat-menu-item class="menu-item" (click)="clienteNuevo()">
+    <button
+      mat-menu-item
+      class="menu-item"
+      (click)="clienteNuevo()"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
       <mat-icon>person_add</mat-icon>
       <span>Alta de cliente (Ctr + C)</span>
     </button>
@@ -27,19 +42,33 @@
       class="menu-item"
       *ngIf="facade.descuentoEspecialPosible$ | async"
       (click)="onDescuentoEspecial()"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
     >
       <mat-icon>monetization_on</mat-icon>
       <span>Descuento especial</span>
     </button>
-    <button mat-menu-item class="menu-item">
+    <button
+      mat-menu-item
+      class="menu-item"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
       <mat-icon>local_shipping</mat-icon>
       <span>Maniobra</span>
     </button>
-    <button mat-menu-item class="menu-item">
+    <button
+      mat-menu-item
+      class="menu-item"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
       <mat-icon>dialpad</mat-icon>
       <span>Venta INE</span>
     </button>
-    <button mat-menu-item class="menu-item" (click)="showDescuentos()">
+    <button
+      mat-menu-item
+      class="menu-item"
+      (click)="showDescuentos()"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
       <mat-icon>redeem</mat-icon>
       <span>Descuentos (Ctr + D)</span>
     </button>
@@ -75,7 +104,11 @@
             <mat-icon>send</mat-icon>Cerrar
           </button>
 
-          <button mat-raised-button color="warn">
+          <button
+            mat-raised-button
+            color="warn"
+            [disabled]="!canDelete(pedido)"
+          >
             <mat-icon>delete</mat-icon> Eliminar
           </button>
         </ng-container>
@@ -84,6 +117,7 @@
     <swrx-cart-info
       [cartForm]="cartForm"
       (autorizar)="onAutorizar(pedido, $event)"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
     ></swrx-cart-info>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { PedidosEntity } from './pedidos.models';
-import { Pedido } from '@swrx/core-model';
+import { Pedido, PedidoAutorizacion } from '@swrx/core-model';
 import { Update } from '@ngrx/entity';
 
 export const loadPedidos = createAction('[Pedidos] Load Pedidos');
@@ -68,7 +68,7 @@ export const cerrarPedidoSuccess = createAction(
 
 export const autorizarPedido = createAction(
   '[Pedido Facade] Autorizar Pedido',
-  props<{ pedido: Partial<Pedido>; user: any; comentario: string }>()
+  props<{ id: string; auth: PedidoAutorizacion }>()
 );
 
 export const autorizarPedidoError = createAction(

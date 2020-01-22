@@ -119,6 +119,7 @@
           color="accent"
           (click)="autorizar.emit(autorizaciones)"
           *ngIf="autorizaciones"
+          [disabled]="!(facade.currentPedido | async)"
         >
           Autorizar
         </button>

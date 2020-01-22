@@ -9,36 +9,71 @@
   <div matLine>
     <div class="producto" (click)="onEdit(item)">
       <span class="clave">{{ item.clave }}</span>
-      <span class="descripcion">{{ item.descripcion }}</span>
+      <span class="descripcion"
+        >{{ item.descripcion }}
+        <span>({{ item.unidad }})</span>
+      </span>
       <span class="cantidad">
-        Cantidad:
-        <strong>{{ item.cantidad | number: '1.0' }}</strong>
+        <span> Canidad: {{ item.cantidad | number: '1.0' }} </span>
+        <span class="faltante" *ngIf="item?.faltante > 0">
+          Falante: <span>{{ item.faltante }}</span>
+        </span>
       </span>
     </div>
   </div>
   <div matLine>
-    <div class="importes">
-      <span
-        >P/U: <strong>{{ item.precio | currency }}</strong></span
+    <div class="row2">
+      <div
+        class="propiedades"
+        *ngIf="item.clave !== 'MANIOBRA' && item.clave !== 'CORTE'"
       >
-      <span
-        >Imp:
-        <strong>
-          {{ item.importe | currency }}
-        </strong>
-      </span>
+        <span
+          >Kg:<strong>{{ item.kilos }}</strong></span
+        >
+        <span><strong>Cal:</strong> {{ item.gramos }}g</span>
+        <span>{{ item.producto.presentacion }}</span>
+        <span>
+          <strong>{{ item.modoVenta === 'B' ? 'P.BRUTO' : 'P. NETO' }}</strong>
+        </span>
 
-      <span>
-        Dcto:
-        <strong>
-          {{ item.descuentoImporte * -1 | currency }}
-          <small> ({{ item.descuento / 100 | percent }}) </small>
-        </strong>
-      </span>
-      <span>Sub:</span>
-      <span class="currency">{{ item.subtotal | currency }}</span>
+        <span class="catalogo-precio">
+          <strong
+            >P.CON:
+            <span class="pad-r">{{
+              item.producto.precioCredito | currency
+            }}</span></strong
+          >
+          <strong
+            >P.CRE:
+            <span class="pad-r">{{
+              item.producto.precioContado | currency
+            }}</span></strong
+          >
+        </span>
+      </div>
+      <div class="importes">
+        <span
+          >P/U: <strong>{{ item.precio | currency }}</strong></span
+        >
+        <span class="pad-left"
+          >Imp:
+          <strong>
+            {{ item.importe | currency }}
+          </strong>
+        </span>
+
+        <span class="descuento">
+          Descuento:
+          <strong>
+            {{ item.descuentoImporte * -1 | currency }}
+            <small> ({{ item.descuento / 100 | percent }}) </small>
+          </strong>
+        </span>
+        <span class="subtotal"> Subtotal: {{ item.subtotal | currency }} </span>
+      </div>
     </div>
   </div>
+
   <button
     mat-icon-button
     class="delete-button"
@@ -71,42 +106,6 @@
     ></span>
     <span *ngIf="corte.limpio"
       >Limpio: <fa-icon icon="check-circle"></fa-icon>
-    </span>
-  </div>
-  <div
-    matLine
-    class="propiedades"
-    *ngIf="item.clave !== 'MANIOBRA' && item.clave !== 'CORTE'"
-  >
-    <span
-      >Unidad: <strong>{{ item.unidad }}</strong></span
-    >
-    <span
-      >Presentación: <strong>{{ item.producto.presentacion }}</strong></span
-    >
-    <span
-      >Kilos:<strong>{{ item.kilos }}</strong></span
-    >
-    <span><strong>Calibre:</strong> {{ item.gramos }}g</span>
-    <span
-      ><strong>{{ item.presentacion }}</strong></span
-    >
-    <span>
-      <strong>{{ item.modoVenta === 'B' ? 'P.BRUTO' : 'P. NETO' }}</strong>
-    </span>
-    <span class="catalogo-precio">
-      <strong
-        >P.CON:
-        <span class="pad-r">{{
-          item.producto.precioCredito | currency
-        }}</span></strong
-      >
-      <strong
-        >P.CRE:
-        <span class="pad-r">{{
-          item.producto.precioContado | currency
-        }}</span></strong
-      >
     </span>
   </div>
 

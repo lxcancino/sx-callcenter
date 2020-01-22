@@ -152,7 +152,7 @@ export class CartFacade {
       .subscribe(auth => {
         if (auth) {
           this.store.dispatch(
-            fromPedido.autorizarPedido({ pedido, user, comentario: auth })
+            fromPedido.autorizarPedido({ id: pedido.id, auth })
           );
         }
       });

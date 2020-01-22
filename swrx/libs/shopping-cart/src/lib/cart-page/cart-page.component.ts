@@ -264,4 +264,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
   onSocio(event: Socio) {
     this.facade.asignarSocio(event);
   }
+  onDescuentoEspecial() {
+    this.facade.asignarDescuentoEspecial();
+  }
 }

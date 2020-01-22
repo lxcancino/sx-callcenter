@@ -20,7 +20,12 @@
       <mat-icon>person_add</mat-icon>
       <span>Alta de cliente (Ctr + C)</span>
     </button>
-    <button mat-menu-item class="menu-item">
+    <button
+      mat-menu-item
+      class="menu-item"
+      *ngIf="facade.descuentoEspecialPosible$ | async"
+      (click)="onDescuentoEspecial()"
+    >
       <mat-icon>monetization_on</mat-icon>
       <span>Descuento especial</span>
     </button>

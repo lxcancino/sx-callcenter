@@ -5,8 +5,6 @@
   justify-content: flex-start;
   font-size: 16px;
   font-weight: bold;
-  // color: rgb(7, 69, 90);
-  // padding: 1em 1.5em;
   padding-bottom: 3px;
   cursor: pointer;
   .clave {
@@ -15,28 +13,58 @@
   .descripcion {
     flex: 5;
   }
+  .cantidad {
+    flex: 1;
+    padding: 0 10px 0 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    .faltante {
+      font-style: italic;
+      font-weight: bold;
+      font-size: 14px;
+      margin-left: auto;
+      color: red;
+    }
+  }
 }
 .producto:hover {
   text-decoration: underline;
 }
+
+.row2 {
+  display: flex;
+  flex-direction: row;
+}
 .propiedades {
+  display: flex;
   margin: 5px 0px;
-  font-size: 10px;
+  font-size: 14px;
   span:not(:first-child) {
     margin-left: 10px;
   }
 }
 .importes {
+  flex: 1;
   display: flex;
-  flex-direction: row;
   justify-content: flex-end;
   font-size: 16px;
-  span:not(:first-child) {
-    margin-left: 10px;
-  }
+  padding: 0 10px 0 0;
+  // span:not(:first-child) {
+  //   margin-left: 10px;
+  // }
+
   .currency {
     font-weight: bold;
     // font-style: italic;
+  }
+  .descuento {
+    margin-left: 10px;
+  }
+  .subtotal {
+    font-weight: bold;
+    margin-left: 10px;
   }
 }
 
@@ -60,6 +88,10 @@
 .pad-r {
   padding-right: 5px;
 }
+.pad-left {
+  padding-left: 10px;
+}
+
 .catalogo-precio {
   font-size: 12px;
 }

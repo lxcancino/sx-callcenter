@@ -98,7 +98,7 @@ export class PedidosEffects {
         state: PedidosPartialState
       ) => {
         return this.service
-          .autorizar(action.pedido, action.user, action.comentario)
+          .autorizar(action.id, action.auth)
           .pipe(
             map(pedido => PedidosActions.autorizarPedidoSuccess({ pedido }))
           );

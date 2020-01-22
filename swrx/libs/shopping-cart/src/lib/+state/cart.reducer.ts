@@ -23,6 +23,7 @@ import {
 
 import { runValidation } from './cart-validations';
 import { runWarnings } from './cart-warnings';
+import { resolveAutorizaciones } from './cart-autorizaciones';
 
 export const CART_FEATURE_KEY = 'cart';
 
@@ -74,7 +75,8 @@ const cartReducer = createReducer(
     ...state,
     dirty: true,
     items: { ...state.items, [item.id]: item },
-    loading: false
+    loading: false,
+    descuentoEspecial: state.descuentoEspecial ? 0 : undefined
   })),
   on(CartActions.deleteItem, (state, { item }) => {
     const { [item.id]: result, ...items } = state.items;
@@ -146,7 +148,7 @@ const cartReducer = createReducer(
   })),
   on(CartActions.recalcularPartidas, state => {
     const partidas = values(state.items);
-    console.log('State: ', state);
+
     const partidasActualizadas = aplicarDescuentos(
       partidas,
       state.tipo,
@@ -203,7 +205,8 @@ const cartReducer = createReducer(
   on(CartActions.validarPedido, state => ({
     ...state,
     validationErrors: runValidation(state),
-    warrnings: runWarnings(state)
+    warrnings: runWarnings(state),
+    autorizacionesRequeridas: resolveAutorizaciones(state)
   })),
   on(CartActions.asignarSocio, (state, { socio }) => {
     return {

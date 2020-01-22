@@ -8,7 +8,7 @@ import groovy.transform.EqualsAndHashCode
 
 @ToString(includeNames=true, includePackage=false)
 @EqualsAndHashCode(includes='id, sucursal, tipo, descripcion')
-class PedidoAutorizacion {
+class Autorizacion {
 
     String sucursal
 

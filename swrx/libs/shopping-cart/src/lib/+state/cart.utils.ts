@@ -136,7 +136,6 @@ export function aplicarDescuentos(
   const items = normalize(partidas);
   let descuento = calcularDescuento(items, tipo, cliente);
   let descuentoOriginal = descuento;
-  console.log('Descuento especial: ', descuentoEspecial);
   if (descuentoEspecial > 0) {
     if (
       tipo === TipoDePedido.CONTADO ||
@@ -308,6 +307,7 @@ export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
     comentario: state.comentario,
     socio: state.socio,
     descuentoEspecial: state.descuentoEspecial || 0.0,
+    autorizacionesRequeridas: state.autorizacionesRequeridas,
     ...sumary
   };
 }

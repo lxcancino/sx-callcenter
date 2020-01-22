@@ -59,8 +59,8 @@ class Pedido {
     Date cerrado
     Date inicio 
 
-    PedidoAutorizacion autorizacion
-    
+    Autorizacion autorizacion
+
     String autorizacionesRequeridas
 
     // InstruccionDeEnvio envio

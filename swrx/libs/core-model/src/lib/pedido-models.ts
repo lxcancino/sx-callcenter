@@ -134,7 +134,6 @@ export interface InstruccionDeEnvio {
 }
 
 export interface PedidoAutorizacion {
-  id?: number;
   sucursal: string;
   tags: string;
   comentario?: string;
@@ -143,9 +142,7 @@ export interface PedidoAutorizacion {
   dateCreated: string;
 }
 
-// export type TipoDeAutorizacion = 'DESCUENTO_ESPECIAL' | 'SIN_EXISTENCIA';
-
 export enum TipoDeAutorizacion {
   DESCUENTO = 'DESCUENTO_ESPECIAL',
-  EXISTENCIA = 'EXISTENCIA'
+  EXISTENCIA = 'EXISTENCIA_FALTANTE'
 }

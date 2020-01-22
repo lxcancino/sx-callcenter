@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Pedido, Periodo, User } from '@swrx/core-model';
+import { Pedido, Periodo, User, PedidoAutorizacion } from '@swrx/core-model';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Update } from '@ngrx/entity';
@@ -47,18 +47,10 @@ export class PedidoService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
-  autorizar(
-    pedido: Partial<Pedido>,
-    user: User,
-    comentario: string
-  ): Observable<Pedido> {
-    const url = `${this.apiUrl}/autorizar/${pedido.id}`;
-    const params = new HttpParams()
-      .set('usuario', user.displayName)
-      .set('comentario', comentario);
-    return this.http
-      .put<Pedido>(url, null, {params})
-      .pipe(catchError((error: any) => throwError(error)));
+  autorizar(id: string, auth: PedidoAutorizacion): Observable<Pedido> {
+    const changes = { autorizacion: auth };
+    const update: Update<Partial<Pedido>> = { id, changes };
+    return this.update(update);
   }
 
   delete(id: string) {

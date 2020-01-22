@@ -1,5 +1,9 @@
 import { CartState } from './cart.reducer';
-import { TipoDePedido, FormaDePago, TipoDeAutorizacion } from '@swrx/core-model';
+import {
+  TipoDePedido,
+  FormaDePago,
+  TipoDeAutorizacion
+} from '@swrx/core-model';
 
 import sumBy from 'lodash/sumBy';
 import round from 'lodash/round';
@@ -83,11 +87,7 @@ export function validarDescuentoEspecial(
   errors: CartValidationError[]
 ) {
   if (state.descuentoEspecial > 0) {
-    if (
-      state.pedido &&
-      state.pedido.autorizacion &&
-      state.pedido.autorizacion.autorizado
-    ) {
+    if (state.pedido && state.pedido.autorizacion) {
       // console.log('Autorizacion: ', state.pedido.autorizacion.autorizado);
       return;
     }
@@ -95,5 +95,20 @@ export function validarDescuentoEspecial(
       error: TipoDeAutorizacion.DESCUENTO,
       descripcion: 'DESCUENTO ESPECIAL REQUIERE AUTORIZACION'
     });
+  }
+  const partidas = Object.values(state.items);
+  if (partidas.length > 0) {
+    const pendientes = partidas
+      .map(item => (item.faltante ? item.faltante : 0))
+      .reduce((prev, curr) => prev + curr);
+
+    if (pendientes > 0) {
+      if (!state.pedido || !state.pedido.autorizacion) {
+        errors.push({
+          error: TipoDeAutorizacion.EXISTENCIA,
+          descripcion: 'FALTA EXISTENCIA REQUIERE AUTORIZACION'
+        });
+      }
+    }
   }
 }

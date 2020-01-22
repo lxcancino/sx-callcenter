@@ -52,6 +52,9 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
       if (value) {
         this.cartForm.patchValue(value, { emitEvent: false });
       }
+      if(value.autorizacion) {
+        this.cartForm.disable();
+      }
     });
     this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
       const { displayName, email } = usr;
@@ -91,6 +94,7 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.facade.dirty$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cartForm.markAsDirty());
+    
   }
 
   private addFormaDePagoListener() {
@@ -214,11 +218,22 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   isDisabled(pedido: Partial<Pedido>, hasErrors: boolean) {
     if (pedido.status === 'CERRADO') {
       return true;
+    } else if (pedido.autorizacion) {
+      return true;
     } else if (hasErrors) {
       return true;
     } else {
       return this.cartForm.invalid || this.cartForm.pristine;
     }
+  }
+
+  canDelete(pedido: Partial<Pedido>) {
+    if (pedido.autorizacion) {
+      return false;
+    } else if (pedido.status !== 'COTIZACION') {
+      return false;
+    }
+    return true;
   }
 
   /** Show descuentos */

@@ -31,6 +31,7 @@ export class CartInfoComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('errorsTab', { static: true }) errorsTab: MatTab;
   @ViewChild('warningsTab', { static: true }) warningsTab: MatTab;
   @Output() autorizar = new EventEmitter<Partial<Pedido>>();
+  @Input() disabled = false;
   autorizaciones$;
   currentTab = 2;
 

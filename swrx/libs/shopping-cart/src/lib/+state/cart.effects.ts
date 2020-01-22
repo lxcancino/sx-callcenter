@@ -196,6 +196,19 @@ export class CartEffects {
     )
   );
 
+  descuentoEspcialListener$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          CartActions.addCartItemSuccess,
+          CartActions.deleteItem,
+          CartActions.editItem
+        ),
+        map(() => CartActions.recalcularPartidas())
+      ),
+    { dispatch: true }
+  );
+
   constructor(
     private actions$: Actions,
     private dialog: MatDialog,

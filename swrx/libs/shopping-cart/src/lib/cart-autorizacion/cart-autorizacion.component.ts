@@ -37,7 +37,6 @@ export class CartAutorizacionComponent implements OnInit {
   onSubmit() {
     if (this.control.valid) {
       const auth = {
-        pedido: this.pedido.id,
         sucursal: 'CALLCENTER',
         solicita: this.pedido.createUser,
         autoriza: this.user.displayName,
