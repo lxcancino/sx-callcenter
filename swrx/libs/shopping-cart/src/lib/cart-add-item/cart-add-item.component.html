@@ -47,6 +47,18 @@
     </div>
     <div class="corte-container" formGroupName="corte">
       <div class="corte-form">
+        <swrx-numeric-field
+          class="cantidad"
+          formControlName="cantidad"
+          label="Cortes"
+          decimals="0"
+        ></swrx-numeric-field>
+        <swrx-numeric-field
+          class="precio"
+          formControlName="precio"
+          label="Precio"
+          decimals="2"
+        ></swrx-numeric-field>
         <mat-form-field class="instruccion">
           <input
             matInput
@@ -64,18 +76,7 @@
             {{ option }}
           </mat-option>
         </mat-autocomplete>
-        <swrx-numeric-field
-          class="cantidad"
-          formControlName="cantidad"
-          label="Cortes"
-          decimals="0"
-        ></swrx-numeric-field>
-        <swrx-numeric-field
-          class="precio"
-          formControlName="precio"
-          label="Precio"
-          decimals="2"
-        ></swrx-numeric-field>
+
         <mat-checkbox formControlName="refinado">Refinado</mat-checkbox>
         <mat-checkbox formControlName="limpio">Limpio</mat-checkbox>
       </div>

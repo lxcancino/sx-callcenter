@@ -1,0 +1,19 @@
+<div class="transportes-page">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Catálogo de Transportistas</mat-card-title>
+      <div class="actions">
+        <button mat-icon-button (click)="onCreate()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <div class="grid-panel">
+      <swrx-transportes-table
+        [partidas]="partidas$ | async"
+        (edit)="onEdit($event)"
+      ></swrx-transportes-table>
+    </div>
+  </mat-card>
+</div>

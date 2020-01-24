@@ -204,3 +204,14 @@ export const selectAutorizacionesPendientes = createSelector(
   getCartState,
   state => state.autorizacionesRequeridas
 );
+
+export const selectKilos = createSelector(
+  getCartItems,
+  items =>
+    sumBy(items, (row: CartItem) => {
+      const factor = row.unidad === 'MIL' ? 1000 : 1;
+      const cant = row.cantidad / factor;
+      const acu = cant * row.kilos;
+      return Math.round(acu);
+    })
+);

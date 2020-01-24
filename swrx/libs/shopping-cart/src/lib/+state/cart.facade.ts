@@ -52,6 +52,7 @@ export class CartFacade {
   autorizaciones$ = this.store.pipe(
     select(CartSelectors.selectAutorizacionesPendientes)
   );
+  kilos$ = this.store.pipe(select(CartSelectors.selectKilos));
   constructor(
     private store: Store<fromCart.CartState>,
     private router: Router,

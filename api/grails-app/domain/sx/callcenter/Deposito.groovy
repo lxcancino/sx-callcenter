@@ -40,6 +40,8 @@ class Deposito {
 
     Boolean	enviado	 = false
 
+    String pedido
+
     Date dateCreated
 
     Date lastUpdated
@@ -61,5 +63,6 @@ class Deposito {
         comentario nullable: true
         createUser nullable: true
         updateUser nullable: true
+        pedido nullable: true
     }
 }

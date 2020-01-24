@@ -21,7 +21,7 @@ class UrlMappings {
         "/api/pedidos/print/$id"(controller: 'pedido', action: 'print', method: 'GET')
 
         "/api/zip"(controller: 'zip', action: 'find', method: 'GET')
-        "/api/transporte"(resources: 'transporte', excludes: ['create', 'edit', 'delete'])
+        "/api/transportes"(resources: 'transporte', excludes: ['create', 'edit', 'delete'])
 
         "/"(controller: 'application', action:'index')
         "500"(view: '/error')

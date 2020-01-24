@@ -625,6 +625,37 @@
           "styleext": "scss"
         }
       }
+    },
+    "transportes": {
+      "projectType": "library",
+      "root": "libs/transportes",
+      "sourceRoot": "libs/transportes/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/transportes/tsconfig.lib.json",
+              "libs/transportes/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/transportes/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/transportes/jest.config.js",
+            "tsConfig": "libs/transportes/tsconfig.spec.json",
+            "setupFile": "libs/transportes/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

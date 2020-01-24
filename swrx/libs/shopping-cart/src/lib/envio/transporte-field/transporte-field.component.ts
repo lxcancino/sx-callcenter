@@ -59,7 +59,7 @@ export class TransporteFieldComponent implements OnInit, OnDestroy {
   apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('apiUrl') api) {
-    this.apiUrl = `${api}/transporte`;
+    this.apiUrl = `${api}/transportes`;
   }
 
   ngOnInit() {

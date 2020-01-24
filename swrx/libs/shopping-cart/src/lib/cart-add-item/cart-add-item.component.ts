@@ -3,7 +3,8 @@ import {
   OnInit,
   Inject,
   ChangeDetectionStrategy,
-  OnDestroy
+  OnDestroy,
+  HostListener
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -16,7 +17,6 @@ import round from 'lodash/round';
 import { PedidoDet, Corte, TipoDePedido } from '@swrx/core-model';
 import {
   buildCartItem,
-  updateItemProduct,
   extracProductDataForCartItem
 } from '../+state/cart.utils';
 import { CartItem } from '../+state/cart.models';
@@ -122,16 +122,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   private addCantidadListener() {
     this.form
       .get('cantidad')
-      .valueChanges.pipe(
-        // map(can => {
-        //   if (this.producto && this.producto.unidad === 'MIL') {
-        //     return can / 1000;
-        //   } else {
-        //     return can;
-        //   }
-        // }),
-        takeUntil(this.destroy$)
-      )
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(cantidad => this.actualizarImporte(cantidad));
   }
 
@@ -188,7 +179,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   }
   get corte(): Corte {
     const corte = this.form.get('corte').value;
-    if (corte.cantidad > 0) {
+    if (corte.instruccion && corte.instruccion.length > 1) {
       const { cantidad, precio, instruccion } = corte;
       corte.importe = cantidad * precio;
       corte.instruccion = instruccion.toUpperCase(); // small fix por que swrxUpperCase tiene un Bug
@@ -210,12 +201,19 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   }
 
   setDisponible(value: number) {
-    console.log('Disponible: ', value);
     this.disponible = value;
   }
 
   get faltante() {
     const dif = this.cantidad - this.disponible;
     return dif < 0 ? 0 : dif;
+  }
+
+  /** Show descuentos */
+  @HostListener('document:keydown.f10', ['$event'])
+  onHotKeyShowDescuentos(event) {
+    if (!this.form.pristine) {
+      this.onSubmit();
+    }
   }
 }
