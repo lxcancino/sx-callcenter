@@ -29,4 +29,10 @@ export class CartListItemComponent implements OnInit {
       this.edit.emit(item);
     }
   }
+
+  getKilos(item: CartItem) {
+    const factor = item.unidad === 'MIL' ? 1000 : 1;
+    const kg = (item.kilos * item.cantidad) / factor;
+    return kg.toFixed(3);
+  }
 }

@@ -21,11 +21,21 @@
     </div>
     <swrx-producto-field formControlName="producto"></swrx-producto-field>
     <div class="importes">
-      <swrx-numeric-field
+      <!-- <swrx-numeric-field
         formControlName="cantidad"
         label="Cantidad"
         decimals="3"
-      ></swrx-numeric-field>
+      ></swrx-numeric-field> -->
+      <mat-form-field class="numeric-field">
+        <mat-label>Cantidad</mat-label>
+        <input
+          matInput
+          type="number"
+          autocomplete="off"
+          formControlName="cantidad"
+        />
+        <mat-error>Importe invalido</mat-error>
+      </mat-form-field>
       <mat-form-field>
         <input
           matInput

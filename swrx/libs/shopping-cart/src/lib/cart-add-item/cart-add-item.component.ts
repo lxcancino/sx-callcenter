@@ -86,7 +86,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   private buildForm() {
     this.form = this.fb.group({
       producto: [null, Validators.required],
-      cantidad: [0.0, [Validators.required, Validators.min(1)]],
+      cantidad: [0.0, {validators: [Validators.required, Validators.min(1)]}], // [{value: 0.0}, {validators: [Validators.required, Validators.min(1)], updateOn: 'change'}],
       precio: [0.0, Validators.required],
       subtotal: [0.0, Validators.required],
       corte: this.fb.group({
@@ -98,6 +98,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
         limpio: false
       })
     });
+    
   }
 
   private addListeners() {

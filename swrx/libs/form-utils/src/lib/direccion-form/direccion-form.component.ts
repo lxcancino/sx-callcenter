@@ -44,7 +44,6 @@ export class DireccionFormComponent implements OnInit, OnDestroy {
       .get(this.propertyName)
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(val => {
-        console.log('Col: ', val);
         if (colonia && this.colonias.length === 0) {
           this.colonias.push(colonia);
         }

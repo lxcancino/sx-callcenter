@@ -104,6 +104,7 @@ export class EnvioComponent implements OnInit, OnDestroy {
         telefono: [null, [Validators.required]],
         horario: [null, [Validators.required]],
         comentario: [],
+        fechaDeEntrega: [null],
         direccion: buildDireccionForm(this.fb)
       },
       { validators: [] }

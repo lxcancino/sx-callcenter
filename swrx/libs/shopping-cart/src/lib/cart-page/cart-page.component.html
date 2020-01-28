@@ -55,10 +55,14 @@
     <swrx-cart-summary
       *ngIf="sumary$ | async as sumary"
       [sumary]="sumary$ | async"
+      [kilos]="facade.kilos$ | async"
       (checkout)="onCheckout()"
       [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
     >
       <div class="checkout-actions">
+        <button mat-raised-button (click)="cancelar()">
+          <mat-icon>arrow_back</mat-icon> Cancelar
+        </button>
         <button mat-raised-button color="accent" (click)="goToNewCart()">
           <mat-icon>autorenew</mat-icon> Nuevo
         </button>

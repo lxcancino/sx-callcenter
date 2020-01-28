@@ -77,7 +77,6 @@ class ClienteController extends RestfulController<Cliente> {
             def clone = new Direccion()
             clone.properties = row.direccion.properties
             row.direccion = clone
-            println 'CD: ' + row.direccion.toLabel()
             row.save failOnError: true, flush: true
             log.info('Id: {}', row.id)
             log.info('Nuevo: {}', ClienteDireccion.get(row.id).direccion.colonia)

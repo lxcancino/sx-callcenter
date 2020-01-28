@@ -9,6 +9,7 @@
     <swrx-pedidos-table
       [partidas]="pedidos$ | async"
       (selection)="onSelection($event)"
+      (quickView)="onView($event)"
     ></swrx-pedidos-table>
   </div>
 </mat-card>

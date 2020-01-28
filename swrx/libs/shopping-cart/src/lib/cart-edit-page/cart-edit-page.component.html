@@ -85,21 +85,26 @@
   <div class="side-bar">
     <swrx-cart-summary
       [sumary]="sumary$ | async"
+      [kilos] = "facade.kilos$ | async"
       (checkout)="onCheckout()"
       [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
     >
       <div class="checkout-actions">
-        <button mat-raised-button color="accent" (click)="goToNewCart()">
-          <mat-icon>autorenew</mat-icon> Nuevo
-        </button>
-        <button mat-raised-button><mat-icon>print</mat-icon> Imprimir</button>
+        <div class="main-actions">
+          <button mat-raised-button (click)="cancelar()">
+            <mat-icon>arrow_back</mat-icon> Cancelar
+          </button>
+          <button mat-raised-button color="accent" (click)="goToNewCart()">
+            <mat-icon>autorenew</mat-icon> Nuevo
+          </button>
+          <button mat-icon-button><mat-icon>print</mat-icon></button>
+        </div>
         <ng-container *ngIf="pedido.status === 'COTIZACION'">
           <button
             mat-raised-button
             color="primary"
             (click)="cerrarPedido(pedido)"
             [disabled]="facade.hasWarnings$ | async"
-            matTooltip="HOLA"
           >
             <mat-icon>send</mat-icon>Cerrar
           </button>

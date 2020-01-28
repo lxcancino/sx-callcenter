@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { CartState } from './cart.reducer';
 import * as CartActions from './cart.actions';
+import * as fromRouter from '@ngrx/router-store';
 
 import { mergeMap, filter, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';

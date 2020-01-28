@@ -13,7 +13,7 @@
         >{{ item.descripcion }}
         <span>({{ item.unidad }})</span>
       </span>
-      <span class="cantidad">
+      <span class="cantidad" matTooltip="Kilos: {{ getKilos(item) }}">
         <span> Canidad: {{ item.cantidad | number: '1.0' }} </span>
         <span class="faltante" *ngIf="item?.faltante > 0">
           Falante: <span>{{ item.faltante }}</span>

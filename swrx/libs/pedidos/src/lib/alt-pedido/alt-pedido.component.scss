@@ -1,0 +1,18 @@
+.view-header {
+  display: flex;
+  justify-content: flex-end;
+  .nombre {
+    flex: 1;
+    text-align: center;
+  }
+}
+.partidas {
+  min-height: 300px;
+  max-height: 700px;
+  overflow: auto;
+}
+.sumary {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px
+}

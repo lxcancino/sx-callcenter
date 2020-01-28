@@ -33,6 +33,9 @@ export class TransporteFormComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       nombre: [null, Validators.required],
+      telefono1: [null],
+      telefono2: [null],
+      telefono3: [null],
       direccion: this.fb.group(
         {
           calle: [null, [Validators.required]],

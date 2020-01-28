@@ -47,36 +47,36 @@ swrx-cart-footer {
   grid-row: 2 / 7;
   display: flex;
   flex-direction: column;
-  // justify-content: flex-end;
   align-items: stretch;
   swrx-cart-summary {
-    // border: 1px dotted blue;
-    // height: 60%;
     flex: 1 1 50%;
   }
   swrx-cart-info {
-    // height: 250px;
-    // border: 2px solid pink;
-    // border-radius: 50%;
     flex: 1 1 50%;
   }
 }
 .checkout-actions {
   display: flex;
-  justify-content: stretch;
+  justify-content: flex-start;
   align-items: baseline;
   align-content: flex-end;
   flex-wrap: wrap;
   button {
     // margin-left: 10px;
-    flex: 1;
-    min-width: 100px;
-    margin-bottom: 10px;
+    // flex: 1;
+    // min-width: 90px;
+    margin-bottom: 5px;
     &:nth-child(even) {
       margin-right: 1px;
     }
     &:nth-child(odd) {
-      margin-right: 10px;
+      margin-right: 5px;
     }
+  }
+  .main-actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    // align-items: center;
   }
 }

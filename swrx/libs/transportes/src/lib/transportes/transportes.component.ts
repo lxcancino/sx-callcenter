@@ -36,7 +36,22 @@ export class TransportesComponent implements OnInit {
     this.cd.markForCheck();
   }
 
-  onCreate() {}
+  onCreate() {
+    this.dialog
+      .open(TransporteFormComponent, { data: {}, width: '650px' })
+      .afterClosed()
+      .subscribe((res: Partial<Transporte>) => {
+        if (res) {
+          this.service.save(res).subscribe(
+            t => {
+              console.log('Updated: ', t);
+              this.load();
+            },
+            error => console.error('Error actualizando transporte: ', error)
+          );
+        }
+      });
+  }
 
   onEdit(transporte: Transporte) {
     this.dialog

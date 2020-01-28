@@ -4,6 +4,7 @@ model {
 	Pedido pedido
 }
 
-json g.render(pedido, [resolveTemplate: false, exludes: ['autorizacion']]) {
+json g.render(pedido, [resolveTemplate: false, exludes: ['autorizacion', 'partidas']]) {
 	autorizacion g.render(pedido.autorizacion)
+	partidas g.render(template: '/pedidoDet/pedidoDet', collection: pedido.partidas, var: 'pedidoDet')
 }

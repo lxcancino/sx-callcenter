@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { CartPartialState } from './cart.reducer';
+import { CartPartialState, CART_FEATURE_KEY } from './cart.reducer';
 import * as CartActions from './cart.actions';
 import {
   createPedidoSuccess,
@@ -11,6 +11,7 @@ import {
   autorizarPedidoSuccess
 } from '@swrx/pedidos';
 
+import { of, empty } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { PedidoService } from '@swrx/pedidos';
@@ -27,10 +28,15 @@ export class CartPersistenceEffects {
   editPedido$ = createEffect(() =>
     this.dataPersistence.navigation(CartEditPageComponent, {
       run: (a: ActivatedRouteSnapshot, state: CartPartialState) => {
-        return this.pedidoService.get(a.params['id']).pipe(
-          tap(pedido => console.log('Editando pedido: ', pedido)),
-          map(pedido => CartActions.loadPedidoSucces({ pedido }))
-        );
+        if (state[CART_FEATURE_KEY].pedido && state[CART_FEATURE_KEY].pedido.id === a.params['id']) {
+          
+          return of();
+        } else {
+          return this.pedidoService.get(a.params['id']).pipe(
+            tap(pedido => console.log('Cargando para editar pedido: ', pedido)),
+            map(pedido => CartActions.loadPedidoSucces({ pedido }))
+          );
+        }
       },
       onError: (a: ActivatedRouteSnapshot, e: any) => {
         console.error('Pedidos not loaded....');

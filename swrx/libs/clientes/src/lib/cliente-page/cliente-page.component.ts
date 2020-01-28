@@ -94,10 +94,11 @@ export class ClientePageComponent implements OnInit {
 
   actualizar(cliente: Cliente) {
     const cfdiMail = this.form.get('cfdiMail').value;
-    const medios = this.cliente.medios;
-    const cfdi = medios.find(item => item.tipo === 'MAIL' && item.cfdi);
+    const medios = [];
+    const cfdi = this.cliente.medios.find(item => item.tipo === 'MAIL' && item.cfdi);
     if (cfdi) {
       cfdi.descripcion = cfdiMail;
+      medios.push(cfdi);
     } else {
       medios.push({
         tipo: 'MAIL',
@@ -106,7 +107,16 @@ export class ClientePageComponent implements OnInit {
         descripcion: cfdiMail
       });
     }
-    const changes = { medios: [...medios] };
+    const tels = this.telefonos.value.map(item => {
+      return {
+        tipo: 'TEL',
+        activo: true,
+        descripcion: item,
+        cfdi: false
+      };
+    });
+    const changes = { medios: [...medios, ...tels] };
+    // console.log('Changes: ', changes);
     this.actualizarDatos(cliente.id, changes);
   }
 

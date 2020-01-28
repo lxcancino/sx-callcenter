@@ -158,4 +158,10 @@ export class CartFacade {
         }
       });
   }
+
+  cancelarMantenimiento() {
+    this.store.dispatch(CartActions.cleanShoppingCart());
+    const path = ['/pedidos'];
+    this.router.navigate(path);
+  }
 }

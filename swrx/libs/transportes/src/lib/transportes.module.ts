@@ -7,6 +7,7 @@ import { FormUtilsModule } from '@swrx/form-utils';
 import { TransportesComponent } from './transportes/transportes.component';
 import { TransportesTableComponent } from './transportes-table/transportes-table.component';
 import { TransporteFormComponent } from './transporte-form/transporte-form.component';
+import { MaskPipe } from 'ngx-mask';
 
 export const routes: Route[] = [
   {
@@ -25,6 +26,7 @@ export const routes: Route[] = [
     TransportesTableComponent,
     TransporteFormComponent
   ],
-  entryComponents: [TransporteFormComponent]
+  entryComponents: [TransporteFormComponent],
+  providers: [MaskPipe]
 })
 export class TransportesModule {}

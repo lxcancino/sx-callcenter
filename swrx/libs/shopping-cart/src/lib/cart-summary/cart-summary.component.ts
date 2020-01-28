@@ -19,6 +19,7 @@ import { CartSumary } from '../+state/cart.models';
 })
 export class CartSummaryComponent implements OnInit {
   @Input() sumary: CartSumary;
+  @Input() kilos: number;
   @Input() disabled = false;
   @Output() checkout = new EventEmitter();
 

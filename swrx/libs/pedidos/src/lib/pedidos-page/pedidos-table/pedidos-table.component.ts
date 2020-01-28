@@ -31,6 +31,7 @@ import { Pedido } from '@swrx/core-model';
 export class PedidosTableComponent implements OnInit {
   @Input() partidas: Pedido[] = [];
   @Output() selection = new EventEmitter();
+  @Output() quickView = new EventEmitter<Pedido>();
 
   gridOptions: GridOptions;
   gridApi: GridApi;
@@ -62,9 +63,7 @@ export class PedidosTableComponent implements OnInit {
     };
     this.gridOptions.onCellDoubleClicked = event => {
       if (event.colDef.field === 'folio') {
-        event.event.stopPropagation();
-        console.log('Consulta rapida de pedido: ', event.data);
-        event.event.stopImmediatePropagation();
+        this.quickView.emit(event.data);
       } else {
         this.selection.emit(event.data);
       }

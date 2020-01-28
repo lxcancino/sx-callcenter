@@ -1,5 +1,9 @@
 <div class="summary">
   <div class="row">
+    <label>Kilos (kg):</label>
+    <span class="value">{{ kilos | number: '1.1-3' }}</span>
+  </div>
+  <div class="row">
     <label>importe:</label>
     <span class="value">{{ sumary.importe | currency }}</span>
   </div>
@@ -19,8 +23,8 @@
     <span class="value">{{ sumary.impuesto | currency }}</span>
   </div>
 
-  <div class="sidebar-bottom tile centered">
-    <h4>Total</h4>
+  <div class=" tile centered">
+    <span class="total">Total</span>
     <div class="cost">
       <span class="cost-currency">$</span>
       <span class="cost-dollars">{{

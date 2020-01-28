@@ -20,6 +20,7 @@ import {
 
 import { spAgGridText } from '@swrx/ui-core';
 import { Transporte } from '../transporte';
+import { MaskPipe } from 'ngx-mask';
 
 @Component({
   selector: 'swrx-transportes-table',
@@ -37,7 +38,10 @@ export class TransportesTableComponent implements OnInit {
   defaultColDef: any;
   localeText = spAgGridText;
 
-  constructor(@Inject(LOCALE_ID) private locale: string) {}
+  constructor(
+    @Inject(LOCALE_ID) private locale: string,
+    private mask: MaskPipe
+  ) {}
 
   ngOnInit() {
     this.buildGridOptions();
@@ -87,6 +91,18 @@ export class TransportesTableComponent implements OnInit {
         minWidth: 200
       },
       {
+        headerName: 'Tel 1',
+        field: 'telefono1',
+        valueFormatter: params =>
+          this.mask.transform(params.value, '(009) 000-00-00')
+      },
+      {
+        headerName: 'Tel 2',
+        field: 'telefono2',
+        valueFormatter: params =>
+          this.mask.transform(params.value, '(009) 000-00-00')
+      },
+      {
         headerName: 'Calle',
         colId: 'calle',
         valueGetter: params => params.data.direccion.calle
@@ -118,6 +134,4 @@ export class TransportesTableComponent implements OnInit {
       }
     ];
   }
-
-  
 }

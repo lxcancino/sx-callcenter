@@ -267,4 +267,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
   onDescuentoEspecial() {
     this.facade.asignarDescuentoEspecial();
   }
+
+  cancelar() {
+    this.facade.cancelarMantenimiento();
+  }
 }
