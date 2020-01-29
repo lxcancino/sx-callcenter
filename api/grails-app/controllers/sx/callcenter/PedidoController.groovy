@@ -124,6 +124,16 @@ class PedidoController extends RestfulController<Pedido> {
         render (file: pdf.toByteArray(), contentType: 'application/pdf', filename: 'Pedido.pdf')
     }
 
+    def findByFolio() {
+        log.info('findByFolio {}', params)
+        def pedido =  Pedido.where{folio == params.getLong('folio')}.find()
+        if(pedido == null){
+            notFound()
+            return
+        }
+        respond pedido
+    }
+
     def handleException(Exception e) {
         String message = ExceptionUtils.getRootCauseMessage(e)
         log.error(message, ExceptionUtils.getRootCause(e))

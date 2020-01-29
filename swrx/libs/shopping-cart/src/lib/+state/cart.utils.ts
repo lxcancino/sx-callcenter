@@ -76,7 +76,7 @@ export function calcularDescuento(
 ): number {
   switch (tipo) {
     case TipoDePedido.CREDITO: {
-      if (cliente.credito.postfechado) {
+      if (cliente.credito && cliente.credito.postfechado) {
         const importe = calcularImporteBruto(items);
         return findDescuentoPorVolumen(importe) - 4;
       } else {
@@ -133,7 +133,8 @@ export function aplicarDescuentos(
   cliente: Partial<Cliente>,
   descuentoEspecial: number
 ): CartItem[] {
-  const items = normalize(partidas);
+  // const items = normalize(partidas);
+  const items = filtrarPartidasAutomaticas(partidas);
   let descuento = calcularDescuento(items, tipo, cliente);
   let descuentoOriginal = descuento;
   if (descuentoEspecial > 0) {
@@ -388,8 +389,25 @@ export function extracProductDataForCartItem(producto: Producto) {
   };
 }
 
+/**
+ * Filtra las partidas quitando las que no participan para acumular descuentos
+ * ni les corresponde descuento alguno es dedicr CORTE, MANIOBRA y MANIOBRAF
+ *
+ * @param partidas
+ */
 export function normalize(partidas: CartItem[]) {
   return partidas
     .filter(item => !item.clave.includes('CORTE'))
     .filter(item => !item.clave.startsWith('MANIOBRA'));
+}
+
+/**
+ * Quita las partidas de CORTE y MANIOBRA dejando la de MANIOBRAF
+ *
+ * @param partidas
+ */
+export function filtrarPartidasAutomaticas(partidas: CartItem[]) {
+  return partidas
+    .filter(item => !item.clave.includes('CORTE'))
+    .filter(item => item.clave !== 'MANIOBRA');
 }

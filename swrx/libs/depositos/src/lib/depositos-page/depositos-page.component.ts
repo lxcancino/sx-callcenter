@@ -37,10 +37,11 @@ export class DepositosPageComponent implements OnInit {
   }
 
   onCreate(event: Deposito) {
-    event.createUser = this.user.displayName || 'tempox';
-    event.updateUser = this.user.displayName || 'tempox';
+    event.createUser = this.user.displayName;
+    event.updateUser = this.user.displayName;
     this.service.save(event);
   }
+
   onEdit(deposito: Deposito) {
     this.dialog
       .open(DepositoEditComponent, {
@@ -49,8 +50,8 @@ export class DepositosPageComponent implements OnInit {
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          console.log('Salvando cambios: ', res);
-          res.updateUser = this.user.displayName || 'tempox';
+          // console.log('Salvando cambios: ', res);
+          res.updateUser = this.user.displayName;
           this.service.update(res);
         }
       });

@@ -29,7 +29,12 @@
       <mat-icon>monetization_on</mat-icon>
       <span>Descuento especial</span>
     </button>
-    <button mat-menu-item class="menu-item">
+    <button
+      mat-menu-item
+      class="menu-item"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+      (click)="facade.agregarManiobra()"
+    >
       <mat-icon>local_shipping</mat-icon>
       <span>Maniobra</span>
     </button>

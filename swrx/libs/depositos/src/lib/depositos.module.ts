@@ -32,6 +32,7 @@ import { DepositosListComponent } from './depositos-list/depositos-list.componen
 import { DepositoItemComponent } from './depositos-list/deposito-item/deposito-item.component';
 import { DepositoEditComponent } from './deposito-edit/deposito-edit.component';
 import { DepositosTableComponent } from './depositos-table/depositos-table.component';
+import { PedidoSelectorComponent } from './pedido-selector/pedido-selector.component';
 
 export const routes: Route[] = [
   {
@@ -67,7 +68,8 @@ export const routes: Route[] = [
     DepositosListComponent,
     DepositoItemComponent,
     DepositoEditComponent,
-    DepositosTableComponent
+    DepositosTableComponent,
+    PedidoSelectorComponent
   ],
   entryComponents: [DepositoCreateComponent, DepositoEditComponent],
   providers: [DepositosFacade],

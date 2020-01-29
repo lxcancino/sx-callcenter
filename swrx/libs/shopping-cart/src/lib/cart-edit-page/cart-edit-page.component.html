@@ -51,6 +51,7 @@
       mat-menu-item
       class="menu-item"
       [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+      (click)="facade.agregarManiobra()"
     >
       <mat-icon>local_shipping</mat-icon>
       <span>Maniobra</span>
@@ -85,7 +86,7 @@
   <div class="side-bar">
     <swrx-cart-summary
       [sumary]="sumary$ | async"
-      [kilos] = "facade.kilos$ | async"
+      [kilos]="facade.kilos$ | async"
       (checkout)="onCheckout()"
       [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
     >

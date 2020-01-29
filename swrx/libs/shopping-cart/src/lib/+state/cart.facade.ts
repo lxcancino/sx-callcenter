@@ -164,4 +164,8 @@ export class CartFacade {
     const path = ['/pedidos'];
     this.router.navigate(path);
   }
+
+  agregarManiobra() {
+    this.store.dispatch(CartActions.agregarManiobra());
+  }
 }

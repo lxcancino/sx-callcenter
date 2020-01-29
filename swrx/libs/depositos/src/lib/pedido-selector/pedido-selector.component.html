@@ -1,0 +1,35 @@
+<div class="pedido-selector">
+  <mat-form-field class="folio">
+    <mat-label>Pedido #</mat-label>
+    <input matInput type="text" [formControl]="control" autocomplete="off" />
+    <mat-hint align="end">Digite el folio del pedido</mat-hint>
+    <mat-error *ngIf="error">{{ getErrorMessage() }}</mat-error>
+  </mat-form-field>
+  <mat-form-field class="fecha">
+    <mat-label>Fecha</mat-label>
+    <input
+      matInput
+      type="text"
+      disabled
+      value="{{ pedido?.fecha | date: 'dd/MM/yyyy' }}"
+    />
+  </mat-form-field>
+  <mat-form-field class="total">
+    <mat-label>Total del pedido</mat-label>
+    <input
+      matInput
+      type="text"
+      disabled
+      value="{{ pedido?.total | currency }}"
+    />
+  </mat-form-field>
+  <mat-form-field class="vendedor">
+    <mat-label>Ejecutivo</mat-label>
+    <input matInput disabled value="{{ pedido?.updateUser }}" />
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>F. Pago</mat-label>
+    <input matInput disabled value="{{ pedido?.formaDePago }}" />
+  </mat-form-field>
+  
+</div>

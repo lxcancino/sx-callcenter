@@ -123,3 +123,7 @@ export const asignarSocio = createAction(
   '[ShoppingCartFacade] Asignar socio',
   props<{ socio: Socio }>()
 );
+
+export const agregarManiobra = createAction(
+  '[ShoppingCartFacade] Agregar maniobra'
+);

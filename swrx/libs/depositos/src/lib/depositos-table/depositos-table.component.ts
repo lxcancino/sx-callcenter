@@ -108,6 +108,14 @@ export class DepositosTableComponent implements OnInit {
         pinned: 'left'
       },
       {
+        headerName: 'Pedido',
+        field: 'pedido',
+        width: 130,
+        pinned: 'left',
+        valueGetter: params =>
+          params.data.pedido ? params.data.pedido.folio : ''
+      },
+      {
         headerName: 'Fecha',
         field: 'fecha',
         width: 110,

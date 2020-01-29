@@ -106,3 +106,39 @@ export function generarCargoPorCorte(items: CartItem[]): CartItem | null {
     return null;
   }
 }
+
+export function generarCargoPorFlete(): CartItem {
+  const precio = 0.0;
+  return {
+    id: uuidv4(),
+    cantidad: 1,
+    precio,
+    importe: 0.0,
+    impuesto: 0.0,
+    subtotal: 0.0,
+    total: 0.0,
+    producto: {
+      id: '402880fc5e4ec411015e4ecdb4bb06a0',
+      clave: 'MANIOBRAF',
+      descripcion: 'M A N I O B R A F',
+      modoVenta: 'N',
+      imageUrl: 'assets/images/1273567240.jpg',
+      precioCredito: precio,
+      precioContado: precio
+    },
+    clave: 'MANIOBRAF',
+    descripcion: 'M A N I O B R A F',
+    kilos: 0,
+    gramos: 0,
+    unidad: 'PZA',
+    modoVenta: 'N',
+    presentacion: 'ND',
+    nacional: true,
+    descuento: 0.0,
+    descuentoImporte: 0.0,
+    impuestoTasa: 0.16,
+    precioOriginal: 0.0,
+    precioLista: 0.0,
+    descuentoOriginal: 0
+  };
+}

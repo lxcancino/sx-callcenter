@@ -4,6 +4,9 @@
 <mat-divider></mat-divider>
 <mat-dialog-content>
   <div class="create-cliente-form" [formGroup]="form">
+    <div class="pedido">
+      <swrx-pedido-selector [parent]="form"></swrx-pedido-selector>
+    </div>
     <swrx-cliente-field formControlName="cliente"></swrx-cliente-field>
     <swrx-cuenta-field formControlName="cuenta"></swrx-cuenta-field>
     <div class="row">
@@ -12,7 +15,7 @@
         <input matInput formControlName="referencia" placeholder="Referencia" />
       </mat-form-field>
     </div>
-    
+
     <div class="row">
       <swrx-fecha-field
         class="item"
@@ -25,10 +28,11 @@
       </mat-checkbox>
       <span class="item"></span>
     </div>
-    <swrx-deposito-importes-field
-      [parent]="form"
-    ></swrx-deposito-importes-field>
-    <div class="row">
+
+    <div class="importes">
+      <swrx-deposito-importes-field
+        [parent]="form"
+      ></swrx-deposito-importes-field>
       <swrx-numeric-field
         class="total"
         formControlName="total"
@@ -37,10 +41,6 @@
       >
         <mat-error>Total incorrecto</mat-error>
       </swrx-numeric-field>
-      <!-- <mat-form-field class="total">
-        <input type="number" matInput formControlName="total" />
-        <mat-error>Total incorrecto</mat-error>
-      </mat-form-field> -->
     </div>
   </div>
 </mat-dialog-content>

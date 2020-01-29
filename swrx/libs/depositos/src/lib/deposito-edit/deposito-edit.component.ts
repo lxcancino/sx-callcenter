@@ -21,6 +21,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Deposito } from '../+state/depositos.models';
+import { Pedido, FormaDePago } from '@swrx/core-model';
 
 const depositoValidator: ValidatorFn = (
   form: FormGroup
@@ -55,14 +56,17 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.buildForm();
+    this.form.patchValue(this.deposito, { emitEvent: false });
+
     this.transfernciaListener();
-    this.form.patchValue(this.deposito);
     this.totalListener();
+    this.pedidoListener();
 
     if (!this.isEditable()) {
       this.form.disable();
     }
   }
+
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
@@ -71,6 +75,7 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
   private buildForm() {
     this.form = new FormGroup(
       {
+        pedido: new FormControl(null),
         cliente: new FormControl(null, [Validators.required]),
         banco: new FormControl(null, [Validators.required]),
         cuenta: new FormControl(null, [Validators.required]),
@@ -92,6 +97,45 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
       },
       depositoValidator
     );
+  }
+
+  private pedidoListener() {
+    this.form
+      .get('pedido')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((pedido: Pedido) => {
+        const f = this.form;
+        const cliente = f.get('cliente');
+        const impF = f.get('importes') as FormGroup;
+        const efectivo = impF.get('efectivo');
+        const cheque = impF.get('cheque');
+        const transferencia = f.get('transferencia');
+        const total = f.get('total');
+        console.log('Pedido: ', pedido);
+        if (pedido) {
+          cliente.disable();
+          cliente.setValue(pedido.cliente);
+
+          switch (pedido.formaDePago) {
+            case FormaDePago.DEPOSITO_EFECTIVO:
+              efectivo.setValue(pedido.total);
+              transferencia.setValue(false);
+              break;
+            case FormaDePago.DEPOSITO_CHEQUE:
+              cheque.setValue(pedido.total);
+              transferencia.setValue(false);
+              break;
+            default:
+              transferencia.setValue(true);
+              total.setValue(pedido.total);
+              break;
+          }
+        } else {
+          cliente.setValue(null);
+          cliente.enable();
+          f.patchValue({ total: 0.0, transferencia: true });
+        }
+      });
   }
 
   private transfernciaListener() {

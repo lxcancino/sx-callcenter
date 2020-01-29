@@ -35,6 +35,7 @@ import { CartNombreComponent } from '../cart-nombre/cart-nombre.component';
 import { CartDescuentosComponent } from '../cart-form/cart-descuentos/cart-descuentos.component';
 import { CerrarComponent } from '../cerrar/cerrar.component';
 import { CartDescuentoeComponent } from '../cart-descuentoe/cart-descuentoe.component';
+import { CartManiobraComponent } from '../cart-maniobra/cart-maniobra.component';
 
 @Injectable()
 export class CartEffects {
@@ -195,6 +196,27 @@ export class CartEffects {
       tap(pedido => console.log('Mandando cerrar pedido: ', pedido)),
       map((pedido: Pedido) => this.pedidoFacade.cerrarPedido(pedido))
     )
+  );
+
+  maniobra$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.agregarManiobra),
+        cartState(this.store),
+        map(([action, state]) => state),
+        this.inDialog(CartManiobraComponent, '350px'),
+        notNull(),
+        map((item: any) => {
+          if (item.id) {
+            // return CartActions.editItemSuccess({ item });
+            return CartActions.addCartItemSuccess({ item });
+          } else {
+            console.log('Agregando item: ', item);
+            return CartActions.addCartItemSuccess({ item });
+          }
+        })
+      ),
+    { dispatch: true }
   );
 
   descuentoEspcialListener$ = createEffect(

@@ -71,6 +71,7 @@ export const initialState: CartState = {
 
 const cartReducer = createReducer(
   initialState,
+  /*
   on(CartActions.addCartItemSuccess, (state, { item }) => ({
     ...state,
     dirty: true,
@@ -78,6 +79,17 @@ const cartReducer = createReducer(
     loading: false,
     descuentoEspecial: state.descuentoEspecial ? 0 : undefined
   })),
+  */
+  on(CartActions.addCartItemSuccess, (state, { item }) => {
+    console.log('Agregando item: ', item);
+    return {
+      ...state,
+      dirty: true,
+      items: { ...state.items, [item.id]: item },
+      loading: false,
+      descuentoEspecial: state.descuentoEspecial ? 0 : undefined
+    };
+  }),
   on(CartActions.deleteItem, (state, { item }) => {
     const { [item.id]: result, ...items } = state.items;
     return {

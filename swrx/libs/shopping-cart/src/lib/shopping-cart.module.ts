@@ -43,6 +43,7 @@ import { CartSocioComponent } from './cart-socio/cart-socio.component';
 import { CartExistenciasComponent } from './cart-existencias/cart-existencias.component';
 import { CartDescuentoeComponent } from './cart-descuentoe/cart-descuentoe.component';
 import { CartAutorizacionComponent } from './cart-autorizacion/cart-autorizacion.component';
+import { CartManiobraComponent } from './cart-maniobra/cart-maniobra.component';
 
 const routes: Route[] = [
   {
@@ -97,7 +98,8 @@ const routes: Route[] = [
     CartSocioComponent,
     CartExistenciasComponent,
     CartDescuentoeComponent,
-    CartAutorizacionComponent
+    CartAutorizacionComponent,
+    CartManiobraComponent
   ],
   entryComponents: [
     CartAddItemComponent,
@@ -107,7 +109,8 @@ const routes: Route[] = [
     CartNombreComponent,
     CerrarComponent,
     CartDescuentoeComponent,
-    CartAutorizacionComponent
+    CartAutorizacionComponent,
+    CartManiobraComponent
   ],
   exports: [CartBtnComponent],
   providers: [CartFacade]

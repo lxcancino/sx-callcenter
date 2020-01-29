@@ -9,16 +9,16 @@
 <mat-divider></mat-divider>
 <mat-dialog-content>
   <div class="create-cliente-form" [formGroup]="form">
+    <div class="pedido">
+      <swrx-pedido-selector
+        [parent]="form"
+        [disabled]="form.disabled"
+      ></swrx-pedido-selector>
+    </div>
     <swrx-cliente-field
       formControlName="cliente"
       *ngIf="isEditable()"
     ></swrx-cliente-field>
-    <!-- <div class="row">
-      <mat-form-field [style.width.%]="100">
-        <mat-label>Nombre</mat-label>
-        <input type="text" matInput [value]="deposito.nombre" disabled />
-      </mat-form-field>
-    </div> -->
     <swrx-cuenta-field formControlName="cuenta"></swrx-cuenta-field>
     <div class="row">
       <swrx-banco-field formControlName="banco"></swrx-banco-field>
