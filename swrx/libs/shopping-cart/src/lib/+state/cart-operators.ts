@@ -95,7 +95,8 @@ export const envioState = (store: Store<CartState>) =>
           return {
             pedido: state.pedido,
             envio: state.envio,
-            cliente: state.cliente
+            cliente: state.cliente,
+            socio: state.socio
           };
         })
       )

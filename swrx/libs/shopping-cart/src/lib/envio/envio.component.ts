@@ -11,16 +11,13 @@ import {
   Validators,
   FormBuilder,
   ValidatorFn,
-  AbstractControl
 } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
-  Direccion,
   Cliente,
-  buildDireccionEmpty,
   InstruccionDeEnvio,
   Socio
 } from '@swrx/core-model';
@@ -46,6 +43,7 @@ export class EnvioComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject();
   cliente: Cliente;
+  socio: Socio;
   envio: InstruccionDeEnvio;
   direcciones: {};
   selectedKey: string;
@@ -64,10 +62,16 @@ export class EnvioComponent implements OnInit, OnDestroy {
     console.log('Envio para: ', this.data);
     this.envio = this.data.envio;
     this.cliente = this.data.cliente;
+    this.socio = this.data.socio;
     this.direcciones = this.cliente.direcciones || {};
+    if(this.socio) {
+      this._buildDireccionDesocio(this.socio);
+    }
+    /*
     if (this.data.pedido && this.data.pedido.socio) {
       this._buildDireccionDesocio(this.data.pedido.socio);
     }
+    */
     this.buildForm();
 
     if (this.envio) {
@@ -151,6 +155,7 @@ export class EnvioComponent implements OnInit, OnDestroy {
   }
 
   _buildDireccionDesocio(socio: Socio) {
+    // console.log('Generando registrando direccion del socio: ', socio);
     if (socio.direccionFiscal) {
       const dd = socio.direccionFiscal;
       const calle = dd.calle.trim() || '';
