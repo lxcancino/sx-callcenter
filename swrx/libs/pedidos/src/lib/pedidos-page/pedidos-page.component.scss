@@ -1,5 +1,10 @@
 .mat-card {
   height: 95%;
+  .mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
   .mat-card-content {
     height: 500px;
   }

@@ -5,9 +5,8 @@
       <mat-label>Tipo</mat-label>
       <mat-select placeholder="Tipo de envio" formControlName="tipo">
         <mat-option *ngFor="let d of tipos" [value]="d">
-          {{ d }}
+          {{ getDisplayValue(d) }}
         </mat-option>
-        <mat-option value="NUEVA">Registrar nueva dirección</mat-option>
       </mat-select>
     </mat-form-field>
     <swrx-transporte-field [parent]="form" class="tipo"></swrx-transporte-field>

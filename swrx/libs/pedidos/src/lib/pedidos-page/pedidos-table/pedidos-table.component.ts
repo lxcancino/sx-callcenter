@@ -173,7 +173,10 @@ export class PedidosTableComponent implements OnInit {
         width: 130,
         valueGetter: params => {
           if (params.data.autorizacionesRequeridas) {
-            return `${params.data.status} (A)`;
+            return `${params.data.status.substr(
+              0,
+              3
+            )} (A${params.data.autorizacionesRequeridas.substr(0, 1)})`;
           } else {
             return params.data.status;
           }
@@ -192,7 +195,13 @@ export class PedidosTableComponent implements OnInit {
           this.transformDate(params.value, 'dd/MM/yyyy hh:mm')
       },
       {
-        headerName: 'Vendedor',
+        headerName: 'Creado Por:',
+        field: 'vendedor',
+        width: 150,
+        valueGetter: params => params.data.createUser
+      },
+      {
+        headerName: 'Modificado Por:',
         field: 'vendedor',
         width: 150,
         valueGetter: params => params.data.updateUser

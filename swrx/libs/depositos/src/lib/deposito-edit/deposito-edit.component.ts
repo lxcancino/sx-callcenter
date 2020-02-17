@@ -77,6 +77,7 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
       {
         pedido: new FormControl(null),
         cliente: new FormControl(null, [Validators.required]),
+        sucursal: new FormControl(null, [Validators.required]),
         banco: new FormControl(null, [Validators.required]),
         cuenta: new FormControl(null, [Validators.required]),
         fecha: new FormControl(
@@ -106,6 +107,7 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
       .subscribe((pedido: Pedido) => {
         const f = this.form;
         const cliente = f.get('cliente');
+        const sucursal = f.get('sucursal');
         const impF = f.get('importes') as FormGroup;
         const efectivo = impF.get('efectivo');
         const cheque = impF.get('cheque');
@@ -115,6 +117,8 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
         if (pedido) {
           cliente.disable();
           cliente.setValue(pedido.cliente);
+          sucursal.setValue(pedido.sucursal);
+          sucursal.disable();
 
           switch (pedido.formaDePago) {
             case FormaDePago.DEPOSITO_EFECTIVO:
@@ -132,7 +136,9 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
           }
         } else {
           cliente.setValue(null);
+          sucursal.setValue(null);
           cliente.enable();
+          sucursal.enable();
           f.patchValue({ total: 0.0, transferencia: true });
         }
       });

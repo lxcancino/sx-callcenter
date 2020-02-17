@@ -10,19 +10,16 @@ import {
   FormGroup,
   Validators,
   FormBuilder,
-  ValidatorFn,
+  ValidatorFn
 } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subject } from 'rxjs';
-import {
-  Cliente,
-  InstruccionDeEnvio,
-  Socio
-} from '@swrx/core-model';
+import { Cliente, InstruccionDeEnvio, Socio } from '@swrx/core-model';
 import { buildDireccionForm } from '@swrx/form-utils';
 import { takeUntil } from 'rxjs/operators';
+import { getEnvioDisplayName } from './envio.utils';
 
 const EnvioValidator: ValidatorFn = (fg: FormGroup) => {
   const tipo = fg.get('tipo').value;
@@ -64,7 +61,7 @@ export class EnvioComponent implements OnInit, OnDestroy {
     this.cliente = this.data.cliente;
     this.socio = this.data.socio;
     this.direcciones = this.cliente.direcciones || {};
-    if(this.socio) {
+    if (this.socio) {
       this._buildDireccionDesocio(this.socio);
     }
     /*
@@ -165,5 +162,9 @@ export class EnvioComponent implements OnInit, OnDestroy {
       this.direcciones = {};
       this.direcciones[key] = dd;
     }
+  }
+
+  getDisplayValue(tipo: string) {
+    return getEnvioDisplayName(tipo);
   }
 }

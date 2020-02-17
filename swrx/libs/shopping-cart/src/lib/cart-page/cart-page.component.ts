@@ -12,7 +12,7 @@ import { CartFacade } from '../+state/cart.facade';
 import { ClientesFacade } from '@swrx/clientes';
 
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap, take } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
 import {
@@ -49,7 +49,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.buildForm();
     this.registerStateForm();
-    this.registerPedido();
+    // this.registerPedido();
     this.addListeners();
     this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
       const { displayName, email } = usr;
@@ -78,19 +78,12 @@ export class CartPageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private registerPedido() {
-    this.pedido$ = this.facade.currentPedido;
-    this.pedido$.pipe(takeUntil(this.destroy$)).subscribe(value => {
-      if (value) {
-        this.pedido = value;
-        this.cartForm.patchValue(value, { emitEvent: false });
-      }
-    });
-  }
   private registerStateForm() {
-    this.facade.cartStateForm$.subscribe(formState =>
-      this.cartForm.patchValue(formState, { emitEvent: false })
-    );
+    this.facade.cartStateForm$
+      .pipe(take(1))
+      .subscribe(formState =>
+        this.cartForm.patchValue(formState, { emitEvent: false })
+      );
   }
 
   private addListeners() {
@@ -112,11 +105,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
       if (cte.credito) {
         if (cte.credito.postfechado) {
           this.cartForm.get('formaDePago').setValue(FormaDePago.CHEQUE_PSTF);
-
-          // this.cartForm.get('tipo').disable();
         } else {
           this.cartForm.get('formaDePago').setValue(FormaDePago.EFECTIVO);
-          // this.cartForm.get('formaDePago').enable();
         }
 
         if (!this.pedido) {
@@ -185,12 +175,14 @@ export class CartPageComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(sucursal => this.facade.cambiarSucursal(sucursal));
   }
+
   private addCompradorListener() {
     this.cartForm
       .get('comprador')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(comprador => this.facade.cambiarComprador(comprador));
   }
+
   private addComemtarioListener() {
     this.cartForm
       .get('comentario')
@@ -225,21 +217,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
   goToNewCart() {
     this.facade.cleanShoppingCartState();
   }
-  /** Insert item */
-  @HostListener('document:keydown.meta.i', ['$event'])
-  onHotKeyInsert(event) {
-    this.addCartItem();
-  }
-  @HostListener('document:keydown.insert', ['$event'])
-  onHotKeyInsert2(event) {
-    this.addCartItem();
-  }
 
-  /** Show descuentos */
-  @HostListener('document:keydown.control.d', ['$event'])
-  onHotKeyShowDescuentos(event) {
-    this.showDescuentos();
-  }
   isDisabled(pedido: Partial<Pedido>, hasErrors: boolean) {
     if (pedido && pedido.status === 'CERRADO') {
       return true;
@@ -248,12 +226,6 @@ export class CartPageComponent implements OnInit, OnDestroy {
     } else {
       return this.cartForm.invalid || this.cartForm.pristine;
     }
-  }
-
-  /** Show descuentos */
-  @HostListener('document:keydown.control.c', ['$event'])
-  onHotKeyAltaDeCliente(event) {
-    this.clienteNuevo();
   }
 
   clienteNuevo() {
@@ -270,5 +242,32 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   cancelar() {
     this.facade.cancelarMantenimiento();
+  }
+
+  /** Insert item */
+  @HostListener('document:keydown.meta.i', ['$event'])
+  onHotKeyInsert(event) {
+    this.addCartItem();
+  }
+  @HostListener('document:keydown.insert', ['$event'])
+  onHotKeyInsert2(event) {
+    this.addCartItem();
+  }
+
+  /** Show descuentos */
+  @HostListener('document:keydown.control.d', ['$event'])
+  onHotKeyShowDescuentos(event) {
+    this.showDescuentos();
+  }
+
+  /** Show descuentos */
+  @HostListener('document:keydown.shift.c', ['$event'])
+  onHotKeyAltaDeCliente(event) {
+    this.clienteNuevo();
+  }
+
+  @HostListener('document:keydown.shift.s', ['$event'])
+  onHotKeyCloseCart(event) {
+    this.onCheckout();
   }
 }

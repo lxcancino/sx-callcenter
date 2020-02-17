@@ -36,12 +36,16 @@ swrx-cart-footer {
 .comentario-section {
   grid-column: 1 / 2;
   grid-row: 6 / 7;
-  .comentario-field {
-    padding: 10px;
-    width: 97%;
+  display: flex;
+  align-items: baseline;
+  .comentario {
+    flex: 3;
+    padding: 5px 10px;
+  }
+  .comprador {
+    flex: 1;
   }
 }
-
 .side-bar {
   grid-column: 2 / 3;
   grid-row: 2 / 7;

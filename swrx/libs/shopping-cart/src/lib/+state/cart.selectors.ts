@@ -140,7 +140,7 @@ export const selectFormState = createSelector(
       cfdiMail: state.cfdiMail,
       sucursal: state.sucursal,
       comprador: state.comprador,
-      comentario: state.comprador
+      comentario: state.comentario
     };
   }
 );

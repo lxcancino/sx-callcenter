@@ -4,8 +4,6 @@ model {
 	Producto producto
 }
 
-json g.render(producto, [excludes: ['linea', 'marca', 'clase', 'proveedorFavorito'], resolveTemplate: false]) {
-	linea producto.linea?.linea
-	marca producto.marca?.marca
-	clase producto.clase?.clase
+json g.render(producto, [excludes: [], resolveTemplate: false]) {
+	
 }

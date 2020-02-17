@@ -16,6 +16,8 @@ import { AltPedidoComponent } from '../alt-pedido/alt-pedido.component';
 })
 export class PedidosPageComponent implements OnInit {
   pedidos$: Observable<Pedido[]>;
+  loading = true;
+  loading$: Observable<boolean>;
 
   constructor(
     private facade: PedidosFacade,
@@ -24,7 +26,12 @@ export class PedidosPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.loading$ = this.facade.loading$;
     this.pedidos$ = this.facade.allPedidos$;
+  }
+
+  reload() {
+    this.facade.loadAll();
   }
 
   onSelection(event: Pedido) {

@@ -11,7 +11,7 @@ import { CartFacade } from '../+state/cart.facade';
 import { ClientesFacade } from '@swrx/clientes';
 
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take, tap } from 'rxjs/operators';
 
 import { CartSumary } from '../+state/cart.models';
 import {
@@ -45,6 +45,7 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.selectUser();
     this.buildForm();
     this.addListeners();
     this.pedido$ = this.facade.currentPedido;
@@ -56,6 +57,10 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
         }
       }
     });
+    this.registerStateForm();
+  }
+
+  selectUser() {
     this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
       const { displayName, email } = usr;
       this.user = { displayName, email };
@@ -94,6 +99,12 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.facade.dirty$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cartForm.markAsDirty());
+  }
+
+  private registerStateForm() {
+    this.facade.cartStateForm$.pipe(take(1)).subscribe(formState => {
+      this.cartForm.patchValue(formState, { emitEvent: false });
+    });
   }
 
   private addFormaDePagoListener() {
@@ -212,6 +223,12 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown.control.d', ['$event'])
   onHotKeyShowDescuentos(event) {
     this.showDescuentos();
+  }
+
+  //@HostListener('document:keydown.f12', ['$event'])
+  @HostListener('document:keydown.shift.s', ['$event'])
+  onHotKeyCloseCart(event) {
+    this.onCheckout();
   }
 
   isDisabled(pedido: Partial<Pedido>, hasErrors: boolean) {

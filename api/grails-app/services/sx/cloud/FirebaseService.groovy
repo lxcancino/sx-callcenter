@@ -30,18 +30,20 @@ import grails.compiler.GrailsCompileStatic
 @CompileDynamic
 class FirebaseService {
 
+    static lazyInit = true
     
     private FirebaseApp app
 
-	
+	@PostConstruct
     void initFirebase() {
+        log.debug('Initializing Firebase connection....')
 		FirebaseOptions options = new FirebaseOptions.Builder()
   		.setCredentials(GoogleCredentials.getApplicationDefault())
   		.setDatabaseUrl("https://siipapx-436ce.firebaseio.com")
   		.build();
 
 		app = FirebaseApp.initializeApp(options);
-		log.info('Firebase APP: ', app)
+		log.info('Connected to Firebase App: {}', app.name)
 
     }
    

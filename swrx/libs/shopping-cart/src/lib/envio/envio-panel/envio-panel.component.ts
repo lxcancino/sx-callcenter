@@ -8,6 +8,8 @@ import {
 } from '@angular/core';
 import { InstruccionDeEnvio, Direccion } from '@swrx/core-model';
 
+import { getEnvioDisplayName } from '../envio.utils';
+
 @Component({
   selector: 'swrx-envio-panel',
   templateUrl: './envio-panel.component.html',
@@ -29,5 +31,9 @@ export class EnvioPanelComponent implements OnInit {
 
   getDireccionLabel(direccion: Direccion) {
     return `${direccion.calle} ${direccion.numeroExterior} Mpo: ${direccion.municipio} Cp:${direccion.codigoPostal}`;
+  }
+
+  getTipoLabel(tipo: string) {
+    return getEnvioDisplayName(tipo);
   }
 }

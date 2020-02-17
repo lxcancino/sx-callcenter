@@ -10,6 +10,7 @@ import { Pedido } from '@swrx/core-model';
 @Injectable()
 export class PedidosFacade {
   loaded$ = this.store.pipe(select(PedidosSelectors.getPedidosLoaded));
+  loading$ = this.store.pipe(select(PedidosSelectors.getPedidosLoading));
   allPedidos$ = this.store.pipe(select(PedidosSelectors.getAllPedidos));
   selectedPedidos$ = this.store.pipe(select(PedidosSelectors.getSelected));
 

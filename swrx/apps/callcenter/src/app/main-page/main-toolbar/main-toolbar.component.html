@@ -37,7 +37,11 @@
       <fa-icon icon="users"></fa-icon>
       <span>Clientes</span>
     </a> -->
-    <a mat-button (click)="showProductos()">
+    <a
+      mat-button
+      [routerLink]="'/productos/all'"
+      routerLinkActive="router-link-active"
+    >
       <fa-icon icon="layer-group"></fa-icon>
       <span>Productos</span>
     </a>

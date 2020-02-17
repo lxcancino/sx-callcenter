@@ -29,12 +29,7 @@
       <mat-icon>monetization_on</mat-icon>
       <span>Descuento especial</span>
     </button>
-    <button
-      mat-menu-item
-      class="menu-item"
-      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
-      (click)="facade.agregarManiobra()"
-    >
+    <button mat-menu-item class="menu-item" (click)="facade.agregarManiobra()">
       <mat-icon>local_shipping</mat-icon>
       <span>Maniobra</span>
     </button>
@@ -49,12 +44,24 @@
   </swrx-cart-toolbar>
 
   <swrx-cart-items></swrx-cart-items>
-  <div class="comentario-section">
-    <mat-form-field class="comentario-field" appearance="fill">
+  <div class="comentario-section" [formGroup]="cartForm">
+    <mat-form-field class="comentario" appearance="fill">
       <mat-label>Comentario</mat-label>
-      <input matInput type="text" [formControl]="cartForm.get('comentario')" />
+      <input matInput type="text" formControlName="comentario" />
       <mat-hint>Instrucciones y comentarios generales del pedido</mat-hint>
     </mat-form-field>
+    <swrx-upper-case-field
+      class="comprador"
+      appearance="fill"
+      placeholder="Comprador"
+      formControlName="comprador"
+    >
+    </swrx-upper-case-field>
+    <!-- <mat-form-field class="comprador" appearance="fill">
+      <mat-label>Comprador</mat-label>
+      <input matInput type="text" [formControl]="cartForm.get('comprador')" />
+      <mat-hint>Nombre del contancto o comprador del cliente</mat-hint>
+    </mat-form-field> -->
   </div>
   <div class="side-bar">
     <swrx-cart-summary

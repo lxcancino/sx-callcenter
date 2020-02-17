@@ -18,9 +18,12 @@ import {
   distinctUntilChanged,
   switchMap,
   map,
+  tap,
   catchError
 } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
+
+import { Pedido } from '@swrx/core-model';
 
 @Component({
   selector: 'swrx-pedido-selector',
@@ -42,19 +45,22 @@ export class PedidoSelectorComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
+  ngOnInit2() {
     const res$ = this.control.valueChanges.pipe(
+      tap(value => console.log('Tap: ', value)),
       debounceTime(500),
       distinctUntilChanged(),
       map(value => new HttpParams().set('folio', value)),
-      switchMap(params =>
-        this.http.get(`${this.api}/pedidos/findByFolio`, { params })
+      switchMap(
+        params => this.http.get(`${this.api}/pedidos/findByFolio`, { params })
+        // .pipe(catchError((error: any) => throwError(error)))
       ),
       catchError((error: any) => {
         if (error.status === 404) {
+          console.error('Error: ', error);
           return of(null);
         } else {
-          throwError(error);
+          return throwError(error);
         }
       }),
       takeUntil(this.destroy$)
@@ -72,6 +78,42 @@ export class PedidoSelectorComponent implements OnInit, OnDestroy {
       console.log('Pedido vinculado: ', pedido);
       this.control.setValue(pedido.folio, { emitEvent: false });
     }
+  }
+
+  ngOnInit() {
+    this.control.valueChanges
+      .pipe(
+        tap(value => console.log('Tap: ', value)),
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(folio => this.lookupPedido(folio));
+    const pedido = this.parent.get('pedido').value;
+    if (pedido) {
+      this.control.setValue(pedido.folio, { emitEvent: false });
+    }
+  }
+
+  private lookupPedido(folio: string) {
+    const params = new HttpParams().set('folio', folio);
+    this.http
+      .get<Pedido>(`${this.api}/pedidos/findByFolio`, { params })
+      .subscribe(
+        found => {
+          if (found) {
+            console.log('Pedido vinculado: ', found);
+            this.parent.get('pedido').setValue(found);
+            this.cd.markForCheck();
+            // this.control.setValue(found.folio, { emitEvent: false });
+          }
+        },
+        err => {
+          console.error('Pedido not found', err);
+          this.parent.get('pedido').setValue(null);
+          this.cd.markForCheck();
+        }
+      );
   }
 
   ngOnDestroy() {

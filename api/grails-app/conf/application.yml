@@ -97,7 +97,8 @@ environments:
     production:
         dataSource:
             dbCreate: update
-            url: jdbc:mysql://${JDBC_CONNECTION_STRING}?autoReconnect=true
+            ## url: jdbc:mysql://${JDBC_CONNECTION_STRING}?autoReconnect=true
+            url: jdbc:mysql://10.10.1.229/callcenter?autoReconnect=false
             username: root
             password: sys
             properties:

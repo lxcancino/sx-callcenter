@@ -125,8 +125,11 @@ class PedidoController extends RestfulController<Pedido> {
     }
 
     def findByFolio() {
-        log.info('findByFolio {}', params)
-        def pedido =  Pedido.where{folio == params.getLong('folio')}.find()
+        // log.info('findByFolio {}', params)
+        def pedido =  Pedido.where{folio == params.getLong('folio')}.
+            where{ formaDePago =~ 'DEPOSITO%' || formaDePago == 'TRANSFERENCIA'}
+            .find()
+
         if(pedido == null){
             notFound()
             return

@@ -25,7 +25,8 @@ class Clase {
     }
 
     static mapping={
-        id generator:'uuid'
+        // id generator:'uuid'
+        id generator: 'assigned'
     }
 
 }

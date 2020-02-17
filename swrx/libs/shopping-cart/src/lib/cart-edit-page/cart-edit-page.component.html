@@ -50,7 +50,7 @@
     <button
       mat-menu-item
       class="menu-item"
-      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+      [disabled]="pedido.status === 'CERRADO'"
       (click)="facade.agregarManiobra()"
     >
       <mat-icon>local_shipping</mat-icon>
@@ -77,11 +77,18 @@
 
   <swrx-cart-items></swrx-cart-items>
   <div class="comentario-section">
-    <mat-form-field class="comentario-field" appearance="fill">
+    <mat-form-field class="comentario" appearance="fill">
       <mat-label>Comentario</mat-label>
       <input matInput type="text" [formControl]="cartForm.get('comentario')" />
       <mat-hint>Instrucciones y comentarios generales del pedido</mat-hint>
     </mat-form-field>
+    <swrx-upper-case-field
+      class="comprador"
+      appearance="fill"
+      placeholder="Comprador"
+      [formControl]="cartForm.get('comprador')"
+    >
+    </swrx-upper-case-field>
   </div>
   <div class="side-bar">
     <swrx-cart-summary

@@ -27,13 +27,21 @@ import { MatFormFieldControl, MatInput } from '@angular/material';
 @Component({
   selector: 'swrx-upper-case-field',
   template: `
-    <mat-form-field [style.width.%]="100" >
-      <input #input matInput [placeholder]="placeholder" autocomplete="off"
-        (input)="change($event)" [required]= "required"
-        (blur)="onBlur()"/>
-        <mat-error *ngIf="controlDir && !controlDir.control.valid">
-          {{getErrorMessage()}}
-        </mat-error>
+    <mat-form-field [style.width.%]="100" [appearance]="appearance">
+      <mat-label>{{ placeholder }}</mat-label>
+      <input
+        #input
+        matInput
+        [placeholder]="placeholder"
+        autocomplete="off"
+        (input)="change($event)"
+        [required]="required"
+        (blur)="onBlur()"
+      />
+      <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+      <mat-error *ngIf="controlDir && !controlDir.control.valid">
+        {{ getErrorMessage() }}
+      </mat-error>
     </mat-form-field>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -41,9 +49,11 @@ import { MatFormFieldControl, MatInput } from '@angular/material';
 export class UpperCaseFieldComponent implements OnInit, ControlValueAccessor {
   @Input() placeholder: string;
   @Input() required = false;
+  @Input() appearance = 'legacy';
+  @Input() hint = null;
 
-  @ViewChild('input', {static: true}) input: ElementRef;
-  @ViewChild(MatInput, {static: true}) inputField: MatInput;
+  @ViewChild('input', { static: true }) input: ElementRef;
+  @ViewChild(MatInput, { static: true }) inputField: MatInput;
   onChange;
   onTouched;
 
@@ -87,7 +97,8 @@ export class UpperCaseFieldComponent implements OnInit, ControlValueAccessor {
   }
 
   change($event) {
-    const upper = $event.target.value.toUpperCase();
+    const value = $event.target.value;
+    const upper = value.toUpperCase();
     this.renderer.setProperty(this.input.nativeElement, 'value', upper);
     this.onChange(this.input.nativeElement.value);
   }

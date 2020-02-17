@@ -45,6 +45,13 @@ const routes: Route[] = [
           import('@swrx/depositos').then(m => m.DepositosModule)
       },
       {
+        path: 'productos',
+        loadChildren: () =>
+          import('./productos-page/productos-page.module').then(
+            m => m.ProductosPageModule
+          )
+      },
+      {
         path: 'transportes',
         loadChildren: () =>
           import('@swrx/transportes').then(m => m.TransportesModule)

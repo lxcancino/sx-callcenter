@@ -2,8 +2,9 @@ package sx.core
 
 import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
-import sx.sat.ProductoSat
-import sx.sat.UnidadSat
+
+// import sx.sat.ProductoSat
+// import sx.sat.UnidadSat
 
 @ToString(includes='id,clave,decripcion',includeNames=true,includePackage=false)
 @EqualsAndHashCode(includes='id,clave')
@@ -55,13 +56,13 @@ class Producto {
 
     Boolean inventariable = true
 
-    Linea linea
+    String linea
 
-    Marca marca
+    String marca
 
-    Clase clase
+    String clase
 
-    Proveedor proveedorFavorito
+    // Proveedor proveedorFavorito
 
     String	comentario
 
@@ -73,9 +74,9 @@ class Producto {
 
     Date lastUpdated
 
-    ProductoSat productoSat
+    String productoSat
 
-    UnidadSat unidadSat
+    String unidadSat
 
     static constraints = {
 
@@ -92,7 +93,7 @@ class Producto {
         linea nullable:true
         marca nullable: true
         clase nullable: true
-        proveedorFavorito nullable:true
+        // proveedorFavorito nullable:true
         modoVenta inList: ['B','N']
         comentario nullable: true
         productoSat nullable: true
@@ -100,7 +101,8 @@ class Producto {
     }
 
     static mapping={
-        id generator:'uuid'
+        // id generator:'uuid'
+        id generator: 'assigned'
     }
 
 

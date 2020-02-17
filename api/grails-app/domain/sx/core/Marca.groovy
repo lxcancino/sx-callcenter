@@ -23,7 +23,8 @@ class Marca {
     }
 
     static mapping={
-        id generator:'uuid'
+        id generator: 'assigned'
+        // id generator:'uuid'
     }
 
 }

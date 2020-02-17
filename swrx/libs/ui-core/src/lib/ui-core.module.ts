@@ -43,7 +43,8 @@ import {
   MatProgressSpinnerModule,
   MatDividerModule,
   MatTooltipModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatProgressBarModule
 } from '@angular/material';
 
 import {
@@ -110,7 +111,8 @@ import * as moment from 'moment';
     MatTooltipModule,
     MatSnackBarModule,
     AgGridModule,
-    NgxMaskModule
+    NgxMaskModule,
+    MatProgressBarModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX' },

@@ -16,6 +16,7 @@ export interface Deposito {
   rechazo?: any;
   estado: 'PENDIENTE' | 'AUTORIZADO' | 'RECHAZADO';
   vendedor: string;
+  cerrado: boolean;
   referencia?: string;
   createUser?: string;
   updateUser?: string;

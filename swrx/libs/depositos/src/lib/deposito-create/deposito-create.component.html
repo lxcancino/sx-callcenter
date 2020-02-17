@@ -7,7 +7,13 @@
     <div class="pedido">
       <swrx-pedido-selector [parent]="form"></swrx-pedido-selector>
     </div>
-    <swrx-cliente-field formControlName="cliente"></swrx-cliente-field>
+    <div class="row">
+      <swrx-cliente-field
+        formControlName="cliente"
+        class="item"
+      ></swrx-cliente-field>
+      <swrx-sucursal-field [parent]="form"></swrx-sucursal-field>
+    </div>
     <swrx-cuenta-field formControlName="cuenta"></swrx-cuenta-field>
     <div class="row">
       <swrx-banco-field formControlName="banco"></swrx-banco-field>
@@ -21,7 +27,6 @@
         class="item"
         formControlName="fechaDeposito"
         label="Fecha Depósito"
-        [maxDate]="limitDate"
       ></swrx-fecha-field>
       <mat-checkbox class="item" formControlName="transferencia">
         Transferencia

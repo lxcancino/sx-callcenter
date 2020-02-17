@@ -66,7 +66,8 @@ export const initialState: CartState = {
   validationErrors: [],
   warrnings: [],
   envio: undefined,
-  dirty: false
+  dirty: false,
+  comprador: null
 };
 
 const cartReducer = createReducer(

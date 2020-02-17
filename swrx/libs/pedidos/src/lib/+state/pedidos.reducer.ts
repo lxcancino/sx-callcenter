@@ -35,9 +35,13 @@ const pedidosReducer = createReducer(
     loading: true,
     error: null
   })),
-  on(PedidosActions.loadPedidosSuccess, (state, { pedidos }) =>
-    pedidosAdapter.addAll(pedidos, { ...state, loaded: true, loading: false })
-  ),
+  on(PedidosActions.loadPedidosSuccess, (state, { pedidos }) => {
+    return pedidosAdapter.addAll(pedidos, {
+      ...state,
+      loaded: true,
+      loading: false
+    });
+  }),
   on(PedidosActions.loadPedidosFailure, (state, { error }) => ({
     ...state,
     loading: false,

@@ -52,6 +52,7 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       pedido: new FormControl(null),
       cliente: new FormControl(null, [Validators.required]),
+      sucursal: new FormControl(null, [Validators.required]),
       banco: new FormControl(null, [Validators.required]),
       cuenta: new FormControl(null, [Validators.required]),
       fecha: new FormControl(
@@ -86,6 +87,7 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
       .subscribe((pedido: Pedido) => {
         const f = this.form;
         const cliente = f.get('cliente');
+        const sucursal = f.get('sucursal');
         const impF = f.get('importes') as FormGroup;
         const efectivo = impF.get('efectivo');
         const cheque = impF.get('cheque');
@@ -94,8 +96,9 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
         console.log('Pedido: ', pedido);
         if (pedido) {
           cliente.disable();
+          sucursal.disable();
           cliente.setValue(pedido.cliente);
-
+          sucursal.setValue(pedido.sucursal);
           switch (pedido.formaDePago) {
             case FormaDePago.DEPOSITO_EFECTIVO:
               efectivo.setValue(pedido.total);
@@ -112,7 +115,9 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
           }
         } else {
           cliente.setValue(null);
+          sucursal.setValue(null);
           cliente.enable();
+          sucursal.enable();
           f.patchValue({ total: 0.0, transferencia: true });
         }
       });
@@ -150,6 +155,7 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
   submit() {
     if (this.form.valid) {
       const d: Deposito = this.buildDeposito();
+      // console.log('Deposito: ', d);
       this.dialogRef.close(d);
     }
   }

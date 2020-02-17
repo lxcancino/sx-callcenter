@@ -15,10 +15,15 @@
         [disabled]="form.disabled"
       ></swrx-pedido-selector>
     </div>
-    <swrx-cliente-field
-      formControlName="cliente"
-      *ngIf="isEditable()"
-    ></swrx-cliente-field>
+
+    <div class="row">
+      <swrx-cliente-field
+        formControlName="cliente"
+        class="item"
+      ></swrx-cliente-field>
+      <swrx-sucursal-field [parent]="form"></swrx-sucursal-field>
+    </div>
+
     <swrx-cuenta-field formControlName="cuenta"></swrx-cuenta-field>
     <div class="row">
       <swrx-banco-field formControlName="banco"></swrx-banco-field>

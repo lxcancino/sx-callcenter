@@ -5,7 +5,7 @@ import { DataPersistence } from '@nrwl/angular';
 import { PedidosPartialState } from './pedidos.reducer';
 import * as PedidosActions from './pedidos.actions';
 import { PedidoService } from '../services/pedido.service';
-import { map } from 'rxjs/operators';
+import { map, delay, tap } from 'rxjs/operators';
 import { PedidosPageComponent } from '../pedidos-page/pedidos-page.component';
 import { ActivatedRouteSnapshot } from '@angular/router';
 
@@ -13,17 +13,24 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 export class PedidosEffects {
   loadPedidos$ = createEffect(() =>
     this.dataPersistence.navigation(PedidosPageComponent, {
-      run: (a: ActivatedRouteSnapshot, state: PedidosPartialState) => {
-        console.log('Cargando los pedidos....');
-        return this.service
-          .list()
-          .pipe(map(pedidos => PedidosActions.loadPedidosSuccess({ pedidos })));
-      },
-      onError: (a: ActivatedRouteSnapshot, e: any) => {
-        // we can log and error here and return null
-        // we can also navigate back
+      run: () => PedidosActions.loadPedidos()
+    })
+  );
+
+  reloadPedidos$ = createEffect(() =>
+    this.dataPersistence.fetch(PedidosActions.loadPedidos, {
+      run: () =>
+        this.service.list().pipe(
+          delay(1000),
+          tap(() => console.log('Cargando pedidos: ')),
+          map(pedidos => PedidosActions.loadPedidosSuccess({ pedidos }))
+        ),
+      onError: (
+        action: ReturnType<typeof PedidosActions.loadPedidos>,
+        error
+      ) => {
         console.error('Pedidos not loaded....');
-        return null;
+        return PedidosActions.loadPedidosFailure({ error });
       }
     })
   );
