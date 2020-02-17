@@ -1,0 +1,7 @@
+import sx.callcenter.PedidoDet
+
+model {
+	PedidoDet pedidoDet
+}
+
+json tmpl.pedidoDet(pedidoDet)

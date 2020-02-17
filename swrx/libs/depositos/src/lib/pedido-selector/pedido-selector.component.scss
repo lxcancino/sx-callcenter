@@ -1,0 +1,12 @@
+.pedido-selector {
+  display: flex;
+  .vendedor {
+    flex: 1 0 0;
+  }
+  .folio,
+  .fecha,
+  .total {
+    width: 150px;
+    padding-right: 5px;
+  }
+}

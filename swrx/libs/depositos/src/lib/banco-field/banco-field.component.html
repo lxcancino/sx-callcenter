@@ -7,6 +7,7 @@
       (selectionChange)="onSelection($event)"
       [compareWith]="compareWith"
       [value]="selected"
+      [disabled]="disabled"
     >
       <mat-option *ngFor="let b of bancos" [value]="b">
         {{ b.nombreCorto }}

@@ -1,0 +1,11 @@
+import sx.callcenter.Pedido
+
+model {
+	Pedido pedido
+}
+
+json g.render(pedido, [resolveTemplate: false, exludes: ['autorizacion', 'partidas', 'cliente']]) {
+	autorizacion g.render(pedido.autorizacion)
+	partidas g.render(template: '/pedidoDet/pedidoDet', collection: pedido.partidas, var: 'pedidoDet')
+	cliente g.render(pedido.cliente)
+}

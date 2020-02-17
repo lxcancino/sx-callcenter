@@ -1,0 +1,19 @@
+<mat-toolbar color="primary">
+  <span class="title">
+    SX CALLCENTER
+  </span>
+</mat-toolbar>
+<div class="container">
+  <ngx-auth-firebaseui
+    #authComponent
+    [messageOnAuthSuccess]="loginSuccessMsg"
+    [messageOnAuthError]="loginFailMsg"
+    (onSuccess)="onSuccess($event)"
+    [guestEnabled]="false"
+    goBackURL="/inicio"
+    providers="['google', 'facebook', 'twitter']"
+  ></ngx-auth-firebaseui>
+  <button mat-button (click)="signOut()" *ngIf="user$ | async as user">
+    <mat-icon>logout</mat-icon> CERRAR SESSION
+  </button>
+</div>

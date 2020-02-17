@@ -26,13 +26,23 @@ swrx-deposito-importes-field {
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: baseline;
-  .item  {
+  .item {
     flex: 1 0 auto;
-    // border: 1px solid powderblue;
   }
 }
 
-.row  .total {
+.row .total {
   margin-left: auto;
   flex-basis: 33%;
+}
+
+.importes {
+  grid-column: 1 / 5;
+  display: flex;
+}
+
+.pedido {
+  grid-column: 1 / 5;
+  display: flex;
+  margin: 6px 0;
 }

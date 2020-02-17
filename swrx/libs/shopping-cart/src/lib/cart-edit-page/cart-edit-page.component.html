@@ -1,0 +1,136 @@
+<div class="shopping-cart" *ngIf="pedido$ | async as pedido">
+  <swrx-cart-toolbar
+    [cliente]="facade.cliente$ | async"
+    [pedido]="pedido"
+    [nombre]="facade.nombre$ | async"
+    (cambiarNombre)="onCambiarNombre($event)"
+    (seleccionarSocio)="onSocio($event)"
+    [socio]="facade.socio$ | async"
+  >
+    <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
+    <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
+    <swrx-sucursal-field [parent]="cartForm"></swrx-sucursal-field>
+    <button
+      mat-icon-button
+      (click)="cambiarCliente()"
+      class="action"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      (click)="addCartItem()"
+      class="action"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
+      <mat-icon>add_shopping_cart</mat-icon>
+    </button>
+
+    <button
+      mat-menu-item
+      class="menu-item"
+      (click)="clienteNuevo()"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
+      <mat-icon>person_add</mat-icon>
+      <span>Alta de cliente (Ctr + C)</span>
+    </button>
+
+    <button
+      mat-menu-item
+      class="menu-item"
+      *ngIf="facade.descuentoEspecialPosible$ | async"
+      (click)="onDescuentoEspecial()"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
+      <mat-icon>monetization_on</mat-icon>
+      <span>Descuento especial</span>
+    </button>
+    <button
+      mat-menu-item
+      class="menu-item"
+      [disabled]="pedido.status === 'CERRADO'"
+      (click)="facade.agregarManiobra()"
+    >
+      <mat-icon>local_shipping</mat-icon>
+      <span>Maniobra</span>
+    </button>
+    <button
+      mat-menu-item
+      class="menu-item"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
+      <mat-icon>dialpad</mat-icon>
+      <span>Venta INE</span>
+    </button>
+    <button
+      mat-menu-item
+      class="menu-item"
+      (click)="showDescuentos()"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
+      <mat-icon>redeem</mat-icon>
+      <span>Descuentos (Ctr + D)</span>
+    </button>
+  </swrx-cart-toolbar>
+
+  <swrx-cart-items></swrx-cart-items>
+  <div class="comentario-section">
+    <mat-form-field class="comentario" appearance="fill">
+      <mat-label>Comentario</mat-label>
+      <input matInput type="text" [formControl]="cartForm.get('comentario')" />
+      <mat-hint>Instrucciones y comentarios generales del pedido</mat-hint>
+    </mat-form-field>
+    <swrx-upper-case-field
+      class="comprador"
+      appearance="fill"
+      placeholder="Comprador"
+      [formControl]="cartForm.get('comprador')"
+    >
+    </swrx-upper-case-field>
+  </div>
+  <div class="side-bar">
+    <swrx-cart-summary
+      [sumary]="sumary$ | async"
+      [kilos]="facade.kilos$ | async"
+      (checkout)="onCheckout()"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
+      <div class="checkout-actions">
+        <div class="main-actions">
+          <button mat-raised-button (click)="cancelar()">
+            <mat-icon>arrow_back</mat-icon> Cancelar
+          </button>
+          <button mat-raised-button color="accent" (click)="goToNewCart()">
+            <mat-icon>autorenew</mat-icon> Nuevo
+          </button>
+          <button mat-icon-button><mat-icon>print</mat-icon></button>
+        </div>
+        <ng-container *ngIf="pedido.status === 'COTIZACION'">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="cerrarPedido(pedido)"
+            [disabled]="facade.hasWarnings$ | async"
+          >
+            <mat-icon>send</mat-icon>Cerrar
+          </button>
+
+          <button
+            mat-raised-button
+            color="warn"
+            [disabled]="!canDelete(pedido)"
+          >
+            <mat-icon>delete</mat-icon> Eliminar
+          </button>
+        </ng-container>
+      </div>
+    </swrx-cart-summary>
+    <swrx-cart-info
+      [cartForm]="cartForm"
+      (autorizar)="onAutorizar(pedido, $event)"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    ></swrx-cart-info>
+  </div>
+</div>

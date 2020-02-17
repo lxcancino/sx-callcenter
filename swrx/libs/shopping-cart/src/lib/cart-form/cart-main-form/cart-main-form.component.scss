@@ -1,0 +1,11 @@
+.main-form {
+  // border: 1px solid red;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  padding: 5px;
+  & > * {
+    margin-right: 10px;
+  }
+  font-size: 14px;
+}

@@ -32,11 +32,11 @@ export const CUENTAS = [
     lastUpdated: '2017-12-14T19:05:03Z',
     moneda: 'MXN',
     numero: '4019118074',
-    activo: true,
+    activo: false,
     tipo: 'CHEQUES',
     sw2: 151227,
     descripcion: 'HSBC MEXICO SA',
-    disponibleEnVenta: true
+    disponibleEnVenta: false
   },
   {
     id: 'b0ea1ed4-e101-11e7-b1f8-b4b52f67eab0',

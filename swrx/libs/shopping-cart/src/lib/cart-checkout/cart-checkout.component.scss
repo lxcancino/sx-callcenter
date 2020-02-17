@@ -1,0 +1,14 @@
+.title {
+  display: flex;
+  .user {
+    margin-left: auto;
+  }
+}
+.mat-dialog-content {
+  max-height: 450px;
+  overflow: scroll;
+}
+.json {
+  max-height: 400px;
+  overflow: auto;
+}

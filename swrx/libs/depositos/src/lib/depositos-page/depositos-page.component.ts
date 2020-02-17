@@ -1,9 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DepositoService } from '../services/deposito.service';
 import { Deposito } from '../+state/depositos.models';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { DepositoEditComponent } from '../deposito-edit/deposito-edit.component';
+
+import { AngularFireAuth } from '@angular/fire/auth';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'swrx-depositos-page',
@@ -13,15 +16,32 @@ import { DepositoEditComponent } from '../deposito-edit/deposito-edit.component'
 })
 export class DepositosPageComponent implements OnInit {
   depositos$: Observable<Deposito[]>;
-  constructor(private service: DepositoService, private dialog: MatDialog) {}
+  user: any;
+  destroy$ = new Subject<boolean>();
+  constructor(
+    private service: DepositoService,
+    private dialog: MatDialog,
+    private firebaseAuth: AngularFireAuth
+  ) {}
 
   ngOnInit() {
     this.reload();
+    this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
+      if (usr) {
+        const { displayName, email } = usr;
+        this.user = { displayName, email };
+      } else {
+        this.user = null;
+      }
+    });
   }
 
   onCreate(event: Deposito) {
+    event.createUser = this.user.displayName;
+    event.updateUser = this.user.displayName;
     this.service.save(event);
   }
+
   onEdit(deposito: Deposito) {
     this.dialog
       .open(DepositoEditComponent, {
@@ -30,7 +50,8 @@ export class DepositosPageComponent implements OnInit {
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          console.log('Salvando cambios: ', res);
+          // console.log('Salvando cambios: ', res);
+          res.updateUser = this.user.displayName;
           this.service.update(res);
         }
       });

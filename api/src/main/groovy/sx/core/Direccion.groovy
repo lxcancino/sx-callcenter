@@ -3,6 +3,11 @@ package sx.core
 import grails.web.databinding.WebDataBinding
 import org.grails.datastore.gorm.GormValidateable
 
+import groovy.transform.ToString
+import groovy.transform.EqualsAndHashCode
+
+@ToString(includes = 'calle, numeroExterior, colonia, codigoPostal', includeNames=true, includePackage=false)
+@EqualsAndHashCode(includes='calle, numeroExterior, colonia, codigoPostal')
 class Direccion implements GormValidateable, WebDataBinding{
 
     String calle

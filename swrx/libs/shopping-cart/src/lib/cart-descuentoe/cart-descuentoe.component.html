@@ -1,0 +1,18 @@
+<h3>Descuento especial actual: {{ descuento / 100 | percent }}</h3>
+<mat-dialog-content>
+  <swrx-numeric-field
+    [formControl]="control"
+    placeholder="Descuento"
+  ></swrx-numeric-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-stroked-button [mat-dialog-close]>Cancelar</button>
+  <button
+    mat-stroked-button
+    color="accent"
+    (click)="onSubmit()"
+    [disabled]="control.invalid || control.pristine"
+  >
+    Asignar
+  </button>
+</mat-dialog-actions>

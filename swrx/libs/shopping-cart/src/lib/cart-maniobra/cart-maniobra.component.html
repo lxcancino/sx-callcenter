@@ -1,0 +1,26 @@
+<ng-container *ngIf="isValid(); else sinEnvio">
+  <h3 mat-card-title>
+    Cargo por maniobra
+  </h3>
+  <div>
+    <mat-form-field [style.width.%]="100">
+      <mat-label>Costo</mat-label>
+      <input type="number" matInput [formControl]="control" />
+      <span matPrefix>$&nbsp;</span>
+    </mat-form-field>
+  </div>
+  <mat-card-actions>
+    <button mat-button [mat-dialog-close]>Cancelar</button>
+    <button
+      mat-button
+      color="accent"
+      (click)="onSubmit()"
+      [disabled]="control.invalid || control.pristine"
+    >
+      Asignar
+    </button>
+  </mat-card-actions>
+</ng-container>
+<ng-template #sinEnvio>
+  <h3 mat-card-title>{{ invalidMessage() }}</h3>
+</ng-template>

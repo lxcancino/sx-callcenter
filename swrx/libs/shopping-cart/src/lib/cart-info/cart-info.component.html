@@ -1,0 +1,122 @@
+<div class="cart-info-container">
+  <mat-tab-group [dynamicHeight]="false" [selectedIndex]="currentTab">
+    <mat-tab label="Cliente">
+      <div class="cliente" *ngIf="facade.cliente$ | async as cliente">
+        <section class="direccion" *ngIf="cliente.direccion as direccion">
+          <span class="header">Dirección:</span>
+          <div class="direccion-row">
+            <span
+              >Calle: {{ direccion.calle }} #:{{
+                direccion.numeroExterior
+              }} </span
+            ><span *ngIf="!!direccion.numeroExterior"
+              >#Int: {{ direccion.numeroInterior }}
+            </span>
+          </div>
+          <div class="direccion-row">
+            <span>Colonia: {{ direccion.colonia }}</span>
+          </div>
+          <div class="direccion-row">
+            <span>Municipio: {{ direccion.municipio }}</span>
+            <span>Estado: {{ direccion.estado }}</span>
+          </div>
+          <div class="direccion-row">
+            <span>C.P: {{ direccion.colonia }}</span>
+            <span>País: {{ direccion.pais }}</span>
+          </div>
+        </section>
+        <section class="telefonos">
+          <span class="header">Teléfonos:</span>
+          <div class="field" *ngIf="cliente.telefonos as telefonos">
+            <span *ngFor="let item of telefonos" class="telefono">
+              {{ item | mask: '(009) 000-00-00' }}
+            </span>
+          </div>
+        </section>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span
+          matBadgeOverlap="false"
+          [matBadge]="
+            cartForm.get('usoDeCfdi').invalid || cartForm.pristine ? 1 : 0
+          "
+          matBadgeColor="warn"
+          [matBadgeHidden]="cartForm.get('usoDeCfdi').valid"
+          >Cfdi</span
+        >
+      </ng-template>
+      <div class="cfdi" [formGroup]="cartForm">
+        <swrx-cart-uso [cartForm]="cartForm"></swrx-cart-uso>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Cfdi Email"
+            formControlName="cfdiMail"
+            placeholder="Email"
+          />
+        </mat-form-field>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Envío">
+      <swrx-envio-panel
+        [envio]="facade.envio$ | async"
+        (actualizar)="actualizarEnvio()"
+        (cancelar)="cancelarEnvio()"
+      ></swrx-envio-panel>
+    </mat-tab>
+
+    <mat-tab #errorsTab>
+      <ng-template mat-tab-label>
+        <span
+          matBadgeOverlap="false"
+          [matBadge]="facade.errorsCount$ | async"
+          matBadgeColor="warn"
+          [matBadgeHidden]="(facade.errorsCount$ | async) < 1"
+          >Errores</span
+        >
+      </ng-template>
+      <mat-list dense>
+        <mat-list-item *ngFor="let err of facade.errors$ | async as errors">
+          <mat-icon matListIcon color="warn">error</mat-icon>
+          {{ err.descripcion }}
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
+
+    <mat-tab #warningsTab>
+      <ng-template mat-tab-label>
+        <span
+          matBadgeOverlap="false"
+          [matBadge]="facade.warningsCount$ | async"
+          matBadgeColor="accent"
+          [matBadgeHidden]="!(facade.hasWarnings$ | async)"
+          >Advertencias</span
+        >
+      </ng-template>
+      <mat-list dense>
+        <mat-list-item *ngFor="let err of facade.warnings$ | async as warnings">
+          <mat-icon matListIcon color="accent">error</mat-icon>
+          {{ err.descripcion }}
+        </mat-list-item>
+      </mat-list>
+      <div
+        class="autorizacion-panel"
+        *ngIf="facade.autorizaciones$ | async as autorizaciones"
+      >
+        <button
+          mat-stroked-button
+          color="accent"
+          (click)="autorizar.emit(autorizaciones)"
+          *ngIf="autorizaciones"
+          [disabled]="!(facade.currentPedido | async)"
+        >
+          Autorizar
+        </button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

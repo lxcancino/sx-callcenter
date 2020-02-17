@@ -31,6 +31,8 @@ class Cliente {
 
     Set<ComunicacionEmpresa> medios = []
 
+    Set<ClienteDireccion> direcciones
+
     Set telefonos
     String fax
     String cfdiMail
@@ -51,13 +53,14 @@ class Cliente {
 
     static hasOne = [credito: ClienteCredito]
 
-    static hasMany =[medios:ComunicacionEmpresa]
+    static hasMany =[medios:ComunicacionEmpresa, direcciones: ClienteDireccion]
 
     static embedded = ['direccion']
 
     static mapping={
         id generator:'uuid'
         medios cascade: "all-delete-orphan"
+        direcciones cascade: "all-delete-orphan"
     }
 
     static transients = ['telefonos','fax','cfdiMail']
@@ -80,5 +83,27 @@ class Cliente {
     def getCfdiValidado() {
         return medios.find{ it.tipo == 'MAIL' && it.cfdi}?.validado
     }
+
+    
+    def selectDirecciones() {
+        def dd = this.direccion
+        Map dirs = [:]
+        if(dd) {
+            dirs << ["${dd?.calle?.trim()?.take(10)} #:${dd?.numeroExterior} CP:${dd?.codigoPostal}": dd ]
+        } 
+        direcciones.each {
+            def dir = it.direccion
+            dirs << ["${dir?.calle?.trim()?.take(10)} #:${dir?.numeroExterior} CP:${dir?.codigoPostal}": dir ]
+        }
+        return dirs
+    }
+
+    def findSocios() {
+        if(clave == 'U050008') 
+            return Socio.where{ cliente == this}.list()
+        else
+            return null
+    }
+    
 
 }

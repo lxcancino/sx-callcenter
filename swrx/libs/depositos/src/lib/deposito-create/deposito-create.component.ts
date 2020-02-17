@@ -17,6 +17,7 @@ import { MatDialogRef } from '@angular/material';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Deposito } from '../+state/depositos.models';
+import { Pedido, FormaDePago } from '@swrx/core-model';
 
 const depositoValidator: ValidatorFn = (
   control: any
@@ -49,7 +50,9 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
 
   private buildForm() {
     this.form = new FormGroup({
+      pedido: new FormControl(null),
       cliente: new FormControl(null, [Validators.required]),
+      sucursal: new FormControl(null, [Validators.required]),
       banco: new FormControl(null, [Validators.required]),
       cuenta: new FormControl(null, [Validators.required]),
       fecha: new FormControl(
@@ -68,11 +71,56 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
           tarjeta: new FormControl(0.0, [Validators.min(0.0)])
         },
         depositoValidator
-      )
+      ),
+      referencia: new FormControl(null, [Validators.required])
     });
     this.form.get('importes').disable();
     this.transfernciaListener();
     this.totalListener();
+    this.pedidoListener();
+  }
+
+  private pedidoListener() {
+    this.form
+      .get('pedido')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((pedido: Pedido) => {
+        const f = this.form;
+        const cliente = f.get('cliente');
+        const sucursal = f.get('sucursal');
+        const impF = f.get('importes') as FormGroup;
+        const efectivo = impF.get('efectivo');
+        const cheque = impF.get('cheque');
+        const transferencia = f.get('transferencia');
+        const total = f.get('total');
+        console.log('Pedido: ', pedido);
+        if (pedido) {
+          cliente.disable();
+          sucursal.disable();
+          cliente.setValue(pedido.cliente);
+          sucursal.setValue(pedido.sucursal);
+          switch (pedido.formaDePago) {
+            case FormaDePago.DEPOSITO_EFECTIVO:
+              efectivo.setValue(pedido.total);
+              transferencia.setValue(false);
+              break;
+            case FormaDePago.DEPOSITO_CHEQUE:
+              cheque.setValue(pedido.total);
+              transferencia.setValue(false);
+              break;
+            default:
+              transferencia.setValue(true);
+              total.setValue(pedido.total);
+              break;
+          }
+        } else {
+          cliente.setValue(null);
+          sucursal.setValue(null);
+          cliente.enable();
+          sucursal.enable();
+          f.patchValue({ total: 0.0, transferencia: true });
+        }
+      });
   }
 
   private transfernciaListener() {
@@ -107,21 +155,36 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
   submit() {
     if (this.form.valid) {
       const d: Deposito = this.buildDeposito();
+      // console.log('Deposito: ', d);
       this.dialogRef.close(d);
     }
   }
 
   buildDeposito(): Deposito {
     const data: any = this.form.getRawValue();
-    const { cliente, cuenta } = data;
+    const { cliente, cuenta, pedido } = data;
     const deposito = { ...data };
     deposito.nombre = cliente.nombre;
+    deposito.cliente = {
+      id: cliente.id,
+      nombre: cliente.nombre,
+      rfc: cliente.rfc
+    };
     deposito.rfc = cliente.rfc;
     deposito.cuenta = {
       id: cuenta.id,
       descripcion: cuenta.descripcion,
       numero: cuenta.numero
     };
+    if (pedido) {
+      deposito.pedido = {
+        id: pedido.id,
+        folio: pedido.folio,
+        fecha: pedido.fecha,
+        total: pedido.total,
+        formaDePago: pedido.formaDePago
+      };
+    }
     return deposito;
   }
 

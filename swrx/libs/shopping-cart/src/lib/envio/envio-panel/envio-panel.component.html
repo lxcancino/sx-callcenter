@@ -1,0 +1,67 @@
+<div *ngIf="envio; else newEnvio" class="envio envio-edit">
+  <div class="row">
+    <label>Tipo:</label>
+    <span>{{ envio.tipo }}</span>
+  </div>
+  <div
+    class="row"
+    *ngIf="
+      (envio.tipo === 'FORANEO' || envio.tipo === 'OCURRE') && envio.transporte
+    "
+  >
+    <label>Transporte:</label>
+    <span matTooltip="{{ getDireccionLabel(envio.transporte.direccion) }}">{{
+      envio.transporte.nombre
+    }}</span>
+  </div>
+
+  <address>
+    <div class="row">
+      <label>Calle: </label> <span>{{ direccion.calle }}</span>
+      <label># Ext: </label> <span>{{ direccion.numeroExterior }}</span>
+      <label *ngIf="direccion.numeroInterior"># Int: </label>
+      <span>{{ direccion.numeroInterior }}</span>
+    </div>
+    <div class="row">
+      <label>Colonia: </label> <span>{{ direccion.colonia }}</span>
+    </div>
+    <div class="row">
+      <label>Mpo: </label> <span>{{ direccion.municipio }}</span>
+      <label>Estado: </label> <span>{{ direccion.estado }}</span>
+    </div>
+  </address>
+  <div class="row" *ngIf="envio.contacto">
+    <label>Contacto: </label> <span>{{ envio.contacto }}</span>
+  </div>
+  <div class="row" *ngIf="envio.telefono">
+    <label>Teléfono: </label> <span>{{ envio.telefono }}</span>
+  </div>
+  <div class="row" *ngIf="envio.horario">
+    <label>Horario: </label> <span>{{ envio.horario }}</span>
+  </div>
+  <div class="row" *ngIf="envio.comentario">
+    <label>Comentario: </label> <span>{{ envio.comentario }}</span>
+  </div>
+  <div class="row" *ngIf="envio.fechaDeEntrega">
+    <label>F. Entrega: </label>
+    <span>{{ envio?.fechaDeEntrega | date: 'dd/MM/yyyy' }}</span>
+  </div>
+  <div class="actions" *ngIf="envio">
+    <button mat-flat-button (click)="actualizar.emit()" color="accent">
+      <fa-icon icon="truck"></fa-icon>
+      Actualizar
+    </button>
+    <button mat-flat-button class="pad-left" (click)="cancelar.emit()">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+  </div>
+</div>
+<ng-template #newEnvio>
+  <div class="envio-create">
+    <button mat-flat-button (click)="actualizar.emit()" color="accent">
+      <fa-icon icon="truck"></fa-icon>
+      Registrar Envio
+    </button>
+  </div>
+</ng-template>

@@ -6,6 +6,7 @@ import com.google.cloud.firestore.EventListener
 import com.google.cloud.firestore.FirestoreException
 import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.google.cloud.firestore.QuerySnapshot
+import com.google.cloud.firestore.ListenerRegistration 
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 
@@ -24,10 +25,20 @@ import org.apache.commons.lang3.exception.ExceptionUtils
 
 import javax.annotation.Nullable
 
-@ToString(includeFields = true)
+import org.springframework.stereotype.Component
+import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
+
 @Slf4j
+@ToString(includeFields = true)
+@Component
 class FirebaseSdk {
-    
+
+	@PostConstruct
+    void doLog() {}
+
+    @PreDestroy
+    void closeSession() {}
 
     def init() {
     	// FileInputStream serviceAccount = new FileInputStream("/Users/rubencancino/Desktop/firebase/siipapx-436ce-firebase-adminsdk-ci4eg-779346f0c5.json");
@@ -41,25 +52,7 @@ class FirebaseSdk {
 		log.info('Firebase APP: ', app)
 
     }
-    /*
-    def registerFirestoreListeners() {
-    	DatabaseReference ref = FirebaseDatabase.getInstance()
-    	.getReference("/depositos");
-    	log.info('Database referencia: {}', ref)
-    	ref.addValueEventListener(new ValueEventListener() {
-  			@Override
-  			public void onDataChange(DataSnapshot dataSnapshot) {
-    			Object document = dataSnapshot.getValue();
-    			log.info('Data changed: {}', document)
-  			}
-
-  			@Override
-  			public void onCancelled(DatabaseError error) {
-  				System.out.println("The read failed: " + databaseError.getCode());
-  			}
-		});
-    }
-    */
+    
      def registerFirestoreListeners2() {
      	def db = FirestoreClient.getFirestore()
      	// log.info('FireStore: {}', db)
@@ -103,10 +96,12 @@ class FirebaseSdk {
 
 	}
 
+	ListenerRegistration registration
+
 	def registerFirestoreListeners() {
 		Firestore db = FirestoreClient.getFirestore()
 
-		db.collection("depositos")
+		registration = db.collection("depositos")
 				.addSnapshotListener(new EventListener<QuerySnapshot>() {
 			@Override
 			void onEvent(

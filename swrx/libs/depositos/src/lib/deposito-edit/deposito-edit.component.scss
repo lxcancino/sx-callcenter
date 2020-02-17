@@ -37,9 +37,25 @@ swrx-deposito-importes-field {
     flex: 1 0 auto;
     // border: 1px solid powderblue;
   }
+  *:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+.row2 {
+  grid-column: 1 / 5;
+  display: flex;
+  border: 1px solid red;
+  .item {
+    flex: 1 0 auto;
+  }
+}
+.importes {
+  grid-column: 1 / 5;
+  display: flex;
 }
 
-.row .total {
-  margin-left: auto;
-  flex-basis: 33%;
+.pedido {
+  grid-column: 1 / 5;
+  display: flex;
+  margin: 6px 0;
 }

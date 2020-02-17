@@ -12,8 +12,16 @@ class UrlMappings {
         "/api/depositos/bancos"(controller: 'deposito', action: 'bancos', method: 'GET')
         "/api/depositos/cuentas"(controller: 'deposito', action: 'cuentas', method: 'GET')
         
+        "/api/productos"(resources: 'producto', excludes: ['create', 'edit', 'delete'])
+        "/api/pedidos"(resources: 'pedido', excludes: ['create', 'edit'])
+        "/api/pedidos/cerrar/$id"(controller: 'pedido', action: 'cerrar', method: 'PUT')
+        "/api/pedidos/autorizar/$id"(controller: 'pedido', action: 'autorizar', method: 'PUT')
+        "/api/pedidos/findByFolio"(controller: 'pedido', action: 'findByFolio', method: 'GET')
+        "/api/pedidos/print/$id"(controller: 'pedido', action: 'print', method: 'GET')
 
-        
+        "/api/zip"(controller: 'zip', action: 'find', method: 'GET')
+        "/api/transportes"(resources: 'transporte', excludes: ['create', 'edit', 'delete'])
+
         "/"(controller: 'application', action:'index')
         "500"(view: '/error')
         "404"(view: '/notFound')

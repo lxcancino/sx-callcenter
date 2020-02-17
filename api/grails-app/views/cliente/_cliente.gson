@@ -1,0 +1,15 @@
+import sx.core.Cliente
+
+model {
+	Cliente cliente
+}
+
+json g.render(cliente, [excludes: ['credito', 'cobrador', 'medios'], resolveTemplate: false]) {
+	credito g.render(cliente.credito)
+	medios g.render(cliente.medios)
+	direcciones g.render(cliente.selectDirecciones())
+	direccionesEntrega g.render(cliente.direcciones)
+	cfdiMail cliente.getCfdiMail()
+	telefonos cliente.getTelefonos()
+	socios g.render(cliente.findSocios())
+}

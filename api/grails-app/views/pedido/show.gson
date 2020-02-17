@@ -1,0 +1,16 @@
+import sx.callcenter.Pedido
+
+model {
+	Pedido pedido
+}
+
+json g.render(pedido, [ excludes: ['cliente', 'partidas', 'autorizacion'], resolveTemplate: false]) {
+	cliente g.render(pedido.cliente)
+	partidas g.render(pedido.partidas)
+	envio g.render(pedido.envio, [excludes: ['transporte']]) {
+		if(pedido.envio.transporte)
+			transporte g.render(pedido.envio.transporte)
+	}
+	socio g.render(pedido.socio)
+	autorizacion g.render(pedido.autorizacion)
+}

@@ -1,0 +1,24 @@
+.container {
+  height: 90vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgb(36, 33, 0);
+  background: linear-gradient(
+    218deg,
+    rgba(36, 33, 0, 0.4206057422969187) 12%,
+    rgba(228, 206, 182, 0.6615021008403361) 51%
+  );
+  .mat-toolbar {
+    width: 650px;
+  }
+  ngx-auth-firebaseui {
+    width: 650px;
+  }
+}
+.title {
+  margin-left: auto;
+  margin-right: auto;
+}

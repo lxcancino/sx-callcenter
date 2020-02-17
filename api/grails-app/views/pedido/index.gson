@@ -1,0 +1,8 @@
+import sx.callcenter.Pedido
+
+model {
+	Iterable<Pedido> pedidoList
+}
+
+json tmpl.pedido(pedidoList ?: [])
+

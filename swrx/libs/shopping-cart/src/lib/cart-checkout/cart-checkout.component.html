@@ -1,0 +1,84 @@
+<span matDialogTitle class="title">
+  <span *ngIf="id; else alta">
+    Revisar y actualizar pedido: {{ changes.folio }}
+  </span>
+  <ng-template #alta>
+    Generando pedido
+  </ng-template>
+  <span class="user">
+    <span>Vendedor: </span>
+    <strong>
+      {{ user.displayName }}
+    </strong>
+  </span>
+</span>
+<mat-divider></mat-divider>
+
+<mat-vertical-stepper linear="false" #stepper>
+  <mat-step label="Cliente">
+    <p>
+      {{ changes.nombre }}
+    </p>
+    <div>
+      <span>Fecha: {{ changes.fecha | date: 'dd/MM/yyyy' }}</span>
+      <span>Tipo: {{ changes.tipo }}</span>
+    </div>
+    <div>
+      <span>Total: {{ changes.total | currency }}</span>
+      <span>Forma de pago: {{ changes.formaDePago }}</span>
+    </div>
+    <div>
+      <strong>RFC: {{ changes.rfc }}</strong>
+      <span>Uso de CFDI: {{ changes.usoDeCfdi }}</span>
+    </div>
+    <div *ngIf="changes.socio">
+      <strong>Socio: {{changes.socio.nombre}}</strong>
+    </div>
+
+    <div>
+      <button mat-stroked-button matStepperNext>Siguiente</button>
+    </div>
+  </mat-step>
+  <mat-step label="Envío" *ngIf="changes.envio">
+    <pre>
+      {{ changes.envio | json }}
+    </pre>
+    <div>
+      <!-- <button mat-button matStepperPrevious>Anterior</button> -->
+      <button mat-button matStepperNext>Siguiente</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Resumen</ng-template>
+    <div class="json">
+      <!-- <pre>
+        Ejecutivo: <strong>
+          {{ user.displayName }}
+        </strong>
+      </pre>
+      <pre>
+        Comentario: {{ changes.comentario }}
+      </pre>
+      <pre>
+        Cpomprador: {{ changes.comprador }}
+      </pre> -->
+    </div>
+    <div>
+      <button mat-button mat-dialog-close>
+        <mat-icon>cancel</mat-icon> Cancelar
+      </button>
+      <button mat-button color="accent" (click)="doSubmit()">
+        <mat-icon>check</mat-icon> Salvar pedido
+      </button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>
+<!-- <mat-divider></mat-divider> -->
+<!-- <mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close>
+    <mat-icon>cancel</mat-icon> CANCELAR
+  </button>
+  <button mat-stroked-button color="primary" (click)="doSubmit()">
+    <mat-icon>check</mat-icon> ACEPTAR
+  </button>
+</mat-dialog-actions> -->

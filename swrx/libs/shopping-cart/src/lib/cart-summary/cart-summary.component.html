@@ -1,0 +1,48 @@
+<div class="summary">
+  <div class="row">
+    <label>Kilos (kg):</label>
+    <span class="value">{{ kilos | number: '1.1-3' }}</span>
+  </div>
+  <div class="row">
+    <label>importe:</label>
+    <span class="value">{{ sumary.importe | currency }}</span>
+  </div>
+  <div class="row">
+    <label
+      >descuento:
+      <small>({{ sumary.descuento / 100 | percent }})</small>
+    </label>
+    <span class="value">{{ sumary.descuentoImporte | currency }}</span>
+  </div>
+  <div class="row">
+    <label>subtotal:</label>
+    <span class="value">{{ sumary.subtotal | currency }}</span>
+  </div>
+  <div class="row">
+    <label>impuesto:</label>
+    <span class="value">{{ sumary.impuesto | currency }}</span>
+  </div>
+
+  <div class=" tile centered">
+    <span class="total">Total</span>
+    <div class="cost">
+      <span class="cost-currency">$</span>
+      <span class="cost-dollars">{{
+        getIntegarPart(sumary.total) | number: '1.0-0'
+      }}</span>
+      <span class="cost-cents">
+        {{ getDecimalPart(sumary.total) }}
+      </span>
+    </div>
+    <button
+      class="checkout-button"
+      mat-raised-button
+      color="primary"
+      (click)="checkout.emit($event)"
+      [disabled]="disabled"
+    >
+      <fa-icon icon="cart-arrow-down" size="lg"></fa-icon> Terminar
+    </button>
+    <ng-content></ng-content>
+  </div>
+</div>

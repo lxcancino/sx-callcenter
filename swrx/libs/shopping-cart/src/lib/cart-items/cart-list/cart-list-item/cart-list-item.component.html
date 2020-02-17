@@ -1,0 +1,113 @@
+<mat-list-item>
+  <span matListIcon>{{ index + 1 }}</span>
+  <img
+    matListAvatar
+    [src]="item.producto.imageUrl || 'assets/images/1273567240.jpg'"
+    alt="linea"
+  />
+
+  <div matLine>
+    <div class="producto" (click)="onEdit(item)">
+      <span class="clave">{{ item.clave }}</span>
+      <span class="descripcion"
+        >{{ item.descripcion }}
+        <span>({{ item.unidad }})</span>
+      </span>
+      <span class="cantidad" matTooltip="Kilos: {{ getKilos(item) }}">
+        <span> Canidad: {{ item.cantidad | number: '1.0' }} </span>
+        <span class="faltante" *ngIf="item?.faltante > 0">
+          Falante: <span>{{ item.faltante }}</span>
+        </span>
+      </span>
+    </div>
+  </div>
+  <div matLine>
+    <div class="row2">
+      <div
+        class="propiedades"
+        *ngIf="item.clave !== 'MANIOBRA' && item.clave !== 'CORTE'"
+      >
+        <span
+          >Kg:<strong>{{ item.kilos }}</strong></span
+        >
+        <span><strong>Cal:</strong> {{ item.gramos }}g</span>
+        <span>{{ item.producto.presentacion }}</span>
+        <span>
+          <strong>{{ item.modoVenta === 'B' ? 'P.BRUTO' : 'P. NETO' }}</strong>
+        </span>
+
+        <span class="catalogo-precio">
+          <strong
+            >P CRE:
+            <span class="pad-r">{{
+              item.producto.precioCredito | currency
+            }}</span></strong
+          >
+          <strong
+            >P CON:
+            <span class="pad-r">{{
+              item.producto.precioContado | currency
+            }}</span></strong
+          >
+        </span>
+      </div>
+      <div class="importes">
+        <span
+          >P/U: <strong>{{ item.precio | currency }}</strong></span
+        >
+        <span class="pad-left"
+          >Imp:
+          <strong>
+            {{ item.importe | currency }}
+          </strong>
+        </span>
+
+        <span class="descuento">
+          Descuento:
+          <strong>
+            {{ item.descuentoImporte * -1 | currency }}
+            <small> ({{ item.descuento / 100 | percent }}) </small>
+          </strong>
+        </span>
+        <span class="subtotal"> Subtotal: {{ item.subtotal | currency }} </span>
+      </div>
+    </div>
+  </div>
+
+  <button
+    mat-icon-button
+    class="delete-button"
+    color="warn"
+    (click)="delete.emit(item)"
+    *ngIf="item.clave !== 'MANIOBRA' && item.clave !== 'CORTE'"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+  <div matLine class="cortes" *ngIf="item.corte as corte">
+    <a (click)="onEdit(item)" mat-icon-button>
+      <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
+    </a>
+    <span class="instruccion">
+      <strong>
+        {{ item.corte.instruccion }}
+      </strong>
+    </span>
+    <span *ngIf="corte.tantos > 0"
+      >Tamaños: <strong>{{ item.corte.tantos }}</strong></span
+    >
+    <span *ngIf="corte.cantidad > 0"
+      >Cantidad: <strong>{{ item.corte.cantidad }}</strong></span
+    >
+    <span *ngIf="corte.cantidad > 0"
+      >Importe: <strong>{{ item.corte.importe | currency }}</strong></span
+    >
+    <span *ngIf="corte.refinado"
+      >Refinado: <fa-icon icon="check-circle"></fa-icon
+    ></span>
+    <span *ngIf="corte.limpio"
+      >Limpio: <fa-icon icon="check-circle"></fa-icon>
+    </span>
+  </div>
+
+  <mat-divider inset></mat-divider>
+</mat-list-item>

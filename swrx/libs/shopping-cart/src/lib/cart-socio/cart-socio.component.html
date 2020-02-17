@@ -1,0 +1,22 @@
+<mat-form-field class="fill">
+  <input
+    type="text"
+    placeholder="Socio"
+    aria-label="Socio"
+    matInput
+    [formControl]="control"
+    [matAutocomplete]="auto"
+    required
+  />
+  <mat-autocomplete
+    autoActiveFirstOption
+    #auto="matAutocomplete"
+    [displayWith]="displayFn"
+    (optionSelected)="registrarSocio.emit(control.value)"
+  >
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{ option.nombre }}
+    </mat-option>
+  </mat-autocomplete>
+  <mat-error>Debe registrar el socio</mat-error>
+</mat-form-field>

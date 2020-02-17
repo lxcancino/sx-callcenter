@@ -1,0 +1,63 @@
+.mat-toolbar {
+  //height: 50px;
+  // max-height: 50px;
+  font-size: 16px;
+  h3 {
+    display: inline;
+  }
+  .pedido-info {
+    flex: 1;
+  }
+  .fecha {
+    margin: 0px 2px;
+    padding: 0px 2px;
+  }
+  .cliente {
+    flex: 3;
+    font-weight: bold;
+    text-align: center;
+    overflow: scroll;
+    &:hover {
+      cursor: pointer;
+      color: rgb(163, 114, 22);
+    }
+    // border: 1px solid red;
+  }
+  .options {
+    box-sizing: border-box;
+    // flex: 1 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    margin: 0px 5px;
+  }
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    margin: 0px 5px;
+  }
+  .menu {
+    justify-content: flex-end;
+  }
+}
+.cliente {
+  display: flex;
+  flex-direction: column;
+}
+.socio-row {
+  width: 100%;
+  padding-top: 10px;
+  display: flex;
+  font-size: 14px;
+  .socio {
+    flex: 3;
+  }
+  .socio-direccion {
+    flex: 2;
+    margin-left: 20px;
+    text-align: center;
+  }
+}

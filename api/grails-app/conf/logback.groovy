@@ -14,12 +14,10 @@ appender('STDOUT', ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
         charset = Charset.forName('UTF-8')
 
-        pattern =
-                '%clr(%d{dd-MM-yy HH:mm}){faint} ' + // Date
-                        '%clr(%5p) ' + // Log level
-                        //'%clr(---){faint} %clr([%15.15t]){faint} ' + // Thread
-                        '%clr(%-40.40logger{39}){cyan} %clr(:){faint} ' + // Logger
-                        '%m%n%wex' // Message
+        pattern =       
+            '%clr(%5p) ' + // Log level
+            '%clr(%-40.40logger{39}){cyan} %clr(:){faint} ' + // Logger
+            '%m%n%wex' // Message
     }
 }
 
@@ -51,6 +49,7 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
             pattern = "%level %logger - %msg%n"
         }
     }
+
     logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false)
     logger("org.springframework.security", OFF, ['STDOUT'], false)
     logger("grails.plugin.springsecurity", OFF, ['STDOUT'], false)
@@ -60,6 +59,7 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
     logger("grails.plugin.springsecurity", OFF, ['STDOUT'], false)
     logger("org.pac4j", OFF, ['STDOUT'], false)
 
+    logger("sx.core", DEBUG, ['STDOUT'], false)
     logger("sx.compras", DEBUG, ['STDOUT'], false)
     logger("sx.reports", DEBUG, ['STDOUT'], false)
 
@@ -68,12 +68,15 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
     logger("sx.reports", OFF, ['STDOUT'], false)
     logger("sx.tasks", DEBUG, ['STDOUT', 'TASKJOBS'], false)
     logger("sx.firebase", DEBUG, ['STDOUT', 'TASKJOBS'], false)
+    logger("sx.cloud", DEBUG, ['STDOUT', 'TASKJOBS'], false)
+    logger("sx.callcenter", DEBUG, ['STDOUT', 'TASKJOBS'], false)
     
 } else {
     root(ERROR, ['STDOUT'])
     logger("sx.tasks", INFO, ['TASKJOBS'], false)
 
 }
+logger("ch.qos.logback.classic.gaffer.ConfigurationDelegate", OFF, ['STDOUT'], false)
 root(ERROR, ['STDOUT'])
 
 

@@ -30,7 +30,7 @@ export class DepositoCreateBtnComponent implements OnInit {
     this.dialog
       .open(DepositoCreateComponent, {
         data: {},
-        width: '750px'
+        width: '50%'
       })
       .afterClosed()
       .subscribe(deposito => {

@@ -1,0 +1,7 @@
+import sx.core.Socio
+
+model {
+	Socio socio
+}
+
+json g.render(socio, [excludes: ['cliente', 'vendedor', 'comisionCobrador', 'comisionVendedor'], resolveTemplate: false])

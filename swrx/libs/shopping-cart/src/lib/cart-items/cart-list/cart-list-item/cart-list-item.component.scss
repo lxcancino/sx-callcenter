@@ -1,0 +1,101 @@
+@import '~@angular/material/theming';
+
+.producto {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 16px;
+  font-weight: bold;
+  padding-bottom: 3px;
+  cursor: pointer;
+  .clave {
+    flex: 1;
+  }
+  .descripcion {
+    flex: 5;
+  }
+  .cantidad {
+    flex: 1;
+    padding: 0 10px 0 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    .faltante {
+      font-style: italic;
+      font-weight: bold;
+      font-size: 14px;
+      margin-left: auto;
+      color: red;
+    }
+  }
+}
+.producto:hover {
+  text-decoration: underline;
+}
+
+.row2 {
+  display: flex;
+  flex-direction: row;
+}
+.propiedades {
+  display: flex;
+  margin: 5px 0px;
+  font-size: 14px;
+  span:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+.importes {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 16px;
+  padding: 0 10px 0 0;
+  // span:not(:first-child) {
+  //   margin-left: 10px;
+  // }
+
+  .currency {
+    font-weight: bold;
+    // font-style: italic;
+  }
+  .descuento {
+    margin-left: 10px;
+  }
+  .subtotal {
+    font-weight: bold;
+    margin-left: 10px;
+  }
+}
+
+.cortes {
+  display: flex;
+  flex-direction: row;
+  span:not(:first-child) {
+    margin-left: 10px;
+  }
+  .instruccion {
+    font-size: 16px;
+  }
+}
+
+.actions {
+  // border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  //width: 30%;
+}
+.pad-r {
+  padding-right: 5px;
+}
+.pad-left {
+  padding-left: 10px;
+}
+
+.catalogo-precio {
+  font-size: 12px;
+}
+.delete-button {
+  margin-left: auto;
+  font-size: 14px;
+}

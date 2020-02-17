@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, Inject } from '@angular/core';
 
 import { Observable, throwError } from 'rxjs';
 import {
@@ -33,19 +33,21 @@ export class ClienteFieldComponent implements OnInit, ControlValueAccessor {
 
   control = new FormControl();
 
-  onChange: any = () => {};
-  onTouch: any = () => {};
-
   selected: any;
 
   filteredClientes$: Observable<any>;
-  apiUrl = 'http://localhost:8080/callcener/api/clientes';
-  constructor(private http: HttpClient) {}
+  apiUrl: string;
+
+  onChange: any = () => {};
+  onTouch: any = () => {};
+  constructor(private http: HttpClient, @Inject('apiUrl') api) {
+    this.apiUrl = `${api}/clientes`;
+  }
 
   ngOnInit() {
     this.filteredClientes$ = this.control.valueChanges.pipe(
       // startWith(''),
-      debounceTime(1000),
+      debounceTime(400),
       distinctUntilChanged(),
       switchMap(value => this.lookUp(value))
     );

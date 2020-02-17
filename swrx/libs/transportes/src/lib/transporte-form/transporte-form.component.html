@@ -1,0 +1,42 @@
+<h3 mat-dialog-title *ngIf="transporte; else alta">
+  Mantenimiento de Transportista
+</h3>
+<ng-template #alta>
+  <h3 mat-dialog-title>Alta de Transportista</h3>
+</ng-template>
+
+<mat-dialog-content>
+  <div [formGroup]="form">
+    <swrx-upper-case-field formControlName="nombre"></swrx-upper-case-field>
+    <div class="telefonos">
+      <mat-form-field
+        *ngFor="
+          let tel of ['telefono1', 'telefono2', 'telefono3'];
+          let i = index
+        "
+      >
+        <mat-label>Telefono {{ i + 1 }}</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControlName]="tel"
+          mask="(009) 000-00-00"
+        />
+      </mat-form-field>
+    </div>
+    <swrx-direccion-form [parent]="form"></swrx-direccion-form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]>Cancelar</button>
+  <button
+    mat-button
+    color="accent"
+    [disabled]="form.invalid || form.pristine"
+    (click)="onSubmit()"
+  >
+    <mat-icon>save</mat-icon>
+    Salvar
+  </button>
+</mat-dialog-actions>

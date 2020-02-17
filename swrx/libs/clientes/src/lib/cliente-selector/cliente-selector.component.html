@@ -1,0 +1,10 @@
+<swrx-cliente-field [formControl]="control"></swrx-cliente-field>
+<mat-dialog-content>
+  <button
+    mat-button
+    [mat-dialog-close]="control.value"
+    [disabled]="control.invalid"
+  >
+    ACEPTAR
+  </button>
+</mat-dialog-content>

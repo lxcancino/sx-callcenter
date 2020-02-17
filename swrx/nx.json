@@ -37,6 +37,27 @@
     },
     "fa": {
       "tags": []
+    },
+    "shopping-cart": {
+      "tags": []
+    },
+    "productos": {
+      "tags": []
+    },
+    "core-model": {
+      "tags": []
+    },
+    "auth": {
+      "tags": []
+    },
+    "pedidos": {
+      "tags": []
+    },
+    "existencias": {
+      "tags": []
+    },
+    "transportes": {
+      "tags": []
     }
   }
 }

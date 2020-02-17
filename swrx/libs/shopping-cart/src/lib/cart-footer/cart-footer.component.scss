@@ -1,0 +1,12 @@
+.footer {
+  display: flex;
+  height: 40px;
+  font-size: 12px;
+  align-items: flex-start;
+  padding: 2px;
+  text-transform: uppercase;
+  align-items: baseline;
+  .puesto {
+    margin-left: auto;
+  }
+}

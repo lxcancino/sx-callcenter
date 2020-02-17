@@ -1,0 +1,41 @@
+<div class="title" mat-dialog-title>
+  <span>Alta de Cliente</span>
+</div>
+
+<div [formGroup]="form" class="form">
+  <swrx-upper-case-field
+    formControlName="nombre"
+    placeholder="Nombre"
+  ></swrx-upper-case-field>
+  <div class="row">
+    <swrx-upper-case-field
+      formControlName="rfc"
+      placeholder="RFC"
+    ></swrx-upper-case-field>
+    <mat-form-field>
+      <mat-label>Email </mat-label>
+      <input type="email" matInput formControlName="email" />
+      <mat-hint>Correo para CFDI</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="direccion">
+    <swrx-direccion-form [parent]="form"></swrx-direccion-form>
+  </div>
+  <div class="telefonos" formGroupName="telefonos">
+    <mat-form-field *ngFor="let ctrl of telefonos.controls; let i = index">
+      <mat-label>Telefono {{ i + 1 }}</mat-label>
+      <input type="text" matInput [formControl]="ctrl" mask="(009) 000-00-00" />
+    </mat-form-field>
+  </div>
+</div>
+<mat-dialog-actions>
+  <button
+    mat-stroked-button
+    color="accent"
+    [disabled]="form.invalid || form.pristine"
+    (click)="onSubmit()"
+  >
+    Salvar
+  </button>
+  <button mat-stroked-button [mat-dialog-close]>Cancelar</button>
+</mat-dialog-actions>

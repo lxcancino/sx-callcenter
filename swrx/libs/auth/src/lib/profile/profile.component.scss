@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-basis: auto;
+  justify-content: center;
+  align-items: center;
+  .profile {
+    margin-top: 20px;
+    width: 650px;
+  }
+}

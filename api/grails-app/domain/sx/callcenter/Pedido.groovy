@@ -1,121 +1,107 @@
 package sx.callcenter
 
+import groovy.transform.ToString
+import groovy.transform.EqualsAndHashCode
+
+import sx.core.Cliente
+import sx.core.Socio
+
+
+@ToString(includes='nombre, fecha, sucursal, subtotal total',includeNames=true,includePackage=false)
+@EqualsAndHashCode(includes = 'id')
 class Pedido {
 
-    String id
-
-    String cliente
-
-    String nombre
-
-    String sucursal
-
-    String sucursalVenta
-
-    String tipo
-
-    Long documento = 0
-
-    BigDecimal importe  = 0
-
-    BigDecimal descuento = 0
-
-    BigDecimal descuentoImporte = 0
-
-    BigDecimal subtotal = 0
-
-    BigDecimal impuesto = 0
-
-    BigDecimal total = 0
-
-    BigDecimal descuentoOriginal = 0
-
-    BigDecimal cargosPorManiobra = 0
-
-    BigDecimal comisionTarjeta = 0
-
-    BigDecimal comisionTarjetaImporte = 0
-
-    BigDecimal corteImporte = 0
-
-    String  formaDePago
-
-    String moneda = 'MXN'
-
-    BigDecimal  tipoDeCambio = 1
-
-    BigDecimal  kilos = 0
-
-    String  comprador
-
-    String  atencion = 'TELEFONICA'
-
-    String  comentario
-
+    String id // 1
     Date fecha
+    String sucursal
+    Long folio
+    Cliente cliente // 2
+    String nombre
+    String rfc
+    
+    String tipo
+    String  formaDePago
+    String moneda = 'MXN'
+    BigDecimal  tipoDeCambio = 1
+    List<PedidoDet> partidas = []
+    
+    // Importes
+    BigDecimal importe
+    BigDecimal descuento
+    BigDecimal descuentoImporte
+    BigDecimal subtotal
+    BigDecimal impuesto
+    BigDecimal total
 
+    // Precios y descuentos historicos
+    BigDecimal descuentoEspecial = 0.0
+    BigDecimal descuentoOriginal = 0.0
+    BigDecimal cargosPorManiobra = 0.0
+    BigDecimal comisionTarjeta = 0.0
+    BigDecimal comisionTarjetaImporte = 0.0
+    BigDecimal corteImporte = 0.0
+    BigDecimal kilos 
+    String status
+    
+    
+    String comprador
+    String comentario
+    String cfdiMail
+    String usoDeCfdi
+
+    Socio socio
+    
     Date dateCreated
     Date lastUpdated
-
     String createUser
     String updateUser
 
-    String envio
+    Date cerrado
+    Date inicio 
 
-    Boolean cod = false;
+    Autorizacion autorizacion
 
-    String cfdiMail
+    String autorizacionesRequeridas
 
-    String usoDeCfdi
-
-    List<PedidoDet> partidas = []
-
-    String folio
-
-    Boolean sinExistencia = false
-
-    String socio
-
-    Boolean chequePostFechado = false;
-
-    Boolean ventaIne = false;
-
-    Boolean noFacturable = false;
-
-    Boolean surtido = false
+    // InstruccionDeEnvio envio
 
     static hasMany =[partidas:PedidoDet]
 
+    static hasOne = [envio: InstruccionDeEnvio]
+    
+
     static constraints = {
-        nombre nullable: true
+        rfc maxSize:13
+        folio unique: true
         tipo  inList:['CON','COD','CRE','PSF','INE','OTR','ACF','ANT','AND']
-        documento maxSize: 20
-        tipoDeCambio(scale:6)
-        atencion inList:['MOSTRADOR','TELEFONICA','ND']
-        clasificacionVale nullable:true,maxSize:30
-        comentario nullable:true
-        comprador nullable:true
-        sucursalVenta nullable:true
-        
+        formaDePago inList: ['DEPOSITO_EFECTIVO', 'DEPOSITO_CHEQUE', 'DEPOSITO_MIXTO', 'TRANSFERENCIA', 'EFECTIVO', 'TARJETA_DEBITO', 'TARJETA_CREDITO', 'CHEQUE','CHEQUE_PSTF', 'NO_DEFINIDO']
+        moneda inList: ['MXN', 'USD', 'EUR']
+        tipoDeCambio scale:6
+        usoDeCfdi maxSize:3
+        // propiedades opcionales
+        comentario nullable: true
+        comprador nullable: true
+        cfdiMail nullable: true
+        socio nullable: true
+        envio nullable: true
+        status maxSize: 20
+        cerrado nullable: true
+        inicio nullable: true
         createUser nullable:true, maxSize: 100
         updateUser nullable:true, maxSize: 100
-        cfdiMail nullable: true
-        usoDeCfdi nullable: true, maxSize:3
-        envio nullable: true
-        importe scale: 2
-        sinExistencia nullable: true
-        socio nullable: true
-        chequePostFechado nullable: true
-        facturarUsuario nullable: true
-        ventaIne nullable: true
-        noFacturable nullable: true
+        autorizacion nullable: true
+        autorizacionesRequeridas nullable: true
+        descuentoEspecial nullable: true
     }
-
     
      static mapping = {
         partidas cascade: "all-delete-orphan"
         id generator:'uuid'
-        fecha type:'date' ,index: 'VENTA_IDX1'
-        cliente index: 'VENTA_IDX3'
+        fecha type:'date' ,index: 'PEDIDO_IDX1'
+        nombre index: 'PEDIDO_IDX2'
+        rfc index: 'PEDIDO_IDX2B'
     }
 }
+
+
+

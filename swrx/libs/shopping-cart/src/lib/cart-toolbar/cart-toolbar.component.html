@@ -1,0 +1,49 @@
+<mat-toolbar color="default" class="toolbar">
+  <mat-toolbar-row>
+    <section *ngIf="pedido; else newPedido">
+      <div class="pedido-info">
+        <span>No: {{ pedido.folio }}</span>
+        <span class="fecha"
+          >Fecha: {{ pedido.fecha | date: 'dd/MM/yyyy' }}</span
+        >
+      </div>
+    </section>
+    <ng-template #newPedido>
+      <span>PEDIDO: </span>
+    </ng-template>
+    <div class="cliente">
+      <span (click)="cambiarNombre.emit(cliente)">{{ nombre }}</span>
+    </div>
+
+    <div class="options">
+      <ng-content></ng-content>
+    </div>
+
+    <div class="actions">
+      <ng-content select="button.action"></ng-content>
+    </div>
+
+    <div class="menu">
+      <button mat-icon-button [matMenuTriggerFor]="padidoMenu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #padidoMenu="matMenu">
+        <ng-content select="button.menu-item"></ng-content>
+      </mat-menu>
+    </div>
+  </mat-toolbar-row>
+  <mat-toolbar-row *ngIf="cliente.socios">
+    <div class="socio-row">
+      <swrx-cart-socio
+        #socioField
+        [socios]="cliente.socios || []"
+        class="socio"
+        (registrarSocio)="seleccionarSocio.emit($event)"
+        [current]="socio"
+      ></swrx-cart-socio>
+      <address class="socio-direccion">
+        {{ socioField.selected?.direccion }}
+      </address>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -2,7 +2,9 @@
   border: 1px solid $color;
 }
 .mat-list-item {
-  height: 30px;
+  height: 35px;
+  font-size: 14px;
+  padding-top: 10px;
   // span {
   //   @include debug-border;
   // }
@@ -14,12 +16,14 @@
   flex: 1 0 100%;
   // box-sizing: border-box;
 }
-
+.folio {
+  width: 120px;
+}
 .nombre {
   flex: 1 0 20%;
 }
 .cuenta {
-  flex: 1 0 20%;
+  flex: 1 0 10%;
 }
 .updateUser {
   flex: 1 0 10%;
@@ -45,7 +49,10 @@
     color: red;
   }
 }
-
+.referencia {
+  flex: 1 0 150px;
+  margin-left: 10px;
+}
 .comentario {
   flex: 1 0 15%;
   .rechazado {

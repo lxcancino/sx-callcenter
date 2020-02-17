@@ -1,0 +1,75 @@
+<div class="form" [formGroup]="parent">
+  <div [formGroupName]="propertyName">
+    <div class="row">
+      <!-- <mat-form-field class="calle">
+        <input
+          matInput
+          type="text"
+          formControlName="calle"
+          placeholder="Calle"
+          swrxUpperCase
+        />
+      </mat-form-field> -->
+      <swrx-upper-case-field
+        formControlName="calle"
+        placeholder="Calle"
+        class="calle"
+      >
+      </swrx-upper-case-field>
+      <mat-form-field id="numeroExterior">
+        <input matInput formControlName="numeroExterior" placeholder="# Ext" />
+      </mat-form-field>
+      <mat-form-field id="numeroInterior">
+        <input matInput formControlName="numeroInterior" placeholder="# Int" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field id="codigoPostal">
+        <input
+          type="text"
+          matInput
+          placeholder="Código Postal"
+          formControlName="codigoPostal"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="calle">
+        <mat-select placeholder="Colonia" formControlName="colonia">
+          <mat-option *ngFor="let s of colonias" [value]="s">
+            {{ s }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="municipio">
+        <input
+          matInput
+          type="text"
+          formControlName="municipio"
+          placeholder="Municipio"
+          readonly="true"
+        />
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="estado">
+        <input
+          matInput
+          type="text"
+          formControlName="estado"
+          placeholder="Estado"
+          readonly="true"
+        />
+      </mat-form-field>
+      <mat-form-field class="pais">
+        <input
+          matInput
+          type="text"
+          formControlName="pais"
+          placeholder="Pais"
+          readonly="true"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+</div>

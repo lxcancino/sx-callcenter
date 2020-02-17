@@ -1,0 +1,37 @@
+.container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: 60px auto;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+
+.header {
+  grid-column: 1 / span 2;
+  grid-row: 1 / 1;
+}
+.generales-card {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.direcciones-card {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+
+.telefonos-card {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+.new-telefono {
+  display: flex;
+  mat-form-field {
+    flex: 1;
+  }
+}
+.direcciones-entrega {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

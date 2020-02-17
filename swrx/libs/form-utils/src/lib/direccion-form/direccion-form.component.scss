@@ -1,0 +1,41 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .row {
+    flex: 1;
+    display: flex;
+  }
+}
+.calle {
+  flex: 1;
+  margin-right: 10px;
+}
+#numeroExterior {
+  width: 100px;
+  margin-right: 10px;
+}
+#numeroInterior {
+  width: 100px;
+}
+#codigoPostal {
+  width: 120px;
+  margin-right: 10px;
+}
+.colonia {
+  width: 200px;
+  margin-right: 10px;
+}
+.municipio {
+  width: 200px;
+  margin-right: 10px;
+}
+.estado {
+  width: 200px;
+  margin-right: 10px;
+}
+.pais {
+  width: 200px;
+  margin-right: 10px;
+}

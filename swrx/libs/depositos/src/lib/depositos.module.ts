@@ -31,8 +31,18 @@ import { DepositoImportesFieldComponent } from './deposito-importes-field/deposi
 import { DepositosListComponent } from './depositos-list/depositos-list.component';
 import { DepositoItemComponent } from './depositos-list/deposito-item/deposito-item.component';
 import { DepositoEditComponent } from './deposito-edit/deposito-edit.component';
+import { DepositosTableComponent } from './depositos-table/depositos-table.component';
+import { PedidoSelectorComponent } from './pedido-selector/pedido-selector.component';
 
-const routes: Route[] = [{ path: '', component: DepositosPageComponent }];
+export const routes: Route[] = [
+  {
+    path: '',
+    children: [
+      { path: '', redirectTo: 'all', pathMatch: 'full' },
+      { path: 'all', component: DepositosPageComponent }
+    ]
+  }
+];
 
 @NgModule({
   imports: [
@@ -57,7 +67,9 @@ const routes: Route[] = [{ path: '', component: DepositosPageComponent }];
     DepositoImportesFieldComponent,
     DepositosListComponent,
     DepositoItemComponent,
-    DepositoEditComponent
+    DepositoEditComponent,
+    DepositosTableComponent,
+    PedidoSelectorComponent
   ],
   entryComponents: [DepositoCreateComponent, DepositoEditComponent],
   providers: [DepositosFacade],

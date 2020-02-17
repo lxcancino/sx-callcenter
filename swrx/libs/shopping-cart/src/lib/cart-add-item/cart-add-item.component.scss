@@ -1,0 +1,53 @@
+.item-form {
+  display: flex;
+  flex-direction: column;
+  .importes {
+    flex: 1;
+    display: flex;
+    // flex-wrap: wrap;
+    & > * {
+      flex: 1 0 33%;
+      padding-left: 5px;
+    }
+  }
+}
+.corte-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+  .corte-form {
+    box-sizing: border-box;
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    .instruccion {
+      // min-width: 250px;
+      width: 100%;
+      flex: 1;
+    }
+    .tantos {
+      margin-right: 5px;
+      width: 70px;
+      color: blue;
+    }
+    .cantidad {
+      margin-left: 5px;
+      width: 70px;
+    }
+    .precio {
+      width: 70px;
+      margin-left: 5px;
+    }
+  }
+}
+.warnings {
+  padding: 10px;
+  margin-bottom: 10px;
+  flex: 1;
+  display: flex;
+  font-size: 16px;
+  background-color: rgb(218, 175, 112);
+}

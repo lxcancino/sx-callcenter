@@ -15,10 +15,13 @@ import {
 } from '@angular/forms';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+import { Update } from '@ngrx/entity';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { Deposito } from '../+state/depositos.models';
-import { Update } from '@ngrx/entity';
+import { Pedido, FormaDePago } from '@swrx/core-model';
 
 const depositoValidator: ValidatorFn = (
   form: FormGroup
@@ -27,7 +30,6 @@ const depositoValidator: ValidatorFn = (
     const control = form.get('importes');
     const { efectivo, cheque, tarjeta } = control.value;
     const total = efectivo + cheque + tarjeta;
-    console.log('Total: ', total);
     return total > 0.0 ? null : { importesInvalidos: true };
   }
   return null;
@@ -53,12 +55,18 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
   limitDate = new Date().toISOString();
 
   ngOnInit() {
-    console.log('Editando: ', this.deposito);
     this.buildForm();
-    this.form.patchValue(this.deposito);
+    this.form.patchValue(this.deposito, { emitEvent: false });
+
     this.transfernciaListener();
     this.totalListener();
+    this.pedidoListener();
+
+    if (!this.isEditable()) {
+      this.form.disable();
+    }
   }
+
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
@@ -67,7 +75,9 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
   private buildForm() {
     this.form = new FormGroup(
       {
+        pedido: new FormControl(null),
         cliente: new FormControl(null, [Validators.required]),
+        sucursal: new FormControl(null, [Validators.required]),
         banco: new FormControl(null, [Validators.required]),
         cuenta: new FormControl(null, [Validators.required]),
         fecha: new FormControl(
@@ -83,10 +93,55 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
           efectivo: new FormControl(0.0, [Validators.min(0.0)]),
           cheque: new FormControl(0.0, [Validators.min(0.0)]),
           tarjeta: new FormControl(0.0, [Validators.min(0.0)])
-        })
+        }),
+        referencia: new FormControl(null, [Validators.required])
       },
       depositoValidator
     );
+  }
+
+  private pedidoListener() {
+    this.form
+      .get('pedido')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((pedido: Pedido) => {
+        const f = this.form;
+        const cliente = f.get('cliente');
+        const sucursal = f.get('sucursal');
+        const impF = f.get('importes') as FormGroup;
+        const efectivo = impF.get('efectivo');
+        const cheque = impF.get('cheque');
+        const transferencia = f.get('transferencia');
+        const total = f.get('total');
+        console.log('Pedido: ', pedido);
+        if (pedido) {
+          cliente.disable();
+          cliente.setValue(pedido.cliente);
+          sucursal.setValue(pedido.sucursal);
+          sucursal.disable();
+
+          switch (pedido.formaDePago) {
+            case FormaDePago.DEPOSITO_EFECTIVO:
+              efectivo.setValue(pedido.total);
+              transferencia.setValue(false);
+              break;
+            case FormaDePago.DEPOSITO_CHEQUE:
+              cheque.setValue(pedido.total);
+              transferencia.setValue(false);
+              break;
+            default:
+              transferencia.setValue(true);
+              total.setValue(pedido.total);
+              break;
+          }
+        } else {
+          cliente.setValue(null);
+          sucursal.setValue(null);
+          cliente.enable();
+          sucursal.enable();
+          f.patchValue({ total: 0.0, transferencia: true });
+        }
+      });
   }
 
   private transfernciaListener() {
@@ -133,8 +188,13 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
     const data: any = this.form.getRawValue();
     const { cliente, cuenta } = data;
     const deposito = { ...data };
+    deposito.cliente = {
+      id: cliente.id,
+      nombre: cliente.nombre,
+      rfc: cliente.rfc
+    };
     deposito.nombre = cliente.nombre;
-    deposito.rfc = cliente.rfc;
+    deposito.rfc = this.deposito.rfc;
     deposito.cuenta = {
       id: cuenta.id,
       descripcion: cuenta.descripcion,
@@ -151,5 +211,9 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
 
   isTransferencia() {
     return this.form.get('transferencia').value;
+  }
+
+  isEditable() {
+    return this.deposito.estado === 'RECHAZADO';
   }
 }

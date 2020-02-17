@@ -1,0 +1,8 @@
+import sx.core.ClienteCredito
+
+model {
+	Iterable<ClienteCredito> clienteCreditoList
+}
+
+json tmpl.clienteCredito(clienteCreditoList ?: [])
+

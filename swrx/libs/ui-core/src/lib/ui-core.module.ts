@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 // import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaModule } from '@swrx/fa';
+
 import { AgGridModule } from 'ag-grid-angular';
+
+import { NgxMaskModule } from 'ngx-mask';
 
 export const MY_FORMATS = {
   parse: {
@@ -35,7 +38,13 @@ import {
   MAT_DATE_FORMATS,
   MatBadgeModule,
   MatButtonToggleModule,
-  MatSelectModule
+  MatSelectModule,
+  MatAutocompleteModule,
+  MatProgressSpinnerModule,
+  MatDividerModule,
+  MatTooltipModule,
+  MatSnackBarModule,
+  MatProgressBarModule
 } from '@angular/material';
 
 import {
@@ -67,7 +76,13 @@ import * as moment from 'moment';
     MatBadgeModule,
     MatMomentDateModule,
     MatSelectModule,
-    AgGridModule.withComponents([])
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    MatDividerModule,
+    MatTooltipModule,
+    MatSnackBarModule,
+    AgGridModule.withComponents([]),
+    NgxMaskModule.forChild({})
   ],
   exports: [
     CommonModule,
@@ -90,7 +105,14 @@ import * as moment from 'moment';
     MatBadgeModule,
     MatMomentDateModule,
     MatSelectModule,
-    AgGridModule
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    MatDividerModule,
+    MatTooltipModule,
+    MatSnackBarModule,
+    AgGridModule,
+    NgxMaskModule,
+    MatProgressBarModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX' },

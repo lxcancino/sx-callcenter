@@ -12,12 +12,18 @@ import {
   faCogs,
   faBell,
   faUsers,
+  faUser,
   faLayerGroup,
   faHome,
   faClock,
   faCheckCircle,
   faCommentSlash,
-  faTh
+  faTh,
+  faTruckLoading,
+  faCartArrowDown,
+  faCut,
+  faTimesCircle,
+  faTruck
 } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
@@ -34,12 +40,18 @@ export class FaModule {
       faCogs,
       faBell,
       faUsers,
+      faUser,
       faLayerGroup,
       faHome,
       faClock,
       faCheckCircle,
       faCommentSlash,
-      faTh
+      faTh,
+      faTruckLoading,
+      faCartArrowDown,
+      faCut,
+      faTimesCircle,
+      faTruck
     );
   }
 }

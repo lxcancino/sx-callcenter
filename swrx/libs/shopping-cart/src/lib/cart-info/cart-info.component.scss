@@ -1,0 +1,87 @@
+.cart-info-container {
+  // border: 1px solid blue;
+  height: 100%;
+  // max-width: 400px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+  mat-tab-group {
+    // border: 0.5px solid black;
+    border-radius: 10px;
+    flex: 1;
+  }
+}
+.cfdi {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.contacto {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 10px;
+  max-height: 270px;
+  overflow: scroll;
+  span {
+    flex: 1;
+    strong {
+      margin-left: 10px;
+    }
+  }
+}
+
+.cliente {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  height: 500px;
+  .direccion-row {
+    display: flex;
+    justify-content: space-between;
+    font-style: italic;
+  }
+  .row {
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+
+section {
+  padding: 10px 7px;
+  .header {
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    flex: 1;
+  }
+  .field {
+    display: flex;
+  }
+}
+.field {
+  display: flex;
+  justify-content: space-between;
+  font-style: italic;
+  overflow: auto;
+}
+.telefono {
+  margin: 0 10px;
+}
+.autorizacion-panel {
+  padding: 5px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,96 @@
+<div class="shopping-cart">
+  <!-- Cart Toolbar -->
+  <swrx-cart-toolbar
+    [cliente]="facade.cliente$ | async"
+    [nombre]="facade.nombre$ | async"
+    (cambiarNombre)="onCambiarNombre($event)"
+    (seleccionarSocio)="onSocio($event)"
+    [socio]="facade.socio$ | async"
+  >
+    <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
+    <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>
+    <swrx-sucursal-field [parent]="cartForm"></swrx-sucursal-field>
+    <button mat-icon-button (click)="cambiarCliente()" class="action">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button mat-icon-button (click)="addCartItem()" class="action">
+      <mat-icon>add_shopping_cart</mat-icon>
+    </button>
+    <button mat-menu-item class="menu-item" (click)="clienteNuevo()">
+      <mat-icon>person_add</mat-icon>
+      <span>Alta de cliente (Ctr + C)</span>
+    </button>
+    <button
+      mat-menu-item
+      class="menu-item"
+      *ngIf="facade.descuentoEspecialPosible$ | async"
+      (click)="onDescuentoEspecial()"
+    >
+      <mat-icon>monetization_on</mat-icon>
+      <span>Descuento especial</span>
+    </button>
+    <button mat-menu-item class="menu-item" (click)="facade.agregarManiobra()">
+      <mat-icon>local_shipping</mat-icon>
+      <span>Maniobra</span>
+    </button>
+    <button mat-menu-item class="menu-item">
+      <mat-icon>dialpad</mat-icon>
+      <span>Venta INE</span>
+    </button>
+    <button mat-menu-item class="menu-item" (click)="showDescuentos()">
+      <mat-icon>redeem</mat-icon>
+      <span>Descuentos (Ctr + D)</span>
+    </button>
+  </swrx-cart-toolbar>
+
+  <swrx-cart-items></swrx-cart-items>
+  <div class="comentario-section" [formGroup]="cartForm">
+    <mat-form-field class="comentario" appearance="fill">
+      <mat-label>Comentario</mat-label>
+      <input matInput type="text" formControlName="comentario" />
+      <mat-hint>Instrucciones y comentarios generales del pedido</mat-hint>
+    </mat-form-field>
+    <swrx-upper-case-field
+      class="comprador"
+      appearance="fill"
+      placeholder="Comprador"
+      formControlName="comprador"
+    >
+    </swrx-upper-case-field>
+    <!-- <mat-form-field class="comprador" appearance="fill">
+      <mat-label>Comprador</mat-label>
+      <input matInput type="text" [formControl]="cartForm.get('comprador')" />
+      <mat-hint>Nombre del contancto o comprador del cliente</mat-hint>
+    </mat-form-field> -->
+  </div>
+  <div class="side-bar">
+    <swrx-cart-summary
+      *ngIf="sumary$ | async as sumary"
+      [sumary]="sumary$ | async"
+      [kilos]="facade.kilos$ | async"
+      (checkout)="onCheckout()"
+      [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+    >
+      <div class="checkout-actions">
+        <button mat-raised-button (click)="cancelar()">
+          <mat-icon>arrow_back</mat-icon> Cancelar
+        </button>
+        <button mat-raised-button color="accent" (click)="goToNewCart()">
+          <mat-icon>autorenew</mat-icon> Nuevo
+        </button>
+        <ng-container *ngIf="pedido$ | async">
+          <button mat-raised-button color="warn">
+            <mat-icon>delete</mat-icon> Eliminar
+          </button>
+          <button mat-raised-button [disabled]="facade.isPrintable$ | async">
+            <mat-icon>print</mat-icon> Imprimir
+          </button>
+          <button mat-raised-button color="primary">
+            <mat-icon>send</mat-icon>Cerrar
+          </button>
+        </ng-container>
+      </div>
+    </swrx-cart-summary>
+    <swrx-cart-info [cartForm]="cartForm"></swrx-cart-info>
+  </div>
+</div>
