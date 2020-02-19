@@ -45,6 +45,7 @@ export interface Pedido {
   chequePostFechado?: boolean;
   status: 'COTIZACION' | 'CERRADO';
   // Log
+  inicio?: string;
   dateCreated?: string;
   lastUpdated?: string;
   createUser?: string;
@@ -145,4 +146,50 @@ export interface PedidoAutorizacion {
 export enum TipoDeAutorizacion {
   DESCUENTO = 'DESCUENTO_ESPECIAL',
   EXISTENCIA = 'EXISTENCIA_FALTANTE'
+}
+
+export class PedidoLog {
+  // Datos generales
+  folio: number;
+  nombre: string;
+  fecha: Date;
+  sucursal: string;
+  envio: boolean;
+
+  // Inicio
+  inicio: Date;
+  dateCreated: Date;
+  lastUpdated: Date;
+  createUser: string;
+  updateUser: string;
+
+  // Cierre
+  cerrado?: Date;
+  cerradoUser?: string;
+
+  //Atención en sucursal
+  atiende: string;
+  facturable: Date;
+  facturacion?: FacturacionLog;
+
+  // Embarque
+  embarqueLog?: EmbarqueLog;
+}
+
+export interface FacturacionLog {
+  serie: string;
+  folio: string;
+  usuario: string;
+  creado: Date;
+  cancelado?: Date;
+  canceladoComentario?: string;
+}
+
+export class EmbarqueLog {
+  chofer: string;
+  asigno: string;
+  asignado: Date;
+  salida?: Date;
+  arribo?: Date;
+  recepcion?: Date;
 }

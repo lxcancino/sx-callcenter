@@ -31,7 +31,7 @@ import sx.core.Clase
 // @GrailsCompileStatic
 class LxProductoListenerService implements DataBinder, EventListener<QuerySnapshot> {
 
-	static lazyInit = false
+	// static lazyInit = false
 
 	FirebaseService firebaseService
 

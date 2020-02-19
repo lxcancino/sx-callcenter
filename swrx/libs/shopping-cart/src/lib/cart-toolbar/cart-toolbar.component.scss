@@ -7,6 +7,7 @@
   }
   .pedido-info {
     flex: 1;
+    display: flex;
   }
   .fecha {
     margin: 0px 2px;
@@ -59,5 +60,14 @@
     flex: 2;
     margin-left: 20px;
     text-align: center;
+  }
+}
+.new-pedido-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  span {
+    font-size: 14px;
   }
 }

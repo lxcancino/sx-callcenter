@@ -55,6 +55,7 @@ export class CartFacade {
     select(CartSelectors.selectAutorizacionesPendientes)
   );
   kilos$ = this.store.pipe(select(CartSelectors.selectKilos));
+  inicio$ = this.store.pipe(select(CartSelectors.selectInicio));
   constructor(
     private store: Store<fromCart.CartState>,
     private router: Router,

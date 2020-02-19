@@ -9,7 +9,10 @@
       </div>
     </section>
     <ng-template #newPedido>
-      <span>PEDIDO: </span>
+      <div class="new-pedido-info">
+        <span>Pedido nuevo</span>
+        <span> {{ fromNow(inicio) }} ({{ inicio | date: 'hh:mm' }}) </span>
+      </div>
     </ng-template>
     <div class="cliente">
       <span (click)="cambiarNombre.emit(cliente)">{{ nombre }}</span>

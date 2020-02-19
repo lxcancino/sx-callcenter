@@ -23,7 +23,8 @@ import {
   faCartArrowDown,
   faCut,
   faTimesCircle,
-  faTruck
+  faTruck,
+  faChartLine
 } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
@@ -51,7 +52,8 @@ export class FaModule {
       faCartArrowDown,
       faCut,
       faTimesCircle,
-      faTruck
+      faTruck,
+      faChartLine
     );
   }
 }

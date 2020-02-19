@@ -215,3 +215,8 @@ export const selectKilos = createSelector(
       return Math.round(acu);
     })
 );
+
+export const selectInicio = createSelector(
+  getCartState,
+  state => state.inicio
+);
