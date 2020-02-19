@@ -24,6 +24,7 @@ appender('STDOUT', ConsoleAppender) {
 def targetDir = BuildSettings.TARGET_DIR
 def USER_HOME = System.getProperty("user.home")
 def HOME_DIR = Environment.isDevelopmentMode() ? targetDir : '.'
+
 appender('TASKJOBS', RollingFileAppender) {
     append = false
     encoder(PatternLayoutEncoder) {
@@ -35,6 +36,22 @@ appender('TASKJOBS', RollingFileAppender) {
     }
     rollingPolicy(TimeBasedRollingPolicy) {
         fileNamePattern = "${HOME_DIR}/logs/taskjobs-%d{yyyy-MM-dd}.log"
+        maxHistory = 5
+        totalSizeCap = FileSize.valueOf("1GB")
+    }
+}
+
+appender('FIREBASE', RollingFileAppender) {
+    append = false
+    encoder(PatternLayoutEncoder) {
+        pattern =
+                '%d{MMM-dd HH:mm} ' + // Date
+                '%clr(%5p) ' + // Log level
+                '%clr(%-40.40logger{39}){cyan} %clr(:){faint} ' + // Logger
+                '%msg%n' // Message
+    }
+    rollingPolicy(TimeBasedRollingPolicy) {
+        fileNamePattern = "${HOME_DIR}/logs/firebase-%d{yyyy-MM-dd}.log"
         maxHistory = 5
         totalSizeCap = FileSize.valueOf("1GB")
     }
@@ -74,6 +91,7 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
 } else {
     root(ERROR, ['STDOUT'])
     logger("sx.tasks", INFO, ['TASKJOBS'], false)
+    logger("sx.cloud", INFO, ['STDOUT', 'FIREBASE'], false)
 
 }
 logger("ch.qos.logback.classic.gaffer.ConfigurationDelegate", OFF, ['STDOUT'], false)

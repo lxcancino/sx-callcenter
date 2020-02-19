@@ -30,11 +30,11 @@ import grails.compiler.GrailsCompileStatic
 @CompileDynamic
 class FirebaseService {
 
-    static lazyInit = true
+    // static lazyInit = false
     
     private FirebaseApp app
 
-	@PostConstruct
+	// @PostConstruct
     void initFirebase() {
         log.debug('Initializing Firebase connection....')
 		FirebaseOptions options = new FirebaseOptions.Builder()

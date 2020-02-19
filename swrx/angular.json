@@ -703,6 +703,54 @@
             "changeDetection": "OnPush",
             "skipTests": true
         }
+    }
+},
+"reports": {
+    "projectType": "library",
+    "root": "libs/reports",
+    "sourceRoot": "libs/reports/src",
+    "prefix": "swrx",
+    "architect": {
+        "lint": {
+            "builder": "@angular-devkit/build-angular:tslint",
+            "options": {
+                "tsConfig": [
+                    "libs/reports/tsconfig.lib.json",
+                    "libs/reports/tsconfig.spec.json"
+                ],
+                "exclude": ["**/node_modules/**", "!libs/reports/**"]
+            }
+        },
+        "test": {
+            "builder": "@nrwl/jest:jest",
+            "options": {
+                "jestConfig": "libs/reports/jest.config.js",
+                "tsConfig": "libs/reports/tsconfig.spec.json",
+                "setupFile": "libs/reports/src/test-setup.ts"
+            }
+        }
+    },
+    "schematics": {
+        "@nrwl/angular:component": {
+            "styleext": "scss"
+        }
+    }
+}
+},
+"cli": {
+    "defaultCollection": "@nrwl/angular"
+},
+"schematics": {
+    "@nrwl/angular:application": {
+        "unitTestRunner": "jest",
+        "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+        "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:ngrx": {
+        "facade": true,
+        "syntax": "creators"
     },
     "defaultProject": "callcenter"
 }

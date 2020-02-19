@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component
 import grails.compiler.GrailsCompileStatic
 import grails.web.databinding.DataBinder
 import grails.gorm.transactions.Transactional
+import grails.util.Environment
 
 import org.apache.commons.lang3.exception.ExceptionUtils
 
@@ -40,12 +41,13 @@ class LxProductoListenerService implements DataBinder, EventListener<QuerySnapsh
 
 	@PostConstruct
 	def start() {
-		log.debug('Registering listener to firebase collection: {}', COLLECTION)
-		Firestore db = firebaseService.getFirestore()
-		registration = db.collection(COLLECTION)
-		.addSnapshotListener(this)
-		log.debug('Registration success: {}', this.registration)
-		
+		if (Environment.current == Environment.PRODUCTION) { 	
+			log.info('Registering listener to firebase collection: {}', COLLECTION)
+			Firestore db = firebaseService.getFirestore()
+			registration = db.collection(COLLECTION)
+			.addSnapshotListener(this)
+			log.info('Listening to firestore collection: {}', COLLECTION)
+		}
 	}
 
 	@PreDestroy
