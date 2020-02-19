@@ -21,6 +21,31 @@
       </span>
     </div>
   </div>
+  <div matLine class="cortes" *ngIf="item.corte as corte">
+    <a (click)="onEdit(item)" mat-icon-button>
+      <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
+    </a>
+    <span class="instruccion">
+      <strong>
+        {{ item.corte.instruccion }}
+      </strong>
+    </span>
+    <span *ngIf="corte.tantos > 0"
+      >Tamaños: <strong>{{ item.corte.tantos }}</strong></span
+    >
+    <span *ngIf="corte.cantidad > 0"
+      >Cantidad: <strong>{{ item.corte.cantidad }}</strong></span
+    >
+    <span *ngIf="corte.cantidad > 0"
+      >Importe: <strong>{{ item.corte.importe | currency }}</strong></span
+    >
+    <span *ngIf="corte.refinado"
+      >Refinado: <fa-icon icon="check-circle"></fa-icon
+    ></span>
+    <span *ngIf="corte.limpio"
+      >Limpio: <fa-icon icon="check-circle"></fa-icon>
+    </span>
+  </div>
   <div matLine>
     <div class="row2">
       <div
@@ -83,31 +108,6 @@
   >
     <mat-icon>delete</mat-icon>
   </button>
-  <div matLine class="cortes" *ngIf="item.corte as corte">
-    <a (click)="onEdit(item)" mat-icon-button>
-      <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
-    </a>
-    <span class="instruccion">
-      <strong>
-        {{ item.corte.instruccion }}
-      </strong>
-    </span>
-    <span *ngIf="corte.tantos > 0"
-      >Tamaños: <strong>{{ item.corte.tantos }}</strong></span
-    >
-    <span *ngIf="corte.cantidad > 0"
-      >Cantidad: <strong>{{ item.corte.cantidad }}</strong></span
-    >
-    <span *ngIf="corte.cantidad > 0"
-      >Importe: <strong>{{ item.corte.importe | currency }}</strong></span
-    >
-    <span *ngIf="corte.refinado"
-      >Refinado: <fa-icon icon="check-circle"></fa-icon
-    ></span>
-    <span *ngIf="corte.limpio"
-      >Limpio: <fa-icon icon="check-circle"></fa-icon>
-    </span>
-  </div>
 
   <mat-divider inset></mat-divider>
 </mat-list-item>

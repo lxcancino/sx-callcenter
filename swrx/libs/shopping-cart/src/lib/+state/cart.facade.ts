@@ -14,6 +14,8 @@ import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { CartAutorizacionComponent } from '../cart-autorizacion/cart-autorizacion.component';
 
+import { ReportService } from '@swrx/reports';
+
 @Injectable()
 export class CartFacade {
   loading$ = this.store.pipe(select(CartSelectors.getCartLoading));
@@ -56,7 +58,8 @@ export class CartFacade {
   constructor(
     private store: Store<fromCart.CartState>,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private reportService: ReportService
   ) {
     this.store.pipe(select(CartSelectors.getCartSumary));
   }
@@ -167,5 +170,10 @@ export class CartFacade {
 
   agregarManiobra() {
     this.store.dispatch(CartActions.agregarManiobra());
+  }
+
+  imprimirPedido(pedido: Pedido) {
+    console.log('Imprimir pedido: ', pedido.folio);
+    this.reportService.runReport(`pedidos/print/${pedido.id}`, {});
   }
 }
