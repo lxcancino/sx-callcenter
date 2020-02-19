@@ -28,7 +28,8 @@
       "@swrx/auth": ["libs/auth/src/index.ts"],
       "@swrx/pedidos": ["libs/pedidos/src/index.ts"],
       "@swrx/existencias": ["libs/existencias/src/index.ts"],
-      "@swrx/transportes": ["libs/transportes/src/index.ts"]
+      "@swrx/transportes": ["libs/transportes/src/index.ts"],
+      "@swrx/reports": ["libs/reports/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -105,7 +105,9 @@
           <button mat-raised-button color="accent" (click)="goToNewCart()">
             <mat-icon>autorenew</mat-icon> Nuevo
           </button>
-          <button mat-icon-button><mat-icon>print</mat-icon></button>
+          <button mat-icon-button (click)="facade.imprimirPedido(pedido)">
+            <mat-icon>print</mat-icon>
+          </button>
         </div>
         <ng-container *ngIf="pedido.status === 'COTIZACION'">
           <button
