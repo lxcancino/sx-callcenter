@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Pedido } from '../../../core-model/src/lib/pedido-models';
+import { Pedido } from '@swrx/core-model';
 import { map } from 'rxjs/operators'
 
 import {
