@@ -1,0 +1,17 @@
+<div>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Rastreo Pedidos </mat-card-title>
+            <button mat-icon-button (click)="reload()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+
+        <div class="contenedor">
+            <swrx-rastreo-list class="lista" [pedidos]="pedidos$ | async" (pedidoSelect)="pedido = $event"></swrx-rastreo-list>
+            <swrx-rastreo-item class="item" [pedido]="pedido"></swrx-rastreo-item>
+        </div>
+
+    </mat-card>
+</div>

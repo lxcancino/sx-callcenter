@@ -1,0 +1,16 @@
+.contenedor {
+    display: flex;
+    max-width: 99%;
+    position: relative;
+}
+
+.lista {
+    width: 80%;
+}
+
+.item {
+    width: 25%;
+    height: 80vh;
+    top: 0;
+    position: sticky;
+}

@@ -1,0 +1,24 @@
+<div class="item-card">
+    <h3>Rastreo</h3>
+
+    <div class="stepper">
+        <ol class="progtrckr">
+            <li *ngIf="pedido" [ngClass]="{'progtrckr-done': pedido.cerrado ,'progtrckr-todo': !pedido.cerrado }">
+                Cerrado
+            </li>
+            <li *ngIf="pedido" [ngClass]="{'progtrckr-done': pedido.facturado,'progtrckr-todo': !pedido.facturado }">
+                Facturado
+            </li>
+            <li *ngIf="pedido" [ngClass]="{'progtrckr-done': pedido.surtido,'progtrckr-todo': !pedido.surtido }">
+                Surtido
+            </li>
+            <li *ngIf="pedido" [ngClass]="{'progtrckr-done': pedido.embarcado,'progtrckr-todo': !pedido.embarcado}">
+                Embarcado
+            </li>
+            <li *ngIf="pedido" [ngClass]="{'progtrckr-done': pedido.entregado,'progtrckr-todo': !pedido.entregado }">
+                Entregado
+            </li>
+        </ol>
+    </div>
+
+</div>

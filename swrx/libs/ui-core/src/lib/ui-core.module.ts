@@ -47,6 +47,10 @@ import {
   MatProgressBarModule
 } from '@angular/material';
 
+import {MatStepperModule} from '@angular/material/stepper';
+
+
+
 import {
   MatMomentDateModule,
   MAT_MOMENT_DATE_FORMATS,
@@ -81,6 +85,7 @@ import * as moment from 'moment';
     MatDividerModule,
     MatTooltipModule,
     MatSnackBarModule,
+    MatStepperModule,
     AgGridModule.withComponents([]),
     NgxMaskModule.forChild({})
   ],
@@ -110,6 +115,7 @@ import * as moment from 'moment';
     MatDividerModule,
     MatTooltipModule,
     MatSnackBarModule,
+    MatStepperModule,
     AgGridModule,
     NgxMaskModule,
     MatProgressBarModule

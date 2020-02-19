@@ -1,0 +1,90 @@
+.item-card {
+    background-color: #DFE5E6;
+    height: 100%;
+    margin: 10px;
+}
+
+.item-card h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 4px;
+    color: #ffffff;
+    text-align: center;
+}
+
+ol.progtrckr[data-progtrckr-steps="2"] li {
+    width: 49%;
+}
+
+ol.progtrckr[data-progtrckr-steps="3"] li {
+    width: 33%;
+}
+
+ol.progtrckr[data-progtrckr-steps="4"] li {
+    width: 24%;
+}
+
+ol.progtrckr[data-progtrckr-steps="5"] li {
+    width: 19%;
+}
+
+ol.progtrckr[data-progtrckr-steps="6"] li {
+    width: 16%;
+}
+
+ol.progtrckr[data-progtrckr-steps="7"] li {
+    width: 14%;
+}
+
+ol.progtrckr[data-progtrckr-steps="8"] li {
+    width: 12%;
+}
+
+ol.progtrckr[data-progtrckr-steps="9"] li {
+    width: 11%;
+}
+
+ol.progtrckr {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+ol.progtrckr li {
+    line-height: 4em;
+}
+
+ol.progtrckr li.progtrckr-done {
+    color: yellowgreen;
+    /* border-bottom: 2px solid yellowgreen; */
+}
+
+ol.progtrckr li:after {
+    text-align: center;
+    position: relative;
+    bottom: -2.5em;
+    float: left;
+    left: 50%;
+    line-height: 1em;
+}
+
+ol.progtrckr li.progtrckr-done:after {
+    content: "\2713";
+    color: white;
+    background-color: yellowgreen;
+    height: 2.2em;
+    width: 2.2em;
+    line-height: 2.2em;
+    border: none;
+    border-radius: 2.2em;
+}
+
+ol.progtrckr li.progtrckr-todo:after {
+    content: "\2713";
+    color: white;
+    background-color: silver;
+    height: 2.2em;
+    width: 2.2em;
+    line-height: 2.2em;
+    border: none;
+    border-radius: 2.2em;
+}

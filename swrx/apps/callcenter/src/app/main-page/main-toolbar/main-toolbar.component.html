@@ -1,104 +1,82 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button (click)="toogle.emit()">
+    <button mat-icon-button (click)="toogle.emit()">
     <mat-icon>menu</mat-icon>
   </button>
-  <div class="title">
-    <h3 class="mat-title">{{ title }}</h3>
-  </div>
+    <div class="title">
+        <h3 class="mat-title">{{ title }}</h3>
+    </div>
 
-  <div class="site-nav">
-    <a
-      class="active"
-      mat-button
-      [routerLink]="'/pedidos'"
-      routerLinkActive="router-link-active"
-    >
-      <fa-icon icon="file-invoice-dollar"></fa-icon>
-      <span>Pedidos</span>
-    </a>
-    <a
-      mat-button
-      [routerLink]="'/depositos/all'"
-      routerLinkActive="router-link-active"
-    >
-      <fa-icon icon="hand-holding-usd"></fa-icon>
-      <span>Depositos</span>
-    </a>
-    <a
-      mat-button
-      [routerLink]="'/clientes/list'"
-      routerLinkActive="router-link-active"
-    >
-      <fa-icon icon="users"></fa-icon>
-      <span>Clientes</span>
-    </a>
+    <div class="site-nav">
+        <a class="active" mat-button [routerLink]="'/pedidos'" routerLinkActive="router-link-active">
+            <fa-icon icon="file-invoice-dollar"></fa-icon>
+            <span>Pedidos</span>
+        </a>
+        <a mat-button [routerLink]="'/depositos/all'" routerLinkActive="router-link-active">
+            <fa-icon icon="hand-holding-usd"></fa-icon>
+            <span>Depositos</span>
+        </a>
+        <a mat-button [routerLink]="'/clientes/list'" routerLinkActive="router-link-active">
+            <fa-icon icon="users"></fa-icon>
+            <span>Clientes</span>
+        </a>
 
-    <!-- <a mat-button (click)="lookupCliente()">
+        <!-- <a mat-button (click)="lookupCliente()">
       <fa-icon icon="users"></fa-icon>
       <span>Clientes</span>
     </a> -->
-    <a
-      mat-button
-      [routerLink]="'/productos/all'"
-      routerLinkActive="router-link-active"
-    >
-      <fa-icon icon="layer-group"></fa-icon>
-      <span>Productos</span>
+        <a mat-button [routerLink]="'/productos/all'" routerLinkActive="router-link-active">
+            <fa-icon icon="layer-group"></fa-icon>
+            <span>Productos</span>
+        </a>
+
+        <a mat-button [routerLink]="'/transportes/all'" routerLinkActive="router-link-active">
+            <fa-icon icon="truck"></fa-icon>
+            <span>Transportes</span>
+        </a>
+        <a mat-button [routerLink]="'/rastreo'" routerLinkActive="router-link-active">
+            <fa-icon icon="route"></fa-icon>
+            <span>Rastreo</span>
+        </a>
+    </div>
+
+    <a mat-icon-button (click)="goToCart()">
+        <mat-icon [matBadge]="cartItems" matBadgeColor="accent" [matBadgeHidden]="!cartItems && cartItems <= 0">shopping_cart</mat-icon>
     </a>
 
-    <a
-      mat-button
-      [routerLink]="'/transportes/all'"
-      routerLinkActive="router-link-active"
-    >
-      <fa-icon icon="truck"></fa-icon>
-      <span>Transportes</span>
+    <a mat-icon-button routerLink="/notifications">
+        <mat-icon>notifications</mat-icon>
     </a>
-  </div>
 
-  <a mat-icon-button (click)="goToCart()">
-    <mat-icon
-      [matBadge]="cartItems"
-      matBadgeColor="accent"
-      [matBadgeHidden]="!cartItems && cartItems <= 0"
-      >shopping_cart</mat-icon
-    >
-  </a>
-
-  <a mat-icon-button routerLink="/notifications">
-    <mat-icon>notifications</mat-icon>
-  </a>
-
-  <!-- <button mat-icon-button (click)="toogle.emit()">
+    <!-- <button mat-icon-button (click)="toogle.emit()">
     <fa-icon icon="cogs" size="lg"></fa-icon>
   </button> -->
-  <button mat-button [matMenuTriggerFor]="accountMenu">
+    <button mat-button [matMenuTriggerFor]="accountMenu">
     <mat-icon>account_box</mat-icon>
 
     <span>{{ user?.displayName }}</span>
   </button>
 
-  <mat-menu #accountMenu="matMenu">
-    <button mat-menu-item>
+    <mat-menu #accountMenu="matMenu">
+        <button mat-menu-item>
       <img [src]="user?.photoURL" alt="User Avatar" class="avatar" />
       <span>{{ user?.email }}</span>
     </button>
-    <button mat-menu-item disabled>
+        <button mat-menu-item disabled>
       <mat-icon>smartphone</mat-icon>
       <span>Celular</span>
     </button>
-    <button mat-menu-item disabled>
+        <button mat-menu-item disabled>
       <mat-icon>notifications</mat-icon>
       <span>Notificaciones</span>
     </button>
 
-    <!-- <button mat-menu-item (click)="exitApp.emit()" >
+        <!-- <button mat-menu-item (click)="exitApp.emit()" >
       <mat-icon>exit_to_app</mat-icon>
       <span>Terminar sesión</span>
     </button> -->
-    <a mat-menu-item routerLink="/loginx">
-      <mat-icon>exit_to_app</mat-icon>
-      <span>Terminar sesión</span>
-    </a>
-  </mat-menu>
+        <a mat-menu-item routerLink="/loginx">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Terminar sesión</span>
+        </a>
+    </mat-menu>
 </mat-toolbar>

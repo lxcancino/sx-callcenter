@@ -14,6 +14,8 @@ import { MainPageModule } from './main-page/main-page.module';
 
 import { AuthModule, ProfileComponent } from '@swrx/auth';
 
+// import { RastreoModule } from '../../../../libs/rastreo/src/lib/rastreo.module';
+
 const redirectToLogin = () => redirectUnauthorizedTo(['loginx']);
 
 const routes: Route[] = [
@@ -56,6 +58,11 @@ const routes: Route[] = [
         loadChildren: () =>
           import('@swrx/transportes').then(m => m.TransportesModule)
       },
+        {
+        path: 'rastreo',
+        loadChildren: () =>
+          import('@swrx/rastreo').then(m => m.RastreoModule)
+      },  
       {
         path: 'profile',
         component: ProfileComponent
