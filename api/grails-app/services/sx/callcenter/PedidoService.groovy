@@ -6,12 +6,10 @@ import groovy.transform.CompileDynamic
 import grails.gorm.transactions.Transactional
 import grails.compiler.GrailsCompileStatic
 
-import org.apache.commons.lang3.exception.ExceptionUtils
 
 import sx.core.LogUser
 import sx.core.FolioLog
 import sx.cloud.LxPedidoService
-import sx.cloud.LxPedidoLogService
 
 @Slf4j
 @Transactional
@@ -19,19 +17,19 @@ import sx.cloud.LxPedidoLogService
 class PedidoService implements FolioLog {
 
     LxPedidoService lxPedidoService
-    LxPedidoLogService lxPedidoLogService
 
     Pedido save(Pedido pedido) {
     	log.debug("Salvando pedido {}", pedido)
         if(!pedido.id )
             pedido.folio = nextFolio('PEDIDO', 'CALLCENTER')
+        // logEntity(pedido)
         if(pedido.envio) {
             log.info('Envio: {}' , pedido.envio) // Hack para salvar correctamente el envio *** ???
             pedido.envio.pedido = pedido
         }
         actualizarKilos(pedido)
-        pedido = pedido.save(failOnError: true, flush: true)
-        logPedido(pedido)
+        // registrarAutorizaciones(pedido)
+        pedido.save failOnError: true, flush: true
         return pedido
     }
 
@@ -43,7 +41,22 @@ class PedidoService implements FolioLog {
         }
         pedido.kilos = kilos
     }
-    
+    /*
+    void registrarAutorizaciones(Pedido pedido) {
+        if(pedido.descuentoEspecial > 0) {
+            if(!pedido.autorizacion) {
+                pedido.autorizacion = new PedidoAutorizacion(
+                        sucursal: 'CALLCENTER',
+                        tipo: 'DESCUENTO_ESPECIAL',
+                        descripcion: 'Pedido con descuento especial',
+                        solicita: pedido.updateUser,
+                        comentario: 'Pedido especial',
+                        status: 'PENDIENTE'
+                    )
+            }
+        }
+    }
+    */
 
     Pedido cerrar(Pedido pedido) {
         pedido.status = 'CERRADO'
@@ -62,25 +75,21 @@ class PedidoService implements FolioLog {
         auth.comentario = comentario
         pedido = save(pedido)
         lxPedidoService.push(pedido)
-        lxPedidoLogService.publishLog(pedido)
         return pedido
     }
 
     void delete(Pedido pedido) {
-        if(!pedido.cerrado)
-    	   pedido.delete flush: true
+    	pedido.delete flush: true
     }
 
-    void logPedido(Pedido pedido) {
-        try {
-            if(pedido.cerrado){
-                return
-            } 
-            lxPedidoLogService.publishLog(pedido)
-        }catch (Exception ex) {
-            String msg = ExceptionUtils.getRootCauseMessage(ex)
-            log.error('Error actualizando PedidoLog en Firebase {}', msg)
+    def publishToFirebase(Pedido pedido) {
+        if(pedido.cerrado) {
+            def docRef = firebaseService
+            .getFirestore()
+            .collection('pedidos')
+            .document(pedido.id)
+            .set(pedido)
         }
+
     }
-    
 }

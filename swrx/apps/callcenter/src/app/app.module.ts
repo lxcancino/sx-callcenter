@@ -30,8 +30,6 @@ import { ShoppingCartModule } from '@swrx/shopping-cart';
 
 import { NgxMaskModule } from 'ngx-mask';
 
-import { ReportsModule } from '@swrx/reports';
-
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -47,7 +45,6 @@ import { ReportsModule } from '@swrx/reports';
     AppStateModule,
     ShoppingCartModule,
     ExistenciasModule,
-    ReportsModule,
 
     // Authorization
     AuthModule.forRoot(environment.firebase),

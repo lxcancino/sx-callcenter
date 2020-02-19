@@ -309,7 +309,6 @@ export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
     socio: state.socio,
     descuentoEspecial: state.descuentoEspecial || 0.0,
     autorizacionesRequeridas: state.autorizacionesRequeridas,
-    inicio: state.inicio,
     ...sumary
   };
 }

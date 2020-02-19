@@ -1,69 +1,66 @@
 {
-    "npmScope": "swrx",
-    "implicitDependencies": {
-        "angular.json": "*",
-        "package.json": "*",
-        "tsconfig.json": "*",
-        "tslint.json": "*",
-        "nx.json": "*"
+  "npmScope": "swrx",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "callcenter-e2e": {
+      "tags": []
     },
-    "projects": {
-        "callcenter-e2e": {
-            "tags": []
-        },
-        "callcenter": {
-            "tags": []
-        },
-        "ui-core": {
-            "tags": []
-        },
-        "depositos": {
-            "tags": []
-        },
-        "clientes": {
-            "tags": []
-        },
-        "notifications": {
-            "tags": []
-        },
-        "form-utils": {
-            "tags": []
-        },
-        "depositos-app-e2e": {
-            "tags": []
-        },
-        "depositos-app": {
-            "tags": []
-        },
-        "fa": {
-            "tags": []
-        },
-        "shopping-cart": {
-            "tags": []
-        },
-        "productos": {
-            "tags": []
-        },
-        "core-model": {
-            "tags": []
-        },
-        "auth": {
-            "tags": []
-        },
-        "pedidos": {
-            "tags": []
-        },
-        "existencias": {
-            "tags": []
-        },
-        "transportes": {
-            "tags": []
-        },
-        "rastreo": {
-            "tags": []
-        },
-        "reports": {
-            "tags": []
-        }
+    "callcenter": {
+      "tags": []
+    },
+    "ui-core": {
+      "tags": []
+    },
+    "depositos": {
+      "tags": []
+    },
+    "clientes": {
+      "tags": []
+    },
+    "notifications": {
+      "tags": []
+    },
+    "form-utils": {
+      "tags": []
+    },
+    "depositos-app-e2e": {
+      "tags": []
+    },
+    "depositos-app": {
+      "tags": []
+    },
+    "fa": {
+      "tags": []
+    },
+    "shopping-cart": {
+      "tags": []
+    },
+    "productos": {
+      "tags": []
+    },
+    "core-model": {
+      "tags": []
+    },
+    "auth": {
+      "tags": []
+    },
+    "pedidos": {
+      "tags": []
+    },
+    "existencias": {
+      "tags": []
+    },
+    "transportes": {
+      "tags": []
+    },
+    "rastreo": {
+      "tags": []
     }
+  }
 }

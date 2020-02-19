@@ -32,7 +32,7 @@ class BootStrap {
                 UserRole.create(admin, comprasRole)
             }
 
-        } 
+        }
     }
     def destroy = {
     }

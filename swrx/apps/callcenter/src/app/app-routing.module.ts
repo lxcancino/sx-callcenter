@@ -38,11 +38,6 @@ const routes: Route[] = [
         loadChildren: () => import('@swrx/pedidos').then(m => m.PedidosModule)
       },
       {
-        path: 'tableros',
-        loadChildren: () =>
-          import('./tableros/tableros.module').then(m => m.TablerosModule)
-      },
-      {
         path: 'clientes',
         loadChildren: () => import('@swrx/clientes').then(m => m.ClientesModule)
       },

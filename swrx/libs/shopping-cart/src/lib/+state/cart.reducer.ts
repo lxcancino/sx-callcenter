@@ -46,7 +46,6 @@ export interface CartState {
   error?: string | null; // last none error (if any)
   dirty: boolean;
   comentario?: string;
-  inicio: string;
   validationErrors: CartValidationError[];
   warrnings: { error: string; descripcion: string }[];
   autorizacionesRequeridas?: string;
@@ -68,8 +67,7 @@ export const initialState: CartState = {
   warrnings: [],
   envio: undefined,
   dirty: false,
-  comprador: null,
-  inicio: new Date().toISOString()
+  comprador: null
 };
 
 const cartReducer = createReducer(

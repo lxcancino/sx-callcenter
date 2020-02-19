@@ -7,12 +7,10 @@ import javax.annotation.Nullable
 import groovy.util.logging.Slf4j
 
 import org.springframework.stereotype.Component
-import  org.springframework.beans.factory.InitializingBean
 
 import grails.compiler.GrailsCompileStatic
 import grails.web.databinding.DataBinder
 import grails.gorm.transactions.Transactional
-import grails.util.Environment
 
 import org.apache.commons.lang3.exception.ExceptionUtils
 
@@ -22,7 +20,6 @@ import com.google.firebase.*
 import com.google.firebase.cloud.*
 import static com.google.cloud.firestore.DocumentChange.Type.*
 
-
 import sx.core.Cliente
 import sx.core.ClienteCredito
 
@@ -31,7 +28,7 @@ import sx.core.ClienteCredito
 // @GrailsCompileStatic
 class LxClienteListenerService implements DataBinder, EventListener<QuerySnapshot> {
 
-	// static lazyInit = false
+	static lazyInit = true
 
 	FirebaseService firebaseService
 
@@ -39,22 +36,13 @@ class LxClienteListenerService implements DataBinder, EventListener<QuerySnapsho
 
 	ListenerRegistration registration
 
-	public void  afterPropertiesSet() {
-		if (Environment.current == Environment.PRODUCTION) { 	
-			// this.start()
-		}
-	}
-
 	@PostConstruct
 	def start() {
-		if (Environment.current == Environment.PRODUCTION) { 	
-			log.debug('Registering listener to firebase collection: {}', COLLECTION)
-			Firestore db = firebaseService.getFirestore()
-			registration = db.collection(COLLECTION)
-			.addSnapshotListener(this)
-			log.info('Listening to firestore collection: {}', COLLECTION)
-		}
-		
+		log.debug('Registering listener to firebase collection: {}', COLLECTION)
+		Firestore db = firebaseService.getFirestore()
+		registration = db.collection(COLLECTION)
+		.addSnapshotListener(this)
+		log.debug('Registration success: {}', this.registration)
 		
 	}
 

@@ -6,7 +6,6 @@
     (cambiarNombre)="onCambiarNombre($event)"
     (seleccionarSocio)="onSocio($event)"
     [socio]="facade.socio$ | async"
-    [inicio]="facade.inicio$ | async"
   >
     <swrx-cart-tipo [cartForm]="cartForm"></swrx-cart-tipo>
     <swrx-cart-fpago [cartForm]="cartForm"></swrx-cart-fpago>

@@ -13,7 +13,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils
 
 import sx.reports.ReportService
 import sx.utils.Periodo
-import sx.utils.ImporteALetra
 
 @Slf4j
 @GrailsCompileStatic
@@ -27,14 +26,6 @@ class PedidoController extends RestfulController<Pedido> {
     PedidoController() {
         super(Pedido)
     }
-
-    /*
-    def show() {
-        Pedido found = Pedido.get(params.id as String)
-        log.info('Found pedido: {}', found.folio)
-        return found
-    }
-    */
 
     @Override
     @CompileDynamic
@@ -129,7 +120,6 @@ class PedidoController extends RestfulController<Pedido> {
             return
         }
         Map repParams = [id: pedido.id]
-        repParams.IMP_CON_LETRA = ImporteALetra.aLetra(pedido.total)
         def pdf =  reportService.run('Pedido.jrxml', repParams)
         render (file: pdf.toByteArray(), contentType: 'application/pdf', filename: 'Pedido.pdf')
     }
