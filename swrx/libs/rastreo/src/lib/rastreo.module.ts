@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+<<<<<<< Updated upstream
 import { RouterModule, Route } from '@angular/router';
 
 import { UiCoreModule } from '@swrx/ui-core';
@@ -25,5 +26,10 @@ import { RastreoPageComponent } from './rastreo-page/rastreo-page.component';
 ],
   declarations: [RastreoComponent, RastreoListComponent, RastreoItemComponent, RastreoPageComponent],
   exports: [RastreoComponent, RastreoListComponent, RastreoItemComponent, RastreoPageComponent]
+=======
+
+@NgModule({
+  imports: [CommonModule]
+>>>>>>> Stashed changes
 })
 export class RastreoModule {}

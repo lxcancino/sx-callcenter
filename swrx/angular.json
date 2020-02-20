@@ -703,6 +703,53 @@
             "changeDetection": "OnPush",
             "skipTests": true
         }
+<<<<<<< Updated upstream
+=======
+      }
+    },
+    "rastreo": {
+      "projectType": "library",
+      "root": "libs/rastreo",
+      "sourceRoot": "libs/rastreo/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/rastreo/tsconfig.lib.json",
+              "libs/rastreo/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/rastreo/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/rastreo/jest.config.js",
+            "tsConfig": "libs/rastreo/tsconfig.spec.json",
+            "setupFile": "libs/rastreo/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:ngrx": {
+      "facade": true,
+      "syntax": "creators"
+>>>>>>> Stashed changes
     },
     "defaultProject": "callcenter"
 }
