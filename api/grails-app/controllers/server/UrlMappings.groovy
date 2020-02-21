@@ -7,7 +7,10 @@ class UrlMappings {
         "/api/config"(resource: 'appConfig', includes:['index', 'show'])
         "/api/clientes"(resources: 'cliente', excludes: ['create', 'edit', 'delete'])
         "/api/sucursales"(resources: 'sucursal', includes:['index', 'show'])
+        
         "/api/productos"(resources: 'producto', includes:['index', 'show'])
+        "/api/productos/disponibles"(controller: 'producto', action: 'disponibles')
+
         "/api/depositos/"(resources: 'deposito', excludes: ['create', 'edit', 'delete'])
         "/api/depositos/bancos"(controller: 'deposito', action: 'bancos', method: 'GET')
         "/api/depositos/cuentas"(controller: 'deposito', action: 'cuentas', method: 'GET')

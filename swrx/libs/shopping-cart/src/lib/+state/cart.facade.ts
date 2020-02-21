@@ -7,7 +7,13 @@ import * as CartActions from './cart.actions';
 import * as CartSelectors from './cart.selectors';
 import * as fromPedido from '@swrx/pedidos';
 
-import { TipoDePedido, FormaDePago, Pedido, Socio } from '@swrx/core-model';
+import {
+  TipoDePedido,
+  FormaDePago,
+  Pedido,
+  Socio,
+  Producto
+} from '@swrx/core-model';
 import { CartItem } from './cart.models';
 import { map } from 'rxjs/operators';
 
@@ -67,8 +73,8 @@ export class CartFacade {
     this.store.pipe(select(CartSelectors.getCartSumary));
   }
 
-  addCartItem() {
-    this.store.dispatch(CartActions.addCartItem());
+  addCartItem(producto?: Producto) {
+    this.store.dispatch(CartActions.addCartItem({ producto }));
   }
   editItem(index: number, item: CartItem) {
     console.log('Editando partida: ', index);

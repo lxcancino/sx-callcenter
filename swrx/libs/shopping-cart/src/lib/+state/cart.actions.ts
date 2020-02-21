@@ -6,10 +6,14 @@ import {
   TipoDePedido,
   FormaDePago,
   InstruccionDeEnvio,
-  Socio
+  Socio,
+  Producto
 } from '@swrx/core-model';
 
-export const addCartItem = createAction('[ShoppingCartPage] Add CartItem');
+export const addCartItem = createAction(
+  '[ShoppingCartPage] Add CartItem',
+  props<{ producto?: Producto }>()
+);
 export const addCartItemSuccess = createAction(
   '[ShoppingCartPage] Add CartItem success',
   props<{ item: CartItem }>()

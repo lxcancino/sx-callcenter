@@ -62,7 +62,11 @@ export class CartEffects {
     this.actions$.pipe(
       ofType(CartActions.addCartItem),
       cartState(this.store),
-      map(([action, state]) => ({ item: action.item, tipo: state.tipo })),
+      map(([action, state]) => ({
+        item: action.item,
+        tipo: state.tipo,
+        producto: action.producto
+      })),
       this.inDialog(CartAddItemComponent),
       notNull(),
       newItem,

@@ -7,13 +7,12 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { CartFacade } from '../+state/cart.facade';
-// import { ClientesFacade } from 'libs/clientes/src/lib/+state/clientes.facade';
-import { ClientesFacade } from '@swrx/clientes';
-
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, tap, take } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 
+import { CartFacade } from '../+state/cart.facade';
+import { ClientesFacade } from '@swrx/clientes';
+import { ProductosUiService } from '@swrx/productos';
 import { CartSumary } from '../+state/cart.models';
 import {
   TipoDePedido,
@@ -43,13 +42,13 @@ export class CartPageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     public facade: CartFacade,
     private clientes: ClientesFacade,
-    private firebaseAuth: AngularFireAuth
+    private firebaseAuth: AngularFireAuth,
+    private productoServie: ProductosUiService
   ) {}
 
   ngOnInit() {
     this.buildForm();
     this.registerStateForm();
-    // this.registerPedido();
     this.addListeners();
     this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
       const { displayName, email } = usr;
@@ -274,5 +273,12 @@ export class CartPageComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown.shift.s', ['$event'])
   onHotKeyCloseCart(event) {
     this.onCheckout();
+  }
+
+  @HostListener('document:keydown.f2', ['$event'])
+  onHotKeyAltP(event) {
+    this.productoServie
+      .openSelector()
+      .subscribe(prod => this.facade.addCartItem(prod));
   }
 }

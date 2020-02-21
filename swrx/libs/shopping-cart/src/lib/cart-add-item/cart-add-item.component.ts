@@ -14,7 +14,7 @@ import { takeUntil, map, startWith } from 'rxjs/operators';
 
 import round from 'lodash/round';
 
-import { PedidoDet, Corte, TipoDePedido } from '@swrx/core-model';
+import { PedidoDet, Corte, TipoDePedido, Producto } from '@swrx/core-model';
 import {
   buildCartItem,
   extracProductDataForCartItem
@@ -35,6 +35,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   filteredOptions: Observable<string[]>;
   index: number;
   disponible = 0;
+  prod: Producto;
 
   tiposDeCorte = [
     'CARTA',
@@ -56,6 +57,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
     this.tipo = data.tipo;
     this.item = data.item || null;
     this.index = data.index || null;
+    this.prod = data.producto;
   }
 
   ngOnInit() {
@@ -85,7 +87,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
 
   private buildForm() {
     this.form = this.fb.group({
-      producto: [null, Validators.required],
+      producto: [this.prod, Validators.required],
       cantidad: [0.0, { validators: [Validators.required, Validators.min(1)] }], // [{value: 0.0}, {validators: [Validators.required, Validators.min(1)], updateOn: 'change'}],
       precio: [0.0, Validators.required],
       subtotal: [0.0, Validators.required],

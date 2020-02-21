@@ -8,6 +8,7 @@ import {
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { CartFacade } from '../+state/cart.facade';
+import { ProductosUiService } from '@swrx/productos';
 import { ClientesFacade } from '@swrx/clientes';
 
 import { Observable, Subject } from 'rxjs';
@@ -41,7 +42,8 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     public facade: CartFacade,
     private firebaseAuth: AngularFireAuth,
-    private clientes: ClientesFacade
+    private clientes: ClientesFacade,
+    private productoServie: ProductosUiService
   ) {}
 
   ngOnInit() {
@@ -256,6 +258,13 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown.control.c', ['$event'])
   onHotKeyAltaDeCliente(event) {
     this.clienteNuevo();
+  }
+
+  @HostListener('document:keydown.f2', ['$event'])
+  onHotKeyAltP(event) {
+    this.productoServie
+      .openSelector()
+      .subscribe(prod => this.facade.addCartItem(prod));
   }
 
   clienteNuevo() {

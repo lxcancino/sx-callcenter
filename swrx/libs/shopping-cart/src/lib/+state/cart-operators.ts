@@ -13,6 +13,7 @@ import { CartState } from './cart.reducer';
 import { ofType } from '@ngrx/effects';
 import * as CartActions from './cart.actions';
 import { CartItem } from './cart.models';
+import { Producto } from '@swrx/core-model';
 
 import uuidv4 from 'uuid/v4';
 
@@ -32,10 +33,11 @@ export const notNull = () => pipe(filter(input => !!input));
  */
 export const cartState = (store: Store<CartState>) =>
   pipe(
-    concatMap((action: { item: CartItem; index?: number }) =>
-      of(action).pipe(
-        withLatestFrom(store.pipe(select(CartSelectors.getCartState)))
-      )
+    concatMap(
+      (action: { item: CartItem; index?: number; producto?: Producto }) =>
+        of(action).pipe(
+          withLatestFrom(store.pipe(select(CartSelectors.getCartState)))
+        )
     )
   );
 

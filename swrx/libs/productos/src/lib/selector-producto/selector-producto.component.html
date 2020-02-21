@@ -1,9 +1,12 @@
-<h3 mat-dialog-title>Catálogo de productos</h3>
 <div class="header">
-  <input placeholder="Buscar" />
+  <mat-form-field class="search">
+    <mat-label>Catálogo de productos</mat-label>
+    <input matInput [formControl]="control" />
+  </mat-form-field>
 </div>
-<div class="search-panel"></div>
-<div class="grid-panel"></div>
-<mat-dialog-actions>
-  <button mat-button (click)="doSelect()"></button>
-</mat-dialog-actions>
+<div class="grid-panel">
+  <swrx-altp-table
+    [partidas]="filteredProducts$ | async"
+    (selected)="onSelection($event)"
+  ></swrx-altp-table>
+</div>

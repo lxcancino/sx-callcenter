@@ -1,0 +1,9 @@
+import sx.core.Producto
+
+model {
+	Producto producto
+}
+
+json g.render(producto, [excludes: [], resolveTemplate: false]) {
+	
+}

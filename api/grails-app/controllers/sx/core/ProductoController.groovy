@@ -23,7 +23,7 @@ class ProductoController extends RestfulController<Producto> {
         params.sort = params.sort ?:'clave'
         params.order = params.order ?:'asc'
         params.max = params.rows ?: 30
-        log.debug('Params: {}', params)
+        // log.debug('Params: {}', params)
 
         if(params.term){
             def search = '%' + params.term + '%'
@@ -39,6 +39,24 @@ class ProductoController extends RestfulController<Producto> {
         def result = query.list(params)
         
         return result
+    }
+
+    def disponibles() {
+        def query = Producto.where {}
+        params.sort = params.sort ?:'clave'
+        params.order = params.order ?:'asc'
+        params.max = params.rows ?: 100
+        log.debug('Disponibles: {}', params)
+        def search = '%' + params.term + '%'
+        query = query.where { clave =~ search || descripcion =~ search}
+        
+        Boolean activos = this.params.getBoolean('activos', true)
+        if(activos) query = query.where {activo == activos }
+        Boolean deLinea = this.params.getBoolean('deLinea', true)
+        if(deLinea) query = query.where {deLinea == deLinea}
+        def result = query.list(params)
+        respond result
+
     }
 
 

@@ -7,6 +7,7 @@ import {
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
 
+
 import { DepositosEntity, Deposito } from '../+state/depositos.models';
 import { map } from 'rxjs/operators';
 import { Update } from '@ngrx/entity';
@@ -25,7 +26,8 @@ export class DepositoService {
   }
 
   fetchDepositos(): Observable<Deposito[]> {
-    return this._collection.snapshotChanges().pipe(
+    return this.afs.collection<DepositosEntity>('depositos', ref => ref.orderBy('folio', 'desc'))
+      .snapshotChanges().pipe(
       map(actions =>
         actions.map(a => {
           const data = a.payload.doc.data() as Deposito;
