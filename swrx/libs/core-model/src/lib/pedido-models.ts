@@ -132,6 +132,7 @@ export interface InstruccionDeEnvio {
   horario: string;
   comentario: string;
   fechaDeEntrega?: string;
+  sucursal?: string;
 }
 
 export interface PedidoAutorizacion {
@@ -155,6 +156,7 @@ export class PedidoLog {
   fecha: Date;
   sucursal: string;
   envio: boolean;
+  status: string;
 
   // Inicio
   inicio: Date;
@@ -179,7 +181,7 @@ export class PedidoLog {
 export interface FacturacionLog {
   serie: string;
   folio: string;
-  usuario: string;
+  usuario?: string;
   creado: Date;
   cancelado?: Date;
   canceladoComentario?: string;

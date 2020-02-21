@@ -66,4 +66,12 @@ export class PedidoService {
       .get<Pedido[]>(url)
       .pipe(catchError((error: any) => throwError(error)));
   }
+
+  buscarSucursal(codigoPostal: string) {
+    const url = `${this.apiUrl}/buscarSucursal`;
+    const params = new HttpParams().set('codigoPostal', codigoPostal);
+    return this.http
+      .get(url, { params })
+      .pipe(catchError((error: any) => throwError(error)));
+  }
 }

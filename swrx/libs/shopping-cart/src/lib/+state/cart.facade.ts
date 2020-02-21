@@ -56,6 +56,8 @@ export class CartFacade {
   );
   kilos$ = this.store.pipe(select(CartSelectors.selectKilos));
   inicio$ = this.store.pipe(select(CartSelectors.selectInicio));
+  sucursal$ = this.store.pipe(select(CartSelectors.selectSucursal));
+
   constructor(
     private store: Store<fromCart.CartState>,
     private router: Router,

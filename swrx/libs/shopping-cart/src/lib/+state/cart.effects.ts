@@ -8,7 +8,7 @@ import * as CartActions from './cart.actions';
 import * as fromRouter from '@ngrx/router-store';
 
 import { mergeMap, filter, map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, of, noop, empty } from 'rxjs';
 
 import {
   notNull,
@@ -130,6 +130,23 @@ export class CartEffects {
         CartActions.registrarEnvioSuccess({ envio })
       )
     )
+  );
+
+  envioSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.registrarEnvioSuccess),
+        tap(action => console.log('Action: ', action)),
+        map(action => action.envio),
+        map(envio => {
+          if (envio.sucursal) {
+            return CartActions.cambiarSucursal({ sucursal: envio.sucursal });
+          } else {
+            return { type: 'NOOP_ACTION' };
+          }
+        })
+      ),
+    { dispatch: true }
   );
 
   loadPedidoSucces$ = createEffect(() =>

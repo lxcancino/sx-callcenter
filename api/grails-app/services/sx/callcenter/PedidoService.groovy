@@ -2,6 +2,8 @@ package sx.callcenter
 
 import groovy.util.logging.Slf4j
 import groovy.transform.CompileDynamic
+import groovy.sql.Sql
+import java.sql.SQLException
 
 import grails.gorm.transactions.Transactional
 import grails.compiler.GrailsCompileStatic
@@ -20,6 +22,8 @@ class PedidoService implements FolioLog {
 
     LxPedidoService lxPedidoService
     LxPedidoLogService lxPedidoLogService
+
+    def dataSource
 
     Pedido save(Pedido pedido) {
     	log.debug("Salvando pedido {}", pedido)
@@ -50,6 +54,7 @@ class PedidoService implements FolioLog {
         pedido.cerrado = new Date()
         pedido = save(pedido)
         lxPedidoService.push(pedido)
+        logPedido(pedido)
         return pedido
     }
 
@@ -62,7 +67,7 @@ class PedidoService implements FolioLog {
         auth.comentario = comentario
         pedido = save(pedido)
         lxPedidoService.push(pedido)
-        lxPedidoLogService.publishLog(pedido)
+        logPedido(pedido)
         return pedido
     }
 
@@ -81,6 +86,47 @@ class PedidoService implements FolioLog {
             String msg = ExceptionUtils.getRootCauseMessage(ex)
             log.error('Error actualizando PedidoLog en Firebase {}', msg)
         }
+    }
+
+    void logPedido(String id, Map changes) {
+        try {
+            if(pedido.cerrado){
+                return
+            } 
+            lxPedidoLogService.publishLog(pedido)
+        }catch (Exception ex) {
+            String msg = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error actualizando PedidoLog en Firebase {}', msg)
+        }
+    }
+
+    String buscarSucursal(String codigoPostal) {
+        
+        if( codigoPostal && (codigoPostal.size() > 2) ){
+            String clave = codigoPostal[0..1]
+            def row = findRegistro("select * from zona where cp_ini=?", [codigoPostal[0..1]])
+            if(row)
+                return row.sucursal   
+        }
+        return null
+        
+    }
+
+    def  findRegistro(String sql,List params){
+        Sql db = getSql()
+        try {
+            return db.firstRow(sql, params)
+        }catch (SQLException e){
+            def c = ExceptionUtils.getRootCause(e)
+            def message = ExceptionUtils.getRootCauseMessage(e)
+            logger.error(message,c)
+            throw new RuntimeException(message,c)
+        }finally {
+            db.close()
+        }
+    }
+     Sql getSql(){
+       return new Sql(dataSource)
     }
     
 }

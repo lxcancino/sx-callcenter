@@ -96,7 +96,8 @@ export const envioState = (store: Store<CartState>) =>
             pedido: state.pedido,
             envio: state.envio,
             cliente: state.cliente,
-            socio: state.socio
+            socio: state.socio,
+            sucursal: state.sucursal
           };
         })
       )

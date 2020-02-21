@@ -220,3 +220,8 @@ export const selectInicio = createSelector(
   getCartState,
   state => state.inicio
 );
+
+export const selectSucursal = createSelector(
+  getCartState,
+  state => state.sucursal
+);

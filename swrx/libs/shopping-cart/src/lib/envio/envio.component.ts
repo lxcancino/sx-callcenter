@@ -20,6 +20,7 @@ import { Cliente, InstruccionDeEnvio, Socio } from '@swrx/core-model';
 import { buildDireccionForm } from '@swrx/form-utils';
 import { takeUntil } from 'rxjs/operators';
 import { getEnvioDisplayName } from './envio.utils';
+import { PedidoService } from '@swrx/pedidos';
 
 const EnvioValidator: ValidatorFn = (fg: FormGroup) => {
   const tipo = fg.get('tipo').value;
@@ -42,6 +43,7 @@ export class EnvioComponent implements OnInit, OnDestroy {
   cliente: Cliente;
   socio: Socio;
   envio: InstruccionDeEnvio;
+  sucursal: string;
   direcciones: {};
   selectedKey: string;
 
@@ -52,11 +54,12 @@ export class EnvioComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<EnvioComponent>,
     private fb: FormBuilder,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private pedidoService: PedidoService
   ) {}
 
   ngOnInit() {
-    console.log('Envio para: ', this.data);
+    console.log('Inicializando envio: ', this.data);
     this.envio = this.data.envio;
     this.cliente = this.data.cliente;
     this.socio = this.data.socio;
@@ -64,11 +67,8 @@ export class EnvioComponent implements OnInit, OnDestroy {
     if (this.socio) {
       this._buildDireccionDesocio(this.socio);
     }
-    /*
-    if (this.data.pedido && this.data.pedido.socio) {
-      this._buildDireccionDesocio(this.data.pedido.socio);
-    }
-    */
+    this.sucursal = this.data.sucursal;
+
     this.buildForm();
 
     if (this.envio) {
@@ -89,6 +89,8 @@ export class EnvioComponent implements OnInit, OnDestroy {
       }
       this.cd.markForCheck();
     }
+
+    this.registerListeners();
   }
 
   ngOnDestroy() {
@@ -106,7 +108,8 @@ export class EnvioComponent implements OnInit, OnDestroy {
         horario: [null, [Validators.required]],
         comentario: [],
         fechaDeEntrega: [null],
-        direccion: buildDireccionForm(this.fb)
+        direccion: buildDireccionForm(this.fb),
+        sucursal: [this.sucursal]
       },
       { validators: [] }
     );
@@ -118,9 +121,51 @@ export class EnvioComponent implements OnInit, OnDestroy {
         if (value === 'FORANEO' || value === 'OCURRE') {
           this.form.get('transporte').enable();
         } else {
+          console.log('No aplica transporte...');
+
+          this.form.get('transporte').patchValue(null, { emitEvent: false });
           this.form.get('transporte').disable();
+          this.form.get('sucursal').setValue(this.sucursal);
+          this.cd.markForCheck();
         }
       });
+  }
+
+  registerListeners() {
+    const fg = this.form.get('direccion') as FormGroup;
+    fg.get('codigoPostal')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(cp => {
+        if (cp) {
+          console.log('Buscando Sucursal para el codigo postal: ', cp);
+          this.lookupSucursal(cp);
+        }
+      });
+
+    this.form
+      .get('transporte')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(t => {
+        if (t) {
+          console.log('Transporte: ', t);
+          const direccion = t.direccion;
+          if (direccion.codigoPostal) {
+            this.lookupSucursal(direccion.codigoPostal);
+          }
+        }
+      });
+  }
+
+  lookupSucursal(codigoPostal: string) {
+    this.pedidoService.buscarSucursal(codigoPostal).subscribe((res: any) => {
+      if (res.sucursal) {
+        const sucursal = res.sucursal;
+        this.form.get('sucursal').setValue(sucursal);
+        this.cd.markForCheck();
+      } else {
+        this.form.get('sucursal').setValue(this.sucursal);
+      }
+    });
   }
 
   onSelect(event: any) {

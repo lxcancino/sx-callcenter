@@ -147,6 +147,13 @@ class PedidoController extends RestfulController<Pedido> {
         respond pedido
     }
 
+     @CompileDynamic
+    def buscarSucursal(String codigoPostal) {
+        def row = pedidoService.buscarSucursal(codigoPostal)
+        respond(['sucursal': row], status: 200)
+
+    }
+
     def handleException(Exception e) {
         String message = ExceptionUtils.getRootCauseMessage(e)
         log.error(message, ExceptionUtils.getRootCause(e))

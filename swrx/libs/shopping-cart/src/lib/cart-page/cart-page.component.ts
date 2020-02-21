@@ -84,6 +84,11 @@ export class CartPageComponent implements OnInit, OnDestroy {
       .subscribe(formState =>
         this.cartForm.patchValue(formState, { emitEvent: false })
       );
+    this.facade.sucursal$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(sucursal =>
+        this.cartForm.patchValue({ sucursal }, { emitEvent: false })
+      );
   }
 
   private addListeners() {

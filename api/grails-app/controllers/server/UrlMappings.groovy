@@ -18,6 +18,7 @@ class UrlMappings {
         "/api/pedidos/autorizar/$id"(controller: 'pedido', action: 'autorizar', method: 'PUT')
         "/api/pedidos/findByFolio"(controller: 'pedido', action: 'findByFolio', method: 'GET')
         "/api/pedidos/print/$id"(controller: 'pedido', action: 'print', method: 'GET')
+        "/api/pedidos/buscarSucursal"(controller: 'pedido', action: 'buscarSucursal', method: 'GET')
 
         "/api/zip"(controller: 'zip', action: 'find', method: 'GET')
         "/api/transportes"(resources: 'transporte', excludes: ['create', 'edit', 'delete'])

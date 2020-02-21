@@ -52,6 +52,7 @@ class LxPedidoLogService {
             nombre: p.nombre,
             fecha: p.fecha,
             sucursal: p.sucursal,
+            status: p.status,
             envio: p.envio != null,
             inicio: p.inicio,
             dateCreated: p.dateCreated,
