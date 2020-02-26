@@ -4,21 +4,15 @@ import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import java.sql.SQLException
 
-
 import groovy.util.logging.Slf4j
 
-
-import grails.util.Environment
 import org.springframework.scheduling.annotation.Scheduled
 
-import com.google.firebase.cloud.FirestoreClient
-import com.google.cloud.firestore.Query
-import com.google.cloud.firestore.Firestore
+
+import grails.compiler.GrailsCompileStatic
+
 import com.google.cloud.firestore.SetOptions
 import com.google.cloud.firestore.WriteResult
-import com.google.cloud.firestore.DocumentReference
-import com.google.cloud.firestore.DocumentSnapshot
-import com.google.cloud.firestore.CollectionReference
 import com.google.api.core.ApiFuture
 
 import org.apache.commons.lang3.exception.ExceptionUtils
@@ -28,32 +22,31 @@ import sx.core.Producto
 import sx.callcenter.Pedido
 
 
-
-
-
 /**
-* Este bean es de prueba en el call center no se ocupa
+* Service class para mantener parte del estado del pedido en FirebaseStore
+*
 **/
 @Slf4j
+@GrailsCompileStatic
 class LxPedidoService {
 
-
     FirebaseService firebaseService
-    
-
-    static String TIME_FORMAT = 'dd/MM/yyyy HH:mm'
-
-    static String ENTITY = 'CloudPedido'
 
     def push(Pedido pedido) {
-        Map data = buildToFirebase(pedido)
-        ApiFuture<WriteResult> result = firebaseService.getFirestore()
-            .collection('pedidos')
-            .document(pedido.id)
-            .set(data)
-        def updateTime = result.get().getUpdateTime()
-        log.debug("Publish time : {} " , updateTime)
-        return updateTime
+        try {
+            Map changes = buildToFirebase(pedido)
+            ApiFuture<WriteResult> result = firebaseService.getFirestore()
+                .collection('pedidos')
+                .document(pedido.id)
+                .set(changes, SetOptions.merge())
+            
+            def updateTime = result.get().getUpdateTime()
+            log.debug("Publish time : {} " , updateTime)
+        
+        }catch (Exception ex) {
+            String msg = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error actualizando PedidoLog en Firebase {}', msg)
+        }
     }
 
     Map buildToFirebase(Pedido p) {
@@ -84,7 +77,7 @@ class LxPedidoService {
         return data
     }
 
-    private toFirebaseMap(def source) {
+    Map toFirebaseMap(def source) {
         Map<String, Object> data = source.properties 
         data = data.findAll{ k, v -> k != 'class'}
         return data

@@ -92,6 +92,9 @@ class Pedido {
         autorizacion nullable: true
         autorizacionesRequeridas nullable: true
         descuentoEspecial nullable: true
+        partidas validator: {
+            if (!it) return ['faltanPartidas']
+        } // No se permiten pedido sin partidas
     }
     
      static mapping = {

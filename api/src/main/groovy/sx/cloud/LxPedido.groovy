@@ -65,6 +65,7 @@ class LxPedido {
     LxPedido(Pedido pedido) {
         copyProperties(pedido, this)
         this.id = pedido.id
+        this.cliente = pedido.cliente.id
     }
     
     def copyProperties(source, target) {

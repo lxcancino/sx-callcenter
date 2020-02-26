@@ -27,7 +27,7 @@ class Autorizacion {
 
     Map toFirebaseMap() {
         Map data = this.properties
-        data = data.findAll{ k, v -> k != 'class'}
+        data = data.findAll{ k, v -> !['class', 'metaClass', 'additionalMetaMethods','constraints', 'errors'].contains(k) }
         return data
     }
 

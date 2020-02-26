@@ -15,7 +15,10 @@
       </div>
     </ng-template>
     <div class="cliente">
-      <span (click)="cambiarNombre.emit(cliente)">{{ nombre }}</span>
+      <span class="nombre" (click)="cambiarNombre.emit(cliente)"
+        >{{ nombre }}
+      </span>
+      <span class="rfc">(RFC:{{ cliente?.rfc }})</span>
     </div>
 
     <div class="options">

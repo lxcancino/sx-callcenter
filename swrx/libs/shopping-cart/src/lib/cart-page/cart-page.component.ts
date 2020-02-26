@@ -265,12 +265,12 @@ export class CartPageComponent implements OnInit, OnDestroy {
   }
 
   /** Show descuentos */
-  @HostListener('document:keydown.shift.c', ['$event'])
+  @HostListener('document:keydown.control.c', ['$event'])
   onHotKeyAltaDeCliente(event) {
     this.clienteNuevo();
   }
 
-  @HostListener('document:keydown.shift.s', ['$event'])
+  @HostListener('document:keydown.control.shift.s', ['$event'])
   onHotKeyCloseCart(event) {
     this.onCheckout();
   }

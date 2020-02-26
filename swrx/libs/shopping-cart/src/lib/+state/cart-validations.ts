@@ -3,7 +3,7 @@ import { TipoDePedido, FormaDePago } from '@swrx/core-model';
 
 import sumBy from 'lodash/sumBy';
 import values from 'lodash/values';
-import { CartValidationError } from './cart.models';
+import { CartValidationError, CartItem } from './cart.models';
 
 export function runValidation(state: CartState): CartValidationError[] {
   const errors: CartValidationError[] = [];
@@ -21,6 +21,7 @@ export function runValidation(state: CartState): CartValidationError[] {
   validarJuridico(state, errors);
   validarChequesDevueltos(state, errors);
   validarUnionDeCredito(state, errors);
+  validarEnvioConCargo(state, errors);
   return errors;
 }
 
@@ -156,6 +157,25 @@ export function validarUnionDeCredito(
       errors.push({
         error: 'SOCIO_DE_UNION',
         descripcion: 'DEBE REGISTRAR UN SOCIO PARA LA UNION DE CREDITO'
+      });
+    }
+  }
+}
+
+export function validarEnvioConCargo(
+  state: CartState,
+  errors: CartValidationError[]
+) {
+  if (state.envio && state.envio.tipo === 'ENVIO_CARGO') {
+    // Validar que existe el cargo por maniobra
+
+    const partidas: CartItem[] = values(state.items);
+    const found = partidas.find(item => item.clave === 'MANIOBRAF');
+
+    if (!found) {
+      errors.push({
+        error: 'ENVIO_CARGO_SIN_MANIOBRA',
+        descripcion: 'ENVIO CON CARGO REQUIERE PARTIDA DE MANIOBRA'
       });
     }
   }

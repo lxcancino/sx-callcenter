@@ -35,7 +35,9 @@ class PedidoService implements FolioLog {
         }
         actualizarKilos(pedido)
         pedido = pedido.save(failOnError: true, flush: true)
-        logPedido(pedido)
+
+        // Create FirebaseLog
+        lxPedidoLogService.createLog(pedido)
         return pedido
     }
 
@@ -53,8 +55,12 @@ class PedidoService implements FolioLog {
         pedido.status = 'CERRADO'
         pedido.cerrado = new Date()
         pedido = save(pedido)
+
+        // Push to Firebase
         lxPedidoService.push(pedido)
-        logPedido(pedido)
+        // Update Firebase Log
+        lxPedidoLogService.updateLog(pedido.id, [cerrado: pedido.cerrado, status: 'CERRADO'])
+        
         return pedido
     }
 
@@ -66,39 +72,27 @@ class PedidoService implements FolioLog {
         auth.autorizado = new Date()
         auth.comentario = comentario
         pedido = save(pedido)
+
+        // Push to Firebase
         lxPedidoService.push(pedido)
-        logPedido(pedido)
+        // Update Firebase Log
+        lxPedidoLogService.updateLog(pedido.id, ['autorizacion': auth.toFirebaseMap()])
         return pedido
     }
 
     void delete(Pedido pedido) {
-        if(!pedido.cerrado)
+        if(!pedido.cerrado) {
     	   pedido.delete flush: true
-    }
 
-    void logPedido(Pedido pedido) {
-        try {
-            if(pedido.cerrado){
-                return
-            } 
-            lxPedidoLogService.publishLog(pedido)
-        }catch (Exception ex) {
-            String msg = ExceptionUtils.getRootCauseMessage(ex)
-            log.error('Error actualizando PedidoLog en Firebase {}', msg)
+           // Delete from Firebase
+           /** TODO **/
+
+           // Update Firebase Log
+           /** TODO **/
         }
     }
 
-    void logPedido(String id, Map changes) {
-        try {
-            if(pedido.cerrado){
-                return
-            } 
-            lxPedidoLogService.publishLog(pedido)
-        }catch (Exception ex) {
-            String msg = ExceptionUtils.getRootCauseMessage(ex)
-            log.error('Error actualizando PedidoLog en Firebase {}', msg)
-        }
-    }
+    
 
     String buscarSucursal(String codigoPostal) {
         

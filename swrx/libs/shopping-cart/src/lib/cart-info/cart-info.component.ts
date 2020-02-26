@@ -45,17 +45,22 @@ export class CartInfoComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.facade.hasErrors$.pipe(takeUntil(this.destroy$)).subscribe(invalid => {
       if (invalid) {
-        this.tabGroup.selectedIndex = 4;
+        // this.tabGroup.selectedIndex = 4;
       }
     });
     this.facade.warnings$.pipe(takeUntil(this.destroy$)).subscribe(warnings => {
       this.warnings = warnings;
       if (warnings.length > 0) {
-        this.tabGroup.selectedIndex = 5;
-        this.cd.markForCheck();
+        // this.tabGroup.selectedIndex = 1;
+        // this.cd.markForCheck();
       }
     });
     this.autorizaciones$ = this.facade.autorizaciones$;
+    this.facade.cliente$.pipe(takeUntil(this.destroy$)).subscribe(c => {
+      console.log('Cliente seleccionado: ', c);
+      this.tabGroup.selectedIndex = 0;
+      this.cd.markForCheck();
+    });
   }
 
   ngOnDestroy() {

@@ -1,48 +1,50 @@
 package sx.cloud
 
-
 import groovy.util.logging.Slf4j
 
 import grails.compiler.GrailsCompileStatic
 
-import com.google.firebase.cloud.FirestoreClient
-import com.google.cloud.firestore.Query
-import com.google.cloud.firestore.Firestore
+
 import com.google.cloud.firestore.SetOptions
 import com.google.cloud.firestore.WriteResult
-import com.google.cloud.firestore.DocumentReference
-import com.google.cloud.firestore.DocumentSnapshot
-
 import com.google.api.core.ApiFuture
 
 import org.apache.commons.lang3.exception.ExceptionUtils
 
-
 import sx.callcenter.Pedido
+
 /**
-* 
+* Service class para mantener la bitacora del pedido en FirebaseStore
+*   
+* TODO; Mover las reglas a Firebase utilizando Firebase Functions 
 **/
 @Slf4j
-// @GrailsCompileStatic
+@GrailsCompileStatic
 class LxPedidoLogService {
 
     FirebaseService firebaseService
 
     final String COLLECTION = 'pedidos_log'
 
-    void publishLog(Pedido pedido) {
+    void createLog(Pedido pedido) {
         Map data = buildToFirebase(pedido)
-        publishLog(pedido.id, data)
+        updateLog(pedido.id, data)
     }
 
-    void publishLog(String id, Map changes) {
-        ApiFuture<WriteResult> result = firebaseService.getFirestore()
+    void updateLog(String id, Map changes) {
+        try {
+            ApiFuture<WriteResult> result = firebaseService.getFirestore()
             .collection(COLLECTION)
             .document(id)
             .set(changes, SetOptions.merge())
-        def updateTime = result.get().getUpdateTime().toDate().format('dd/MM/yyyy')
-        log.debug("PedidoLog updated time : {} " , updateTime)
-        updateTime
+
+            def updateTime = result.get().getUpdateTime().toDate().format('dd/MM/yyyy')
+            log.debug("PedidoLog updated time : {} " , updateTime)
+            
+        }catch (Exception ex) {
+            String msg = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error actualizando PedidoLog en Firebase {}', msg)
+        }
     }
 
     Map buildToFirebase(Pedido p) {

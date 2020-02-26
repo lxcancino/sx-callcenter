@@ -14,6 +14,10 @@
     padding: 0px 2px;
   }
   .cliente {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     flex: 3;
     font-weight: bold;
     text-align: center;
@@ -21,6 +25,18 @@
     &:hover {
       cursor: pointer;
       color: rgb(163, 114, 22);
+    }
+
+    .nombre {
+      padding-bottom: 0;
+      margin-bottom: -20px;
+    }
+    .rfc {
+      font-size: 12px;
+      font-style: italic;
+      // margin-top: -5px;
+      margin-bottom: -10px;
+      padding-top: 5px;
     }
     // border: 1px solid red;
   }

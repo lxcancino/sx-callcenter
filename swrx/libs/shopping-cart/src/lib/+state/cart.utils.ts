@@ -137,6 +137,13 @@ export function aplicarDescuentos(
   const items = filtrarPartidasAutomaticas(partidas);
   let descuento = calcularDescuento(items, tipo, cliente);
   let descuentoOriginal = descuento;
+
+  if (fpago === FormaDePago.TARJETA_CRE) {
+    descuento = descuento - 2;
+  } else if (fpago === FormaDePago.TARJETA_DEB) {
+    descuento = descuento - 1;
+  }
+  /*
   if (descuentoEspecial > 0) {
     if (
       tipo === TipoDePedido.CONTADO ||
@@ -146,10 +153,9 @@ export function aplicarDescuentos(
       descuento = descuentoEspecial;
     }
   }
-  if (fpago === FormaDePago.TARJETA_CRE) {
-    descuento = descuento - 2;
-  } else if (fpago === FormaDePago.TARJETA_DEB) {
-    descuento = descuento - 1;
+  */
+  if (descuentoEspecial > 0) {
+    descuento = descuentoEspecial;
   }
 
   const res: CartItem[] = [];

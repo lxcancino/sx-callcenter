@@ -213,26 +213,6 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.facade.cleanShoppingCartState();
   }
 
-  @HostListener('document:keydown.meta.i', ['$event'])
-  onHotKeyInsert(event) {
-    this.addCartItem();
-  }
-  @HostListener('document:keydown.insert', ['$event'])
-  onHotKeyInsert2(event) {
-    this.addCartItem();
-  }
-  /** Show descuentos */
-  @HostListener('document:keydown.control.d', ['$event'])
-  onHotKeyShowDescuentos(event) {
-    this.showDescuentos();
-  }
-
-  //@HostListener('document:keydown.f12', ['$event'])
-  @HostListener('document:keydown.shift.s', ['$event'])
-  onHotKeyCloseCart(event) {
-    this.onCheckout();
-  }
-
   isDisabled(pedido: Partial<Pedido>, hasErrors: boolean) {
     if (pedido.status === 'CERRADO') {
       return true;
@@ -265,6 +245,23 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.productoServie
       .openSelector()
       .subscribe(prod => this.facade.addCartItem(prod));
+  }
+  @HostListener('document:keydown.meta.i', ['$event'])
+  onHotKeyInsert(event) {
+    this.addCartItem();
+  }
+  @HostListener('document:keydown.insert', ['$event'])
+  onHotKeyInsert2(event) {
+    this.addCartItem();
+  }
+
+  @HostListener('document:keydown.control.d', ['$event'])
+  onHotKeyShowDescuentos(event) {
+    this.showDescuentos();
+  }
+  @HostListener('document:keydown.control.shift.s', ['$event'])
+  onHotKeyCloseCart(event) {
+    this.onCheckout();
   }
 
   clienteNuevo() {

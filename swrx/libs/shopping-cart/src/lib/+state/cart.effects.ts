@@ -140,7 +140,6 @@ export class CartEffects {
     () =>
       this.actions$.pipe(
         ofType(CartActions.registrarEnvioSuccess),
-        tap(action => console.log('Action: ', action)),
         map(action => action.envio),
         map(envio => {
           if (envio.sucursal) {

@@ -114,7 +114,9 @@
             mat-raised-button
             color="primary"
             (click)="cerrarPedido(pedido)"
-            [disabled]="facade.hasWarnings$ | async"
+            [disabled]="
+              (facade.hasWarnings$ | async) || (facade.hasErrors$ | async)
+            "
           >
             <mat-icon>send</mat-icon>Cerrar
           </button>

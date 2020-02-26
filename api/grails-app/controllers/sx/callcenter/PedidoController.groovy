@@ -6,7 +6,7 @@ import groovy.transform.CompileDynamic
 import grails.rest.*
 import grails.converters.*
 import grails.compiler.GrailsCompileStatic
-
+import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
 import org.apache.commons.lang3.exception.ExceptionUtils
@@ -47,24 +47,9 @@ class PedidoController extends RestfulController<Pedido> {
         def query = Pedido.where{fecha >= periodo.fechaInicial && fecha<= periodo.fechaFinal}
         return query.list(params);
     }
-
-    @CompileDynamic
-    protected Pedido createResource() {
-        Pedido res = new Pedido()
-        bindData res, getObjectToBind()
-        res.folio = -1L
-        res.status = 'COTIZACION'
-        // res.createUser = 'TEMPO'
-        // res.updateUser = 'TEMPO'
-        if(res.envio) {
-            log.info('Envio: {}' , res.envio) // Hack para salvar correctamente el envio *** ???
-            res.envio.pedido = res
-        }
-        return res
-    }
-
    
     @CompileDynamic
+    @Transactional
     def update() {
         String id = params.id as String
         Pedido pedido = Pedido.get(id)
@@ -80,6 +65,51 @@ class PedidoController extends RestfulController<Pedido> {
             envioOrigen.delete flush: true // Hack por que el envio no se elimina de manera automárica.
         }
         respond pedido, view: 'show'
+    }
+
+    /*
+    @Transactional
+    def save() {
+        if(handleReadOnly()) {
+            return
+        }
+        def instance = createResource()
+
+        instance.validate()
+        if (instance.hasErrors()) {
+            transactionStatus.setRollbackOnly()
+            respond instance.errors, view:'create' // STATUS CODE 422
+            return
+        }
+
+        saveResource instance
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [classMessageArg, instance.id])
+                redirect instance
+            }
+            '*' {
+                response.addHeader(HttpHeaders.LOCATION,
+                        grailsLinkGenerator.link( resource: this.controllerName, action: 'show',id: instance.id, absolute: true,
+                                            namespace: hasProperty('namespace') ? this.namespace : null ))
+                respond instance, [status: CREATED, view:'show']
+            }
+        }
+    }
+    */
+
+    @CompileDynamic
+    protected Pedido createResource() {
+        Pedido res = new Pedido()
+        bindData res, getObjectToBind()
+        res.folio = -1L
+        res.status = 'COTIZACION'
+        if(res.envio) {
+            log.info('Envio: {}' , res.envio) // Hack para salvar correctamente el envio *** ???
+            res.envio.pedido = res
+        }
+        return res
     }
    
 
