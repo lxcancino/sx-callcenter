@@ -10,15 +10,14 @@ mat-toolbar {
   background-color: rgb(208, 210, 211);
   grid-row: 2 / 3;
   overflow: scroll;
-  border: 1px dotted red;
 }
-.footer {
-  grid-row: 3 / 4;
-  padding: 10px;
-  height: 15px;
-  text-align: center;
-}
+// .footer {
+//   grid-row: 3 / 4;
+//   padding: 10px;
+//   height: 15px;
+//   text-align: center;
+// }
 
-mat-sidenav {
-  width: 350px;
-}
+// mat-sidenav {
+//   width: 350px;
+// }

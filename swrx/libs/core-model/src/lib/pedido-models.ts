@@ -151,27 +151,28 @@ export enum TipoDeAutorizacion {
 
 export class PedidoLog {
   // Datos generales
+  id: string;
   folio: number;
   nombre: string;
-  fecha: Date;
+  fecha: string;
   sucursal: string;
   envio: boolean;
   status: string;
 
   // Inicio
-  inicio: Date;
-  dateCreated: Date;
-  lastUpdated: Date;
+  inicio: string;
+  dateCreated: string;
+  lastUpdated: string;
   createUser: string;
   updateUser: string;
 
   // Cierre
-  cerrado?: Date;
+  cerrado?: string;
   cerradoUser?: string;
 
   //Atención en sucursal
-  atiende: string;
-  facturable: Date;
+  atiende?: string;
+  facturable?: string;
   facturacion?: FacturacionLog;
 
   // Embarque
@@ -181,17 +182,23 @@ export class PedidoLog {
 export interface FacturacionLog {
   serie: string;
   folio: string;
-  usuario?: string;
-  creado: Date;
-  cancelado?: Date;
+
+  creado: string;
+  cancelado?: string;
   canceladoComentario?: string;
 }
 
-export class EmbarqueLog {
+export interface EmbarqueLog {
+  embarque: number;
   chofer: string;
-  asigno: string;
-  asignado: Date;
+  asignado?: Date;
   salida?: Date;
-  arribo?: Date;
-  recepcion?: Date;
+  recepcion?: RecepcionDeEnvio;
+}
+
+export interface RecepcionDeEnvio {
+  arribo: Date;
+  recepcion: Date;
+  recibio?: string;
+  comentario?: string;
 }
