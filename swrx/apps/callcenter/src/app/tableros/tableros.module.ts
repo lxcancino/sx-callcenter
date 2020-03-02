@@ -3,6 +3,13 @@ import { RouterModule, Route } from '@angular/router';
 
 import { UiCoreModule } from '@swrx/ui-core';
 import { TablerosComponent } from './tableros.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import * as fromFeature from './+state';
+import * as fromLogs from './+state/logs/logs.reducer';
+import { LogsEffects } from './+state/logs/logs.effects';
+import { LogsFacade } from './+state/logs/logs.facade';
 
 const routes: Route[] = [
   {
@@ -33,6 +40,12 @@ const routes: Route[] = [
 
 @NgModule({
   declarations: [TablerosComponent],
-  imports: [UiCoreModule, RouterModule.forChild(routes)]
+  imports: [
+    UiCoreModule,
+    RouterModule.forChild(routes),
+    StoreModule.forFeature(fromLogs.LOGS_FEATURE_KEY, fromLogs.reducer),
+    EffectsModule.forFeature([LogsEffects])
+  ],
+  providers: [LogsFacade, fromFeature.SERVICES]
 })
 export class TablerosModule {}
