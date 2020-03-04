@@ -102,15 +102,15 @@ export class DepositosTableComponent implements OnInit {
   private buildColsDef(): ColDef[] {
     return [
       {
-        headerName: 'Folio',
+        headerName: 'Id',
         field: 'folio',
-        width: 110,
+        width: 80,
         pinned: 'left'
       },
       {
-        headerName: 'Pedido',
+        headerName: 'Ped',
         field: 'pedido',
-        width: 130,
+        width: 90,
         pinned: 'left',
         valueGetter: params =>
           params.data.pedido ? params.data.pedido.folio : ''
@@ -123,21 +123,37 @@ export class DepositosTableComponent implements OnInit {
         valueFormatter: params => this.transformDate(params.value)
       },
       {
+        headerName: 'Sucursal',
+        field: 'sucursal',
+        width: 110,
+        pinned: 'left'
+      },
+      {
         headerName: 'Nombre',
         field: 'nombre',
         pinned: 'left',
-        width: 250
+        width: 270
       },
-      {
-        headerName: 'Cuenta',
-        field: 'cuenta',
-        valueGetter: params => `${params.data.cuenta.numero}`
-      },
+      // {
+      //   headerName: 'Cuenta',
+      //   field: 'cuenta',
+      //   valueGetter: params => `${params.data.cuenta.numero}`
+      // },
       {
         headerName: 'Total',
         field: 'total',
         width: 110,
         valueFormatter: params => this.transformCurrency(params.value)
+      },
+      // {
+      //   headerName: 'Referencia',
+      //   field: 'referencia',
+      //   width: 100
+      // },
+      {
+        headerName: 'Vendedor',
+        field: 'updateUser',
+        width: 100
       },
       {
         headerName: 'Estatus',
@@ -145,14 +161,10 @@ export class DepositosTableComponent implements OnInit {
         width: 110
       },
       {
-        headerName: 'Referencia',
-        field: 'referencia',
-        width: 100
-      },
-      {
-        headerName: 'Vendedor',
-        field: 'updateUser',
-        width: 100
+        headerName: 'Enviado',
+        field: 'cerrrado',
+        width: 110,
+        valueFormatter: params => (params.value ? 'SI' : 'NO')
       },
       {
         headerName: 'Comentario',

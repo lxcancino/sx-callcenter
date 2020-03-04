@@ -23,9 +23,7 @@
 >
   <mat-option *ngFor="let c of filteredClientes$ | async" [value]="c">
     <div class="cliente-panel">
-      <span class="nombre">
-        {{ c.nombre }}
-      </span>
+      <span class="nombre"> {{ c.nombre }} ({{ c.rfc }}) </span>
       <span
         class="crredito"
         *ngIf="c.credito"

@@ -27,26 +27,28 @@ import sx.callcenter.Pedido
 *
 **/
 @Slf4j
-@GrailsCompileStatic
+// @GrailsCompileStatic
 class LxPedidoService {
 
     FirebaseService firebaseService
 
+    LxPedidoLogService lxPedidoLogService
+
     def push(Pedido pedido) {
-        try {
-            Map changes = buildToFirebase(pedido)
-            ApiFuture<WriteResult> result = firebaseService.getFirestore()
-                .collection('pedidos')
-                .document(pedido.id)
-                .set(changes, SetOptions.merge())
-            
-            def updateTime = result.get().getUpdateTime()
-            log.debug("Publish time : {} " , updateTime)
-        
-        }catch (Exception ex) {
-            String msg = ExceptionUtils.getRootCauseMessage(ex)
-            log.error('Error actualizando PedidoLog en Firebase {}', msg)
+        Map changes = buildToFirebase(pedido)
+        /*
+        changes.each{ k,v ->
+            log.debug('Property: {} Tipo: {}',k, v?.class )
         }
+        */
+        log.debug('Pedido changes to firebase: {}', changes.class)
+        ApiFuture<WriteResult> result = firebaseService.getFirestore()
+            .collection('pedidos')
+            .document(pedido.id)
+            .set(changes, SetOptions.merge())
+        
+        def updateTime = result.get().getUpdateTime()
+        log.debug("Publish time : {} " , updateTime)
     }
 
     Map buildToFirebase(Pedido p) {
@@ -79,9 +81,19 @@ class LxPedidoService {
 
     Map toFirebaseMap(def source) {
         Map<String, Object> data = source.properties 
-        data = data.findAll{ k, v -> k != 'class'}
+        // data = data.findAll{ k, v -> k != 'class'}
+        // return data
+        Map res = filter(data)
+        log.debug('Filtered data: ', res)
+        return res
+    }
+
+    Map filter(Map data) {
+        data = data.findAll{ k, v -> !['class','version', 'constraints', 'errors','metaClass', 'additionalMetaMethods'].contains(k) }
         return data
     }
+
+    
     
 
 }

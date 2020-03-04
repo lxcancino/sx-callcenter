@@ -1,8 +1,8 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button (click)="toogle.emit()">
+  <!-- <button mat-icon-button (click)="toogle.emit()">
     <mat-icon>menu</mat-icon>
-  </button>
-  <div class="title">
+  </button> -->
+  <div class="title" [routerLink]="['/']">
     <h3 class="mat-title">{{ title }}</h3>
   </div>
 

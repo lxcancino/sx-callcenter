@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import {
   distinctUntilChanged,
   debounceTime,
+  filter,
   switchMap,
   catchError
 } from 'rxjs/operators';
@@ -49,6 +50,7 @@ export class ProductoFieldComponent implements OnInit, ControlValueAccessor {
       // startWith(''),
       debounceTime(400),
       distinctUntilChanged(),
+      filter(value => typeof value === 'string'),
       switchMap(value => this.lookUp(value))
     );
   }

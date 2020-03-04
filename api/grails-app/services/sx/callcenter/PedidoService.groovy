@@ -26,18 +26,18 @@ class PedidoService implements FolioLog {
     def dataSource
 
     Pedido save(Pedido pedido) {
-    	log.debug("Salvando pedido {}", pedido)
+    	log.debug("Salvando pedido {}", pedido.folio)
         if(!pedido.id )
             pedido.folio = nextFolio('PEDIDO', 'CALLCENTER')
         if(pedido.envio) {
-            log.info('Envio: {}' , pedido.envio) // Hack para salvar correctamente el envio *** ???
+            // log.info('Envio: {}' , pedido.envio) // Hack para salvar correctamente el envio *** ???
             pedido.envio.pedido = pedido
         }
         actualizarKilos(pedido)
         pedido = pedido.save(failOnError: true, flush: true)
 
         // Create FirebaseLog
-        lxPedidoLogService.createLog(pedido)
+        lxPedidoLogService.createLog(pedido) // Mover a Firebase functions *** !! URGENTE
         return pedido
     }
 
@@ -54,12 +54,10 @@ class PedidoService implements FolioLog {
     Pedido cerrar(Pedido pedido) {
         pedido.status = 'CERRADO'
         pedido.cerrado = new Date()
-        pedido = save(pedido)
-
-        // Push to Firebase
-        lxPedidoService.push(pedido)
-        // Update Firebase Log
-        lxPedidoLogService.updateLog(pedido.id, [cerrado: pedido.cerrado, status: 'CERRADO'])
+        pedido = pedido.save flush: true
+        
+        lxPedidoService.push(pedido) // Push to Firebase
+        lxPedidoLogService.updateLog(pedido.id, [cerrado: pedido.cerrado, status: 'CERRADO']) // Update Firebase Log
         
         return pedido
     }

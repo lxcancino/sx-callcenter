@@ -18,7 +18,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Update } from '@ngrx/entity';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, skip } from 'rxjs/operators';
 
 import { Deposito } from '../+state/depositos.models';
 import { Pedido, FormaDePago } from '@swrx/core-model';
@@ -56,7 +56,11 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.buildForm();
-    this.form.patchValue(this.deposito, { emitEvent: false });
+    if (this.deposito) {
+      this.form.patchValue(this.deposito, { emitEvent: false });
+      console.log('Form: ', this.form.getRawValue());
+      // this.form.get('cliente').setValue(this.deposito.cliente);
+    }
 
     this.transfernciaListener();
     this.totalListener();
@@ -103,7 +107,10 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
   private pedidoListener() {
     this.form
       .get('pedido')
-      .valueChanges.pipe(takeUntil(this.destroy$))
+      .valueChanges.pipe(
+        // skip(1),
+        takeUntil(this.destroy$)
+      )
       .subscribe((pedido: Pedido) => {
         const f = this.form;
         const cliente = f.get('cliente');
@@ -116,9 +123,13 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
         console.log('Pedido: ', pedido);
         if (pedido) {
           cliente.disable();
-          cliente.setValue(pedido.cliente);
-          sucursal.setValue(pedido.sucursal);
+          if (pedido.cliente) {
+            cliente.setValue(pedido.cliente);
+          }
           sucursal.disable();
+          if (pedido.sucursal) {
+            sucursal.setValue(pedido.sucursal);
+          }
 
           switch (pedido.formaDePago) {
             case FormaDePago.DEPOSITO_EFECTIVO:
@@ -186,7 +197,7 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
 
   getChanges(): Partial<Deposito> {
     const data: any = this.form.getRawValue();
-    const { cliente, cuenta } = data;
+    const { cliente, cuenta, sucursal, pedido } = data;
     const deposito = { ...data };
     deposito.cliente = {
       id: cliente.id,
@@ -202,6 +213,11 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
     };
     deposito.rechazo = null;
     deposito.estado = 'PENDIENTE';
+    deposito.sucursal = sucursal;
+    if (pedido) {
+      deposito.pedido = pedido;
+    }
+    deposito.cerrado = false;
     return deposito;
   }
 

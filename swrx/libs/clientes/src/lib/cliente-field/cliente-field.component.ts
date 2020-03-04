@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import {
   distinctUntilChanged,
   debounceTime,
+  filter,
   switchMap,
   catchError
 } from 'rxjs/operators';
@@ -49,6 +50,7 @@ export class ClienteFieldComponent implements OnInit, ControlValueAccessor {
       // startWith(''),
       debounceTime(400),
       distinctUntilChanged(),
+      filter(value => typeof value === 'string'),
       switchMap(value => this.lookUp(value))
     );
   }
@@ -63,7 +65,7 @@ export class ClienteFieldComponent implements OnInit, ControlValueAccessor {
   }
 
   displayFn(cliente?: any): string | undefined {
-    return cliente ? cliente.nombre : undefined;
+    return cliente ? `${cliente.nombre} (${cliente.rfc})` : undefined;
   }
 
   onSelection(event: any) {

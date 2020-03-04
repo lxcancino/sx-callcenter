@@ -84,7 +84,7 @@ const routes: Route[] = [
     MainPageModule,
     RouterModule.forRoot(routes, {
       // initialNavigation: 'enabled',
-      preloadingStrategy: PreloadAllModules
+      // preloadingStrategy: PreloadAllModules
     }),
     AngularFireAuthGuardModule,
     AuthModule

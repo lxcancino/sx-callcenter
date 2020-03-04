@@ -24,8 +24,8 @@ class ClienteController extends RestfulController<Cliente> {
 
     @Override
     protected List listAllResources(Map params) {
-        log.info('List: {}', params)
-        params.max = 15
+        // log.info('List: {}', params)
+        params.max = 50
         def query = Cliente.where {}
         params.sort = params.sort ?:'nombre'
         params.order = params.order ?:'asc'

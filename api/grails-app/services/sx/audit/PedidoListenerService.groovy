@@ -64,8 +64,8 @@ class PedidoListenerService {
                 if(property == 'status') {
                     String newState = state[i]
                     if(newState == 'CERRADO') {
-                        log.info('Updated property: {}  Value: {}', nameMap.get(i),  newState)
-                        log.info('Push Pedido {} to Firebase', pedido.folio)
+                        // log.info('Updated property: {}  Value: {}', nameMap.get(i),  newState)
+                        // log.info('Push Pedido {} to Firebase', pedido.folio)
                     }
                     
                 }

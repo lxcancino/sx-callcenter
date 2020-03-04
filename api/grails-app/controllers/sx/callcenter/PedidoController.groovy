@@ -186,7 +186,8 @@ class PedidoController extends RestfulController<Pedido> {
 
     def handleException(Exception e) {
         String message = ExceptionUtils.getRootCauseMessage(e)
-        log.error(message, ExceptionUtils.getRootCause(e))
+        // log.error(message, ExceptionUtils.getRootCause(e))
+        log.error(message, e)
         respond([message: message], status: 500)
     }
 }

@@ -43,7 +43,7 @@ class LxPedidoLogService {
             
         }catch (Exception ex) {
             String msg = ExceptionUtils.getRootCauseMessage(ex)
-            log.error('Error actualizando PedidoLog en Firebase {}', msg)
+            log.error("Error actualizando PedidoLog en Firebase ${msg}", ex)
         }
     }
 

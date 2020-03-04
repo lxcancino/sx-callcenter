@@ -9,17 +9,16 @@ import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 
 import com.google.cloud.firestore.Firestore
+import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.DocumentChange
 import com.google.cloud.firestore.DocumentSnapshot
-
-
 import com.google.cloud.firestore.FirestoreException
-
-
+import com.google.cloud.firestore.WriteResult
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.cloud.*
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.api.core.ApiFuture
 
 
 import org.apache.commons.lang3.exception.ExceptionUtils
@@ -45,6 +44,12 @@ class FirebaseService {
 		app = FirebaseApp.initializeApp(options);
 		log.info('Connected to Firebase App: {}', app.name)
 
+    }
+
+    void deleteDocumet(DocumentReference docRef) {
+         ApiFuture<WriteResult> result = docRef.delete()
+         def updateTime = result.get().getUpdateTime().toDate().format('dd/MM/yyyy')
+        log.debug('{} DELETED at : {}', docRef.id, updateTime)
     }
    
 

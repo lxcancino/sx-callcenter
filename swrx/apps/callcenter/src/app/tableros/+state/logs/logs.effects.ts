@@ -22,12 +22,16 @@ export class LogsEffects implements OnInitEffects {
               const added = actions.filter(item => item.type === 'added');
               const modified = actions.filter(item => item.type === 'modified');
               const removed = actions.filter(item => item.type === 'removed');
+
               const addedLogs = added.map(mapToPedidoLog);
               const modifiedLogs = modified.map(mapToPedidoLog);
+              const removedLogs = removed.map(mapToPedidoLog);
 
-              const r1 = LogsActions.loadLogsSuccess({ logs: addedLogs });
-              const r2 = LogsActions.loadLogsSuccess({ logs: modifiedLogs });
-              return { added: addedLogs, modified: modifiedLogs };
+              return {
+                added: addedLogs,
+                modified: modifiedLogs,
+                removed: removedLogs
+              };
             }),
             catchError(error => of(LogsActions.loadLogsFailure({ error })))
           )
@@ -43,54 +47,17 @@ export class LogsEffects implements OnInitEffects {
             console.log('Pedidos modified: ', data.modified.length);
             res.push(LogsActions.updateLogsSuccess({ logs: data.modified }));
           }
+          if (data.removed.length) {
+            const ids = data.removed.map(item => item.id);
+            res.push(LogsActions.deleteLogsSuccess({ ids }));
+          }
           return res;
         })
       );
     },
     { dispatch: true }
   );
-  /*
-  load$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(LogsActions.loadLogs),
-      switchMap(() =>
-        this.service.fetchLogs().pipe(
-          map(logs => LogsActions.loadLogsSuccess({ logs })),
-          catchError(error => of(LogsActions.loadLogsFailure({ error })))
-        )
-      )
-    );
-  });
-  */
-  /*
-  loadLogs$ = createEffect(() =>
-    this.dataPersistence.fetch(LogsActions.loadLogs, {
-      run: (
-        action: ReturnType<typeof LogsActions.loadLogs>,
-        state: LogsPartialState
-      ) => {
-        return this.service.fetchLogs().pipe(
-          map(data => {
-            const loaded = state[LOGS_FEATURE_KEY].loaded;
-            console.log('State: ', state[LOGS_FEATURE_KEY]);
-            if (!loaded) {
-              console.log('Load all pedidos');
-              return LogsActions.loadLogsSuccess({ logs: data });
-            } else {
-              console.log('Only update pedidos...');
-              return LogsActions.updateLogs({ logs: data });
-            }
-          })
-        );
-      },
 
-      onError: (action: ReturnType<typeof LogsActions.loadLogs>, error) => {
-        console.error('Error', error);
-        return LogsActions.loadLogsFailure({ error });
-      }
-    })
-  );
-    */
   constructor(
     private actions$: Actions,
     private dataPersistence: DataPersistence<LogsPartialState>,

@@ -76,6 +76,10 @@ class LxPedidoDet {
         data = data.findAll{ k, v -> k != 'class'}
         return data
     }
+    Map filter(Map data) {
+        data = data.findAll{ k, v -> !['class','constraints', 'errors'].contains(k) }
+        return data
+    }
    
 }
 

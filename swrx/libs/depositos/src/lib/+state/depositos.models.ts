@@ -1,8 +1,9 @@
+import { Cliente } from '@swrx/core-model';
 export interface Deposito {
   id?: string;
   folio?: number;
   sucursal?: string;
-  cliente: any;
+  cliente: Partial<Cliente>;
   nombre: string;
   rfc: string;
   banco: any;
