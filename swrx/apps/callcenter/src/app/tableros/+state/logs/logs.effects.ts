@@ -36,6 +36,7 @@ export class LogsEffects implements OnInitEffects {
             catchError(error => of(LogsActions.loadLogsFailure({ error })))
           )
         ),
+
         switchMap((data: any) => {
           // if(data.added) {}
           const res = [];
@@ -65,6 +66,7 @@ export class LogsEffects implements OnInitEffects {
   ) {}
 
   ngrxOnInitEffects(): Action {
-    return LogsActions.loadLogs();
+    // return LogsActions.loadLogs();
+    return { type: 'DEMO' };
   }
 }

@@ -54,20 +54,26 @@ export class LogService {
   constructor(private afs: AngularFirestore) {}
 
   getPedidosLogSateChanges() {
-    if (this._collection == null) {
-      console.log('Cargar coleccion....');
-      this.initCollection();
-    }
-    return this._collection.stateChanges();
+    return this.afs
+      .collection<PedidoLog>('pedidos_log', ref =>
+        ref
+          // .where('status', '>=', 'COTIZACION')
+          .orderBy('folio', 'desc')
+          .limit(1000)
+      )
+      .snapshotChanges();
   }
 
   fetchLogs(): Observable<PedidoLog[]> {
-    return this.afs
-      .collection<PedidoLog>('pedidos_log', ref =>
-        ref.orderBy('folio', 'desc').limit(1000)
-      )
-      .stateChanges(['added', 'modified'])
-      .pipe(map(actions => actions.map(mapToPedidoLog)));
+    return (
+      this.afs
+        .collection<PedidoLog>('pedidos_log', ref =>
+          ref.orderBy('folio', 'desc').limit(1000)
+        )
+        .snapshotChanges()
+        //.stateChanges(['added', 'modified'])
+        .pipe(map(actions => actions.map(mapToPedidoLog)))
+    );
   }
 
   initCollection() {

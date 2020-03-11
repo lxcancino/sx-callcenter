@@ -22,6 +22,7 @@ import { formatCurrency, formatDate } from '@angular/common';
 
 import { spAgGridText } from '@swrx/ui-core';
 import { Producto } from '@swrx/core-model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'swrx-pedidos-log-table',
@@ -52,6 +53,10 @@ import { Producto } from '@swrx/core-model';
       .facturacion-header {
         font-style: bold;
         background-color: #5b9bd5;
+      }
+      .danger-cell {
+        background-color: red;
+        color: white;
       }
     `
   ],
@@ -97,7 +102,7 @@ export class PedidosLogComponent implements OnInit {
   }
 
   onFirstDataRendered(params) {
-    params.api.sizeColumnsToFit();
+    // params.api.sizeColumnsToFit();
   }
 
   private buildColsDef(): ColGroupDef[] {
@@ -108,29 +113,34 @@ export class PedidosLogComponent implements OnInit {
           {
             headerName: 'Cliente',
             field: 'nombre',
-            maxWidth: 200
+            width: 200,
+            pinned: 'left'
           },
           {
             headerName: 'Pedido',
             field: 'folio',
             width: 100,
-            maxWidth: 100
+            pinned: 'left'
           },
           {
             headerName: 'Status',
             field: 'status',
-            width: 120
+            width: 120,
+            pinned: 'left'
           },
           {
             headerName: 'Modificado',
             field: 'lastUpdated',
+            width: 120,
+            pinned: 'left',
             valueFormatter: params =>
               this.transformDate(params.value, 'dd/MM/yy HH:mm')
           },
           {
             headerName: 'Vendedor',
             field: 'createUser',
-            width: 120
+            width: 120,
+            pinned: 'left'
           }
         ]
       },
@@ -149,11 +159,29 @@ export class PedidosLogComponent implements OnInit {
             width: 110
           },
           {
-            headerName: 'Hora',
+            headerName: 'Atendido',
             field: 'atendido',
-            minWidth: 100,
-            maxWidth: 100,
-            valueFormatter: params => this.transformDate(params.value, 'HH:mm')
+            width: 120,
+            valueFormatter: params =>
+              this.transformDate(params.value, 'dd-MMM (HH:mm)')
+          },
+          {
+            headerName: 'Ret (min)',
+            colId: 'retrasoAtencion',
+            field: 'atendido',
+            width: 110,
+            filter: 'agNumberColumnFilter',
+            valueGetter: params => this.minutesFromNow(params.data.atendido),
+            cellStyle: params => {
+              const atraso = params.value;
+              if (atraso > 10 && atraso < 20) {
+                return { backgroundColor: 'rgb(255, 230, 0)', color: 'black' };
+              } else if (atraso > 20) {
+                return { backgroundColor: '#c24949f6', color: '#fff' };
+              } else {
+                return null;
+              }
+            }
           }
         ]
       },
@@ -174,9 +202,9 @@ export class PedidosLogComponent implements OnInit {
             }
           },
           {
-            headerName: 'Hora',
+            headerName: 'Fecha',
             colId: 'facturacionHora',
-            width: 100,
+            width: 120,
             valueGetter: params => {
               if (params.data.facturacion) {
                 return params.data.facturacion.creado;
@@ -184,7 +212,33 @@ export class PedidosLogComponent implements OnInit {
                 return null;
               }
             },
-            valueFormatter: params => this.transformDate(params.value, 'HH:mm')
+            valueFormatter: params =>
+              this.transformDate(params.value, 'dd-MMM (HH:mm)')
+          },
+          {
+            headerName: 'Ret (hrs)',
+            colId: 'retrasoFacturacion',
+            field: 'facturacion',
+            width: 100,
+            filter: 'agNumberColumnFilter',
+            valueGetter: params => {
+              const facturacion = params.data.facturacion;
+              if (facturacion && facturacion.folio) {
+                return 0;
+              } else {
+                return this.hoursFromNow(params.data.lastUpdated);
+              }
+            },
+            cellStyle: params => {
+              const atraso = params.value;
+              if (atraso > 1 && atraso <= 2) {
+                return { backgroundColor: 'rgb(255, 230, 0)', color: 'black' };
+              } else if (atraso > 2) {
+                return { backgroundColor: '#c24949f6', color: '#fff' };
+              } else {
+                return null;
+              }
+            }
           }
         ]
       },
@@ -234,6 +288,32 @@ export class PedidosLogComponent implements OnInit {
             valueGetter: params =>
               params.data.embarqueLog ? params.data.embarqueLog.recepcion : '',
             valueFormatter: params => this.transformDate(params.value, 'HH:mm')
+          },
+          {
+            headerName: 'Ret (hrs)',
+            colId: 'retrasoEntrega',
+            field: 'embarqueLog',
+            columnGroupShow: 'open',
+            width: 110,
+            filter: 'agNumberColumnFilter',
+            valueGetter: params => {
+              const embarque = params.data.embarqueLog;
+              if (embarque) {
+                return 0;
+              } else {
+                return this.hoursFromNow(params.data.lastUpdated);
+              }
+            },
+            cellStyle: params => {
+              const atraso = params.value;
+              if (atraso > 4 && atraso < 10) {
+                return { backgroundColor: 'rgb(255, 230, 0)', color: 'black' };
+              } else if (atraso > 10) {
+                return { backgroundColor: '#c24949f6', color: '#fff' };
+              } else {
+                return null;
+              }
+            }
           }
         ]
       }
@@ -259,6 +339,22 @@ export class PedidosLogComponent implements OnInit {
 
   set partidas(value: any[]) {
     this._partidas = value;
-    console.log('Asignando partidas: ', value);
+  }
+
+  fromNow(time: any) {
+    return moment(time).fromNow(false);
+  }
+
+  minutesFromNow(time: any): number {
+    const a = moment();
+    const b = moment(time);
+    const diff = a.diff(b, 'minutes');
+    return diff;
+  }
+  hoursFromNow(time: any): number {
+    const a = moment();
+    const b = moment(time);
+    const diff = a.diff(b, 'hours');
+    return diff;
   }
 }

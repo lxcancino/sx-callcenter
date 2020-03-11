@@ -10,6 +10,7 @@ import { takeUntil, map, filter } from 'rxjs/operators';
 
 import { PedidoLog } from '@swrx/core-model';
 import { LogsFacade } from '../+state/logs/logs.facade';
+import { LogService } from '../+state/services/log.service';
 
 @Component({
   selector: 'swrx-pedidos-dashboard',
@@ -20,10 +21,13 @@ import { LogsFacade } from '../+state/logs/logs.facade';
 export class PedidosDashboardComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<boolean>();
   partidas$: Observable<PedidoLog[]>;
-  constructor(private facade: LogsFacade) {}
+  constructor(private facade: LogsFacade, private service: LogService) {}
 
   ngOnInit() {
-    this.partidas$ = this.facade.allLogs$;
+    this.partidas$ = this.service.fetchLogs().pipe(
+      map(logs => logs.filter(item => item.status !== 'COTIZACION')),
+      takeUntil(this.destroy$)
+    );
   }
 
   ngOnDestroy() {
