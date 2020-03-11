@@ -39,13 +39,23 @@ class PedidoController extends RestfulController<Pedido> {
     @Override
     @CompileDynamic
     protected List<Pedido> listAllResources(Map params) {
-        // log.debug('List: {}', params)
         params.sort = 'lastUpdated'
         params.order = 'desc'
         params.max = 1000
         def periodo = params.periodo
-        def query = Pedido.where{fecha >= periodo.fechaInicial && fecha<= periodo.fechaFinal}
+        def query = Pedido.where{fecha >= periodo.fechaInicial  && status != 'CERRADO'}
         return query.list(params);
+    }
+    
+    @CompileDynamic
+    def historico() {
+        log.debug('List: {}', params)
+        params.sort = 'lastUpdated'
+        params.order = 'desc'
+        params.max = 100
+        def periodo = params.periodo
+        def query = Pedido.where{fecha >= periodo.fechaInicial  && status != 'COTIZACION'}
+        respond query.list(params);
     }
    
     @CompileDynamic

@@ -286,4 +286,8 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   cancelar() {
     this.facade.cancelarMantenimiento();
   }
+
+  enviarPorEmail(pedido: Pedido) {
+    console.log('Enviar por correo: ', pedido.folio);
+  }
 }
