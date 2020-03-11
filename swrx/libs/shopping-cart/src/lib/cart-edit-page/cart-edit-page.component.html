@@ -73,6 +73,23 @@
       <mat-icon>redeem</mat-icon>
       <span>Descuentos (Ctr + D)</span>
     </button>
+    <button
+      mat-menu-item
+      class="menu-item"
+      (click)="facade.imprimirPedido(pedido)"
+    >
+      <mat-icon>print</mat-icon>
+      <span>Imprimir</span>
+    </button>
+    <button
+      mat-menu-item
+      class="menu-item"
+      color="warn"
+      [disabled]="!canDelete(pedido)"
+    >
+      <mat-icon>delete</mat-icon>
+      <span>Eliminar</span>
+    </button>
   </swrx-cart-toolbar>
 
   <swrx-cart-items></swrx-cart-items>
@@ -98,17 +115,13 @@
       [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
     >
       <div class="checkout-actions">
-        <div class="main-actions">
-          <button mat-raised-button (click)="cancelar()">
-            <mat-icon>arrow_back</mat-icon> Cancelar
-          </button>
-          <button mat-raised-button color="accent" (click)="goToNewCart()">
-            <mat-icon>autorenew</mat-icon> Nuevo
-          </button>
-          <button mat-icon-button (click)="facade.imprimirPedido(pedido)">
-            <mat-icon>print</mat-icon>
-          </button>
-        </div>
+        <button mat-raised-button (click)="cancelar()">
+          <mat-icon>arrow_back</mat-icon> Cancelar
+        </button>
+        <button mat-raised-button color="accent" (click)="goToNewCart()">
+          <mat-icon>autorenew</mat-icon> Nuevo
+        </button>
+
         <ng-container *ngIf="pedido.status === 'COTIZACION'">
           <button
             mat-raised-button
@@ -119,14 +132,6 @@
             "
           >
             <mat-icon>send</mat-icon>Cerrar
-          </button>
-
-          <button
-            mat-raised-button
-            color="warn"
-            [disabled]="!canDelete(pedido)"
-          >
-            <mat-icon>delete</mat-icon> Eliminar
           </button>
         </ng-container>
       </div>

@@ -83,7 +83,7 @@ export class PedidoSelectorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.control.valueChanges
       .pipe(
-        tap(value => console.log('Tap: ', value)),
+        // tap(value => console.log('Tap: ', value)),
         debounceTime(500),
         distinctUntilChanged(),
         takeUntil(this.destroy$)
@@ -102,7 +102,7 @@ export class PedidoSelectorComponent implements OnInit, OnDestroy {
       .subscribe(
         found => {
           if (found) {
-            console.log('Pedido vinculado: ', found);
+            // console.log('Pedido vinculado: ', found);
             this.parent.get('pedido').setValue(found);
             this.cd.markForCheck();
             // this.control.setValue(found.folio, { emitEvent: false });

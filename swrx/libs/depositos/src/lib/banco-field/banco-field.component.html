@@ -10,16 +10,16 @@
       [disabled]="disabled"
     >
       <mat-option *ngFor="let b of bancos" [value]="b">
-        {{ b.nombreCorto }}
+        {{ b.nombre }}
       </mat-option>
     </mat-select>
     <mat-error>
       Debe seleccionar un banco
     </mat-error>
   </mat-form-field>
-  <div class="descripcion">
+  <!-- <div class="descripcion">
     <p>
       {{ selected?.razonSocial }}
     </p>
-  </div>
+  </div> -->
 </div>

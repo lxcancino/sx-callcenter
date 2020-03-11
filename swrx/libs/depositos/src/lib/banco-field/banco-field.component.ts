@@ -1,8 +1,17 @@
-import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, Inject } from '@angular/core';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { BANCOS } from './bancos-data';
+import { HttpClient, HttpParams } from '@angular/common/http';
+
+import { Observable, throwError } from 'rxjs';
+import {
+  distinctUntilChanged,
+  debounceTime,
+  filter,
+  switchMap,
+  catchError
+} from 'rxjs/operators';
 
 @Component({
   selector: 'swrx-banco-field',
@@ -22,19 +31,39 @@ export class BancoFieldComponent implements OnInit, ControlValueAccessor {
 
   disabled = false;
 
+  /*
   bancos = [...BANCOS].sort((itemA, itemB) =>
     itemA.nombreCorto
       .toLowerCase()
       .localeCompare(itemB.nombreCorto.toLowerCase())
   );
+  */
+  bancos: any[] = [];
 
   @Input() placeholder = 'Seleccione un banco';
 
   selected: any;
+  apiUrl: string;
 
-  constructor() {}
+  constructor(private http: HttpClient, @Inject('apiUrl') api) {
+    this.apiUrl = `${api}/bancos`;
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadBancos();
+  }
+
+  loadBancos() {
+    const params = new HttpParams().set('max', '100');
+    return this.http
+      .get<any>(this.apiUrl, { params })
+      .pipe(catchError((response: any) => throwError(response)))
+      .subscribe(data => {
+        this.bancos = data.sort((itemA: any, itemB: any) =>
+          itemA.nombre.toLowerCase().localeCompare(itemB.nombre.toLowerCase())
+        );
+      });
+  }
 
   onSelection(event: any) {
     this.selected = event.value;
@@ -48,7 +77,7 @@ export class BancoFieldComponent implements OnInit, ControlValueAccessor {
 
   compareWith(itemA, itemB: any) {
     if (itemA && itemB) {
-      return itemA.clave === itemB.clave;
+      return itemA.id === itemB.id;
     } else {
       return false;
     }

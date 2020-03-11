@@ -10,14 +10,19 @@ import {
   FormControl,
   Validators,
   ValidatorFn,
-  ValidationErrors
+  ValidationErrors,
+  AbstractControl,
+  AsyncValidatorFn
 } from '@angular/forms';
 
 import { MatDialogRef } from '@angular/material';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, Observable, of, combineLatest } from 'rxjs';
+import { takeUntil, delay } from 'rxjs/operators';
 import { Deposito } from '../+state/depositos.models';
 import { Pedido, FormaDePago } from '@swrx/core-model';
+
+import * as moment from 'moment';
+import { DepositoService } from '../services/deposito.service';
 
 const depositoValidator: ValidatorFn = (
   control: any
@@ -25,6 +30,19 @@ const depositoValidator: ValidatorFn = (
   const { efectivo, cheque, tarjeta } = control.value;
   const total = efectivo + cheque + tarjeta;
   return total > 0.0 ? null : { importesInvalidos: true };
+};
+
+const noDuplicadoValidator: AsyncValidatorFn = (
+  control: AbstractControl
+): Observable<ValidationErrors | null> => {
+  const { banco, cuenta, fechaDeposito, total } = control.value;
+  const fdeposito = moment(fechaDeposito).toDate();
+
+  console.log('Evaluando Banco: ', banco);
+  console.log('Cuenta: ', cuenta);
+  console.log('F.Deposito: ', fdeposito);
+  console.log('Total', total);
+  return of(null).pipe(delay(3000));
 };
 
 @Component({
@@ -36,7 +54,10 @@ const depositoValidator: ValidatorFn = (
 export class DepositoCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject();
-  constructor(private dialogRef: MatDialogRef<DepositoCreateComponent>) {}
+  constructor(
+    private dialogRef: MatDialogRef<DepositoCreateComponent>,
+    private service: DepositoService
+  ) {}
 
   limitDate = new Date().toISOString();
 
@@ -72,12 +93,16 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
         },
         depositoValidator
       ),
-      referencia: new FormControl(null, [Validators.required])
+      referencia: new FormControl(null, {
+        validators: [Validators.required],
+        updateOn: 'blur'
+      })
     });
     this.form.get('importes').disable();
     this.transfernciaListener();
     this.totalListener();
     this.pedidoListener();
+    this.noDucicadoListener();
   }
 
   private pedidoListener() {
@@ -93,7 +118,7 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
         const cheque = impF.get('cheque');
         const transferencia = f.get('transferencia');
         const total = f.get('total');
-        console.log('Pedido: ', pedido);
+        // console.log('Pedido: ', pedido);
         if (pedido) {
           cliente.disable();
           sucursal.disable();
@@ -152,6 +177,39 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
       });
   }
 
+  private noDucicadoListener() {
+    this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(val => {
+      const { banco, cuenta, fechaDeposito, total } = val;
+      const fdeposito = moment(fechaDeposito).toDate();
+      if (banco && cuenta && fdeposito && total) {
+        // console.log('Banco: ', banco);
+        // console.log('Cuenta: ', cuenta);
+        // console.log('F.Deposito: ', fdeposito);
+        // console.log('Total', total);
+        console.log('Buscando duplicados....');
+        this.service
+          .buscarDuplicado(total, banco)
+          .subscribe(response => console.log('Response: ', response));
+      }
+    });
+    /*
+    const banco$ = this.form
+      .get('banco')
+      .valueChanges.pipe(takeUntil(this.destroy$));
+    const cuenta$ = this.form
+      .get('cuenta')
+      .valueChanges.pipe(takeUntil(this.destroy$));
+    const fechaDeposito$ = this.form
+      .get('fechaDeposito')
+      .valueChanges.pipe(takeUntil(this.destroy$));
+    const total$ = this.form
+      .get('total')
+      .valueChanges.pipe(takeUntil(this.destroy$));
+    const groupo$ = combineLatest(banco$, cuenta$, fechaDeposito$, total$);
+    groupo$.subscribe(val => console.log('Value: ', val));
+    */
+  }
+
   submit() {
     if (this.form.valid) {
       const d: Deposito = this.buildDeposito();
@@ -171,6 +229,7 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
       rfc: cliente.rfc
     };
     deposito.rfc = cliente.rfc;
+    deposito.cerrado = false;
     deposito.cuenta = {
       id: cuenta.id,
       descripcion: cuenta.descripcion,

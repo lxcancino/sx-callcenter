@@ -217,7 +217,6 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
     if (pedido) {
       deposito.pedido = pedido;
     }
-    deposito.cerrado = false;
     return deposito;
   }
 

@@ -25,7 +25,7 @@ export class DepositosPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.reload();
+    // this.reload();
     this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
       if (usr) {
         const { displayName, email } = usr;

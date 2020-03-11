@@ -7,9 +7,8 @@ import {
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
 
-
 import { DepositosEntity, Deposito } from '../+state/depositos.models';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Update } from '@ngrx/entity';
 
 import uuidv4 from 'uuid/v4';
@@ -26,16 +25,20 @@ export class DepositoService {
   }
 
   fetchDepositos(): Observable<Deposito[]> {
-    return this.afs.collection<DepositosEntity>('depositos', ref => ref.orderBy('folio', 'desc'))
-      .snapshotChanges().pipe(
-      map(actions =>
-        actions.map(a => {
-          const data = a.payload.doc.data() as Deposito;
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        })
+    return this.afs
+      .collection<DepositosEntity>('depositos', ref =>
+        ref.orderBy('folio', 'desc')
       )
-    );
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as Deposito;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
   }
 
   fetchPendientes(): Observable<Deposito[]> {
@@ -102,5 +105,23 @@ export class DepositoService {
         .then(newFolio => console.log('Deposito generado: ', newFolio))
         .catch(error => console.error('Error :', error));
     });
+  }
+
+  buscarDuplicado(total: number, banco) {
+    return this.afs
+      .collection('depositos', ref =>
+        ref.where('total', '==', total).where('banco', '==', banco)
+      )
+      .snapshotChanges()
+      .pipe(
+        take(1),
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as Deposito;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
   }
 }

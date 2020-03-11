@@ -1,10 +1,10 @@
 <mat-list-item>
   <span matListIcon>{{ index + 1 }}</span>
-  <img
+  <!-- <img
     matListAvatar
     [src]="item.producto.imageUrl || 'assets/images/1273567240.jpg'"
     alt="linea"
-  />
+  /> -->
 
   <div matLine>
     <div class="producto" (click)="onEdit(item)">
@@ -21,31 +21,35 @@
       </span>
     </div>
   </div>
-  <div matLine class="cortes" *ngIf="item.corte as corte">
-    <a (click)="onEdit(item)" mat-icon-button>
-      <fa-icon matListIcon icon="cut" *ngIf="item.corte"></fa-icon>
-    </a>
-    <span class="instruccion">
-      <strong>
-        {{ item.corte.instruccion }}
-      </strong>
-    </span>
-    <span *ngIf="corte.tantos > 0"
-      >Tamaños: <strong>{{ item.corte.tantos }}</strong></span
-    >
-    <span *ngIf="corte.cantidad > 0"
-      >Cantidad: <strong>{{ item.corte.cantidad }}</strong></span
-    >
-    <span *ngIf="corte.cantidad > 0"
-      >Importe: <strong>{{ item.corte.importe | currency }}</strong></span
-    >
-    <span *ngIf="corte.refinado"
-      >Refinado: <fa-icon icon="check-circle"></fa-icon
-    ></span>
-    <span *ngIf="corte.limpio"
-      >Limpio: <fa-icon icon="check-circle"></fa-icon>
-    </span>
+
+  <div matLine *ngIf="item.corte as corte">
+    <div class="cortes">
+      <a (click)="onEdit(item)">
+        <fa-icon icon="cut" *ngIf="item.corte"></fa-icon>
+      </a>
+      <span class="instruccion">
+        <strong>
+          {{ item.corte.instruccion }}
+        </strong>
+      </span>
+      <span *ngIf="corte.tantos > 0"
+        >Tamaños: <strong>{{ item.corte.tantos }}</strong></span
+      >
+      <span *ngIf="corte.cantidad > 0"
+        >Cantidad: <strong>{{ item.corte.cantidad }}</strong></span
+      >
+      <span *ngIf="corte.cantidad > 0"
+        >Importe: <strong>{{ item.corte.importe | currency }}</strong></span
+      >
+      <span *ngIf="corte.refinado"
+        >Refinado: <fa-icon icon="check-circle"></fa-icon
+      ></span>
+      <span *ngIf="corte.limpio"
+        >Limpio: <fa-icon icon="check-circle"></fa-icon>
+      </span>
+    </div>
   </div>
+
   <div matLine>
     <div class="row2">
       <div
@@ -109,5 +113,5 @@
     <mat-icon>delete</mat-icon>
   </button>
 
-  <mat-divider inset></mat-divider>
+  <mat-divider></mat-divider>
 </mat-list-item>

@@ -25,7 +25,7 @@ class ProductoController extends RestfulController<Producto> {
         params.sort = params.sort ?:'clave'
         params.order = params.order ?:'asc'
         params.max = params.rows ?: 50
-        log.debug('Params: {}', params)
+        // log.debug('Params: {}', params)
 
         if(params.term){
             def search = '%' + params.term + '%'

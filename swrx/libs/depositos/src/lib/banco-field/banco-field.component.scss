@@ -4,14 +4,12 @@
 }
 
 .mat-form-field {
-  flex-basis: 35%;
+  flex-basis: 100%;
 }
 
 .descripcion {
- text-overflow: ellipsis;
- padding: 0 10px 0 10px;
- font-size: 14px;
- flex-basis: 65%;
+  text-overflow: ellipsis;
+  padding: 0 10px 0 10px;
+  font-size: 14px;
+  flex-basis: 65%;
 }
-
-
