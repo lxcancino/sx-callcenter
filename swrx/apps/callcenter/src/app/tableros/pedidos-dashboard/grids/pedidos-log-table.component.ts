@@ -166,17 +166,32 @@ export class PedidosLogComponent implements OnInit {
               this.transformDate(params.value, 'dd-MMM (HH:mm)')
           },
           {
-            headerName: 'Ret (min)',
+            headerName: 'Retraso',
             colId: 'retrasoAtencion',
             field: 'atendido',
             width: 110,
             filter: 'agNumberColumnFilter',
-            valueGetter: params => this.minutesFromNow(params.data.atendido),
+            valueGetter: params => {
+              const pedidoLog = params.data;
+              const atendido = pedidoLog.atendido;
+              if (!atendido) {
+                return this.minutesFromNow(params.data.lastUpdated);
+              } else {
+                const t_cerrado = pedidoLog.lastUpdated;
+                const t_atendido = atendido;
+                const ret = (t_atendido - t_cerrado) / (1000 * 60);
+                return Math.round(ret);
+                // return this.minutesFromNow(params.data.lastUpdated);
+              }
+            },
             cellStyle: params => {
+              if (params.data.atendido) {
+                return null;
+              }
               const atraso = params.value;
-              if (atraso > 10 && atraso < 20) {
+              if (atraso > 5 && atraso <= 10) {
                 return { backgroundColor: 'rgb(255, 230, 0)', color: 'black' };
-              } else if (atraso > 20) {
+              } else if (atraso > 10) {
                 return { backgroundColor: '#c24949f6', color: '#fff' };
               } else {
                 return null;
@@ -216,7 +231,7 @@ export class PedidosLogComponent implements OnInit {
               this.transformDate(params.value, 'dd-MMM (HH:mm)')
           },
           {
-            headerName: 'Ret (hrs)',
+            headerName: 'Retraso',
             colId: 'retrasoFacturacion',
             field: 'facturacion',
             width: 100,
@@ -226,14 +241,14 @@ export class PedidosLogComponent implements OnInit {
               if (facturacion && facturacion.folio) {
                 return 0;
               } else {
-                return this.hoursFromNow(params.data.lastUpdated);
+                return this.minutesFromNow(params.data.lastUpdated);
               }
             },
             cellStyle: params => {
               const atraso = params.value;
-              if (atraso > 1 && atraso <= 2) {
+              if (atraso > 15 && atraso <= 30) {
                 return { backgroundColor: 'rgb(255, 230, 0)', color: 'black' };
-              } else if (atraso > 2) {
+              } else if (atraso > 30) {
                 return { backgroundColor: '#c24949f6', color: '#fff' };
               } else {
                 return null;
@@ -265,6 +280,7 @@ export class PedidosLogComponent implements OnInit {
           {
             headerName: 'Asignación',
             colId: 'embarqueAsignado',
+            width: 110,
             columnGroupShow: 'closed',
             filter: false,
             valueGetter: params =>
@@ -274,23 +290,34 @@ export class PedidosLogComponent implements OnInit {
           {
             headerName: 'Salida',
             colId: 'embarqueSalida',
+            width: 120,
             columnGroupShow: 'open',
             filter: false,
             valueGetter: params =>
               params.data.embarqueLog ? params.data.embarqueLog.salida : '',
-            valueFormatter: params => this.transformDate(params.value, 'HH:mm')
+            valueFormatter: params =>
+              this.transformDate(params.value, 'dd-MMM (HH:mm)')
           },
           {
             headerName: 'Entrega',
             colId: 'embarqueEntrega',
             columnGroupShow: 'open',
             filter: false,
-            valueGetter: params =>
-              params.data.embarqueLog ? params.data.embarqueLog.recepcion : '',
-            valueFormatter: params => this.transformDate(params.value, 'HH:mm')
+            width: 120,
+            valueGetter: params => {
+              const embarque = params.data.embarqueLog;
+              if (embarque && embarque.recepcion) {
+                console.log('Arribo: ', embarque.recepcion.arribo);
+                return embarque.recepcion.arribo.toDate();
+              } else {
+                return null;
+              }
+            },
+            valueFormatter: params =>
+              this.transformDate(params.value, 'dd-MMM (HH:mm)')
           },
           {
-            headerName: 'Ret (hrs)',
+            headerName: 'Ret Entrega',
             colId: 'retrasoEntrega',
             field: 'embarqueLog',
             columnGroupShow: 'open',

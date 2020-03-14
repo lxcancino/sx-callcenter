@@ -41,7 +41,7 @@ export class ExistenciasService {
 
   findExistencias(id: string): Observable<any> {
     return this.afs
-      .collection<ExistenciasEntity>('existencias')
+      .collection<ExistenciasEntity>('existencia')
       .doc(id)
       .collection('almacenes')
       .valueChanges()

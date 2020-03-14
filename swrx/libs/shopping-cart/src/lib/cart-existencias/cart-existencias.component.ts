@@ -55,13 +55,12 @@ export class CartExistenciasComponent implements OnInit, OnDestroy {
   @Input()
   set producto(p: Partial<Producto>) {
     if (p) {
-      this.loadExistencias(p.clave);
+      this.loadExistencias(p.id);
     }
     this._producto = p;
   }
 
   private loadExistencias(id: string) {
-    console.log('');
     this.subscription = this.service.findExistencias(id).subscribe(res => {
       this.existencias = res ? res : [];
       this.disponible.emit(this.disponibilidad);
