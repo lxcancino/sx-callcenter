@@ -48,6 +48,20 @@
       </swrx-numeric-field>
     </div>
   </div>
+  <div *ngIf="posibleDuplicado" class="duplicado">
+    <span>Posible duplicado con:</span>
+    <div class="duplicado-info">
+      <span
+        >Folio: <strong>{{ posibleDuplicado?.folio }}</strong></span
+      >
+      <span
+        >Sucursal: <strong>{{ posibleDuplicado.sucursal }}</strong></span
+      >
+      <span
+        >Solicitó: <strong> {{ posibleDuplicado?.updateUser }}</strong></span
+      >
+    </div>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>

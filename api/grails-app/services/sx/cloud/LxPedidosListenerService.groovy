@@ -37,6 +37,8 @@ class LxPedidosListenerService implements EventListener<QuerySnapshot> {
 
 	ListenerRegistration registration
 
+	LxPedidoLogService lxPedidoLogService
+
 	@PostConstruct
 	def start() {
 		log.info('Registering listener to firebase collection: {}', COLLECTION)
@@ -62,6 +64,7 @@ class LxPedidosListenerService implements EventListener<QuerySnapshot> {
 		pedido.save failOnError: true, flush: true
 		log.debug('Status de pedido: {} actualizado a: {}', pedido.folio, pedido.status)
 		firebaseService.deleteDocumet(document.getReference())
+		lxPedidoLogService.updateLog(pedido.id, [status: 'COTIZACION', cerrado: null])
 		
 	}
 

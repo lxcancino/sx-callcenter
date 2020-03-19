@@ -107,7 +107,7 @@ export class DepositoService {
     });
   }
 
-  buscarDuplicado(total: number, banco) {
+  buscarDuplicado(total: number, banco): Observable<any | Deposito> {
     return this.afs
       .collection('depositos', ref =>
         ref.where('total', '==', total).where('banco', '==', banco)

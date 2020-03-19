@@ -24,27 +24,6 @@ import { Pedido, FormaDePago } from '@swrx/core-model';
 import * as moment from 'moment';
 import { DepositoService } from '../services/deposito.service';
 
-const depositoValidator: ValidatorFn = (
-  control: any
-): ValidationErrors | null => {
-  const { efectivo, cheque, tarjeta } = control.value;
-  const total = efectivo + cheque + tarjeta;
-  return total > 0.0 ? null : { importesInvalidos: true };
-};
-
-const noDuplicadoValidator: AsyncValidatorFn = (
-  control: AbstractControl
-): Observable<ValidationErrors | null> => {
-  const { banco, cuenta, fechaDeposito, total } = control.value;
-  const fdeposito = moment(fechaDeposito).toDate();
-
-  console.log('Evaluando Banco: ', banco);
-  console.log('Cuenta: ', cuenta);
-  console.log('F.Deposito: ', fdeposito);
-  console.log('Total', total);
-  return of(null).pipe(delay(3000));
-};
-
 @Component({
   selector: 'swrx-deposito-create',
   templateUrl: './deposito-create.component.html',
@@ -54,6 +33,7 @@ const noDuplicadoValidator: AsyncValidatorFn = (
 export class DepositoCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject();
+  posibleDuplicado: Deposito = null;
   constructor(
     private dialogRef: MatDialogRef<DepositoCreateComponent>,
     private service: DepositoService
@@ -85,14 +65,11 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
       ]),
       transferencia: new FormControl(true),
       total: new FormControl(0.0, [Validators.required, Validators.min(1.0)]),
-      importes: new FormGroup(
-        {
-          efectivo: new FormControl(0.0, [Validators.min(0.0)]),
-          cheque: new FormControl(0.0, [Validators.min(0.0)]),
-          tarjeta: new FormControl(0.0, [Validators.min(0.0)])
-        },
-        depositoValidator
-      ),
+      importes: new FormGroup({
+        efectivo: new FormControl(0.0, [Validators.min(0.0)]),
+        cheque: new FormControl(0.0, [Validators.min(0.0)]),
+        tarjeta: new FormControl(0.0, [Validators.min(0.0)])
+      }),
       referencia: new FormControl(null, {
         validators: [Validators.required],
         updateOn: 'blur'
@@ -182,14 +159,14 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
       const { banco, cuenta, fechaDeposito, total } = val;
       const fdeposito = moment(fechaDeposito).toDate();
       if (banco && cuenta && fdeposito && total) {
-        // console.log('Banco: ', banco);
-        // console.log('Cuenta: ', cuenta);
-        // console.log('F.Deposito: ', fdeposito);
-        // console.log('Total', total);
-        console.log('Buscando duplicados....');
-        this.service
-          .buscarDuplicado(total, banco)
-          .subscribe(response => console.log('Response: ', response));
+        this.service.buscarDuplicado(total, banco).subscribe(response => {
+          if (Array.isArray(response) && response.length > 0) {
+            const found = response[0];
+            this.posibleDuplicado = found;
+          } else {
+            this.posibleDuplicado = null;
+          }
+        });
       }
     });
     /*

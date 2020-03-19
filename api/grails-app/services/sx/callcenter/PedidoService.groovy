@@ -55,10 +55,9 @@ class PedidoService implements FolioLog {
         pedido.status = 'CERRADO'
         pedido.cerrado = new Date()
         pedido = pedido.save flush: true
-        
-        lxPedidoService.push(pedido) // Push to Firebase
-        lxPedidoLogService.updateLog(pedido.id, [cerrado: pedido.cerrado, status: 'CERRADO']) // Update Firebase Log
-        
+        // lxPedidoService.push(pedido) // Push to Firebase
+        // lxPedidoLogService.updateLog(pedido.id, [cerrado: pedido.cerrado, status: 'CERRADO']) // Update Firebase Log
+        lxPedidoService.cerrar(pedido)
         return pedido
     }
 

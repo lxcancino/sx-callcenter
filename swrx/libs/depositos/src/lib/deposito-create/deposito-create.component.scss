@@ -46,3 +46,21 @@ swrx-deposito-importes-field {
   display: flex;
   margin: 6px 0;
 }
+
+.duplicado {
+  background-color: rgba(211, 126, 15, 0.938);
+  color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .duplicado-info {
+    margin-top: 10px;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    strong {
+      padding-left: 10pxs;
+    }
+  }
+}
