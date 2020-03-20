@@ -10,8 +10,19 @@
 }
 .content {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
+  .banco {
+    flex: 1;
+  }
+  .cuenta {
+    margin-left: 5px;
+    flex: 2;
+  }
+  .referencia {
+    flex: 1;
+    margin-left: 5px;
+  }
 }
 .duplicado {
   background-color: rgba(211, 126, 15, 0.938);
@@ -24,9 +35,17 @@
     margin-top: 10px;
     flex: 1;
     display: flex;
-    justify-content: space-between;
-    strong {
-      padding-left: 10pxs;
+    span {
+      strong {
+        padding-left: 10pxs;
+      }
+      flex: 1;
+    }
+    span:not(:first-child) {
+      padding-left: 10px;
+    }
+    .folio {
+      flex: 0.5;
     }
   }
 }

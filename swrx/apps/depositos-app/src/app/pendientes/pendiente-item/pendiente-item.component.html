@@ -1,10 +1,15 @@
 <mat-card class="item">
   <mat-card-header>
-    <mat-card-title
-      >{{ item.cuenta.descripcion }} ({{ item.cuenta.numero }})
+    <mat-card-title>
+      <span>Cuenta: </span>
+      <span>{{ item.cuenta.descripcion }} ({{ item.cuenta.numero }})</span>
     </mat-card-title>
-    <mat-card-subtitle>{{ item.sucursal || 'CALLCENTER' }}</mat-card-subtitle>
-    <span>{{ item.fecha | date }}</span>
+    <!-- <mat-card-subtitle>
+      <span>Sucursal:</span>
+      <span>
+        <strong>{{ item.sucursal || 'CALLCENTER' }}</strong>
+      </span>
+    </mat-card-subtitle> -->
   </mat-card-header>
 
   <mat-divider></mat-divider>
@@ -14,6 +19,20 @@
       <span class="tipo"
         >({{ item.transferencia ? 'TRANSFERENCIA' : 'DEPOSITO' }})</span
       >
+    </div>
+
+    <div class="property">
+      <span>Folio:</span>
+      <span>{{ item.folio }}</span>
+    </div>
+    <div class="property">
+      <span>Sucursal:</span>
+      <span>{{ item.sucursal }}</span>
+    </div>
+
+    <div class="property">
+      <span>Fecha:</span>
+      <span>{{ item.fecha | date }}</span>
     </div>
 
     <div class="property">

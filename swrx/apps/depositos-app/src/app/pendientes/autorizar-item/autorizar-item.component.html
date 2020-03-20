@@ -3,22 +3,28 @@
   {{
     transaccion.transferencia ? 'TRANSFERENCIA BANCARIA' : 'DEPOSITO BANCARIO'
   }}
+  Folio: <strong>{{ transaccion.folio }}</strong>
 </h2>
 
 <div class="duplicado" *ngIf="posibleDuplicadoCallcenter">
   <span>Posible duplicado (CallCenter)</span>
   <div class="duplicado-info">
-    <span
+    <span class="folio"
       >Folio: <strong>{{ posibleDuplicadoCallcenter?.folio }}</strong></span
     >
     <span
-      >Sucursal:
-      <strong>{{ posibleDuplicadoCallcenter?.sucursal }}</strong></span
+      >Suc: <strong>{{ posibleDuplicadoCallcenter?.sucursal }}</strong></span
     >
     <span
+      >F. Dep:
+      <strong>{{
+        posibleDuplicadoCallcenter?.fechaDeposito | date: 'dd/MM/yyyy'
+      }}</strong></span
+    >
+    <!-- <span
       >Importe:
       <strong>{{ posibleDuplicadoCallcenter?.total | currency }}</strong></span
-    >
+    > -->
     <span
       >Solicitó:
       <strong> {{ posibleDuplicadoCallcenter?.updateUser }}</strong></span
@@ -29,7 +35,7 @@
 <div class="duplicado" *ngIf="posibleDuplicadoSiipap">
   <span>Posible duplicado (SIIPAP):</span>
   <div class="duplicado-info">
-    <span
+    <span class="folio"
       >Folio: <strong>{{ posibleDuplicadoSiipap?.folio }}</strong></span
     >
     <span
@@ -37,15 +43,16 @@
       <strong>{{ posibleDuplicadoSiipap?.sucursal?.nombre }}</strong></span
     >
     <span
-      >Importe:
-      <strong>{{ posibleDuplicadoSiipap?.total | currency }}</strong></span
-    >
-    <span
-      >Fecha Dep:
+      >F. Dep:
       <strong>{{
         posibleDuplicadoSiipap?.fechaDeposito | date: 'dd/MM/yyyy'
       }}</strong></span
     >
+    <!-- <span
+      >Importe:
+      <strong>{{ posibleDuplicadoSiipap?.total | currency }}</strong></span
+    > -->
+
     <span
       >Solicitó:
       <strong> {{ posibleDuplicadoSiipap?.updateUser }}</strong></span
@@ -60,25 +67,25 @@
   </div>
 
   <div class="content">
-    <mat-form-field>
+    <mat-form-field class="banco">
       <input
         matInput
         placeholder="Banco Origen"
         value="{{ transaccion.banco.nombre }}"
-        readonly
+        disabled
       />
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="cuenta">
       <input
         matInput
         placeholder="Cta Destino"
-        readonly
+        disabled
         value="{{ transaccion.cuenta.descripcion }} ({{
           transaccion.cuenta.numero
         }})"
       />
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="referencia">
       <input
         matInput
         [formControl]="control"
@@ -95,7 +102,12 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>CANCELAR</button>
-  <button mat-button (click)="submit()" cdkFocusInitial>
+  <button
+    mat-button
+    (click)="submit()"
+    cdkFocusInitial
+    [disabled]="buscandoDuplicados"
+  >
     ACCEPTAR
   </button>
 </mat-dialog-actions>

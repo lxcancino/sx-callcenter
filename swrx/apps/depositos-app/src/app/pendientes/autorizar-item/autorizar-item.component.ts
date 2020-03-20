@@ -11,7 +11,7 @@ import * as uuid from 'uuid';
 import { DepositoService } from '@swrx/depositos';
 
 import { of, merge, Subject } from 'rxjs';
-import { finalize, delay, tap } from 'rxjs/operators';
+import { finalize, delay, tap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'swrx-autorizar-item',
@@ -67,7 +67,9 @@ export class AutorizarItemComponent implements OnInit {
         tap(response => {
           if (Array.isArray(response) && response.length > 0) {
             const found = response[0];
-            this.posibleDuplicadoCallcenter = found;
+            if (found.id !== this.transaccion.id) {
+              this.posibleDuplicadoCallcenter = found;
+            }
           } else {
             this.posibleDuplicadoCallcenter = undefined;
           }
@@ -77,12 +79,14 @@ export class AutorizarItemComponent implements OnInit {
 
   buscarDuplicadoEnSiipap() {
     return this.service.buscarPosibleDuplicadoEnSiipap(this.transaccion).pipe(
+      catchError(response => of(undefined)),
       tap(sol => {
-        if (sol) {
-          this.posibleDuplicadoSiipap = sol;
-        } else {
-          this.posibleDuplicadoSiipap = undefined;
-        }
+        this.posibleDuplicadoSiipap = sol;
+        // if (sol) {
+        //   this.posibleDuplicadoSiipap = sol;
+        // } else {
+        //   this.posibleDuplicadoSiipap = undefined;
+        // }
       })
     );
   }
