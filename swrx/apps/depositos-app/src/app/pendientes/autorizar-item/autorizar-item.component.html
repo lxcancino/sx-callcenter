@@ -5,6 +5,54 @@
   }}
 </h2>
 
+<div class="duplicado" *ngIf="posibleDuplicadoCallcenter">
+  <span>Posible duplicado (CallCenter)</span>
+  <div class="duplicado-info">
+    <span
+      >Folio: <strong>{{ posibleDuplicadoCallcenter?.folio }}</strong></span
+    >
+    <span
+      >Sucursal:
+      <strong>{{ posibleDuplicadoCallcenter?.sucursal }}</strong></span
+    >
+    <span
+      >Importe:
+      <strong>{{ posibleDuplicadoCallcenter?.total | currency }}</strong></span
+    >
+    <span
+      >Solicitó:
+      <strong> {{ posibleDuplicadoCallcenter?.updateUser }}</strong></span
+    >
+  </div>
+</div>
+
+<div class="duplicado" *ngIf="posibleDuplicadoSiipap">
+  <span>Posible duplicado (SIIPAP):</span>
+  <div class="duplicado-info">
+    <span
+      >Folio: <strong>{{ posibleDuplicadoSiipap?.folio }}</strong></span
+    >
+    <span
+      >Suc:
+      <strong>{{ posibleDuplicadoSiipap?.sucursal?.nombre }}</strong></span
+    >
+    <span
+      >Importe:
+      <strong>{{ posibleDuplicadoSiipap?.total | currency }}</strong></span
+    >
+    <span
+      >Fecha Dep:
+      <strong>{{
+        posibleDuplicadoSiipap?.fechaDeposito | date: 'dd/MM/yyyy'
+      }}</strong></span
+    >
+    <span
+      >Solicitó:
+      <strong> {{ posibleDuplicadoSiipap?.updateUser }}</strong></span
+    >
+  </div>
+</div>
+
 <mat-dialog-content>
   <div class="info">
     <h3>IMPORTE:</h3>
@@ -12,7 +60,25 @@
   </div>
 
   <div class="content">
-    <mat-form-field class="flex">
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Banco Origen"
+        value="{{ transaccion.banco.nombre }}"
+        readonly
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Cta Destino"
+        readonly
+        value="{{ transaccion.cuenta.descripcion }} ({{
+          transaccion.cuenta.numero
+        }})"
+      />
+    </mat-form-field>
+    <mat-form-field>
       <input
         matInput
         [formControl]="control"
@@ -20,6 +86,11 @@
         tabindex="1"
       />
     </mat-form-field>
+  </div>
+  <div class="spinner-panel" *ngIf="buscandoDuplicados">
+    <mat-progress-spinner color="primary" mode="indeterminate" diameter="25">
+    </mat-progress-spinner>
+    <span> Buscando duplicados en SIIPAP y CALLCENTER </span>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>

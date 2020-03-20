@@ -1,27 +1,33 @@
-import { Injectable } from '@angular/core';
-
-import { Observable } from 'rxjs';
+import { Injectable, Inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import {
   AngularFirestore,
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
 
-import { DepositosEntity, Deposito } from '../+state/depositos.models';
-import { map, take } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { map, take, catchError } from 'rxjs/operators';
 import { Update } from '@ngrx/entity';
 
 import uuidv4 from 'uuid/v4';
+import { DepositosEntity, Deposito } from '../+state/depositos.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepositoService {
   private _collection: AngularFirestoreCollection<DepositosEntity>;
+  private apiUrl: string;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(
+    private afs: AngularFirestore,
+    private http: HttpClient,
+    @Inject('apiUrl') api
+  ) {
     console.log('Inicializando depositos collection...');
     this._collection = this.afs.collection<DepositosEntity>('depositos');
+    this.apiUrl = `${api}/tesoreria/solicitudes`;
   }
 
   fetchDepositos(): Observable<Deposito[]> {
@@ -123,5 +129,42 @@ export class DepositoService {
           })
         )
       );
+  }
+
+  buscarDuplicadoAlAutorizar(
+    total: number,
+    banco,
+    fechaDeposito: any
+  ): Observable<any | Deposito> {
+    return this.afs
+      .collection('depositos', ref =>
+        ref
+          .where('total', '==', total)
+          .where('banco.id', '==', banco.id)
+          .where('fechaDeposito', '==', fechaDeposito)
+      )
+      .snapshotChanges()
+      .pipe(
+        take(1),
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as Deposito;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
+  }
+
+  buscarPosibleDuplicadoEnSiipap(deposito: Partial<Deposito>) {
+    const url = `${this.apiUrl}/buscarPosibleDuplicadaCallcenter`;
+    const params = new HttpParams()
+      .set('banco', deposito.banco.id)
+      .set('cuenta', deposito.cuenta.id)
+      .set('fechaDeposito', deposito.fechaDeposito)
+      .set('total', deposito.total.toString());
+    return this.http
+      .get<any>(url, { params: params })
+      .pipe(catchError((error: any) => throwError(error)));
   }
 }

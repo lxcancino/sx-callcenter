@@ -11,6 +11,15 @@
         <mat-icon matListIcon>{{ link.matIcon }}</mat-icon>
         {{ link.title }}
       </a>
+      <a
+        mat-list-item
+        routerLink="/loginx"
+        routerLinkActive="active-nav"
+        (click)="sidenav.close()"
+      >
+        <mat-icon matListIcon>exit_to_app</mat-icon>
+        <span>Salir del sistema</span>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -23,6 +32,6 @@
       <router-outlet></router-outlet>
     </main>
 
-    <swrx-footer></swrx-footer>
+    <swrx-footer [user]="user"></swrx-footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

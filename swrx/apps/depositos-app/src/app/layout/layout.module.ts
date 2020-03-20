@@ -20,7 +20,8 @@ import {
   faHome,
   faClock,
   faCheckCircle,
-  faCommentSlash
+  faCommentSlash,
+  faSignOutAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
@@ -42,7 +43,8 @@ export class LayoutModule {
       faHome,
       faClock,
       faCheckCircle,
-      faCommentSlash
+      faCommentSlash,
+      faSignOutAlt
     );
   }
 }

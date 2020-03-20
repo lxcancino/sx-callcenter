@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <span class="title">
-    SX CALLCENTER
+    SIIPAPX
   </span>
 </mat-toolbar>
 <div class="container">
@@ -11,7 +11,7 @@
     (onSuccess)="onSuccess($event)"
     [guestEnabled]="false"
     goBackURL="/inicio"
-    providers="['google', 'facebook', 'twitter']"
+    providers="['google']"
   ></ngx-auth-firebaseui>
   <button mat-button (click)="signOut()" *ngIf="user$ | async as user">
     <mat-icon>logout</mat-icon> CERRAR SESSION

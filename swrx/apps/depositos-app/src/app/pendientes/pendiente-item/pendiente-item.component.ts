@@ -25,7 +25,9 @@ export class PendienteItemComponent implements OnInit {
   @Output() eliminar = new EventEmitter();
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('Item: ', this.item);
+  }
 
   fromNow(time: any) {
     return moment(time).fromNow(false);

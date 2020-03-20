@@ -27,4 +27,11 @@ export const NAVIGATION = [
     iconName: 'check-circle',
     matIcon: 'check_circle'
   }
+  // {
+  //   path: '/loginx',
+  //   title: 'Sesion',
+  //   description: 'Salir del sistema',
+  //   iconName: 'sign-out-alt',
+  //   matIcon: 'exit_to_app'
+  // }
 ];

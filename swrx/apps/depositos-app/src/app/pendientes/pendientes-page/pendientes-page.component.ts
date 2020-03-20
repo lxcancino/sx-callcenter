@@ -28,7 +28,8 @@ export class PendientesPageComponent implements OnInit {
   onAutorizar(event: Deposito) {
     this.dialog
       .open(AutorizarItemComponent, {
-        data: { transaccion: event }
+        data: { transaccion: event },
+        width: '750px'
       })
       .afterClosed()
       .subscribe(auth => {

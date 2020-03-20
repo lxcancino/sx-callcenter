@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  apiUrl: 'http://localhost:9095/siipapx/api',
   firebase: {
     apiKey: 'AIzaSyC4cYX9eZN4XqsX2EuYwN2GLPtb6R3r7RU',
     authDomain: 'siipapx-436ce.firebaseapp.com',
