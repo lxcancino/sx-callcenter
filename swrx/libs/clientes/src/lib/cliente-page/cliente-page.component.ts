@@ -4,9 +4,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef
 } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  FormArray,
+  FormControl,
+  Validators
+} from '@angular/forms';
 
-import { CLIENTE_DUMMY } from './domy.data';
 import { Cliente, Direccion, ClienteDireccion } from '@swrx/core-model';
 
 import { ClienteUiService } from '../services/cliente-ui.service';
@@ -14,6 +19,7 @@ import { buildDireccionForm, getDireccionKey } from '@swrx/form-utils';
 import { ClienteService } from '../services/cliente.service';
 import { Update } from '@ngrx/entity';
 import { MatSnackBar } from '@angular/material';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'swrx-cliente-page',
@@ -40,40 +46,49 @@ export class ClientePageComponent implements OnInit {
     this.buildForm();
     if (!this.cliente) {
       this.lookup();
-      // this.cliente = CLIENTE_DUMMY;
-      // this.form.patchValue(this.cliente);
     }
-    this.newTelefono.valueChanges.subscribe(tel => console.log('Tel: ', tel));
   }
 
   lookup() {
     this.clienteUi.lookup().subscribe(cte => {
       if (cte) {
-        this.cliente = cte;
-        console.log('Cliente: ', this.cliente);
-        this.form.patchValue(this.cliente);
-        if (this.cliente.medios) {
-          const telefonos = this.cliente.medios.filter(
-            item => item.tipo === 'TEL'
-          );
-          telefonos.forEach(element => {
-            this.telefonos.push(new FormControl(element.descripcion));
-          });
-        }
-        this.setDirecciones(cte);
-        this.cd.markForCheck();
+        this.setCliente(cte);
       }
     });
   }
 
+  private setCliente(cte: Cliente) {
+    this.cliente = cte;
+    console.log('Cliente: ', this.cliente);
+    this.form.patchValue(this.cliente);
+    this.setTelefonos(this.cliente);
+    this.setDirecciones(cte);
+    this.cd.markForCheck();
+  }
+
+  private setTelefonos(cliente: Cliente) {
+    this.telefonos.clear();
+    const telefonos = this.cliente.medios.filter(item => item.tipo === 'TEL');
+    telefonos.forEach(element => {
+      this.telefonos.push(
+        this.fb.group({
+          id: element.id,
+          tipo: 'TEL',
+          activo: true,
+          descripcion: element.descripcion,
+          cfdi: false
+        })
+      );
+    });
+  }
+
   private setDirecciones(cte: Cliente) {
-    // Direcciones de entrega
     this.direcciones = cte.direccionesEntrega;
   }
 
   private buildForm() {
     this.form = this.fb.group({
-      cfdiMail: [null],
+      cfdiMail: [null, Validators.required],
       direccion: buildDireccionForm(this.fb),
       telefonos: this.fb.array([])
     });
@@ -92,10 +107,34 @@ export class ClientePageComponent implements OnInit {
     }
   }
 
+  actualizarCfdiMail() {
+    const cfdiMail = this.form.get('cfdiMail').value;
+    const cfdi = this.cliente.medios.find(
+      item => item.tipo === 'MAIL' && item.cfdi
+    );
+    if (cfdi) {
+      cfdi.descripcion = cfdiMail;
+      this.service
+        .updateMedio(this.cliente.id, cfdi)
+        .pipe(finalize(() => this.cd.markForCheck()))
+        .subscribe(
+          res => {
+            this.snack.open('CFDI Mail actualizado exitosamente', 'Cerrar', {
+              duration: 3000
+            });
+            this.form.get('cfdiMail').markAsPristine();
+          },
+          err => console.error('Error actualizando Cfdi Mail', err)
+        );
+    }
+  }
+
   actualizar(cliente: Cliente) {
     const cfdiMail = this.form.get('cfdiMail').value;
     const medios = [];
-    const cfdi = this.cliente.medios.find(item => item.tipo === 'MAIL' && item.cfdi);
+    const cfdi = this.cliente.medios.find(
+      item => item.tipo === 'MAIL' && item.cfdi
+    );
     if (cfdi) {
       cfdi.descripcion = cfdiMail;
       medios.push(cfdi);
@@ -116,7 +155,6 @@ export class ClientePageComponent implements OnInit {
       };
     });
     const changes = { medios: [...medios, ...tels] };
-    // console.log('Changes: ', changes);
     this.actualizarDatos(cliente.id, changes);
   }
 
@@ -132,32 +170,52 @@ export class ClientePageComponent implements OnInit {
     if (this.newTelefono.valid) {
       const value = this.newTelefono.value;
       const medio = {
+        cliente: { id: cliente.id },
         tipo: 'TEL',
         activo: true,
         descripcion: value,
         cfdi: false
       };
+      this.service
+        .addMedio(cliente.id, medio)
+        .pipe(finalize(() => this.newTelefono.reset()))
+        .subscribe((res: any) => {
+          const { id, tipo, activo, descripcion, cfdi } = res;
+          this.telefonos.push(
+            this.fb.group({
+              id,
+              tipo,
+              activo,
+              descripcion,
+              cfdi
+            })
+          );
+          this.cd.markForCheck();
+        });
+      /*
       const medios = [...this.cliente.medios, medio];
-      this.actualizarDatos(cliente.id, { medios });
+      const cb = () => {
+        this.newTelefono.reset();
+      };
+      this.actualizarDatos(cliente.id, { medios }, cb, cb);
+      */
     }
   }
 
-  deleteTelefono(index: number) {
-    this.telefonos.removeAt(index);
-    const control = this.telefonos.at(index);
-    const tels = this.telefonos.value.map(item => {
-      return {
-        tipo: 'TEL',
-        activo: true,
-        descripcion: item,
-        cfdi: false
-      };
-    });
-    const medios = [
-      ...this.cliente.medios.filter(item => item.tipo !== 'TEL'),
-      ...tels
-    ];
-    this.actualizarDatos(this.cliente.id, { medios });
+  deleteTelefono(index: number, cliente: Cliente, medio: any) {
+    this.service
+      .deleteMedio(cliente.id, medio.id)
+      .pipe(finalize(() => this.cd.markForCheck()))
+      .subscribe(
+        () => {
+          this.telefonos.removeAt(index);
+          this.form.markAsPristine();
+          this.snack.open('Datos actualizados', 'Cerrar', { duration: 3000 });
+        },
+        err => {
+          console.error('Error eliminando contacto ', err);
+        }
+      );
   }
 
   actualizarDatos(
@@ -169,7 +227,8 @@ export class ClientePageComponent implements OnInit {
     const update: Update<Cliente> = { id, changes };
     this.service.update(update).subscribe(
       res => {
-        this.cliente = res;
+        // this.cliente = res;
+        this.setCliente(res);
         this.form.markAsPristine();
         this.snack.open('Datos actualizados', 'Cerrar', { duration: 3000 });
         console.log('Cliente actualizado: ', res);
@@ -199,19 +258,68 @@ export class ClientePageComponent implements OnInit {
       if (!this.direccionSelected) {
         const key = getDireccionKey(value);
         const newDir: ClienteDireccion = {
+          cliente: { id: this.cliente.id },
           nombre: key,
           direccion: value
         };
-        this.direcciones.push(newDir);
+        this.agregarDireccion(newDir);
       } else {
-        this.direccionSelected.direccion = value;
+        const changes: Partial<ClienteDireccion> = {
+          direccion: value
+        };
+        this.actualizarDireccion(this.direccionSelected.id, changes);
       }
-      const changes = { direcciones: this.direcciones };
 
-      this.actualizarDatos(this.cliente.id, changes, () => {
-        this.direccionForm.markAsPristine();
-        this.cd.markForCheck();
-      });
+      // if (!this.direccionSelected) {
+      //   const key = getDireccionKey(value);
+      //   const newDir: ClienteDireccion = {
+      //     nombre: key,
+      //     direccion: value
+      //   };
+      //   this.direcciones.push(newDir);
+      // } else {
+      //   this.direccionSelected.direccion = value;
+      // }
+      // const changes = { direcciones: this.direcciones };
+
+      // this.actualizarDatos(this.cliente.id, changes, () => {
+      //   this.direccionForm.markAsPristine();
+      //   this.cd.markForCheck();
+      // });
     }
+  }
+
+  private agregarDireccion(direccion: Partial<ClienteDireccion>) {
+    this.service
+      .addDireccion(this.cliente.id, direccion)
+      .pipe(finalize(() => {}))
+      .subscribe(
+        res => {
+          this.direcciones.push(res);
+          this.direccionForm.markAsPristine();
+          this.cd.markForCheck();
+          this.snack.open('Direccion agregada', 'Cerrar', { duration: 3000 });
+        },
+        err => {}
+      );
+  }
+  private actualizarDireccion(
+    direccionId: string,
+    changes: Partial<ClienteDireccion>
+  ) {
+    this.service
+      .updateDireccion(this.cliente.id, direccionId, changes)
+      .pipe(finalize(() => {}))
+      .subscribe(
+        res => {
+          this.direcciones.push(res);
+          this.direccionForm.markAsPristine();
+          this.cd.markForCheck();
+          this.snack.open('Direccion actualizada', 'Cerrar', {
+            duration: 3000
+          });
+        },
+        err => {}
+      );
   }
 }

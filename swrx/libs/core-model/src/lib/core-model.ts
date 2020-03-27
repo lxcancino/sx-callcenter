@@ -37,6 +37,7 @@ export interface ClienteDireccion {
   id?: string;
   nombre: string;
   direccion: Direccion;
+  cliente?: Partial<Cliente>;
 }
 
 export interface Direccion {
@@ -112,5 +113,5 @@ export interface Socio {
   clave?: string;
   nombre: string;
   direccion?: string;
-  direccionFiscal: Direccion
+  direccionFiscal: Direccion;
 }

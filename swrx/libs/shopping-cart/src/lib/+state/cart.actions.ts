@@ -44,6 +44,10 @@ export const cambiarClienteSuccess = createAction(
   props<{ cliente: Partial<Cliente> }>()
 );
 
+export const refrescarCliente = createAction(
+  '[ShoppingCartPage] Refrescar cliente'
+);
+
 export const cambiarNombre = createAction(
   '[ShoppingCartPage] Cambiar nombre de cliente'
 );

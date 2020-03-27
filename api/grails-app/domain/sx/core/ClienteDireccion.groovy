@@ -20,5 +20,13 @@ class ClienteDireccion {
     static mapping= {
         id generator: 'uuid'
     }
+
+    Map toFirebaseMap() {
+        return [
+        	id: this.id,
+        	nombre: this.nombre,
+        	direccion: this.direccion.toFirebaseMap()
+        ]
+    }
     
 }

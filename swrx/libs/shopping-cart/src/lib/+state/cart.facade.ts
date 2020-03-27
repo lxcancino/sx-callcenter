@@ -87,6 +87,9 @@ export class CartFacade {
   cambiarCliente() {
     this.store.dispatch(CartActions.cambiarCliente());
   }
+  refrescarCliente() {
+    this.store.dispatch(CartActions.refrescarCliente());
+  }
   startCheckout(user: any) {
     // const user = { displayName: 'Admin', email: 'admin@gmail.com' };
     this.store.dispatch(CartActions.startCheckout({ user }));

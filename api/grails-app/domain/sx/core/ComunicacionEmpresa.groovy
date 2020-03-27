@@ -4,7 +4,7 @@ import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
 
 @ToString(includes = 'tipo,descripcion, comentario, activo, cfdi',includeNames=true,includePackage=false)
-@EqualsAndHashCode(includes='id, tipo, descripcion,comentario')
+@EqualsAndHashCode(includes='id, tipo, descripcion')
 class ComunicacionEmpresa {
 
     String	id

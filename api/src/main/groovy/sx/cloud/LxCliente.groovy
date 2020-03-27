@@ -24,10 +24,11 @@ class LxCliente {
     Boolean juridico = false
     
     
-    Direccion direccion
+    Map direccion
 
     List medios = []
 
+    
     Date dateCreated
     Date lastUpdated
     String createUser
@@ -38,12 +39,47 @@ class LxCliente {
 
     public LxCliente(Cliente cliente) {
         this.id = cliente.id
+        this.clave = cliente.clave
         this.nombre = cliente.nombre
         this.rfc = cliente.rfc
         this.email = cliente.getCfdiMail() 
         this.activo = cliente.activo
+        this.medios = parseMedios(cliente)
+        this.folioRFC = cliente.folioRFC
+        this.activo = cliente.activo
+        this.permiteCheque = cliente.permiteCheque
+        this.chequeDevuelto = cliente.chequeDevuelto
+        this.juridico = cliente.juridico
+        // this.direccion = cliente.direccion.toFirebaseMap()
+        
+        lastUpdated = cliente.lastUpdated
+        dateCreated = cliente.dateCreated
+        createUser = cliente.createUser
+        updateUser = cliente.updateUser
+    }
+
+    List parseMedios(Cliente c) {
+        return c.medios.collect{ item -> [
+            id: item.id,
+            activo: item.activo,
+            tipo: item.tipo,
+            descripcion: item.descripcion,
+            comentario: item.comentario,
+            cfdi: item.cfdi,
+            validado: item.validado
+        ]}
+    }
+
+    Map toMap() {
+        Map data = this.properties
+        return filter(data)
+    }
+    Map filter(Map data) {
+        data = data.findAll{ k, v -> !['class','constraints', 'errors','metaClass', 'additionalMetaMethods'].contains(k) }
+        return data
     }
 
     
 
 }
+

@@ -36,41 +36,17 @@ class ClienteController extends RestfulController<Cliente> {
         return query.list(params)
     }
 
-    // @Override
-    // protected Cliente createResource() {
-    //     Cliente res = new Cliente()
-    //     bindData res, getObjectToBind()
-    //     res.clave = 'CVE_PENDIENTE'
-    //     return res
-    // }
+    
 
     @Override
     protected Cliente saveResource(Cliente resource) {
         return clienteService.save(resource)
     }
 
-
-    /*
-    @Override
-    protected Cliente updateResource(Cliente cliente) {
-        cliente.save failOnError: true, flush: true
-        cliente.direcciones.each { row ->
-            log.info('Salvando direccion: {}', row.class.name)
-            // dd.save failOnError: true, flush: true
-        }
-        log.info('Coloinas despues: {}', cliente.direcciones.collect{it.direccion.colonia})
-        return cliente
-        // return pedidoService.save(resource)
-    }
-    */
-
-
     
     def update() {
         String id = params.id as String
         Cliente cliente = Cliente.get(id)
-        
-        log.info('Colonias antes: {}', cliente.direcciones.collect{it.direccion.colonia})
         bindData cliente, getObjectToBind()
         cliente.save failOnError: true, flush: true
         cliente.direcciones.each { row ->
@@ -78,8 +54,6 @@ class ClienteController extends RestfulController<Cliente> {
             clone.properties = row.direccion.properties
             row.direccion = clone
             row.save failOnError: true, flush: true
-            log.info('Id: {}', row.id)
-            log.info('Nuevo: {}', ClienteDireccion.get(row.id).direccion.colonia)
         }
         respond cliente, view: 'show'
     }

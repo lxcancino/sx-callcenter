@@ -26,6 +26,15 @@
       <mat-list-item>
         <h3 matLine>Email CFDI:</h3>
         <input matInput type="text" formControlName="cfdiMail" type="email" />
+        <button
+          mat-icon-button
+          [disabled]="
+            form.get('cfdiMail').pristine || form.get('cfdiMail').invalid
+          "
+          (click)="actualizarCfdiMail()"
+        >
+          <mat-icon>save</mat-icon>
+        </button>
       </mat-list-item>
       <mat-divider inset></mat-divider>
       <mat-list-item>
@@ -36,15 +45,20 @@
       <h3 matSubheader>Teléfonos</h3>
       <mat-list-item *ngFor="let item of telefonos?.controls; index as i">
         <h3 matLine>Tel {{ i + 1 }}</h3>
-        <input
-          type="text"
-          matInput
-          [formControl]="item"
-          mask="(009) 000-00-00"
-        />
-        <button mat-icon-button (click)="deleteTelefono(i)">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <ng-container [formGroup]="item">
+          <input
+            type="text"
+            matInput
+            formControlName="descripcion"
+            mask="(009) 000-00-00"
+          />
+          <button
+            mat-icon-button
+            (click)="deleteTelefono(i, cliente, item.value)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-container>
         <mat-divider inset></mat-divider>
       </mat-list-item>
     </mat-list>
@@ -71,7 +85,7 @@
         Agregar
       </button>
     </div>
-    <mat-card-actions>
+    <!-- <mat-card-actions>
       <button
         mat-stroked-button
         (click)="actualizar(cliente)"
@@ -80,7 +94,7 @@
       >
         Actualizar
       </button>
-    </mat-card-actions>
+    </mat-card-actions> -->
   </mat-card>
 
   <mat-card class="direcciones-card">
@@ -115,4 +129,3 @@
     </mat-card-actions>
   </mat-card>
 </div>
- 

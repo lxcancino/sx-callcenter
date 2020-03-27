@@ -36,6 +36,15 @@
       <mat-icon>person_add</mat-icon>
       <span>Alta de cliente (Ctr + C)</span>
     </button>
+    <button
+      mat-menu-item
+      class="menu-item"
+      (click)="facade.refrescarCliente()"
+      [disabled]="pedido.status === 'CERRADO'"
+    >
+      <mat-icon>refresh</mat-icon>
+      <span>Actualizar cliente</span>
+    </button>
 
     <button
       mat-menu-item

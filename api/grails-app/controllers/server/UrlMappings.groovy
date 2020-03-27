@@ -5,7 +5,10 @@ class UrlMappings {
     static mappings = {
 
         "/api/config"(resource: 'appConfig', includes:['index', 'show'])
-        "/api/clientes"(resources: 'cliente', excludes: ['create', 'edit', 'delete'])
+        "/api/clientes"(resources: 'cliente', excludes: ['create', 'edit', 'delete']){
+            "/medios"(resources: 'comunicacionEmpresa', excludes: ['create', 'edit'])
+            "/direcciones"(resources: 'clienteDireccion', excludes:['create', 'edit'])
+        }
         "/api/sucursales"(resources: 'sucursal', includes:['index', 'show'])
         
         "/api/productos"(resources: 'producto', includes:['index', 'show'])

@@ -12,6 +12,7 @@ import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.DocumentChange
 import com.google.cloud.firestore.DocumentSnapshot
+import com.google.cloud.firestore.SetOptions
 import com.google.cloud.firestore.FirestoreException
 import com.google.cloud.firestore.WriteResult
 import com.google.firebase.FirebaseApp
@@ -46,10 +47,38 @@ class FirebaseService {
 
     }
 
+    
+    void addDocument(String collection, Map data) {
+      ApiFuture<DocumentReference> future = getFirestore()
+          .collection(collection)
+          .add(data)
+      DocumentReference docRef = future.get()
+      log.debug('Document added: {}', docRef.id)
+    }
+
+    
+
+    void updateDocument(String docPath,  Map changes) {
+        
+      ApiFuture<WriteResult> result = getFirestore()
+      .document(docPath)
+      .set(changes, SetOptions.merge())
+      def updateTime = result.get()
+          .getUpdateTime()
+          .toDate()
+          .format('dd/MM/yyyy')
+      log.debug('{} UPDATED at : {}',  docPath, updateTime)
+    }
+
+    
     void deleteDocumet(DocumentReference docRef) {
          ApiFuture<WriteResult> result = docRef.delete()
          def updateTime = result.get().getUpdateTime().toDate().format('dd/MM/yyyy')
         log.debug('{} DELETED at : {}', docRef.id, updateTime)
+    }
+
+    DocumentReference findDocument(String path) {
+      return getFirestore().document(path)
     }
    
 

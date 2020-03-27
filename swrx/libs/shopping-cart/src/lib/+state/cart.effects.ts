@@ -7,7 +7,14 @@ import { CartState } from './cart.reducer';
 import * as CartActions from './cart.actions';
 import * as fromRouter from '@ngrx/router-store';
 
-import { mergeMap, filter, map, tap } from 'rxjs/operators';
+import {
+  mergeMap,
+  filter,
+  map,
+  tap,
+  switchMap,
+  catchError
+} from 'rxjs/operators';
 import { Observable, of, noop, empty } from 'rxjs';
 
 import {
@@ -36,6 +43,7 @@ import { CartDescuentosComponent } from '../cart-form/cart-descuentos/cart-descu
 import { CerrarComponent } from '../cerrar/cerrar.component';
 import { CartDescuentoeComponent } from '../cart-descuentoe/cart-descuentoe.component';
 import { CartManiobraComponent } from '../cart-maniobra/cart-maniobra.component';
+import { ClienteService } from '@swrx/clientes';
 
 @Injectable()
 export class CartEffects {
@@ -252,12 +260,36 @@ export class CartEffects {
     { dispatch: true }
   );
 
+  refrescarCliente$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.refrescarCliente),
+        pedidoState(this.store),
+        map(state => state.changes.cliente),
+        tap(cliente =>
+          console.log('Actualizando datos del cliente: {}', cliente)
+        ),
+        switchMap(cliente =>
+          this.clienteService.get(cliente.id).pipe(
+            map(result =>
+              CartActions.cambiarClienteSuccess({ cliente: result })
+            ),
+            catchError(error => of(CartActions.cambiarClienteError({ error })))
+          )
+        )
+
+        // map(cliente => CartActions.cambiarClienteSuccess({ cliente }))
+      ),
+    { dispatch: true }
+  );
+
   constructor(
     private actions$: Actions,
     private dialog: MatDialog,
     private clienteUi: ClienteUiService,
     private store: Store<CartState>,
-    private pedidoFacade: PedidosFacade //
+    private pedidoFacade: PedidosFacade, //,
+    private clienteService: ClienteService
   ) {}
 
   private inDialog(component: any, width = '750px') {
