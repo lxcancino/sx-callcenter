@@ -2,19 +2,25 @@
 
 .producto {
   display: flex;
-  justify-content: flex-start;
+  justify-content: stretch;
+
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   .clave {
-    flex: 1;
+    // flex: 1;
   }
   .descripcion {
-    flex: 5;
+    flex: 4;
+    .caracteristicas {
+      // flex: 1;
+      display: flex;
+    }
   }
+
   .cantidad {
-    flex: 1;
-    padding: 0 10px 0 0;
+    margin-left: auto;
+    padding: 0 5px 0 0;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -28,6 +34,7 @@
     }
   }
 }
+
 .producto:hover {
   text-decoration: underline;
 }

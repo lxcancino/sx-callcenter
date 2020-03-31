@@ -1,6 +1,7 @@
 <div class="shopping-cart">
   <!-- Cart Toolbar -->
   <swrx-cart-toolbar
+    class="cart-toolbar"
     [cliente]="facade.cliente$ | async"
     [nombre]="facade.nombre$ | async"
     (cambiarNombre)="onCambiarNombre($event)"
@@ -44,26 +45,7 @@
     </button>
   </swrx-cart-toolbar>
 
-  <swrx-cart-items></swrx-cart-items>
-  <div class="comentario-section" [formGroup]="cartForm">
-    <mat-form-field class="comentario" appearance="fill">
-      <mat-label>Comentario</mat-label>
-      <input matInput type="text" formControlName="comentario" />
-      <mat-hint>Instrucciones y comentarios generales del pedido</mat-hint>
-    </mat-form-field>
-    <swrx-upper-case-field
-      class="comprador"
-      appearance="fill"
-      placeholder="Comprador"
-      formControlName="comprador"
-    >
-    </swrx-upper-case-field>
-    <!-- <mat-form-field class="comprador" appearance="fill">
-      <mat-label>Comprador</mat-label>
-      <input matInput type="text" [formControl]="cartForm.get('comprador')" />
-      <mat-hint>Nombre del contancto o comprador del cliente</mat-hint>
-    </mat-form-field> -->
-  </div>
+  <swrx-cart-items class="cart-items"></swrx-cart-items>
   <div class="side-bar">
     <swrx-cart-summary
       *ngIf="sumary$ | async as sumary"
@@ -93,5 +75,19 @@
       </div>
     </swrx-cart-summary>
     <swrx-cart-info [cartForm]="cartForm"></swrx-cart-info>
+  </div>
+  <div class="comentario-section" [formGroup]="cartForm">
+    <mat-form-field class="comentario" appearance="fill">
+      <mat-label>Comentario</mat-label>
+      <input matInput type="text" formControlName="comentario" />
+      <mat-hint>Instrucciones y comentarios generales del pedido</mat-hint>
+    </mat-form-field>
+    <swrx-upper-case-field
+      class="comprador"
+      appearance="fill"
+      placeholder="Comprador"
+      formControlName="comprador"
+    >
+    </swrx-upper-case-field>
   </div>
 </div>

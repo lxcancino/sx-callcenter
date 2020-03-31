@@ -1,5 +1,6 @@
 <div class="shopping-cart" *ngIf="pedido$ | async as pedido">
   <swrx-cart-toolbar
+    class="cart-toolbar"
     [cliente]="facade.cliente$ | async"
     [pedido]="pedido"
     [nombre]="facade.nombre$ | async"
@@ -105,21 +106,8 @@
     </button>
   </swrx-cart-toolbar>
 
-  <swrx-cart-items></swrx-cart-items>
-  <div class="comentario-section">
-    <mat-form-field class="comentario" appearance="fill">
-      <mat-label>Comentario</mat-label>
-      <input matInput type="text" [formControl]="cartForm.get('comentario')" />
-      <mat-hint>Instrucciones y comentarios generales del pedido</mat-hint>
-    </mat-form-field>
-    <swrx-upper-case-field
-      class="comprador"
-      appearance="fill"
-      placeholder="Comprador"
-      [formControl]="cartForm.get('comprador')"
-    >
-    </swrx-upper-case-field>
-  </div>
+  <swrx-cart-items class="cart-items"></swrx-cart-items>
+
   <div class="side-bar">
     <swrx-cart-summary
       [sumary]="sumary$ | async"
@@ -154,5 +142,20 @@
       (autorizar)="onAutorizar(pedido, $event)"
       [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
     ></swrx-cart-info>
+  </div>
+
+  <div class="comentario-section">
+    <mat-form-field class="comentario" appearance="fill">
+      <mat-label>Comentario</mat-label>
+      <input matInput type="text" [formControl]="cartForm.get('comentario')" />
+      <mat-hint>Instrucciones y comentarios generales del pedido</mat-hint>
+    </mat-form-field>
+    <swrx-upper-case-field
+      class="comprador"
+      appearance="fill"
+      placeholder="Comprador"
+      [formControl]="cartForm.get('comprador')"
+    >
+    </swrx-upper-case-field>
   </div>
 </div>

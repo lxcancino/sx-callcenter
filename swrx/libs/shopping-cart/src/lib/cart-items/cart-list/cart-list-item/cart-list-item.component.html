@@ -8,11 +8,13 @@
 
   <div matLine>
     <div class="producto" (click)="onEdit(item)">
-      <span class="clave">{{ item.clave }}</span>
-      <span class="descripcion"
-        >{{ item.descripcion }}
-        <span>({{ item.unidad }})</span>
+      <span class="clave"> ({{ item.clave }})</span>
+      <span class="descripcion pad-left">
+        <span>{{ item.descripcion }}</span>
+        <span class="pad-left"> ({{ item.unidad }})</span>
+        <span class="pad-left">{{ item.producto.presentacion }}</span>
       </span>
+
       <span class="cantidad" matTooltip="Kilos: {{ getKilos(item) }}">
         <span> Canidad: {{ item.cantidad | number: '1.0' }} </span>
         <span class="faltante" *ngIf="item?.faltante > 0">
@@ -60,7 +62,7 @@
           >Kg:<strong>{{ item.kilos }}</strong></span
         >
         <span><strong>Cal:</strong> {{ item.gramos }}g</span>
-        <span>{{ item.producto.presentacion }}</span>
+
         <span>
           <strong>{{ item.modoVenta === 'B' ? 'P.BRUTO' : 'P. NETO' }}</strong>
         </span>
