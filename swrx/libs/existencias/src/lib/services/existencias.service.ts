@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, throwError, from } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, take, catchError } from 'rxjs/operators';
 
 import {
   AngularFirestore,
@@ -45,6 +45,9 @@ export class ExistenciasService {
       .doc(id)
       .collection('almacenes')
       .valueChanges()
-      .pipe(catchError((error: any) => throwError(error)));
+      .pipe(
+        take(1),
+        catchError((error: any) => throwError(error))
+      );
   }
 }

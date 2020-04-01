@@ -8,7 +8,8 @@ import {
   createPedidoSuccess,
   cerrarPedidoSuccess,
   updatePedidoSuccess,
-  autorizarPedidoSuccess
+  autorizarPedidoSuccess,
+  deletePedidoSuccess
 } from '@swrx/pedidos';
 
 import { of, empty } from 'rxjs';
@@ -28,8 +29,10 @@ export class CartPersistenceEffects {
   editPedido$ = createEffect(() =>
     this.dataPersistence.navigation(CartEditPageComponent, {
       run: (a: ActivatedRouteSnapshot, state: CartPartialState) => {
-        if (state[CART_FEATURE_KEY].pedido && state[CART_FEATURE_KEY].pedido.id === a.params['id']) {
-          
+        if (
+          state[CART_FEATURE_KEY].pedido &&
+          state[CART_FEATURE_KEY].pedido.id === a.params['id']
+        ) {
           return of();
         } else {
           return this.pedidoService.get(a.params['id']).pipe(
@@ -63,6 +66,20 @@ export class CartPersistenceEffects {
     () =>
       this.actions$.pipe(
         ofType(cerrarPedidoSuccess),
+        tap(action => {
+          // console.log('Pedido persistido: ', action.pedido);
+          // this.router.navigate(['/shop/cart', action.pedido.id]);
+          this.router.navigate(['/pedidos']);
+        }),
+        map(() => CartActions.cleanShoppingCart())
+      ),
+    { dispatch: true }
+  );
+
+  deletePedidoSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deletePedidoSuccess),
         tap(action => {
           // console.log('Pedido persistido: ', action.pedido);
           // this.router.navigate(['/shop/cart', action.pedido.id]);

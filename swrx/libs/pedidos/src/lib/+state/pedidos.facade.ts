@@ -33,4 +33,10 @@ export class PedidosFacade {
   cerrarPedido(pedido: Pedido) {
     return PedidosActions.cerrarPedido({ pedido });
   }
+
+  deletePedido(pedido: Pedido) {
+    if (pedido.status === 'COTIZACION') {
+      this.store.dispatch(PedidosActions.deletePedido({ pedido }));
+    }
+  }
 }

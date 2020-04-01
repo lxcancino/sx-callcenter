@@ -185,7 +185,6 @@ export class CartFacade {
   }
 
   imprimirPedido(pedido: Pedido) {
-    console.log('Imprimir pedido: ', pedido.folio);
     this.reportService.runReport(`pedidos/print/${pedido.id}`, {});
   }
 }

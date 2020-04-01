@@ -79,6 +79,10 @@ class PedidoService implements FolioLog {
 
     void delete(Pedido pedido) {
         if(!pedido.cerrado) {
+            if (pedido.autorizacion) {
+                def autorizacion = pedido.autorizacion
+                autorizacion.delete flush: true
+            }
     	   pedido.delete flush: true
 
            // Delete from Firebase

@@ -212,7 +212,12 @@ class Periodo implements Comparable<Periodo>, WebDataBinding {
 		Date inicio=cal.getTime()
 		Periodo p=new Periodo(fechaInicial:inicio,fechaFinal:new Date())
 		return p;
-		
+	}
+
+	public static fromNow(int dias) {
+		Date fechaFinal = new Date()
+		Date fechaInicial = fechaFinal - dias
+		return new Periodo(fechaInicial, fechaFinal)
 	}
 	
 

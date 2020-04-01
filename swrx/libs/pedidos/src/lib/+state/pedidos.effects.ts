@@ -120,6 +120,30 @@ export class PedidosEffects {
     })
   );
 
+  deletePedido$ = createEffect(() =>
+    this.dataPersistence.pessimisticUpdate(PedidosActions.deletePedido, {
+      run: (
+        action: ReturnType<typeof PedidosActions.deletePedido>,
+        state: PedidosPartialState
+      ) => {
+        return this.service
+          .delete(action.pedido.id)
+          .pipe(
+            map(() =>
+              PedidosActions.deletePedidoSuccess({ pedido: action.pedido })
+            )
+          );
+      },
+      onError: (
+        action: ReturnType<typeof PedidosActions.deletePedido>,
+        error
+      ) => {
+        console.error('Errir al autorizar pedido: ', error);
+        return PedidosActions.deletePedidoFail({ error });
+      }
+    })
+  );
+
   constructor(
     private actions$: Actions,
     private dataPersistence: DataPersistence<PedidosPartialState>,

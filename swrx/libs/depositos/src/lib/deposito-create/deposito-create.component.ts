@@ -190,16 +190,16 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
   submit() {
     if (this.form.valid) {
       const d: Deposito = this.buildDeposito();
-      // console.log('Deposito: ', d);
       this.dialogRef.close(d);
     }
   }
 
   buildDeposito(): Deposito {
     const data: any = this.form.getRawValue();
-    const { cliente, cuenta, pedido } = data;
+    const { cliente, cuenta, pedido, fechaDeposito } = data;
     const deposito = { ...data };
     deposito.nombre = cliente.nombre;
+    deposito.fechaDeposito = fechaDeposito.toDate().toISOString();
     deposito.cliente = {
       id: cliente.id,
       nombre: cliente.nombre,

@@ -283,6 +283,16 @@ export class CartEffects {
     { dispatch: true }
   );
 
+  validarDisponibilidad$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.validarPedido),
+        pedidoState(this.store),
+        tap(state => console.log('Validando disponibilidad para: {}', state))
+      ),
+    { dispatch: false }
+  );
+
   constructor(
     private actions$: Actions,
     private dialog: MatDialog,

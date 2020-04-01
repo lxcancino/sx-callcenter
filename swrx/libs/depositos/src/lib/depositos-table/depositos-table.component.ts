@@ -134,22 +134,20 @@ export class DepositosTableComponent implements OnInit {
         pinned: 'left',
         width: 270
       },
-      // {
-      //   headerName: 'Cuenta',
-      //   field: 'cuenta',
-      //   valueGetter: params => `${params.data.cuenta.numero}`
-      // },
+
       {
         headerName: 'Total',
         field: 'total',
         width: 110,
         valueFormatter: params => this.transformCurrency(params.value)
       },
-      // {
-      //   headerName: 'Referencia',
-      //   field: 'referencia',
-      //   width: 100
-      // },
+      {
+        headerName: 'F Depósito',
+        field: 'fechaDeposito',
+        width: 110,
+        valueFormatter: params => this.transformDate(params.value)
+      },
+
       {
         headerName: 'Vendedor',
         field: 'updateUser',

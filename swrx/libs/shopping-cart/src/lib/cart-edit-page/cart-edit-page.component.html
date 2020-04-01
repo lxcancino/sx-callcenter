@@ -98,10 +98,11 @@
     <button
       mat-menu-item
       class="menu-item"
-      color="warn"
+      color="danger"
       [disabled]="!canDelete(pedido)"
+      (click)="deletePedido(pedido)"
     >
-      <mat-icon>delete</mat-icon>
+      <mat-icon color="warn">delete</mat-icon>
       <span>Eliminar</span>
     </button>
   </swrx-cart-toolbar>

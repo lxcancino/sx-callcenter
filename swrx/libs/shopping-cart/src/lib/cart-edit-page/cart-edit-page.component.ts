@@ -24,6 +24,7 @@ import {
 } from '@swrx/core-model';
 
 import { AngularFireAuth } from '@angular/fire/auth';
+import { PedidosFacade } from '@swrx/pedidos';
 
 @Component({
   selector: 'swrx-cart-edit-page',
@@ -43,7 +44,8 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     public facade: CartFacade,
     private firebaseAuth: AngularFireAuth,
     private clientes: ClientesFacade,
-    private productoServie: ProductosUiService
+    private productoServie: ProductosUiService,
+    private pedidosFacade: PedidosFacade
   ) {}
 
   ngOnInit() {
@@ -289,5 +291,13 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
 
   enviarPorEmail(pedido: Pedido) {
     console.log('Enviar por correo: ', pedido.folio);
+  }
+
+  deletePedido(pedido: Pedido) {
+    if (pedido.status === 'COTIZACION') {
+      if (confirm('Seguro que desa eliminar éste pedido? ')) {
+        this.pedidosFacade.deletePedido(pedido);
+      }
+    }
   }
 }

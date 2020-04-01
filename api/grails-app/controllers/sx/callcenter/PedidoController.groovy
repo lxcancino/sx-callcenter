@@ -42,6 +42,8 @@ class PedidoController extends RestfulController<Pedido> {
         params.sort = 'lastUpdated'
         params.order = 'desc'
         params.max = 1000
+        params.periodo = Periodo.fromNow(30)
+        log.info('Pedidos List: {}', params)
         def periodo = params.periodo
         def query = Pedido.where{fecha >= periodo.fechaInicial  && status != 'CERRADO'}
         return query.list(params);
@@ -53,7 +55,7 @@ class PedidoController extends RestfulController<Pedido> {
         params.sort = 'lastUpdated'
         params.order = 'desc'
         params.max = 100
-        def periodo = params.periodo
+        def periodo = Periodo.fromNow(30)
         def query = Pedido.where{fecha >= periodo.fechaInicial  && status != 'COTIZACION'}
         respond query.list(params);
     }

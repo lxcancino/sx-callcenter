@@ -58,6 +58,18 @@ const pedidosReducer = createReducer(
   })),
   on(PedidosActions.createPedidoSuccess, (state, { pedido }) =>
     pedidosAdapter.addOne(pedido, { ...state, loading: false })
+  ),
+  on(PedidosActions.deletePedido, (state, { pedido }) => ({
+    ...state,
+    loading: true
+  })),
+  on(PedidosActions.deletePedidoFail, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error
+  })),
+  on(PedidosActions.deletePedidoSuccess, (state, { pedido }) =>
+    pedidosAdapter.removeOne(pedido.id, { ...state, loading: false })
   )
 );
 
