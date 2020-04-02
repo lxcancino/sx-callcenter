@@ -5,7 +5,11 @@
   </small>
 </div>
 <div class="existencias">
-  <div class="exis" *ngFor="let item of existencias">
+  <div
+    class="exis"
+    *ngFor="let item of existencias"
+    [ngClass]="{ selected: item.almacen === sucursal }"
+  >
     <small>{{ item.almacen }}</small>
     <span>{{ item.cantidad | number: '1.0-0' }}</span>
     <span class="recorte">Recorte: {{ item.recorte | number: '1.0-0' }}</span>

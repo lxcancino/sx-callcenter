@@ -36,6 +36,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
   index: number;
   disponible = 0;
   prod: Producto;
+  sucursal: string;
 
   tiposDeCorte = [
     'CARTA',
@@ -58,6 +59,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
     this.item = data.item || null;
     this.index = data.index || null;
     this.prod = data.producto;
+    this.sucursal = data.sucursal;
   }
 
   ngOnInit() {

@@ -14,18 +14,13 @@ import { ExistenciasEntity } from '../+state/existencias.models';
   providedIn: 'root'
 })
 export class ExistenciasService {
+  COLLECTION = 'existencias';
+
   constructor(private afs: AngularFirestore) {}
 
-  getAllExistenciasAsStateChantes() {
-    return this.afs
-      .collection<ExistenciasEntity>('existencias')
-      .stateChanges(['added', 'modified']);
-  }
-
   fetchExistencias(): Observable<ExistenciasEntity[]> {
-    console.log('Loading existencias....');
     return this.afs
-      .collection('existencias')
+      .collection(this.COLLECTION)
       .snapshotChanges()
       .pipe(
         map(actions =>
@@ -41,7 +36,7 @@ export class ExistenciasService {
 
   findExistencias(id: string): Observable<any> {
     return this.afs
-      .collection<ExistenciasEntity>('existencia')
+      .collection<ExistenciasEntity>(this.COLLECTION)
       .doc(id)
       .collection('almacenes')
       .valueChanges()

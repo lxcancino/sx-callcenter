@@ -73,7 +73,8 @@ export class CartEffects {
       map(([action, state]) => ({
         item: action.item,
         tipo: state.tipo,
-        producto: action.producto
+        producto: action.producto,
+        sucursal: state.sucursal
       })),
       this.inDialog(CartAddItemComponent),
       notNull(),
@@ -89,7 +90,8 @@ export class CartEffects {
       map(([action, state]) => ({
         item: action.item,
         tipo: state.tipo,
-        index: action.index
+        index: action.index,
+        sucursal: state.sucursal
       })),
       this.inDialog(CartAddItemComponent),
       notNull(),

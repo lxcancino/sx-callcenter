@@ -27,12 +27,15 @@ export class CartExistenciasComponent implements OnInit, OnDestroy {
   existencias: any[] = [];
   subscription: Subscription;
   @Output() disponible = new EventEmitter<number>();
+  @Input() sucursal: string;
   constructor(
     private service: ExistenciasService,
     private cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('Sucursal: ', this.sucursal);
+  }
 
   ngOnDestroy() {
     if (this.subscription) {

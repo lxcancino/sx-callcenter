@@ -62,6 +62,7 @@ export class ExistenciasEffects implements OnInitEffects {
     })
   );
 
+  /*
   watch$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -77,6 +78,7 @@ export class ExistenciasEffects implements OnInitEffects {
       ),
     { dispatch: false }
   );
+  */
 
   constructor(
     private actions$: Actions,
