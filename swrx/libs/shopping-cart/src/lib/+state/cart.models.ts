@@ -17,6 +17,7 @@ export interface CartItem extends PedidoDet {
 export interface CartSumary {
   importe: number;
   descuento: number;
+  descuentoOriginal: number;
   descuentoImporte: number;
   subtotal: number;
   impuesto: number;

@@ -4,21 +4,21 @@
   fxLayoutAlign="center center"
   fxLayoutGap="10px"
 >
-  <!-- <section class="header" fxLayout fxLayoutAling="center center">
-    <h2>Tableros de Control</h2>
-  </section> -->
   <section fxFlex>
     <nav mat-tab-nav-bar>
-      <a
-        mat-tab-link
-        [routerLink]="['pedidos']"
-        routerLinkActive
-        [routerLinkActiveOptions]="{ exact: false }"
-        #rla="routerLinkActive"
-        [active]="rla.isActive"
-      >
-        Bitácora de pedidos
-      </a>
+      <div>
+        <a
+          mat-tab-link
+          [routerLink]="['pedidos']"
+          routerLinkActive
+          [routerLinkActiveOptions]="{ exact: false }"
+          #rla="routerLinkActive"
+          [active]="rla.isActive"
+        >
+          Bitácora de pedidos
+        </a>
+      </div>
+
       <a
         mat-tab-link
         routerLinkActive

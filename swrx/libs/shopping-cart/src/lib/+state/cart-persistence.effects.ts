@@ -36,7 +36,7 @@ export class CartPersistenceEffects {
           return of();
         } else {
           return this.pedidoService.get(a.params['id']).pipe(
-            tap(pedido => console.log('Cargando para editar pedido: ', pedido)),
+            tap(pedido => console.log('Pedido: ', pedido)),
             map(pedido => CartActions.loadPedidoSucces({ pedido }))
           );
         }

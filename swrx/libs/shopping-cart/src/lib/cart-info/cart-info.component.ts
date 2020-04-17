@@ -57,7 +57,6 @@ export class CartInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.autorizaciones$ = this.facade.autorizaciones$;
     this.facade.cliente$.pipe(takeUntil(this.destroy$)).subscribe(c => {
-      console.log('Cliente seleccionado: ', c);
       this.tabGroup.selectedIndex = 0;
       this.cd.markForCheck();
     });

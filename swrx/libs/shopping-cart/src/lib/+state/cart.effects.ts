@@ -192,28 +192,6 @@ export class CartEffects {
     { dispatch: false }
   );
 
-  descuentoEspecial$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.assignarDescuentoEspecial),
-        pedidoState(this.store),
-        map(state => {
-          const descuento = state.changes.descuento;
-          const descuentoEspecial = state.changes.descuentoEspecial;
-          const descuentoOriginal = state.changes.descuentoOriginal;
-          const tipo = state.changes.tipo;
-          return { descuento, descuentoEspecial, descuentoOriginal, tipo };
-        }),
-        filter(state => state.tipo !== TipoDePedido.CREDITO),
-        this.inDialog(CartDescuentoeComponent, '400px'),
-        notNull(),
-        map((descuentoEspecial: number) =>
-          CartActions.assignarDescuentoEspecialSuccess({ descuentoEspecial })
-        )
-      ),
-    { dispatch: true }
-  );
-
   iniciarCierre$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.iniciarCierreDePedido),
@@ -249,6 +227,30 @@ export class CartEffects {
     { dispatch: true }
   );
 
+  descuentoEspecial$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CartActions.assignarDescuentoEspecial),
+        pedidoState(this.store),
+        map(state => {
+          const descuento = state.changes.descuento;
+          const descuentoEspecial = state.changes.descuentoEspecial;
+          const descuentoOriginal = state.changes.descuentoOriginal;
+          const tipo = state.changes.tipo;
+          return { descuento, descuentoEspecial, descuentoOriginal, tipo };
+        }),
+        filter(state => state.tipo !== TipoDePedido.CREDITO),
+        this.inDialog(CartDescuentoeComponent, '400px'),
+        // tap(data => console.log('Desc: ', data)),
+        filter(desc => desc >= 0),
+        map((descuentoEspecial: number) =>
+          CartActions.assignarDescuentoEspecialSuccess({ descuentoEspecial })
+        )
+      ),
+    { dispatch: true }
+  );
+
+  /*
   descuentoEspcialListener$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -257,10 +259,12 @@ export class CartEffects {
           CartActions.deleteItem,
           CartActions.editItem
         ),
+        tap(a => console.log('Recalcular partidas por accion: ', a.type)),
         map(() => CartActions.recalcularPartidas())
       ),
-    { dispatch: true }
+    { dispatch: false }
   );
+  */
 
   refrescarCliente$ = createEffect(
     () =>
@@ -285,15 +289,17 @@ export class CartEffects {
     { dispatch: true }
   );
 
+  /*
   validarDisponibilidad$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(CartActions.validarPedido),
         pedidoState(this.store),
-        tap(state => console.log('Validando disponibilidad para: {}', state))
+        // tap(state => console.log('Validando disponibilidad para: {}', state))
       ),
     { dispatch: false }
   );
+  */
 
   constructor(
     private actions$: Actions,

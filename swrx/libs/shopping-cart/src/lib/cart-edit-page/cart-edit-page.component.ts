@@ -106,9 +106,14 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   }
 
   private registerStateForm() {
-    this.facade.cartStateForm$.pipe(take(1)).subscribe(formState => {
-      this.cartForm.patchValue(formState, { emitEvent: false });
-    });
+    this.facade.cartStateForm$
+      .pipe(
+        take(1),
+        tap(state => console.log('CartState: ', state))
+      )
+      .subscribe(formState => {
+        this.cartForm.patchValue(formState, { emitEvent: false });
+      });
   }
 
   private addFormaDePagoListener() {
@@ -177,10 +182,10 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
           // this.cartForm.get('formaDePago').enable();
         }
 
-        this.cartForm.get('usoDeCfdi').setValue(cte.credito.usoDeCfdi || 'G01');
+        // this.cartForm.get('usoDeCfdi').setValue(cte.credito.usoDeCfdi || 'G01');
       }
-
-      this.cartForm.get('cfdiMail').setValue(cte.cfdiMail);
+      // console.log('Actualizando CFDI...');
+      // this.cartForm.get('cfdiMail').setValue(cte.cfdiMail);
     });
   }
 

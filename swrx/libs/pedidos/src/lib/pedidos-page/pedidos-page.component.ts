@@ -8,6 +8,9 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { AltPedidoComponent } from '../alt-pedido/alt-pedido.component';
 
+import { AngularFireStorage } from '@angular/fire/storage';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 @Component({
   selector: 'swrx-pedidos-page',
   templateUrl: './pedidos-page.component.html',
@@ -22,7 +25,9 @@ export class PedidosPageComponent implements OnInit {
   constructor(
     private facade: PedidosFacade,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private storage: AngularFireStorage,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -47,5 +52,28 @@ export class PedidosPageComponent implements OnInit {
           this.onSelection(pedido);
         }
       });
+  }
+
+  mostrarFactura() {
+    const ref = this.storage.ref('cfdis/TAFACCON-83707.pdf');
+
+    ref.getDownloadURL().subscribe(url => {
+      if (url) {
+        const headers = new HttpHeaders().set(
+          'Content-type',
+          'application/pdf'
+        );
+        this.http.get(url, { headers, responseType: 'blob' }).subscribe(
+          res => {
+            const blob = new Blob([res], {
+              type: 'application/pdf'
+            });
+            const fileUrl = window.URL.createObjectURL(blob);
+            window.open(fileUrl, '_blank');
+          },
+          error => console.error(error)
+        );
+      }
+    });
   }
 }

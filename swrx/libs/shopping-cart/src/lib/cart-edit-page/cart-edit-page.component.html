@@ -115,6 +115,7 @@
       [kilos]="facade.kilos$ | async"
       (checkout)="onCheckout()"
       [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+      [descuentoEspecial]="facade.descuentoEspecial$ | async"
     >
       <div class="checkout-actions">
         <button mat-raised-button (click)="cancelar()">
@@ -130,7 +131,9 @@
             color="primary"
             (click)="cerrarPedido(pedido)"
             [disabled]="
-              (facade.hasWarnings$ | async) || (facade.hasErrors$ | async)
+              (facade.hasWarnings$ | async) ||
+              (facade.hasErrors$ | async) ||
+              (facade.dirty$ | async)
             "
           >
             <mat-icon>send</mat-icon>Cerrar

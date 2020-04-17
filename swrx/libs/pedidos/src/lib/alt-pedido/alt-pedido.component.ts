@@ -27,7 +27,7 @@ import { Pedido, PedidoDet } from '@swrx/core-model';
 })
 export class AltPedidoComponent implements OnInit {
   pedido: Pedido;
-  partidas: PedidoDet[];
+  partidas: Partial<PedidoDet>[];
   gridOptions: GridOptions;
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
@@ -43,7 +43,7 @@ export class AltPedidoComponent implements OnInit {
     this.pedido = this.data.pedido;
     this.partidas = this.pedido.partidas;
     this.buildGridOptions();
-    console.log('AltView: ', this.pedido);
+    // console.log('AltView: ', this.pedido);
   }
 
   buildGridOptions() {

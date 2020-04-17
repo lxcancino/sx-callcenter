@@ -20,7 +20,7 @@ export interface Pedido {
   formaDePago: FormaDePago;
   moneda: 'MXN' | 'USD' | 'EUR';
   tipoDeCambio: number;
-  partidas: PedidoDet[];
+  partidas: Partial<PedidoDet>[];
   // Importes
   importe: number;
   descuento: number;

@@ -13,6 +13,8 @@ import { PedidosFacade } from './+state/pedidos.facade';
 import { AltPedidoComponent } from './alt-pedido/alt-pedido.component';
 import { AutorizacionesPageComponent } from './autorizaciones-page/autorizaciones-page.component';
 
+import { CfdiModule } from '@swrx/cfdi';
+
 export const routes: Route[] = [
   {
     path: '',
@@ -38,7 +40,8 @@ export const routes: Route[] = [
       fromPedidos.PEDIDOS_FEATURE_KEY,
       fromPedidos.reducer
     ),
-    EffectsModule.forFeature([PedidosEffects])
+    EffectsModule.forFeature([PedidosEffects]),
+    CfdiModule
   ],
   providers: [PedidosFacade]
 })

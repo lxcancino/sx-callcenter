@@ -3,7 +3,11 @@ import { createReducer, on, Action } from '@ngrx/store';
 import * as CartActions from './cart.actions';
 import { CartItem, CartValidationError } from './cart.models';
 
-import { clienteMostrador, aplicarDescuentos } from './cart.utils';
+import {
+  clienteMostrador,
+  aplicarDescuentos,
+  recalcularPartidas
+} from './cart.utils';
 import {
   Cliente,
   Socio,
@@ -36,7 +40,7 @@ export interface CartState {
   formaDePago: FormaDePago;
   usoDeCfdi?: string;
   cfdiMail?: string;
-  items: { [id: string]: CartItem };
+  items: { [id: string]: Partial<CartItem> };
   loading: boolean;
   pedido?: Pedido;
   envio?: InstruccionDeEnvio;
@@ -84,13 +88,12 @@ const cartReducer = createReducer(
   })),
   */
   on(CartActions.addCartItemSuccess, (state, { item }) => {
-    console.log('Agregando item: ', item);
     return {
       ...state,
       dirty: true,
       items: { ...state.items, [item.id]: item },
-      loading: false,
-      descuentoEspecial: state.descuentoEspecial ? 0 : undefined
+      loading: false
+      // descuentoEspecial: state.descuentoEspecial ? 0 : undefined
     };
   }),
   on(CartActions.deleteItem, (state, { item }) => {
@@ -107,8 +110,10 @@ const cartReducer = createReducer(
       ...state.items,
       [item.id]: item
     };
+    const clone = { ...state };
+    clone.dirty = true;
     return {
-      ...state,
+      ...clone,
       items
     };
   }),
@@ -117,7 +122,8 @@ const cartReducer = createReducer(
     ...state,
     cliente,
     nombre: cliente.nombre,
-    cfdiMail: cliente.cfdiMail
+    cfdiMail: cliente.cfdiMail,
+    dirty: true
   })),
   on(CartActions.cambiarClienteError, (state, { error }) => ({
     ...state,
@@ -126,40 +132,53 @@ const cartReducer = createReducer(
   })),
   on(CartActions.cambiarNombreSuccess, (state, { nombre }) => ({
     ...state,
-    nombre: nombre
+    nombre: nombre,
+    dirty: true
   })),
-  on(CartActions.cambiarTipo, (state, { tipo }) => ({ ...state, tipo })),
+  on(CartActions.cambiarTipo, (state, { tipo }) => ({
+    ...state,
+    tipo,
+    dirty: true
+  })),
   on(CartActions.cambiarFormaDePago, (state, { formaDePago }) => ({
     ...state,
-    formaDePago
+    formaDePago,
+    dirty: true
   })),
   on(CartActions.cambiarUsoDeCfdi, (state, { clave }) => ({
     ...state,
-    usoDeCfdi: clave
+    usoDeCfdi: clave,
+    dirty: true
   })),
   on(CartActions.cambiarCfdiMail, (state, { email }) => ({
     ...state,
-    cfdiMail: email
+    cfdiMail: email,
+    dirty: true
   })),
   on(CartActions.cambiarSucursal, (state, { sucursal }) => ({
     ...state,
-    sucursal
+    sucursal,
+    dirty: true
   })),
   on(CartActions.cambiarComprador, (state, { comprador }) => ({
     ...state,
-    comprador
+    comprador,
+    dirty: true
   })),
   on(CartActions.cambiarComentario, (state, { comentario }) => ({
     ...state,
-    comentario
+    comentario,
+    dirty: true
   })),
   on(CartActions.registrarEnvioSuccess, (state, { envio }) => ({
     ...state,
-    envio
+    envio,
+    dirty: true
   })),
   on(CartActions.cancelarEnvio, state => ({
     ...state,
-    envio: null
+    envio: null,
+    dirty: true
   })),
   on(CartActions.recalcularPartidas, state => {
     const partidas = values(state.items);
@@ -169,7 +188,7 @@ const cartReducer = createReducer(
       state.tipo,
       state.formaDePago,
       state.cliente,
-      state.descuentoEspecial
+      0
     );
 
     //const partidasActualizadas = recalcularPartidas(state);
@@ -192,7 +211,8 @@ const cartReducer = createReducer(
     if (corteItem) {
       items = { ...items, [corteItem.id]: corteItem };
     }
-    return { ...state, items };
+    const clone = { ...state, descuentoEspecial: 0 };
+    return { ...clone, items };
   }),
 
   on(CartActions.loadPedidoSucces, (state, { pedido }) => {
@@ -232,10 +252,15 @@ const cartReducer = createReducer(
   }),
   on(
     CartActions.assignarDescuentoEspecialSuccess,
-    (state, { descuentoEspecial }) => ({
-      ...state,
-      descuentoEspecial
-    })
+    (state, { descuentoEspecial }) => {
+      const clone = { ...state, descuentoEspecial };
+      const items = recalcularPartidas(clone);
+      return {
+        ...clone,
+        items,
+        dirty: true
+      };
+    }
   )
 );
 

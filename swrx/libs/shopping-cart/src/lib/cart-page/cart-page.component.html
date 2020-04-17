@@ -53,6 +53,7 @@
       [kilos]="facade.kilos$ | async"
       (checkout)="onCheckout()"
       [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
+      [descuentoEspecial]="facade.descuentoEspecial$ | async"
     >
       <div class="checkout-actions">
         <button mat-raised-button (click)="cancelar()">

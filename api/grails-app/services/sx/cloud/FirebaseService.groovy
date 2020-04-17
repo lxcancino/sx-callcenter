@@ -8,6 +8,8 @@ import groovy.transform.CompileDynamic
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 
+import org.springframework.beans.factory.annotation.Value
+
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.DocumentChange
@@ -31,6 +33,12 @@ import grails.compiler.GrailsCompileStatic
 class FirebaseService {
 
     // static lazyInit = false
+
+    @Value('${siipapx.firebase.url}')
+    String firebaseUrl
+
+    @Value('${siipapx.firebase.bucket}')
+    String firebaseBucket
     
     private FirebaseApp app
 
@@ -39,8 +47,10 @@ class FirebaseService {
         log.debug('Initializing Firebase connection....')
 		FirebaseOptions options = new FirebaseOptions.Builder()
   		.setCredentials(GoogleCredentials.getApplicationDefault())
-  		.setDatabaseUrl("https://siipapx-436ce.firebaseio.com")
+  		.setDatabaseUrl(this.firebaseUrl)
+      .setStorageBucket(this.firebaseBucket)
   		.build();
+      
 
 		app = FirebaseApp.initializeApp(options);
 		log.info('Connected to Firebase App: {}', app.name)

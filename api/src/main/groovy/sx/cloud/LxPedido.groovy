@@ -15,7 +15,7 @@ class LxPedido {
     String sucursal
     Date fecha
     Long folio
-    String cliente
+    Map cliente
     String nombre
     String rfc
 
@@ -65,7 +65,32 @@ class LxPedido {
     LxPedido(Pedido pedido) {
         copyProperties(pedido, this)
         this.id = pedido.id
-        this.cliente = pedido.cliente.id
+        def cte = pedido.cliente
+        if(cte.clave.startsWith('SXCC')) {
+            this.cliente = [
+                id: cte.id,
+                nombre: cte.nombre,
+                clave: cte.clave,
+                rfc: cte.rfc,
+                direccion: cte.direccion.toFirebaseMap(),
+                medios: cte.medios.collect{
+                    return [
+                        id: it.id,
+                        tipo: it.tipo,
+                        descripcion: it.descripcion,
+                        cfdi: it.cfdi,
+                        activo: it.activo,
+                        createUser: it.createUser,
+                        updateUser: it.updateUser,
+                        sucursalCreated: it.sucursalCreated,
+                        sucursalUpdated: it.sucursalUpdated
+                    ]
+                }
+            ]
+        } else {
+            this.cliente =  [id: cte.id]
+        }
+        
     }
     
     def copyProperties(source, target) {

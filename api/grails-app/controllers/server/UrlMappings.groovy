@@ -9,6 +9,7 @@ class UrlMappings {
             "/medios"(resources: 'comunicacionEmpresa', excludes: ['create', 'edit'])
             "/direcciones"(resources: 'clienteDireccion', excludes:['create', 'edit'])
         }
+        "/api/clientes/nuevos"(controller: 'cliente', action: 'nuevos', method: 'GET')
         "/api/sucursales"(resources: 'sucursal', includes:['index', 'show'])
         
         "/api/productos"(resources: 'producto', includes:['index', 'show'])

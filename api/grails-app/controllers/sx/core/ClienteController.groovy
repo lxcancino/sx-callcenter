@@ -7,7 +7,7 @@ import grails.converters.*
 import grails.compiler.GrailsCompileStatic
 import grails.plugin.springsecurity.annotation.Secured
 
-
+import sx.reports.ReportService
 
 @Slf4j
 @GrailsCompileStatic
@@ -17,6 +17,7 @@ class ClienteController extends RestfulController<Cliente> {
     static responseFormats = ['json']
 
     ClienteService clienteService
+    ReportService reportService
 
     ClienteController() {
         super(Cliente)
@@ -58,5 +59,17 @@ class ClienteController extends RestfulController<Cliente> {
         respond cliente, view: 'show'
     }
 
+    def nuevos(ClientesNuevosCommand command) {
+        Map repParams = [:]
+        repParams['SUCURSAL'] = '99'
+        repParams['FECHA'] = command.fecha
+        def pdf =  reportService.run('ClientesNuevos.jrxml', repParams)
+        render (file: pdf.toByteArray(), contentType: 'application/pdf', filename: 'ClientesNuevos.pdf')
+    }
 
+
+}
+
+class ClientesNuevosCommand {
+    Date fecha
 }

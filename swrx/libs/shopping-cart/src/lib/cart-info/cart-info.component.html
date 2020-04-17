@@ -21,7 +21,7 @@
             <span>Estado: {{ direccion.estado }}</span>
           </div>
           <div class="direccion-row">
-            <span>C.P: {{ direccion.colonia }}</span>
+            <span>C.P: {{ direccion.codigoPostal }}</span>
             <span>País: {{ direccion.pais }}</span>
           </div>
         </section>
@@ -117,6 +117,11 @@
           Autorizar
         </button>
       </div>
+      <ng-container *ngIf="facade.currentPedido | async as p">
+        <div *ngIf="p.autorizacion">
+          Autorización registrada {{ p.autorizacion | json }}
+        </div>
+      </ng-container>
     </mat-tab>
   </mat-tab-group>
 </div>

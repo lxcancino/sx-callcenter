@@ -18,8 +18,10 @@ import { ClienteUiService } from '../services/cliente-ui.service';
 import { buildDireccionForm, getDireccionKey } from '@swrx/form-utils';
 import { ClienteService } from '../services/cliente.service';
 import { Update } from '@ngrx/entity';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { finalize } from 'rxjs/operators';
+
+import { ReportService, DateSelectorComponent } from '@swrx/reports';
 
 @Component({
   selector: 'swrx-cliente-page',
@@ -39,7 +41,9 @@ export class ClientePageComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private fb: FormBuilder,
     private service: ClienteService,
-    private snack: MatSnackBar
+    private snack: MatSnackBar,
+    private reportService: ReportService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -321,5 +325,17 @@ export class ClientePageComponent implements OnInit {
         },
         err => {}
       );
+  }
+
+  clientesNuevos() {
+    this.dialog
+      .open(DateSelectorComponent, { data: { fecha: new Date() } })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          console.log('Fecha: ', res);
+          this.reportService.runReport('clientes/nuevos', { fecha: res });
+        }
+      });
   }
 }

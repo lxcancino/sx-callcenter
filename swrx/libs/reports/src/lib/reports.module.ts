@@ -1,7 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
+import { UiCoreModule } from '@swrx/ui-core';
+
+import { COMPONENTS, DIALOGS } from './components';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule]
+  imports: [UiCoreModule, FormsModule],
+  declarations: [...COMPONENTS],
+  exports: [...COMPONENTS],
+  entryComponents: [...DIALOGS]
 })
 export class ReportsModule {}

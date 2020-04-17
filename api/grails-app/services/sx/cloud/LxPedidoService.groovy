@@ -121,7 +121,7 @@ class LxPedidoService {
             log.debug('Pedido: {} CERRADO ', pedido.folio)
 
             // Log
-            Map logChanges = [cerrado: pedido.cerrado, status: 'CERRADO']
+            Map logChanges = [cerrado: pedido.cerrado, status: 'CERRADO', cerradoUser: pedido.updateUser]
             DocumentSnapshot logSnap = pedidoLogRef.get().get()
             
             if(!logSnap.exists()) {

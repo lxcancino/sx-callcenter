@@ -4,13 +4,26 @@
       <mat-card-title>
         {{ cliente ? cliente.nombre : 'Seleccione un cliente' }}
       </mat-card-title>
-      <button
-        mat-icon-button
-        matTooltip="Cambiar de cliente"
-        (click)="lookup()"
-      >
-        <mat-icon matSuffix>account_circle</mat-icon>
-      </button>
+      <div class="actions">
+        <button
+          mat-icon-button
+          matTooltip="Cambiar de cliente"
+          (click)="lookup()"
+        >
+          <mat-icon matSuffix>account_circle</mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="appMenu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #appMenu="matMenu">
+          <button mat-menu-item (click)="clientesNuevos()">
+            <mat-icon>print</mat-icon>
+            <mat-label>
+              Clientes nuevos
+            </mat-label>
+          </button>
+        </mat-menu>
+      </div>
     </mat-card-title-group>
   </mat-card>
 

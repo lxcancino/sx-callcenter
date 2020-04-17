@@ -1,12 +1,7 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  OnDestroy
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, map, filter } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 
 import { PedidoLog } from '@swrx/core-model';
 import { LogsFacade } from '../+state/logs/logs.facade';
@@ -21,9 +16,14 @@ import { LogService } from '../+state/services/log.service';
 export class PedidosDashboardComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<boolean>();
   partidas$: Observable<PedidoLog[]>;
+  timer$: Observable<any>;
   constructor(private facade: LogsFacade, private service: LogService) {}
 
   ngOnInit() {
+    this.load();
+  }
+
+  load() {
     this.partidas$ = this.service.fetchLogs().pipe(
       map(logs => logs.filter(item => item.status !== 'COTIZACION')),
       takeUntil(this.destroy$)

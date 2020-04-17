@@ -27,6 +27,15 @@
       <span>Registro de pedidos cerrados</span>
     </mat-toolbar>
   </mat-tab>
+
+  <mat-tab label="Facturados">
+    <mat-toolbar>
+      <span>Pedidos facturados</span>
+      <button fxLayout (click)="mostrarFactura()">
+        <mat-icon>print</mat-icon>
+      </button>
+    </mat-toolbar>
+  </mat-tab>
 </mat-tab-group>
 <!--
 <mat-card>

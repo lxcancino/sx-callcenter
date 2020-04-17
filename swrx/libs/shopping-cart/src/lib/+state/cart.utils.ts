@@ -9,12 +9,16 @@ import {
 
 import { CartState } from './cart.reducer';
 import { CartSumary, CartItem } from './cart.models';
-import { generarCargoPorCorte } from './cart-cargos-utils';
+import {
+  generarCargoPorCorte,
+  generarCargoPorTarjeta
+} from './cart-cargos-utils';
 
 import round from 'lodash/round';
 import sumBy from 'lodash/sumBy';
 import maxBy from 'lodash/maxBy';
 import values from 'lodash/values';
+import keyBy from 'lodash/keyBy';
 
 export function clienteMostrador(): Partial<Cliente> {
   return {
@@ -102,7 +106,9 @@ export function calcularDescuento(
  *
  * @param state
  */
-export function recalcularPartidas(state: CartState): Partial<PedidoDet>[] {
+export function recalcularPartidas(
+  state: CartState
+): { [id: string]: Partial<CartItem> } {
   const partidas = values(state.items);
   const partidasActualizadas = aplicarDescuentos(
     partidas,
@@ -111,12 +117,27 @@ export function recalcularPartidas(state: CartState): Partial<PedidoDet>[] {
     state.cliente,
     state.descuentoEspecial
   );
+  let items = keyBy(partidasActualizadas, 'id');
+  if (
+    state.formaDePago === FormaDePago.TARJETA_CRE ||
+    state.formaDePago === FormaDePago.TARJETA_DEB
+  ) {
+    const cargo = generarCargoPorTarjeta(
+      partidasActualizadas,
+      state.tipo,
+      state.formaDePago
+    );
+    if (cargo !== null) {
+      items = { ...items, [cargo.id]: cargo };
+    }
+    return items;
+  }
 
   const corteItem = generarCargoPorCorte(partidasActualizadas);
   if (corteItem) {
-    partidasActualizadas.push(corteItem);
+    items = { ...items, [corteItem.id]: corteItem };
   }
-  return partidasActualizadas;
+  return items;
 }
 
 /**
@@ -136,26 +157,21 @@ export function aplicarDescuentos(
   // const items = normalize(partidas);
   const items = filtrarPartidasAutomaticas(partidas);
   let descuento = calcularDescuento(items, tipo, cliente);
-  let descuentoOriginal = descuento;
+  const descuentoOriginal = descuento;
+  // descuentoEspecial = 0;
+
+  if (tipo === TipoDePedido.CREDITO) {
+    descuentoEspecial = 0;
+  }
+
+  if (descuentoEspecial > 0) {
+    descuento = descuentoEspecial;
+  }
 
   if (fpago === FormaDePago.TARJETA_CRE) {
     descuento = descuento - 2;
   } else if (fpago === FormaDePago.TARJETA_DEB) {
     descuento = descuento - 1;
-  }
-  /*
-  if (descuentoEspecial > 0) {
-    if (
-      tipo === TipoDePedido.CONTADO ||
-      tipo === TipoDePedido.COD ||
-      tipo === TipoDePedido.INE
-    ) {
-      descuento = descuentoEspecial;
-    }
-  }
-  */
-  if (descuentoEspecial > 0) {
-    descuento = descuentoEspecial;
   }
 
   const res: CartItem[] = [];
@@ -166,20 +182,20 @@ export function aplicarDescuentos(
     } else {
       if (item.modoVenta === 'B') {
         rdesc = descuento;
-        descuentoOriginal = descuento;
+        // descuentoOriginal = descuentoOriginal;
         descuentoEspecial = 0;
       } else {
         rdesc = 0;
-        descuentoOriginal = 0;
+        //descuentoOriginal = 0;
         descuentoEspecial = 0;
       }
       // rdesc = item.modoVenta === 'B' ? descuento : 0;
     }
     const det: PedidoDet = recalculaPartida(item, tipo, rdesc);
-    det.descuentoOriginal = rdesc;
+    det.descuentoOriginal = descuentoOriginal;
     det.descuentoEspecial = descuentoEspecial > 0 ? descuentoEspecial : 0;
-
-    res.push(recalculaPartida(item, tipo, rdesc));
+    // res.push(recalculaPartida(item, tipo, rdesc));
+    res.push(det);
   });
   return res;
 }
@@ -239,13 +255,18 @@ export function buildCartSumary(items: PedidoDet[]) {
   const total = round(sumBy(items, 'total'), 2);
   const maxDes = maxBy(items, 'descuento');
   const descuento = maxDes ? maxDes.descuento : 0.0;
+  const maxDesOriginal = maxBy(items, 'descuentoOriginal');
+  const descuentoOriginal = maxDesOriginal
+    ? maxDesOriginal.descuentoOriginal
+    : 0.0;
   return {
     importe,
     descuentoImporte,
     subtotal,
     impuesto,
     total,
-    descuento
+    descuento,
+    descuentoOriginal
   };
 }
 

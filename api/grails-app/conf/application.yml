@@ -78,8 +78,8 @@ environments:
     development:
         dataSource:
             dbCreate: update
-            url: jdbc:mysql://localhost/callcenter?autoReconnect=false
-            #url: jdbc:mysql://10.10.1.229/callcenter?autoReconnect=false
+            #url: jdbc:mysql://localhost/callcenter?autoReconnect=false
+            url: jdbc:mysql://10.10.1.229/callcenter?autoReconnect=false
             #url: jdbc:mysql://10.10.7.1/siipapx?autoReconnect=false
             #url: jdbc:mysql://localhost/siipapx_tacuba?autoReconnect=false
             #url: jdbc:mysql://${JDBC_CONNECTION_STRING}?autoReconnect=true
@@ -150,4 +150,22 @@ environments:
 grails:
     cors:
         enabled: true
+---
+environments:
+  development:
+    siipapx:
+      firebase:
+        url: https://siipapx-436ce.firebaseio.com
+        bucket: siipapx-436ce.appspot.com
+  production:
+    siipapx:
+      firebase:
+        url: https://siipapx-436ce.firebaseio.com
+        bucket: siipapx-436ce.appspot.com
+  certificacion:
+    siipapx:
+      firebase:
+        url: https://siipapx-436ce.firebaseio.com
+        bucket: siipapx-436ce.appspot.com
+---
   

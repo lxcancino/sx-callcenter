@@ -21,6 +21,7 @@ export class CartSummaryComponent implements OnInit {
   @Input() sumary: CartSumary;
   @Input() kilos: number;
   @Input() disabled = false;
+  @Input() descuentoEspecial = 0;
   @Output() checkout = new EventEmitter();
 
   constructor() {}

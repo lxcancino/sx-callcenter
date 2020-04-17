@@ -59,6 +59,18 @@ export class LogsEffects implements OnInitEffects {
     { dispatch: true }
   );
 
+  loadPedidosLog$ = createEffect(() =>
+    this.dataPersistence.fetch(LogsActions.loadLogs, {
+      run: () =>
+        this.service
+          .fetchLogs()
+          .pipe(map(logs => LogsActions.loadLogsSuccess({ logs }))),
+      onError: (action: ReturnType<typeof LogsActions.loadLogs>, error) => {
+        return LogsActions.loadLogsFailure({ error });
+      }
+    })
+  );
+
   constructor(
     private actions$: Actions,
     private dataPersistence: DataPersistence<LogsPartialState>,

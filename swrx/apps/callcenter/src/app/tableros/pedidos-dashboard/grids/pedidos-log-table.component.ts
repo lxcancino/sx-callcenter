@@ -23,6 +23,7 @@ import { formatCurrency, formatDate } from '@angular/common';
 import { spAgGridText } from '@swrx/ui-core';
 import { Producto } from '@swrx/core-model';
 import * as moment from 'moment';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'swrx-pedidos-log-table',
@@ -103,6 +104,7 @@ export class PedidosLogComponent implements OnInit {
 
   onFirstDataRendered(params) {
     // params.api.sizeColumnsToFit();
+    this.updateView();
   }
 
   private buildColsDef(): ColGroupDef[] {
@@ -139,6 +141,12 @@ export class PedidosLogComponent implements OnInit {
           {
             headerName: 'Vendedor',
             field: 'createUser',
+            width: 120,
+            pinned: 'left'
+          },
+          {
+            headerName: 'Cerrado por:',
+            field: 'cerradoUser',
             width: 120,
             pinned: 'left'
           }
@@ -179,7 +187,10 @@ export class PedidosLogComponent implements OnInit {
               } else {
                 const t_cerrado = pedidoLog.lastUpdated;
                 const t_atendido = atendido;
-                const ret = (t_atendido - t_cerrado) / (1000 * 60);
+                let ret = (t_atendido - t_cerrado) / (1000 * 60);
+                if (ret < 0) {
+                  ret = 0;
+                }
                 return Math.round(ret);
                 // return this.minutesFromNow(params.data.lastUpdated);
               }
@@ -210,7 +221,7 @@ export class PedidosLogComponent implements OnInit {
             width: 110,
             valueGetter: params => {
               if (params.data.facturacion) {
-                return params.data.folio;
+                return params.data.facturacion.folio;
               } else {
                 return null;
               }
@@ -307,7 +318,6 @@ export class PedidosLogComponent implements OnInit {
             valueGetter: params => {
               const embarque = params.data.embarqueLog;
               if (embarque && embarque.recepcion) {
-                console.log('Arribo: ', embarque.recepcion.arribo);
                 return embarque.recepcion.arribo.toDate();
               } else {
                 return null;
@@ -383,5 +393,11 @@ export class PedidosLogComponent implements OnInit {
     const b = moment(time);
     const diff = a.diff(b, 'hours');
     return diff;
+  }
+
+  updateView() {
+    timer(100, 60000).subscribe(() => {
+      this.gridApi.redrawRows();
+    });
   }
 }

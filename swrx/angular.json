@@ -687,6 +687,37 @@
           "styleext": "scss"
         }
       }
+    },
+    "cfdi": {
+      "projectType": "library",
+      "root": "libs/cfdi",
+      "sourceRoot": "libs/cfdi/src",
+      "prefix": "swrx",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/cfdi/tsconfig.lib.json",
+              "libs/cfdi/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/cfdi/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/cfdi/jest.config.js",
+            "tsConfig": "libs/cfdi/tsconfig.spec.json",
+            "setupFile": "libs/cfdi/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

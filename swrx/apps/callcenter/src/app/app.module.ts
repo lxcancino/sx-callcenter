@@ -14,6 +14,7 @@ import { DataPersistence } from '@nrwl/angular';
 // Firebase AngularFire
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AuthModule } from '@swrx/auth';
 
@@ -40,6 +41,7 @@ import { ReportsModule } from '@swrx/reports';
     // Firebase configuration
     AngularFireModule.initializeApp(environment.firebase, 'swrx-callcenter'),
     AngularFirestoreModule,
+    AngularFireStorageModule,
 
     AppRoutingModule,
     NotificationsModule,
