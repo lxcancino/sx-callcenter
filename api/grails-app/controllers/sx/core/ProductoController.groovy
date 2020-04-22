@@ -52,8 +52,10 @@ class ProductoController extends RestfulController<Producto> {
         // log.debug('Disponibles: {}', params)
         
         def search = '%' + params.term + '%'
+        // log.info('Search term: {}', search)
         query = query.where { clave =~ search || descripcion =~ search}
-        query = query.where { linea =~ search || marca =~search || clase =~ search}
+
+        // query = query.where { linea.linea =~ search || marca.marca =~search || clase.clase =~ search}
         // query = query.where { largo =~ search || ancho =~search }
         // query = query.where { kilos =~ search || gramos =~search }
         

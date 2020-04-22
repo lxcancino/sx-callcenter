@@ -7,7 +7,8 @@ import {
   FormaDePago,
   InstruccionDeEnvio,
   Socio,
-  Producto
+  Producto,
+  PedidoDet
 } from '@swrx/core-model';
 
 export const addCartItem = createAction(
@@ -134,4 +135,17 @@ export const asignarSocio = createAction(
 
 export const agregarManiobra = createAction(
   '[ShoppingCartFacade] Agregar maniobra'
+);
+
+// Existencias
+export const validacionDeExistenciasInicio = createAction(
+  'Validacion de existencias Inicio'
+);
+export const validacionDeExistenciasFin = createAction(
+  'Validacion de existencias Fin',
+  props<{ partidas: Partial<CartItem>[] | Partial<PedidoDet>[] }>()
+);
+export const validacionDeExistenciasFail = createAction(
+  'Validacion de existencias fail',
+  props<{ error: any }>()
 );

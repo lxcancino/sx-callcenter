@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Pedido } from '@swrx/core-model';
+import { CartFacade } from '../+state/cart.facade';
 
 @Component({
   selector: 'swrx-cerrar',
@@ -17,7 +18,8 @@ export class CerrarComponent implements OnInit {
   pedido: Partial<Pedido>;
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
-    private dialogRef: MatDialogRef<CerrarComponent>
+    private dialogRef: MatDialogRef<CerrarComponent>,
+    public facade: CartFacade
   ) {
     this.pedido = data.pedido;
   }

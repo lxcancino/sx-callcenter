@@ -1,7 +1,7 @@
 import { CartState } from './cart.reducer';
 import { TipoDeAutorizacion } from '@swrx/core-model';
 
-export function resolveAutorizaciones(state: CartState): string | null {
+export function resolveAutorizaciones(state: CartState): string | undefined {
   const data: string[] = [];
   if (state.descuentoEspecial > 0 && state.pedido) {
     if (!state.pedido.autorizacion) {
@@ -21,5 +21,6 @@ export function resolveAutorizaciones(state: CartState): string | null {
       }
     }
   }
-  return data.join(',');
+  console.log('Autorizaciones requeridas: ', data.length);
+  return data.length > 0 ? data.join(',') : undefined;
 }

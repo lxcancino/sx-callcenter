@@ -50,6 +50,15 @@
     <button
       mat-menu-item
       class="menu-item"
+      (click)="facade.actualizarExistencias()"
+      [disabled]="pedido.status === 'CERRADO'"
+    >
+      <mat-icon>cloud_done</mat-icon>
+      <span>Validar existencia</span>
+    </button>
+    <button
+      mat-menu-item
+      class="menu-item"
       *ngIf="facade.descuentoEspecialPosible$ | async"
       (click)="onDescuentoEspecial()"
       [disabled]="isDisabled(pedido, facade.hasErrors$ | async)"
@@ -133,10 +142,12 @@
             [disabled]="
               (facade.hasWarnings$ | async) ||
               (facade.hasErrors$ | async) ||
-              (facade.dirty$ | async)
+              (facade.dirty$ | async) ||
+              (facade.autorizaciones$ | async)
             "
           >
-            <mat-icon>send</mat-icon>Cerrar
+            <mat-icon>send</mat-icon>
+            Cerrar
           </button>
         </ng-container>
       </div>

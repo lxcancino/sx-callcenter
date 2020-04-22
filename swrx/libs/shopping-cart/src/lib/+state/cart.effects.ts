@@ -13,7 +13,8 @@ import {
   map,
   tap,
   switchMap,
-  catchError
+  catchError,
+  mergeAll
 } from 'rxjs/operators';
 import { Observable, of, noop, empty } from 'rxjs';
 
@@ -36,7 +37,8 @@ import {
   InstruccionDeEnvio,
   Pedido,
   TipoDePedido,
-  FormaDePago
+  FormaDePago,
+  PedidoDet
 } from '@swrx/core-model';
 import { CartNombreComponent } from '../cart-nombre/cart-nombre.component';
 import { CartDescuentosComponent } from '../cart-form/cart-descuentos/cart-descuentos.component';
@@ -44,6 +46,9 @@ import { CerrarComponent } from '../cerrar/cerrar.component';
 import { CartDescuentoeComponent } from '../cart-descuentoe/cart-descuentoe.component';
 import { CartManiobraComponent } from '../cart-maniobra/cart-maniobra.component';
 import { ClienteService } from '@swrx/clientes';
+import { CartItem } from './cart.models';
+
+import { ExistenciasService } from '@swrx/existencias';
 
 @Injectable()
 export class CartEffects {
@@ -195,7 +200,6 @@ export class CartEffects {
   iniciarCierre$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.iniciarCierreDePedido),
-      //pedidoState(this.store),
       map(action => {
         return { pedido: action.pedido };
       }),
@@ -227,27 +231,25 @@ export class CartEffects {
     { dispatch: true }
   );
 
-  descuentoEspecial$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.assignarDescuentoEspecial),
-        pedidoState(this.store),
-        map(state => {
-          const descuento = state.changes.descuento;
-          const descuentoEspecial = state.changes.descuentoEspecial;
-          const descuentoOriginal = state.changes.descuentoOriginal;
-          const tipo = state.changes.tipo;
-          return { descuento, descuentoEspecial, descuentoOriginal, tipo };
-        }),
-        filter(state => state.tipo !== TipoDePedido.CREDITO),
-        this.inDialog(CartDescuentoeComponent, '400px'),
-        // tap(data => console.log('Desc: ', data)),
-        filter(desc => desc >= 0),
-        map((descuentoEspecial: number) =>
-          CartActions.assignarDescuentoEspecialSuccess({ descuentoEspecial })
-        )
-      ),
-    { dispatch: true }
+  descuentoEspecial$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.assignarDescuentoEspecial),
+      pedidoState(this.store),
+      map(state => {
+        const descuento = state.changes.descuento;
+        const descuentoEspecial = state.changes.descuentoEspecial;
+        const descuentoOriginal = state.changes.descuentoOriginal;
+        const tipo = state.changes.tipo;
+        return { descuento, descuentoEspecial, descuentoOriginal, tipo };
+      }),
+      filter(state => state.tipo !== TipoDePedido.CREDITO),
+      this.inDialog(CartDescuentoeComponent, '400px'),
+      // tap(data => console.log('Desc: ', data)),
+      filter(desc => desc >= 0),
+      map((descuentoEspecial: number) =>
+        CartActions.assignarDescuentoEspecialSuccess({ descuentoEspecial })
+      )
+    )
   );
 
   /*
@@ -289,16 +291,44 @@ export class CartEffects {
     { dispatch: true }
   );
 
-  /*
-  validarDisponibilidad$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CartActions.validarPedido),
-        pedidoState(this.store),
-        // tap(state => console.log('Validando disponibilidad para: {}', state))
+  existenciaListener$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        CartActions.editItemSuccess,
+        CartActions.addCartItemSuccess,
+        CartActions.iniciarCierreDePedido
       ),
-    { dispatch: false }
+      tap(action => console.log('Validando existencias por: ', action.type)),
+      map(() => CartActions.validacionDeExistenciasInicio())
+    )
   );
+
+  validarExistencias$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.validacionDeExistenciasInicio),
+      pedidoState(this.store),
+      switchMap(state => {
+        const { partidas, sucursal } = state.changes;
+        return this.existenciaService
+          .actualizarFaltantes(partidas, sucursal)
+          .pipe(
+            map(data =>
+              CartActions.validacionDeExistenciasFin({ partidas: data })
+            ),
+            catchError(error =>
+              of(CartActions.validacionDeExistenciasFail({ error }))
+            )
+          );
+      })
+      // tap(data => console.log('Existencia actualizada: ', data))
+    )
+  );
+
+  /*
+  validarExistenciaFin$ = createEffect(() => this.actions$.pipe(
+    ofType(CartActions.validacionDeExistenciasFin),
+
+  ))
   */
 
   constructor(
@@ -307,7 +337,8 @@ export class CartEffects {
     private clienteUi: ClienteUiService,
     private store: Store<CartState>,
     private pedidoFacade: PedidosFacade, //,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private existenciaService: ExistenciasService
   ) {}
 
   private inDialog(component: any, width = '750px') {

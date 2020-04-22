@@ -72,7 +72,7 @@ export const initialState: CartState = {
   warrnings: [],
   envio: undefined,
   dirty: false,
-  comprador: null,
+  // comprador: null,
   inicio: new Date().toISOString()
 };
 
@@ -231,7 +231,9 @@ const cartReducer = createReducer(
       items,
       envio: pedido.envio,
       socio: pedido.socio,
-      descuentoEspecial: pedido.descuentoEspecial
+      descuentoEspecial: pedido.descuentoEspecial,
+      comentario: pedido.comentario,
+      comprador: pedido.comprador
     };
   }),
   on(CartActions.cleanShoppingCart, state => ({
@@ -261,7 +263,15 @@ const cartReducer = createReducer(
         dirty: true
       };
     }
-  )
+  ),
+  on(CartActions.validacionDeExistenciasFin, (state, { partidas }) => {
+    const items = keyBy(partidas, 'id');
+    const clone = { ...state, items };
+    return {
+      ...clone,
+      autorizacionesRequeridas: resolveAutorizaciones(clone)
+    };
+  })
 );
 
 export function reducer(state: CartState | undefined, action: Action) {

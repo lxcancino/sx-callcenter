@@ -1,17 +1,13 @@
-import { MonoTypeOperatorFunction, of, Observable, pipe } from 'rxjs';
+import { of, Observable, pipe } from 'rxjs';
 
-import { select, Store, ActionCreator } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import * as CartSelectors from './cart.selectors';
-import {
-  withLatestFrom,
-  concatMap,
-  filter,
-  mergeMap,
-  map
-} from 'rxjs/operators';
+import * as CartActions from './cart.actions';
+
+import { withLatestFrom, concatMap, filter, map } from 'rxjs/operators';
 import { CartState } from './cart.reducer';
 import { ofType } from '@ngrx/effects';
-import * as CartActions from './cart.actions';
+
 import { CartItem } from './cart.models';
 import { Producto } from '@swrx/core-model';
 

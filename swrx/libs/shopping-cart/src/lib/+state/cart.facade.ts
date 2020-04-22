@@ -187,4 +187,8 @@ export class CartFacade {
   imprimirPedido(pedido: Pedido) {
     this.reportService.runReport(`pedidos/print/${pedido.id}`, {});
   }
+
+  actualizarExistencias() {
+    this.store.dispatch(CartActions.validacionDeExistenciasInicio());
+  }
 }

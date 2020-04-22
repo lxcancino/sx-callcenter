@@ -212,6 +212,41 @@ export class PedidosLogComponent implements OnInit {
         ]
       },
       {
+        headerName: 'Puesto',
+        openByDefault: true,
+        children: [
+          {
+            headerName: 'Horario',
+            colId: 'puesto',
+            width: 110,
+            filter: false,
+            columnGroupShow: 'closed',
+            valueGetter: params => {
+              const pedidoLog = params.data;
+              const puesto = pedidoLog.puesto;
+              if (puesto && puesto.fecha) {
+                return puesto.fecha.toDate();
+              }
+              return null;
+            },
+            valueFormatter: params =>
+              this.transformDate(params.value, 'dd-MMM (HH:mm)')
+          },
+          {
+            headerName: 'Usuario',
+            colId: 'puestoUsuario',
+            width: 110,
+            columnGroupShow: 'closed',
+            filter: false,
+            valueGetter: params => {
+              const pedidoLog = params.data;
+              const puesto = pedidoLog.puesto;
+              return puesto ? puesto.usuario : '';
+            }
+          }
+        ]
+      },
+      {
         headerName: 'Facturación',
         headerClass: 'facturacion-header',
         children: [

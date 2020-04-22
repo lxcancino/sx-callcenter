@@ -107,6 +107,10 @@
         class="autorizacion-panel"
         *ngIf="facade.autorizaciones$ | async as autorizaciones"
       >
+        <span>Autorización Requerida:</span>
+        <p>
+          {{ autorizaciones }}
+        </p>
         <button
           mat-stroked-button
           color="accent"

@@ -84,7 +84,7 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
         formaDePago: [null, [Validators.required]],
         usoDeCfdi: [null, [Validators.required]],
         cfdiMail: [null],
-        comprador: [null],
+        comprador: [],
         comentario: [null]
       },
       { updateOn: 'blur' }
