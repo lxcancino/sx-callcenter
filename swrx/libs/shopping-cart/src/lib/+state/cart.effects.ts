@@ -309,6 +309,9 @@ export class CartEffects {
       pedidoState(this.store),
       switchMap(state => {
         const { partidas, sucursal } = state.changes;
+        const inventariables = partidas.filter(
+          item => item.producto.inventariable
+        );
         return this.existenciaService
           .actualizarFaltantes(partidas, sucursal)
           .pipe(

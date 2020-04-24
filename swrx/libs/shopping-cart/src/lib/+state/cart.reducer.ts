@@ -233,7 +233,8 @@ const cartReducer = createReducer(
       socio: pedido.socio,
       descuentoEspecial: pedido.descuentoEspecial,
       comentario: pedido.comentario,
-      comprador: pedido.comprador
+      comprador: pedido.comprador,
+      autorizacionesRequeridas: pedido.autorizacionesRequeridas
     };
   }),
   on(CartActions.cleanShoppingCart, state => ({
@@ -267,9 +268,11 @@ const cartReducer = createReducer(
   on(CartActions.validacionDeExistenciasFin, (state, { partidas }) => {
     const items = keyBy(partidas, 'id');
     const clone = { ...state, items };
+    const autorizacionesRequeridas = resolveAutorizaciones(clone);
+    console.log('Autorizaciones requeridas: ', autorizacionesRequeridas);
     return {
       ...clone,
-      autorizacionesRequeridas: resolveAutorizaciones(clone)
+      autorizacionesRequeridas
     };
   })
 );

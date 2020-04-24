@@ -21,6 +21,5 @@ export function resolveAutorizaciones(state: CartState): string | undefined {
       }
     }
   }
-  console.log('Autorizaciones requeridas: ', data.length);
   return data.length > 0 ? data.join(',') : undefined;
 }

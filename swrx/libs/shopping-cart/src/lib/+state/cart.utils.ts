@@ -303,7 +303,9 @@ export function buildPedidoEntity(
       comentario: state.comentario,
       socio: state.socio,
       descuentoEspecial: state.descuentoEspecial || 0.0,
-      autorizacionesRequeridas: state.autorizacionesRequeridas,
+      autorizacionesRequeridas: state.autorizacionesRequeridas
+        ? state.autorizacionesRequeridas
+        : null,
       ...sumary
     };
     return pedido;

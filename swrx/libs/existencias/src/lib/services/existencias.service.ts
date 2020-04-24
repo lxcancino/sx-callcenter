@@ -67,9 +67,18 @@ export class ExistenciasService {
       .pipe(
         map(exis => {
           if (exis) {
+            const prod = item.producto;
+            const inventariable = prod.inventariable;
+
             const diff = item.cantidad - exis.cantidad;
-            const faltante = diff > 0 ? diff : 0;
+            let faltante = diff > 0 ? diff : 0;
+
             console.groupCollapsed('Validando existencia', item.clave);
+            if (!inventariable) {
+              console.log('Producto no inventariable ');
+              faltante = 0;
+            }
+
             console.log('Cantidad solicitada: ', item.cantidad);
             console.log('Existencia: ', exis.cantidad);
             console.log('Faltante: ', faltante);
