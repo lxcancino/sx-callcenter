@@ -199,7 +199,10 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
     const { cliente, cuenta, pedido, fechaDeposito } = data;
     const deposito = { ...data };
     deposito.nombre = cliente.nombre;
-    deposito.fechaDeposito = fechaDeposito.toDate().toISOString();
+    deposito.fechaDeposito =
+      typeof fechaDeposito === 'string'
+        ? fechaDeposito
+        : fechaDeposito.toISOString();
     deposito.cliente = {
       id: cliente.id,
       nombre: cliente.nombre,

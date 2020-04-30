@@ -32,7 +32,7 @@
       <span>Uso de CFDI: {{ changes.usoDeCfdi }}</span>
     </div>
     <div *ngIf="changes.socio">
-      <strong>Socio: {{changes.socio.nombre}}</strong>
+      <strong>Socio: {{ changes.socio.nombre }}</strong>
     </div>
 
     <div>
@@ -41,7 +41,7 @@
   </mat-step>
   <mat-step label="Envío" *ngIf="changes.envio">
     <pre>
-      {{ changes.envio | json }}
+      {{ changes.envio.direccion | json }}
     </pre>
     <div>
       <!-- <button mat-button matStepperPrevious>Anterior</button> -->

@@ -37,7 +37,6 @@
         class="item"
         formControlName="fechaDeposito"
         label="Fecha Depósito"
-        [maxDate]="limitDate"
       ></swrx-fecha-field>
       <mat-checkbox class="item" formControlName="transferencia">
         Transferencia
@@ -62,7 +61,14 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>
-    CANCELAR
+    Cancelar
+  </button>
+  <button
+    mat-button
+    (click)="onCerrar()"
+    *ngIf="deposito.estado === 'AUTORIZADO'"
+  >
+    Cerrar
   </button>
   <button
     mat-button
@@ -70,6 +76,6 @@
     [disabled]="form.invalid || form.pristine"
     *ngIf="isEditable()"
   >
-    SALVAR
+    Salvar
   </button>
 </mat-dialog-actions>

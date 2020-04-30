@@ -159,9 +159,9 @@ export class DepositosTableComponent implements OnInit {
         width: 110
       },
       {
-        headerName: 'Enviado',
-        field: 'cerrrado',
-        width: 110,
+        headerName: 'Cerrado',
+        field: 'cerrado',
+        width: 100,
         valueFormatter: params => (params.value ? 'SI' : 'NO')
       },
       {

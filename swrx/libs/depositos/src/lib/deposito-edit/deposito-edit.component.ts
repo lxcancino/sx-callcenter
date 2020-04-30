@@ -195,9 +195,19 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  onCerrar() {
+    if (this.deposito.estado === 'AUTORIZADO') {
+      const update: Update<Deposito> = {
+        id: this.deposito.id,
+        changes: { cerrado: true, cerradoTime: new Date().toISOString() }
+      };
+      this.dialogRef.close(update);
+    }
+  }
+
   getChanges(): Partial<Deposito> {
     const data: any = this.form.getRawValue();
-    const { cliente, cuenta, sucursal, pedido } = data;
+    const { cliente, cuenta, sucursal, pedido, fechaDeposito } = data;
     const deposito = { ...data };
     deposito.cliente = {
       id: cliente.id,
@@ -217,6 +227,11 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
     if (pedido) {
       deposito.pedido = pedido;
     }
+
+    deposito.fechaDeposito =
+      typeof fechaDeposito === 'string'
+        ? fechaDeposito
+        : fechaDeposito.toISOString();
     return deposito;
   }
 
@@ -230,5 +245,6 @@ export class DepositoEditComponent implements OnInit, OnDestroy {
 
   isEditable() {
     return this.deposito.estado === 'RECHAZADO';
+    // return true;
   }
 }

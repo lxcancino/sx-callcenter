@@ -66,14 +66,14 @@ export class ExistenciasService {
       .valueChanges()
       .pipe(
         map(exis => {
-          if (exis) {
-            const prod = item.producto;
-            const inventariable = prod.inventariable;
+          const prod = item.producto;
+          console.groupCollapsed('Validando existencia', item.clave);
+          const inventariable = prod.inventariable;
 
+          if (exis) {
             const diff = item.cantidad - exis.cantidad;
             let faltante = diff > 0 ? diff : 0;
 
-            console.groupCollapsed('Validando existencia', item.clave);
             if (!inventariable) {
               console.log('Producto no inventariable ');
               faltante = 0;
@@ -85,10 +85,19 @@ export class ExistenciasService {
             console.groupEnd();
             return { ...item, faltante };
           } else {
-            return { ...item, faltante: item.cantidad };
+            let faltante = item.cantidad;
+            if (!inventariable) {
+              console.log('Producto NO INVENTARIABLE');
+              faltante = 0;
+            } else {
+              console.log('No existe registro en Firebase');
+            }
+            console.groupEnd();
+            return { ...item, faltante: faltante };
           }
         }),
         catchError((error: any) => {
+          console.groupEnd();
           console.log('Error: ', error);
           return throwError(error);
         }),

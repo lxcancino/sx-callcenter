@@ -69,6 +69,9 @@ export function generarCargoPorCorte(items: CartItem[]): CartItem | null {
     const precio = round(importeNeto, 2);
     const importe = precio;
     const subtotal = importe;
+    if (subtotal <= 0) {
+      return null;
+    }
     const impuesto = round(importe * 0.16, 2);
     const total = subtotal + impuesto;
     return {
