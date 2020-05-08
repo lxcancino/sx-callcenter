@@ -125,7 +125,7 @@ export const mostrarDescuentos = createAction(
 
 export const iniciarCierreDePedido = createAction(
   '[ShoppingCartPage] Solicitar cierre de pedido',
-  props<{ pedido: Partial<Pedido> }>()
+  props<{ pedido: Partial<Pedido>; deposito?: any }>()
 );
 
 export const asignarSocio = createAction(

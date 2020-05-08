@@ -167,4 +167,21 @@ export class DepositoService {
       .get<any>(url, { params: params })
       .pipe(catchError((error: any) => throwError(error)));
   }
+
+  findDeposito(pedidoId: string): Observable<Deposito[]> {
+    return this.afs
+      .collection('depositos', ref => ref.where('pedido.id', '==', pedidoId))
+      .snapshotChanges()
+      .pipe(
+        take(1),
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as Deposito;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        ),
+        catchError((error: any) => throwError(error))
+      );
+  }
 }

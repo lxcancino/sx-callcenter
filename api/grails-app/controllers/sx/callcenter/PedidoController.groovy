@@ -172,8 +172,9 @@ class PedidoController extends RestfulController<Pedido> {
         }
         Map repParams = [id: pedido.id]
         repParams.IMP_CON_LETRA = ImporteALetra.aLetra(pedido.total)
-        def pdf =  reportService.run('Pedido.jrxml', repParams)
-        render (file: pdf.toByteArray(), contentType: 'application/pdf', filename: 'Pedido.pdf')
+        repParams.TELEFONOS = pedido.cliente.getTelefonos()
+        def pdf =  reportService.run('CCPedido.jrxml', repParams)
+        render (file: pdf.toByteArray(), contentType: 'application/pdf', filename: 'CCPedido.pdf')
     }
 
     def findByFolio() {

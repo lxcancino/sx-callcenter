@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material';
 import { CartAutorizacionComponent } from '../cart-autorizacion/cart-autorizacion.component';
 
 import { ReportService } from '@swrx/reports';
+import { DepositoService } from '@swrx/depositos';
 
 @Injectable()
 export class CartFacade {
@@ -68,7 +69,8 @@ export class CartFacade {
     private store: Store<fromCart.CartState>,
     private router: Router,
     private dialog: MatDialog,
-    private reportService: ReportService
+    private reportService: ReportService,
+    private depositoService: DepositoService
   ) {
     this.store.pipe(select(CartSelectors.getCartSumary));
   }
@@ -143,7 +145,16 @@ export class CartFacade {
   }
 
   cerrarPedido(pedido: Pedido) {
-    this.store.dispatch(CartActions.iniciarCierreDePedido({ pedido }));
+    this.depositoService.findDeposito(pedido.id).subscribe(
+      (res: Array<any>) => {
+        const deposito = res.length > 0 ? res[0] : undefined;
+        this.store.dispatch(
+          CartActions.iniciarCierreDePedido({ pedido, deposito })
+        );
+      },
+      err => console.error('Err: ', err)
+    );
+    // this.store.dispatch(CartActions.iniciarCierreDePedido({ pedido }));
   }
 
   mostrarDescuentos() {

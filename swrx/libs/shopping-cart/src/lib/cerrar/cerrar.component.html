@@ -13,6 +13,27 @@
       </strong>
     </span>
   </div>
+
+  <div *ngIf="deposito">
+    <div class="warning" *ngIf="!deposito.autorizacion; else depositoInfo">
+      <span>
+        Depósito #:{{ deposito.folio }} sin autorizar no se puede cerrar el
+        pedido</span
+      >
+    </div>
+    <ng-template #depositoInfo>
+      <div class="success">
+        Asociado al depósito autorizado: {{ deposito.folio }}
+      </div>
+    </ng-template>
+  </div>
+
+  <div *ngIf="requiereDeposito()" class="warning">
+    <span
+      >ALERTA: Forma de pago {{ pedido.formaDePago }} requiere deposito
+      autorizado</span
+    >
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>
@@ -21,7 +42,7 @@
     mat-flat-button
     color="accent"
     (click)="onSubmit()"
-    [disabled]="facade.autorizaciones$ | async"
+    [disabled]="isDisabled(facade.autorizaciones$ | async, deposito)"
   >
     CERRAR
   </button>

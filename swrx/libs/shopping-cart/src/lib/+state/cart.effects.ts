@@ -201,7 +201,7 @@ export class CartEffects {
     this.actions$.pipe(
       ofType(CartActions.iniciarCierreDePedido),
       map(action => {
-        return { pedido: action.pedido };
+        return { pedido: action.pedido, deposito: action.deposito };
       }),
       this.inDialog(CerrarComponent, '500px'),
       filter(pedido => !!pedido),
