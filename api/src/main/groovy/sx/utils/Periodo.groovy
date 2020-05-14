@@ -1,8 +1,9 @@
 package sx.utils
 
 import grails.web.databinding.WebDataBinding
+import org.grails.datastore.gorm.GormValidateable
 
-class Periodo implements Comparable<Periodo>, WebDataBinding {
+class Periodo implements Comparable<Periodo>, WebDataBinding, GormValidateable {
 	
 
 	Date fechaInicial

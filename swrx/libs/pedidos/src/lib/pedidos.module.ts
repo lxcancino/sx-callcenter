@@ -14,6 +14,7 @@ import { AltPedidoComponent } from './alt-pedido/alt-pedido.component';
 import { AutorizacionesPageComponent } from './autorizaciones-page/autorizaciones-page.component';
 
 import { CfdiModule } from '@swrx/cfdi';
+import { CerradosComponent } from './pedidos-page/cerrados/cerrados.component';
 
 export const routes: Route[] = [
   {
@@ -30,7 +31,8 @@ export const routes: Route[] = [
     PedidosPageComponent,
     PedidosTableComponent,
     AltPedidoComponent,
-    AutorizacionesPageComponent
+    AutorizacionesPageComponent,
+    CerradosComponent
   ],
   entryComponents: [AltPedidoComponent],
   imports: [

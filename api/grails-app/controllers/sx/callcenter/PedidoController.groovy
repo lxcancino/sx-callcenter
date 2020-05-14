@@ -2,6 +2,7 @@ package sx.callcenter
 
 import groovy.util.logging.Slf4j
 import groovy.transform.CompileDynamic
+import groovy.transform.ToString
 
 import grails.rest.*
 import grails.converters.*
@@ -59,6 +60,18 @@ class PedidoController extends RestfulController<Pedido> {
         def query = Pedido.where{fecha >= periodo.fechaInicial  && status != 'COTIZACION'}
         respond query.list(params);
     }
+
+    @CompileDynamic
+    def search() {
+        log.debug('Search PARAMS: {}', params)
+        params.sort = 'lastUpdated'
+        params.order = 'desc'
+        params.max = 100
+        def query = Pedido.where{status != 'COTIZACION'}
+        Periodo periodo = params.periodo?: Periodo.getCurrentMonth()
+        query = query.where{fecha >= periodo.fechaInicial && fecha <= periodo.fechaFinal}
+        respond query.list(params);
+    }
    
     @CompileDynamic
     @Transactional
@@ -79,37 +92,7 @@ class PedidoController extends RestfulController<Pedido> {
         respond pedido, view: 'show'
     }
 
-    /*
-    @Transactional
-    def save() {
-        if(handleReadOnly()) {
-            return
-        }
-        def instance = createResource()
-
-        instance.validate()
-        if (instance.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond instance.errors, view:'create' // STATUS CODE 422
-            return
-        }
-
-        saveResource instance
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [classMessageArg, instance.id])
-                redirect instance
-            }
-            '*' {
-                response.addHeader(HttpHeaders.LOCATION,
-                        grailsLinkGenerator.link( resource: this.controllerName, action: 'show',id: instance.id, absolute: true,
-                                            namespace: hasProperty('namespace') ? this.namespace : null ))
-                respond instance, [status: CREATED, view:'show']
-            }
-        }
-    }
-    */
+    
 
     @CompileDynamic
     protected Pedido createResource() {
@@ -204,3 +187,11 @@ class PedidoController extends RestfulController<Pedido> {
         respond([message: message], status: 500)
     }
 }
+
+
+@ToString(includeNames=true, includePackage=false)
+class SearchPedido {
+    Date fechaInicial
+    Date fechaFinal
+}
+

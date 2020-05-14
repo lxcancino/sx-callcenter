@@ -305,4 +305,6 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  canCerrar() {}
 }

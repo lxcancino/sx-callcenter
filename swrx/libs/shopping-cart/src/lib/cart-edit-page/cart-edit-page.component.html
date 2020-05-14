@@ -135,6 +135,20 @@
         </button>
 
         <ng-container *ngIf="pedido.status === 'COTIZACION'">
+          <!-- <button
+            mat-raised-button
+            color="primary"
+            (click)="cerrarPedido(pedido)"
+            [disabled]="
+              (facade.hasWarnings$ | async) ||
+              (facade.hasErrors$ | async) ||
+              (facade.autorizaciones$ | async) ||
+              (facade.dirty$ | async)
+            "
+          >
+            <mat-icon>send</mat-icon>
+            Cerrar
+          </button> -->
           <button
             mat-raised-button
             color="primary"
@@ -142,7 +156,6 @@
             [disabled]="
               (facade.hasWarnings$ | async) ||
               (facade.hasErrors$ | async) ||
-              (facade.dirty$ | async) ||
               (facade.autorizaciones$ | async)
             "
           >
