@@ -13,5 +13,7 @@
   <swrx-pedidos-table
     class="pedidos-table"
     [partidas]="pedidos"
+    (selection)="onSelection($event)"
+    (quickView)="onView($event)"
   ></swrx-pedidos-table>
 </div>

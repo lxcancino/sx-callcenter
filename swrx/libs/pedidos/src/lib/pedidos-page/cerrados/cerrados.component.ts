@@ -1,8 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+
 import { Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Pedido, Periodo } from '@swrx/core-model';
 import { PedidoService } from '../../services/pedido.service';
-import { catchError, tap } from 'rxjs/operators';
+import { AltPedidoComponent } from '../../alt-pedido/alt-pedido.component';
 
 @Component({
   selector: 'swrx-pedidos-cerrados',
@@ -14,7 +18,12 @@ export class CerradosComponent implements OnInit {
   periodo: Periodo;
   STORAGE_KEY = 'sx-callcenter.pedidos.cerrados.periodo';
 
-  constructor(private service: PedidoService, private cd: ChangeDetectorRef) {}
+  constructor(
+    private service: PedidoService,
+    private cd: ChangeDetectorRef,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     console.log('Init component...');
@@ -36,5 +45,20 @@ export class CerradosComponent implements OnInit {
 
   changePeriodo() {
     console.log('Cambiar periodo......');
+  }
+
+  onSelection(event: Pedido) {
+    this.router.navigate(['pedidos', 'view', event.id]);
+  }
+
+  onView(pedido: Pedido) {
+    this.dialog
+      .open(AltPedidoComponent, { data: { pedido }, width: '90%' })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.onSelection(pedido);
+        }
+      });
   }
 }

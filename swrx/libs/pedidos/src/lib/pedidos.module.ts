@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
-
+import { MatTableModule } from '@angular/material/table';
 import { UiCoreModule } from '@swrx/ui-core';
 
 import { PedidosPageComponent } from './pedidos-page/pedidos-page.component';
@@ -15,13 +15,18 @@ import { AutorizacionesPageComponent } from './autorizaciones-page/autorizacione
 
 import { CfdiModule } from '@swrx/cfdi';
 import { CerradosComponent } from './pedidos-page/cerrados/cerrados.component';
+import { PedidoViewComponent } from './pedidos-page/pedido-view/pedido-view.component';
 
 export const routes: Route[] = [
   {
     path: '',
     children: [
       { path: '', redirectTo: 'list', pathMatch: 'full' },
-      { path: 'list', component: PedidosPageComponent }
+      { path: 'list', component: PedidosPageComponent },
+      {
+        path: 'view/:id',
+        component: PedidoViewComponent
+      }
     ]
   }
 ];
@@ -32,11 +37,13 @@ export const routes: Route[] = [
     PedidosTableComponent,
     AltPedidoComponent,
     AutorizacionesPageComponent,
-    CerradosComponent
+    CerradosComponent,
+    PedidoViewComponent
   ],
   entryComponents: [AltPedidoComponent],
   imports: [
     UiCoreModule,
+    MatTableModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature(
       fromPedidos.PEDIDOS_FEATURE_KEY,

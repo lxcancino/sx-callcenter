@@ -1,0 +1,39 @@
+.partidas-grid {
+  height: 60vh;
+  table {
+    width: 100%;
+  }
+}
+
+.header {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.fill {
+  margin-left: auto;
+  flex: 1;
+}
+
+.resumen-panel {
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  // align-items: flex-start;
+  padding: 10px 5px;
+  font-size: 14px;
+  .row {
+    padding-top: 5px;
+    flex: 1;
+    display: flex;
+    span {
+      flex: 1;
+      border: 0.01px solid black;
+      margin-left: 5px;
+    }
+  }
+}
