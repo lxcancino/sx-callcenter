@@ -76,11 +76,13 @@ export function validarCod(state: CartState, errors: CartValidationError[]) {
   if (state.tipo === TipoDePedido.COD) {
     const validas =
       state.formaDePago === FormaDePago.CHEQUE ||
-      state.formaDePago === FormaDePago.EFECTIVO;
+      state.formaDePago === FormaDePago.EFECTIVO ||
+      state.formaDePago === FormaDePago.TARJETA_CRE ||
+      state.formaDePago === FormaDePago.TARJETA_DEB;
     if (!validas) {
       errors.push({
         error: 'VANTA_COD',
-        descripcion: 'EN COD SOLO CHEQUE o EFECTIVO'
+        descripcion: 'EN COD SOLO CHEQUE o EFECTIVO o TARJETA'
       });
     }
     if (!state.envio) {

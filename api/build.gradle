@@ -89,6 +89,7 @@ dependencies {
     // compile "org.grails.plugins:spring-security-rest:${springSecurityRestVersion}"
 
     implementation 'com.google.firebase:firebase-admin:6.11.0'
+    // compile 'com.google.cloud:google-cloud-storage:1.108.0'
     
 
 }

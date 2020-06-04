@@ -16,6 +16,7 @@ import { AutorizacionesPageComponent } from './autorizaciones-page/autorizacione
 import { CfdiModule } from '@swrx/cfdi';
 import { CerradosComponent } from './pedidos-page/cerrados/cerrados.component';
 import { PedidoViewComponent } from './pedidos-page/pedido-view/pedido-view.component';
+import { FacturadosComponent } from './pedidos-page/facturados/facturados.component';
 
 export const routes: Route[] = [
   {
@@ -38,6 +39,7 @@ export const routes: Route[] = [
     AltPedidoComponent,
     AutorizacionesPageComponent,
     CerradosComponent,
+    FacturadosComponent,
     PedidoViewComponent
   ],
   entryComponents: [AltPedidoComponent],

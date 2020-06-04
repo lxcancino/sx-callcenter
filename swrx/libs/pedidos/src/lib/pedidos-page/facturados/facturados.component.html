@@ -1,0 +1,19 @@
+<mat-toolbar>
+  <span>Facturas</span>
+  <span [style.padding]="'0px 10px'"> Periodo: {{ periodo }}</span>
+  <span [style.margin-left]="'auto'"></span>
+  <button mat-icon-button (click)="reload()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+  <button mat-icon-button>
+    <mat-icon>date_range</mat-icon>
+  </button>
+</mat-toolbar>
+<div class="pedidos-panel">
+  <swrx-pedidos-table
+    class="pedidos-table"
+    [partidas]="pedidos"
+    (selection)="onSelection($event)"
+    (quickView)="onView($event)"
+  ></swrx-pedidos-table>
+</div>

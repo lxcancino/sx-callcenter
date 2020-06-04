@@ -84,4 +84,15 @@ export class PedidoService {
       .get<Pedido[]>(url, { params: params })
       .pipe(catchError((error: any) => throwError(error)));
   }
+
+  findPeddosFacturados(periodo: Periodo): Observable<Pedido[]> {
+    const url = `${this.apiUrl}/search`;
+    const params = new HttpParams()
+      .set('fechaInicial', periodo.fechaInicial.toISOString())
+      .set('fechaFinal', periodo.fechaFinal.toISOString())
+      .set('tipo', 'FACTURADOS');
+    return this.http
+      .get<Pedido[]>(url, { params: params })
+      .pipe(catchError((error: any) => throwError(error)));
+  }
 }
