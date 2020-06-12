@@ -42,7 +42,7 @@
 ,'X' AS GRUPO,V.FORMA_DE_PAGO AS FPAGO,V.CREATE_USER AS CREADO_USR
 ,V.TIPO,V.FECHA,V.ID,V.FOLIO AS DOCTO,V.SUCURSAL
 ,I.CLAVE,I.DESCRIPCION,I.KILOS*(CASE WHEN I.UNIDAD='MIL' THEN I.CANTIDAD/1000 ELSE I.CANTIDAD END) AS KILOS,I.KILOS AS KXMLL,I.GRAMOS,I.UNIDAD,I.CANTIDAD,I.PRECIO,I.IMPORTE AS IMPORTED
-,X.CANTIDAD CORTES,X.PRECIO CORTES_PRECIO,X.INSTRUCCION  CORTES_INSTRUCCION
+,X.CANTIDAD CORTES,X.PRECIO CORTES_PRECIO,(CASE WHEN X.REFINADO THEN ' REFIN' ELSE '' END) REFINADO,CONCAT(X.INSTRUCCION,(CASE WHEN X.REFINADO is true THEN ' REFIN' ELSE '' END))  CORTES_INSTRUCCION
 ,CASE WHEN I.MODO_VENTA="N" THEN 1.00 ELSE 0.00 END  AS MDV,I.MODO_VENTA
 ,CONCAT(IFNULL((SELECT CONCAT('1) ',MAX(T.DESCRIPCION))  FROM comunicacion_empresa T WHERE T.CLIENTE_ID=V.CLIENTE_ID AND T.TIPO='TEL1'),'  ')
        ,IFNULL((SELECT CONCAT('2) ',MAX(T.DESCRIPCION))  FROM comunicacion_empresa T WHERE T.CLIENTE_ID=V.CLIENTE_ID AND T.TIPO='TEL2'),'  ')
@@ -50,7 +50,7 @@
        ,IFNULL((SELECT CONCAT('4) ',MAX(T.DESCRIPCION))  FROM comunicacion_empresa T WHERE T.CLIENTE_ID=V.CLIENTE_ID AND T.TIPO='TEL4'),'  ') 
        ,IFNULL((SELECT CONCAT('CEL ',MAX(T.DESCRIPCION))  FROM comunicacion_empresa T WHERE T.CLIENTE_ID=V.CLIENTE_ID AND T.TIPO='CEL'),' ')	
        ,IFNULL((SELECT CONCAT('FAX ',MAX(T.DESCRIPCION))  FROM comunicacion_empresa T WHERE T.CLIENTE_ID=V.CLIENTE_ID AND T.TIPO='FAX'),' ')
-) AS TELEFONOS
+) AS TELEFONOS,V.COMPRADOR
 from pedido_det I 
 JOIN pedido V ON(I.pedido_id=V.id)
 JOIN cliente C ON(V.cliente_id=C.id)
@@ -97,10 +97,12 @@ order by i.partidas_idx]]></queryString>
 	<field name="IMPORTED" class="java.math.BigDecimal"/>
 	<field name="CORTES" class="java.lang.Integer"/>
 	<field name="CORTES_PRECIO" class="java.lang.Double"/>
+	<field name="REFINADO" class="java.lang.String"/>
 	<field name="CORTES_INSTRUCCION" class="java.lang.String"/>
 	<field name="MDV" class="java.math.BigDecimal"/>
 	<field name="MODO_VENTA" class="java.lang.String"/>
 	<field name="TELEFONOS" class="java.lang.String"/>
+	<field name="COMPRADOR" class="java.lang.String"/>
 
 	<sortField name="GRUPO" />
 
@@ -959,7 +961,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="58"
+						y="62"
 						width="78"
 						height="15"
 						key="textField"/>
@@ -976,9 +978,9 @@ order by i.partidas_idx]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="376"
-						y="58"
-						width="86"
+						x="382"
+						y="62"
+						width="80"
 						height="15"
 						key="staticText-33"/>
 					<box></box>
@@ -1003,7 +1005,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="73"
+						y="77"
 						width="78"
 						height="17"
 						key="textField-18"/>
@@ -1021,7 +1023,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="108"
+						y="112"
 						width="78"
 						height="16"
 						key="textField-25"/>
@@ -1039,7 +1041,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="409"
-						y="108"
+						y="112"
 						width="53"
 						height="16"
 						key="staticText-53"/>
@@ -1052,7 +1054,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="385"
-						y="108"
+						y="112"
 						width="24"
 						height="16"
 						key="staticText-54"/>
@@ -1065,7 +1067,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="124"
+						y="128"
 						width="78"
 						height="16"
 						key="textField-26"/>
@@ -1083,7 +1085,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="376"
-						y="124"
+						y="128"
 						width="86"
 						height="16"
 						key="staticText-55"/>
@@ -1166,7 +1168,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="116"
-						y="108"
+						y="112"
 						width="246"
 						height="34"
 						key="textField-27"/>
@@ -1184,7 +1186,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="25"
-						y="108"
+						y="112"
 						width="87"
 						height="32"
 						key="staticText-59"/>
@@ -1198,7 +1200,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="224"
-						y="148"
+						y="152"
 						width="48"
 						height="10"
 						forecolor="#666666"
@@ -1218,7 +1220,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="324"
-						y="148"
+						y="152"
 						width="87"
 						height="12"
 						forecolor="#666666"
@@ -1232,13 +1234,13 @@ order by i.partidas_idx]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[SIIPAP-X Rx]]></text>
+				<text><![CDATA[Sx-Call Center]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="269"
-						y="148"
+						y="152"
 						width="31"
 						height="10"
 						forecolor="#666666"
@@ -1258,7 +1260,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="413"
-						y="148"
+						y="152"
 						width="75"
 						height="12"
 						forecolor="#666666"
@@ -1278,7 +1280,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="489"
-						y="148"
+						y="152"
 						width="84"
 						height="12"
 						forecolor="#666666"
@@ -1298,7 +1300,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="3"
-						y="142"
+						y="146"
 						width="570"
 						height="4"
 						forecolor="#999999"
@@ -1309,7 +1311,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="16"
-						y="148"
+						y="152"
 						width="179"
 						height="10"
 						forecolor="#666666"
@@ -1324,7 +1326,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="116"
-						y="67"
+						y="76"
 						width="246"
 						height="16"
 						key="textField"/>
@@ -1337,7 +1339,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="12"
-						y="67"
+						y="76"
 						width="100"
 						height="16"
 						key="staticText-60"/>
@@ -1350,7 +1352,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="125"
-						y="56"
+						y="65"
 						width="252"
 						height="12"
 						key="textField-29"/>
@@ -1363,9 +1365,9 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="117"
-						y="83"
+						y="92"
 						width="259"
-						height="25"
+						height="20"
 						key="textField-30"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Top">
@@ -1389,7 +1391,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="12"
-						y="83"
+						y="92"
 						width="100"
 						height="11"
 						key="staticText-61"/>
@@ -1402,7 +1404,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="385"
-						y="73"
+						y="77"
 						width="24"
 						height="17"
 						key="textField-34">
@@ -1425,7 +1427,7 @@ $V{MODVTA}.doubleValue()<=0.00
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="409"
-						y="73"
+						y="77"
 						width="52"
 						height="17"
 						key="textField-35"/>
@@ -1440,7 +1442,7 @@ $V{MODVTA}.doubleValue()<=0.00 ? "% DESCTO" :  "$ DESCTO"]]></textFieldExpressio
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="90"
+						y="94"
 						width="78"
 						height="18"
 						key="textField-37"/>
@@ -1458,7 +1460,7 @@ $V{MODVTA}.doubleValue()<=0.00 ? "% DESCTO" :  "$ DESCTO"]]></textFieldExpressio
 				<staticText>
 					<reportElement
 						x="376"
-						y="90"
+						y="94"
 						width="86"
 						height="18"
 						key="staticText-65"/>
@@ -1507,6 +1509,19 @@ $V{MODVTA}.doubleValue()<=0.00 ? "% DESCTO" :  "$ DESCTO"]]></textFieldExpressio
 					</textElement>
 				<text><![CDATA[** = PRECIO NETO.   LOS DEMAS PRODUCTOS TIENE EL                % DE DESCUENTO]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="180"
+						y="49"
+						width="196"
+						height="12"
+						key="textField-39"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="Serif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{COMPRADOR}]]></textFieldExpression>
+				</textField>
 			</band>
 		</lastPageFooter>
 		<summary>
