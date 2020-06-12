@@ -12,12 +12,14 @@ class Transporte {
     String telefono1
     String telefono2
     String telefono3
+    String sucursal
     Direccion direccion
 
     static constraints = {
     	telefono1 nullable: true
         telefono2 nullable: true
         telefono3 nullable: true
+        sucursal nullable: true
     }
 
     static embedded = ['direccion']

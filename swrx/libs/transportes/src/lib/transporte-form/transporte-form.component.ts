@@ -36,6 +36,7 @@ export class TransporteFormComponent implements OnInit {
       telefono1: [null],
       telefono2: [null],
       telefono3: [null],
+      sucursal: [null],
       direccion: this.fb.group(
         {
           calle: [null, [Validators.required]],
@@ -61,6 +62,7 @@ export class TransporteFormComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       const data: Partial<Transporte> = this.form.getRawValue();
+      // console.log('Data: ', data);
       this.dialogRef.close(data);
     }
   }

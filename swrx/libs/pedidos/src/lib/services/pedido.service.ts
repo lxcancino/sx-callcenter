@@ -17,6 +17,7 @@ export class PedidoService {
   list(periodo: Periodo = Periodo.mesActual()): Observable<Pedido[]> {
     const data = periodo.toApiJSON();
     const params = new HttpParams()
+
       .set('fechaInicial', data.fechaInicial)
       .set('fechaFinal', data.fechaFinal);
     return this.http

@@ -54,9 +54,17 @@ export class PedidosPageComponent implements OnInit {
       });
   }
 
+  cambiarPeriodo(event: Event) {
+    console.log('Event: ', event);
+    event.stopPropagation();
+  }
+
   mostrarFactura() {
     const ref = this.storage.ref('cfdis/TAFACCON-83707.pdf');
+    console.log('Ref: ', ref);
+    ref.getMetadata().subscribe(meta => console.log('Metadata: ', meta));
 
+    /*
     ref.getDownloadURL().subscribe(url => {
       if (url) {
         const headers = new HttpHeaders().set(
@@ -75,5 +83,6 @@ export class PedidosPageComponent implements OnInit {
         );
       }
     });
+    */
   }
 }

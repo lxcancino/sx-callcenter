@@ -96,11 +96,15 @@ export class TransportesTableComponent implements OnInit {
         valueFormatter: params =>
           this.mask.transform(params.value, '(009) 000-00-00')
       },
+      // {
+      //   headerName: 'Tel 2',
+      //   field: 'telefono2',
+      //   valueFormatter: params =>
+      //     this.mask.transform(params.value, '(009) 000-00-00')
+      // },
       {
-        headerName: 'Tel 2',
-        field: 'telefono2',
-        valueFormatter: params =>
-          this.mask.transform(params.value, '(009) 000-00-00')
+        headerName: 'Sucursal',
+        field: 'sucursal'
       },
       {
         headerName: 'Calle',
@@ -121,6 +125,11 @@ export class TransportesTableComponent implements OnInit {
         headerName: 'Colonia',
         colId: 'colonia',
         valueGetter: params => params.data.direccion.colonia
+      },
+      {
+        headerName: 'CP',
+        colId: 'cp',
+        valueGetter: params => params.data.direccion.codigoPostal
       },
       {
         headerName: 'Municipio',

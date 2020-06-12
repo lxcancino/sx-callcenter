@@ -8,6 +8,7 @@
 <mat-dialog-content>
   <div [formGroup]="form">
     <swrx-upper-case-field formControlName="nombre"></swrx-upper-case-field>
+
     <div class="telefonos">
       <mat-form-field
         *ngFor="
@@ -24,7 +25,11 @@
         />
       </mat-form-field>
     </div>
+
     <swrx-direccion-form [parent]="form"></swrx-direccion-form>
+    <div>
+      <swrx-sucursal-field [parent]="form"></swrx-sucursal-field>
+    </div>
   </div>
 </mat-dialog-content>
 

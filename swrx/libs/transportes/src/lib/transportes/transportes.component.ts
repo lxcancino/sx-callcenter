@@ -38,7 +38,11 @@ export class TransportesComponent implements OnInit {
 
   onCreate() {
     this.dialog
-      .open(TransporteFormComponent, { data: {}, width: '650px' })
+      .open(TransporteFormComponent, {
+        data: {},
+        width: '650px'
+        // height: '700px'
+      })
       .afterClosed()
       .subscribe((res: Partial<Transporte>) => {
         if (res) {

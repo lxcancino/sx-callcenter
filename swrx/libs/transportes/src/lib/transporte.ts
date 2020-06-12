@@ -7,4 +7,5 @@ export interface Transporte {
   telefono2?: string;
   telefono3?: string;
   direccion: Direccion;
+  sucursal?: string;
 }
