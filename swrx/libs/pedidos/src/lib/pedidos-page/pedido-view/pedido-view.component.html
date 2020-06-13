@@ -16,7 +16,7 @@
     </div>
 
     <div class="partidas-grid">
-      <table mat-table [dataSource]="ped.partidas" class="mat-elevation-z8">
+      <table mat-table [dataSource]="ped.partidas">
         <ng-container matColumnDef="row">
           <th mat-header-cell *matHeaderCellDef>#</th>
           <td mat-cell *matCellDef="let element; index as idx">
@@ -125,6 +125,17 @@
     </div>
     <div class="resumen-panel">
       <div class="row">
+        <span>Sucursal: {{ ped.sucursal }}</span>
+      </div>
+      <div class="row" *ngIf="ped.uuid">
+        <span
+          >Factura:
+          <strong>{{ ped.facturaSerie }}-{{ ped.facturaFolio }}</strong>
+        </span>
+        <span> UUID: {{ ped.uuid }} </span>
+      </div>
+
+      <div class="row">
         <span>Forma de pago: {{ ped.formaDePago }}</span>
         <span>Uso CFDI: {{ ped.usoDeCfdi }}</span>
       </div>
@@ -134,18 +145,24 @@
       </div>
       <div class="row">
         <span>Comprador: {{ ped.comprador }}</span>
-        <span>Sucursal: {{ ped.sucursal }}</span>
       </div>
       <div class="row">
         <span>Comentario: {{ ped.comentario }}</span>
       </div>
+      <div class="row">Factura URL: {{ pdf$ | async }}</div>
     </div>
 
     <mat-card-actions>
-      <button mat-stroked-button>
-        <mat-label>Imprimir</mat-label>
+      <button mat-stroked-button (click)="print(ped)">
         <mat-icon>print</mat-icon>
+        <mat-label>Pedido</mat-label>
       </button>
+      <ng-container *ngIf="pdf$ | async as pdfUrl">
+        <a mat-stroked-button [href]="pdfUrl" target="_blank" color="accent">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <mat-label>Factura</mat-label>
+        </a>
+      </ng-container>
     </mat-card-actions>
   </ng-container>
 </mat-card>

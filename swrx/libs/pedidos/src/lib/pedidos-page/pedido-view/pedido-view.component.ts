@@ -3,7 +3,11 @@ import { Pedido } from '@swrx/core-model';
 import { ActivatedRoute } from '@angular/router';
 import { PedidoService } from '../../services/pedido.service';
 import { Observable, Subject } from 'rxjs';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap, catchError } from 'rxjs/operators';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { ReportService } from '@swrx/reports';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'swrx-pedido-view',
@@ -13,6 +17,8 @@ import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 export class PedidoViewComponent implements OnInit {
   pedido: Pedido;
   pedido$: Observable<Pedido>;
+  pdf$: Observable<string>;
+
   destroy$ = new Subject<boolean>();
   displayedColumns: string[] = [
     'row',
@@ -28,7 +34,13 @@ export class PedidoViewComponent implements OnInit {
   ];
   totalColumns: string[] = ['row', 'total'];
 
-  constructor(private route: ActivatedRoute, private service: PedidoService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private service: PedidoService,
+    private storage: AngularFireStorage,
+    private reportService: ReportService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit() {
     // this.route.paramMap.subscribe(params => console.log(params.get('id')));
@@ -38,5 +50,46 @@ export class PedidoViewComponent implements OnInit {
       tap(p => console.log('Pedido: ', p.partidas)),
       takeUntil(this.destroy$)
     );
+
+    this.pdf$ = this.pedido$.pipe(
+      switchMap(pedido => {
+        const { facturaSerie, facturaFolio } = pedido;
+        const ref = this.storage.ref(
+          `cfdis/${facturaSerie}-${facturaFolio}.pdf`
+        );
+        return ref.getDownloadURL();
+      }),
+      catchError(err => {
+        console.log('Error :', err.message);
+        return 'notFound';
+      })
+    );
+  }
+
+  print(pedido: Pedido) {
+    this.reportService.runReport(`pedidos/print/${pedido.id}`, {});
+
+    // const { facturaSerie, facturaFolio } = pedido;
+    // const ref = this.storage.ref('cfdis/TAFACCON-83707.pdf');
+
+    // ref.getDownloadURL().subscribe(url => {
+    //   console.log('Url: ', url);
+    //   if (url) {
+    //     const headers = new HttpHeaders().set(
+    //       'Content-type',
+    //       'application/pdf'
+    //     );
+    //     this.http.get(url, { headers, responseType: 'blob' }).subscribe(
+    //       res => {
+    //         const blob = new Blob([res], {
+    //           type: 'application/pdf'
+    //         });
+    //         const fileUrl = window.URL.createObjectURL(blob);
+    //         window.open(fileUrl, '_blank');
+    //       },
+    //       error => console.error(error)
+    //     );
+    //   }
+    // });
   }
 }

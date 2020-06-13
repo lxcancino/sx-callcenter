@@ -52,13 +52,40 @@ export class FacturadosComponent implements OnInit {
   }
 
   onView(pedido: Pedido) {
-    this.dialog
-      .open(AltPedidoComponent, { data: { pedido }, width: '90%' })
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.onSelection(pedido);
-        }
-      });
+    console.log('Mostrando Pedido facturado: ', pedido);
+    // this.dialog
+    //   .open(AltPedidoComponent, { data: { pedido }, width: '90%' })
+    //   .afterClosed()
+    //   .subscribe(res => {
+    //     if (res) {
+    //       this.onSelection(pedido);
+    //     }
+    //   });
+  }
+
+  mostrarFactura() {
+    // const ref = this.storage.ref('cfdis/TAFACCON-83707.pdf');
+    // console.log('Ref: ', ref);
+    // ref.getMetadata().subscribe(meta => console.log('Metadata: ', meta));
+    /*
+    ref.getDownloadURL().subscribe(url => {
+      if (url) {
+        const headers = new HttpHeaders().set(
+          'Content-type',
+          'application/pdf'
+        );
+        this.http.get(url, { headers, responseType: 'blob' }).subscribe(
+          res => {
+            const blob = new Blob([res], {
+              type: 'application/pdf'
+            });
+            const fileUrl = window.URL.createObjectURL(blob);
+            window.open(fileUrl, '_blank');
+          },
+          error => console.error(error)
+        );
+      }
+    });
+    */
   }
 }

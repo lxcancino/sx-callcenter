@@ -52,6 +52,9 @@ export interface Pedido {
   updateUser?: string;
   autorizacion?: PedidoAutorizacion;
   autorizacionesRequeridas?: string;
+  facturaSerie?: string;
+  facturaFolio?: string;
+  uuid?: string;
 }
 
 export interface PedidoDet {
