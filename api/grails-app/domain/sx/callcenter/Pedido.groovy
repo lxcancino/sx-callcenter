@@ -63,6 +63,10 @@ class Pedido {
 
     String autorizacionesRequeridas
 
+    String facturaSerie
+    String facturaFolio
+    String uuid
+
     // InstruccionDeEnvio envio
 
     static hasMany =[partidas:PedidoDet]
@@ -95,6 +99,9 @@ class Pedido {
         partidas validator: {
             if (!it) return ['faltanPartidas']
         } // No se permiten pedido sin partidas
+        facturaSerie nullable: true
+        facturaFolio nullable: true
+        uuid nullable: true
     }
     
      static mapping = {

@@ -44,7 +44,7 @@ class LxPedidosFacturadosListenerService implements EventListener<QuerySnapshot>
     log.info('Monitoreando PEDIDOS FACTURADOS activado')
     Firestore db = firebaseService.getFirestore()
     registration = db.collection(COLLECTION)
-    .whereIn("status", Arrays.asList("FACTURADO", "FACTURADO_TIMBRADO"))
+    .whereIn("status", Arrays.asList("FACTURADO_TIMBRADO"))
     .limit(2000)
     .addSnapshotListener(this)
   }
@@ -59,10 +59,40 @@ class LxPedidosFacturadosListenerService implements EventListener<QuerySnapshot>
 
   @Transactional()
   void updatePedido(String id, Map data) {
+    log.info('Actualizando pedido Folio: {} Id: {}', data.folio, id)
+    
+    /// log.info('Data: {}', data.facturacion)
     Pedido pedido = Pedido.get(id)
-    pedido.status = data.status
-    pedido.save failOnError: true, flush: true
-    log.debug('Pedido: {} actualizado a: {}', pedido.folio, pedido.status)
+    if(pedido) {
+      
+      pedido.status = data.status
+      def factura = data.facturacion
+      if(factura) {
+        def cfdi = factura.cfdi
+        log.info('Factura: {}-{} UUID:{}', factura.serie, factura.folio, cfdi ? cfdi.uuid : 'ND')
+        pedido.facturaSerie = data.facturacion.serie
+        pedido.facturaFolio = data.facturacion.folio
+        if(data.facturacion.cfdi) {
+          pedido.uuid = data.facturacion.cfdi.uuid  
+        }
+      }
+      try {
+        pedido.save failOnError: true, flush: true
+        log.debug('Pedido: {} actualizado a: {}', pedido.folio, pedido.status)
+      }catch (Exception ex){
+        log.info('Error: {}', ex.message)
+      }
+      
+    }
+    
+
+    ///if(pedido == null)
+      ///return
+    
+    
+
+    
+    
   }
 
   void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirestoreException ex) {
