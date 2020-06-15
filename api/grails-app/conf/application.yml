@@ -98,7 +98,6 @@ environments:
         dataSource:
             dbCreate: update
             ## url: jdbc:mysql://${JDBC_CONNECTION_STRING}?autoReconnect=true
-            url: jdbc:mysql://10.10.1.229/callcenter?autoReconnect=false
             username: root
             password: sys
             properties:
@@ -119,7 +118,8 @@ environments:
     certificacion:
         dataSource:
             dbCreate: update
-            url: jdbc:mysql://${JDBC_CONNECTION_STRING}?autoReconnect=true
+            url: jdbc:mysql://10.10.1.229/callcenter?autoReconnect=true
+            ## url: jdbc:mysql://${JDBC_CONNECTION_STRING}?autoReconnect=true
             username: root
             password: sys
             properties:
@@ -157,15 +157,18 @@ environments:
       firebase:
         url: https://siipapx-436ce.firebaseio.com
         bucket: siipapx-436ce.appspot.com
-  production:
-    siipapx:
-      firebase:
-        url: https://siipapx-436ce.firebaseio.com
-        bucket: siipapx-436ce.appspot.com
+        projectId: siipapx-436ce
   certificacion:
     siipapx:
       firebase:
         url: https://siipapx-436ce.firebaseio.com
         bucket: siipapx-436ce.appspot.com
+        projectId: siipapx-436ce
+  production:
+    siipapx:
+      firebase:
+        url: https://siipapx-51354.firebaseio.com
+        bucket: siipapx-51354.appspot.com
+        projectId: siipapx-51354
 ---
   

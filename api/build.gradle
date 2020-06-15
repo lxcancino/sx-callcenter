@@ -117,7 +117,7 @@ springBoot {
 
 war {
     String env = System.getProperty('grails.env') ?: 'prod'
-    war.baseName = "call-center"
+    war.baseName = "call-center-${env.substring(0,4)}"
     war.version = ''
 }
 

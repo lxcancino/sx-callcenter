@@ -32,7 +32,10 @@ import grails.compiler.GrailsCompileStatic
 @CompileDynamic
 class FirebaseService {
 
-    // static lazyInit = false
+    static lazyInit = false
+
+    @Value('${siipapx.firebase.projectId}')
+    String projectId
 
     @Value('${siipapx.firebase.url}')
     String firebaseUrl
@@ -47,16 +50,14 @@ class FirebaseService {
         log.debug('Initializing Firebase connection....')
 		FirebaseOptions options = new FirebaseOptions.Builder()
   		.setCredentials(GoogleCredentials.getApplicationDefault())
+      .setProjectId(this.projectId)
   		.setDatabaseUrl(this.firebaseUrl)
       .setStorageBucket(this.firebaseBucket)
   		.build();
-      
 
 		app = FirebaseApp.initializeApp(options);
 		log.info('Connected to Firebase App: {}', app.name)
-
     }
-
     
     void addDocument(String collection, Map data) {
       ApiFuture<DocumentReference> future = getFirestore()
@@ -65,8 +66,6 @@ class FirebaseService {
       DocumentReference docRef = future.get()
       log.debug('Document added: {}', docRef.id)
     }
-
-    
 
     void updateDocument(String docPath,  Map changes) {
         
