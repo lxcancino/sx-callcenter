@@ -51,6 +51,12 @@
        ,IFNULL((SELECT CONCAT('CEL ',MAX(T.DESCRIPCION))  FROM comunicacion_empresa T WHERE T.CLIENTE_ID=V.CLIENTE_ID AND T.TIPO='CEL'),' ')	
        ,IFNULL((SELECT CONCAT('FAX ',MAX(T.DESCRIPCION))  FROM comunicacion_empresa T WHERE T.CLIENTE_ID=V.CLIENTE_ID AND T.TIPO='FAX'),' ')
 ) AS TELEFONOS,V.COMPRADOR
+
+,(SELECT date(X.FECHA_DE_ENTREGA) FROM instruccion_de_envio X WHERE V.ID=X.PEDIDO_ID) FECHA_DE_ENTREGA
+,(SELECT X.COMENTARIO FROM instruccion_de_envio X WHERE V.ID=X.PEDIDO_ID) COM_CONDICION
+,(SELECT CONCAT('Tipo: ',x.tipo,' Contacto: ',x.contacto,' Tel: ',x.telefono,' Horario: ',x.horario) FROM instruccion_de_envio X WHERE V.ID=X.PEDIDO_ID) CONDICIONES
+,ifnull((SELECT concat(' TRANSP=',x.nombre) FROM instruccion_de_envio Y JOIN transporte X ON(Y.TRANSPORTE_ID=X.ID)  WHERE Y.PEDIDO_ID=V.ID  AND X.ID IS NOT NULL ),'') AS NOMBRE_TRANSPORTE
+
 from pedido_det I 
 JOIN pedido V ON(I.pedido_id=V.id)
 JOIN cliente C ON(V.cliente_id=C.id)
@@ -103,6 +109,10 @@ order by i.partidas_idx]]></queryString>
 	<field name="MODO_VENTA" class="java.lang.String"/>
 	<field name="TELEFONOS" class="java.lang.String"/>
 	<field name="COMPRADOR" class="java.lang.String"/>
+	<field name="FECHA_DE_ENTREGA" class="java.sql.Date"/>
+	<field name="COM_CONDICION" class="java.lang.String"/>
+	<field name="CONDICIONES" class="java.lang.String"/>
+	<field name="NOMBRE_TRANSPORTE" class="java.lang.String"/>
 
 	<sortField name="GRUPO" />
 
@@ -957,11 +967,11 @@ order by i.partidas_idx]]></queryString>
 			</band>
 		</pageFooter>
 		<lastPageFooter>
-			<band height="187"  isSplitAllowed="true" >
+			<band height="202"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="62"
+						y="93"
 						width="78"
 						height="15"
 						key="textField"/>
@@ -979,7 +989,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="382"
-						y="62"
+						y="93"
 						width="80"
 						height="15"
 						key="staticText-33"/>
@@ -1005,7 +1015,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="77"
+						y="108"
 						width="78"
 						height="17"
 						key="textField-18"/>
@@ -1023,7 +1033,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="112"
+						y="143"
 						width="78"
 						height="16"
 						key="textField-25"/>
@@ -1041,7 +1051,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="409"
-						y="112"
+						y="143"
 						width="53"
 						height="16"
 						key="staticText-53"/>
@@ -1054,7 +1064,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="385"
-						y="112"
+						y="143"
 						width="24"
 						height="16"
 						key="staticText-54"/>
@@ -1067,7 +1077,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="128"
+						y="159"
 						width="78"
 						height="16"
 						key="textField-26"/>
@@ -1085,7 +1095,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="376"
-						y="128"
+						y="159"
 						width="86"
 						height="16"
 						key="staticText-55"/>
@@ -1168,7 +1178,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="116"
-						y="112"
+						y="143"
 						width="246"
 						height="34"
 						key="textField-27"/>
@@ -1186,7 +1196,7 @@ order by i.partidas_idx]]></queryString>
 				<staticText>
 					<reportElement
 						x="25"
-						y="112"
+						y="143"
 						width="87"
 						height="32"
 						key="staticText-59"/>
@@ -1200,7 +1210,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="224"
-						y="152"
+						y="183"
 						width="48"
 						height="10"
 						forecolor="#666666"
@@ -1220,7 +1230,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="324"
-						y="152"
+						y="183"
 						width="87"
 						height="12"
 						forecolor="#666666"
@@ -1240,7 +1250,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="269"
-						y="152"
+						y="183"
 						width="31"
 						height="10"
 						forecolor="#666666"
@@ -1260,7 +1270,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="413"
-						y="152"
+						y="183"
 						width="75"
 						height="12"
 						forecolor="#666666"
@@ -1280,7 +1290,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="489"
-						y="152"
+						y="183"
 						width="84"
 						height="12"
 						forecolor="#666666"
@@ -1300,7 +1310,7 @@ order by i.partidas_idx]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="3"
-						y="146"
+						y="177"
 						width="570"
 						height="4"
 						forecolor="#999999"
@@ -1311,7 +1321,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="16"
-						y="152"
+						y="183"
 						width="179"
 						height="10"
 						forecolor="#666666"
@@ -1404,7 +1414,7 @@ order by i.partidas_idx]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="385"
-						y="77"
+						y="108"
 						width="24"
 						height="17"
 						key="textField-34">
@@ -1427,7 +1437,7 @@ $V{MODVTA}.doubleValue()<=0.00
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="409"
-						y="77"
+						y="108"
 						width="52"
 						height="17"
 						key="textField-35"/>
@@ -1442,7 +1452,7 @@ $V{MODVTA}.doubleValue()<=0.00 ? "% DESCTO" :  "$ DESCTO"]]></textFieldExpressio
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="462"
-						y="94"
+						y="125"
 						width="78"
 						height="18"
 						key="textField-37"/>
@@ -1460,7 +1470,7 @@ $V{MODVTA}.doubleValue()<=0.00 ? "% DESCTO" :  "$ DESCTO"]]></textFieldExpressio
 				<staticText>
 					<reportElement
 						x="376"
-						y="94"
+						y="125"
 						width="86"
 						height="18"
 						key="staticText-65"/>
@@ -1521,6 +1531,58 @@ $V{MODVTA}.doubleValue()<=0.00 ? "% DESCTO" :  "$ DESCTO"]]></textFieldExpressio
 						<font fontName="Serif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{COMPRADOR}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="69"
+						y="105"
+						width="45"
+						height="11"
+						key="textField-40"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{FECHA_DE_ENTREGA}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="14"
+						y="105"
+						width="55"
+						height="11"
+						key="staticText-67"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" pdfFontName="Helvetica-BoldOblique" size="8" isBold="true" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[F_ENTREGA=]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="116"
+						y="112"
+						width="259"
+						height="19"
+						key="textField-41"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CONDICIONES}.concat(" ").concat($F{NOMBRE_TRANSPORTE})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="115"
+						y="131"
+						width="260"
+						height="11"
+						key="textField-42"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{COM_CONDICION}]]></textFieldExpression>
 				</textField>
 			</band>
 		</lastPageFooter>
