@@ -14,6 +14,8 @@
 .cart-items {
   grid-column: 1 / 10;
   grid-row: 2 / 4;
+  border: 1px solid lightgray;
+  overflow: scroll;
 }
 
 .side-bar {
@@ -23,7 +25,7 @@
 
 .comentario-section {
   grid-column: 1 / 10;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   align-self: end;
 }
 

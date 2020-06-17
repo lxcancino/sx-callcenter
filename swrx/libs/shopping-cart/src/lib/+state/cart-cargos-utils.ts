@@ -121,7 +121,7 @@ export function generarCargoPorFlete(): CartItem {
     subtotal: 0.0,
     total: 0.0,
     producto: {
-      id: '402880fc5e4ec411015e4ecdb4bb06a0',
+      id: '402880fc5e4ec411015e4ecdb4bb06a3',
       clave: 'MANIOBRAF',
       descripcion: 'M A N I O B R A F',
       modoVenta: 'N',
