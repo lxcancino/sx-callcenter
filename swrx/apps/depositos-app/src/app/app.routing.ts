@@ -29,8 +29,20 @@ const routes: Route[] = [
           import('./pendientes/pendientes.module').then(m => m.PendientesModule)
       },
       {
+        path: 'autorizados',
+        loadChildren: () =>
+          import('./autorizados/autorizados.module').then(
+            m => m.AutorizadosModule
+          )
+      },
+      {
+        path: 'rechazados',
+        loadChildren: () =>
+          import('./rechazados/rechazados.module').then(m => m.RechazadosModule)
+      },
+      {
         path: '',
-        redirectTo: 'inicio',
+        redirectTo: 'pendientes',
         pathMatch: 'full'
       }
     ]

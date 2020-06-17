@@ -38,17 +38,21 @@
 }
 
 .item-content {
-  width: 350px;
+  width: 100%;
+  min-width: 350px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 2fr 1fr 1fr;
   padding: 5px 5px;
 
   .total {
+    flex: 1;
     grid-column: span 2;
     grid-row: 1 / 3;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     align-self: stretch;
     vertical-align: middle;
@@ -67,8 +71,8 @@
   .property {
     grid-column: 1 / 3;
     display: flex;
-    align-items: baseline;
-    // justify-content: space-between;
+    justify-content: center;
+    // align-items: baseline;
     text-transform: capitalize;
     padding: 0px 0 10px 0;
     span {
@@ -97,4 +101,16 @@
   border-radius: 5px;
   font-size: 12px;
   padding: 5px;
+}
+
+.depositos-importes {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 10px;
+  span {
+    padding-left: 10px;
+  }
 }

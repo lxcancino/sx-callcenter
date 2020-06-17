@@ -64,6 +64,20 @@
   <div class="info">
     <h3>IMPORTE:</h3>
     <h3>{{ transaccion.total | currency }}</h3>
+    <div class="depositos-importes" *ngIf="!transaccion.transferencia">
+      <span
+        >Efectivo:
+        <strong>{{ transaccion.importes.efectivo | currency }}</strong></span
+      >
+      <span
+        >Cheque:
+        <strong>{{ transaccion.importes.cheque | currency }}</strong></span
+      >
+      <span
+        >Tarjeta:
+        <strong>{{ transaccion.importes.cheque | currency }}</strong></span
+      >
+    </div>
   </div>
 
   <div class="content">

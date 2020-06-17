@@ -19,6 +19,18 @@
       <span class="tipo"
         >({{ item.transferencia ? 'TRANSFERENCIA' : 'DEPOSITO' }})</span
       >
+      <div class="depositos-importes" *ngIf="!item.transferencia">
+        <span
+          >Efectivo:
+          <strong>{{ item.importes.efectivo | currency }}</strong></span
+        >
+        <span
+          >Cheque: <strong>{{ item.importes.cheque | currency }}</strong></span
+        >
+        <span
+          >Tarjeta: <strong>{{ item.importes.cheque | currency }}</strong></span
+        >
+      </div>
     </div>
 
     <div class="property">
