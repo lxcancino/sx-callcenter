@@ -167,7 +167,11 @@ export class DepositosTableComponent implements OnInit {
       {
         headerName: 'Comentario',
         field: 'comentario',
-        width: 150
+        width: 150,
+        valueGetter: params =>
+          params.data.rechazo
+            ? params.data.rechazo.motivo
+            : params.data.comentario
       }
     ];
   }

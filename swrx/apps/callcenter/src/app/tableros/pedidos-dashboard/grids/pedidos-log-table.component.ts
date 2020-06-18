@@ -182,10 +182,10 @@ export class PedidosLogComponent implements OnInit {
             valueGetter: params => {
               const pedidoLog = params.data;
               const atendido = pedidoLog.atendido;
+              const t_cerrado = pedidoLog.lastUpdated;
               if (!atendido) {
-                return this.minutesFromNow(params.data.lastUpdated);
+                return this.minutesFromNow(t_cerrado); // AQUI
               } else {
-                const t_cerrado = pedidoLog.lastUpdated;
                 const t_atendido = atendido;
                 let ret = (t_atendido - t_cerrado) / (1000 * 60);
                 if (ret < 0) {
