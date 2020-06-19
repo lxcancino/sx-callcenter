@@ -7,7 +7,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
-  version = '1.0.53(18-06-2020)';
+  version = '1.0.54(19-06-2020)';
 
   constructor() {}
 

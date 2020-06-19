@@ -339,8 +339,14 @@ export class PedidosLogComponent implements OnInit {
             width: 120,
             columnGroupShow: 'open',
             filter: false,
-            valueGetter: params =>
-              params.data.embarqueLog ? params.data.embarqueLog.salida : '',
+            valueGetter: params => {
+              const embarque = params.data.embarqueLog;
+              if (embarque) {
+                return embarque.embarque ? embarque.salida : '';
+              }
+              return '';
+              // params.data.embarqueLog ? params.data.embarqueLog.salida : '',
+            },
             valueFormatter: params =>
               this.transformDate(params.value, 'dd-MMM (HH:mm)')
           },

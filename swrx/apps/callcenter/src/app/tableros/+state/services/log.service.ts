@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, Subject, of } from 'rxjs';
-import { map, delay } from 'rxjs/operators';
+import { map, delay, take } from 'rxjs/operators';
 import { firestore } from 'firebase/app';
 import forOwn from 'lodash/forOwn';
 
@@ -68,11 +68,29 @@ export class LogService {
     return (
       this.afs
         .collection<PedidoLog>('pedidos_log', ref =>
-          ref.orderBy('folio', 'desc').limit(1000)
+          ref.orderBy('folio', 'desc').limit(3000)
         )
         .snapshotChanges()
         //.stateChanges(['added', 'modified'])
-        .pipe(map(actions => actions.map(mapToPedidoLog)))
+        .pipe(
+          take(1),
+          map(actions => actions.map(mapToPedidoLog))
+        )
+    );
+  }
+
+  fetchLogsByType(status: string) {
+    return (
+      this.afs
+        .collection<PedidoLog>('pedidos_log', ref =>
+          ref.orderBy('folio', 'desc').limit(3000)
+        )
+        .snapshotChanges()
+        //.stateChanges(['added', 'modified'])
+        .pipe(
+          take(1),
+          map(actions => actions.map(mapToPedidoLog))
+        )
     );
   }
 
