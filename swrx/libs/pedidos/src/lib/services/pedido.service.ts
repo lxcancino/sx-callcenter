@@ -86,6 +86,17 @@ export class PedidoService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  findPeddosCerrados(periodo: Periodo): Observable<Pedido[]> {
+    const url = `${this.apiUrl}/search`;
+    const params = new HttpParams()
+      .set('tipo', 'CERRADOS')
+      .set('fechaInicial', periodo.fechaInicial.toISOString())
+      .set('fechaFinal', periodo.fechaFinal.toISOString());
+    return this.http
+      .get<Pedido[]>(url, { params: params })
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   findPeddosFacturados(periodo: Periodo): Observable<Pedido[]> {
     const url = `${this.apiUrl}/search`;
     const params = new HttpParams()

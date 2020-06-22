@@ -35,6 +35,9 @@ export class CartExistenciasComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('Sucursal: ', this.sucursal);
+    if (this.sucursal === 'CALLE4') {
+      this.sucursal = 'CALLE 4';
+    }
   }
 
   ngOnDestroy() {

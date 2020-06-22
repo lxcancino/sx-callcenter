@@ -60,6 +60,9 @@ export class ExistenciasService {
     item: Partial<PedidoDet>,
     sucursal: string
   ): Observable<Partial<PedidoDet>> {
+    if (sucursal === 'CALLE 4') {
+      sucursal = 'CALLE4';
+    }
     const path = `${this.COLLECTION}/${item.producto.id}/almacenes/${sucursal}`;
     const dd = this.afs
       .doc<{ cantidad: number; clave: string }>(path)

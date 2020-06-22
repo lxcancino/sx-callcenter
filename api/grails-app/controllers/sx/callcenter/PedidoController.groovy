@@ -44,7 +44,7 @@ class PedidoController extends RestfulController<Pedido> {
         params.order = 'desc'
         params.max = 1000
         params.periodo = Periodo.fromNow(30)
-        log.info('Pedidos List: {}', params)
+        log.info('List: {}', params)
         def periodo = params.periodo
         def query = Pedido.where{fecha >= periodo.fechaInicial  && status == 'COTIZACION'}
         return query.list(params);
@@ -52,7 +52,7 @@ class PedidoController extends RestfulController<Pedido> {
     
     @CompileDynamic
     def historico() {
-        log.debug('List: {}', params)
+        log.info('Historico: {}', params)
         params.sort = 'lastUpdated'
         params.order = 'desc'
         params.max = 100
@@ -71,6 +71,8 @@ class PedidoController extends RestfulController<Pedido> {
         if(params.tipo == 'FACTURADOS') {
             log.info('FACTURADOS.--.....')
             query = Pedido.where{status == 'FACTURADO_TIMBRADO'}
+        } else if (params.tipo == 'CERRADOS') {
+            query = Pedido.where{status in ['CERRADO', 'FACTURADO']}
         } 
         Periodo periodo = params.periodo?: Periodo.getCurrentMonth()
         query = query.where{fecha >= periodo.fechaInicial && fecha <= periodo.fechaFinal}

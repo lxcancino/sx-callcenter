@@ -34,7 +34,7 @@ export class SucursalFieldComponent implements OnInit {
   @Input() sucursales = [
     'ANDRADE',
     'BOLIVAR',
-    'CALLE4',
+    'CALLE 4',
     'CF5FEBRERO',
     'TACUBA'
   ];

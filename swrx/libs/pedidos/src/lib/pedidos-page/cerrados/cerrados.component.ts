@@ -32,7 +32,7 @@ export class CerradosComponent implements OnInit {
 
   reload() {
     this.service
-      .findPeddos(this.periodo)
+      .findPeddosCerrados(this.periodo)
       .pipe(tap(data => console.log('Pedidos: ', data)))
       .subscribe(
         res => {
