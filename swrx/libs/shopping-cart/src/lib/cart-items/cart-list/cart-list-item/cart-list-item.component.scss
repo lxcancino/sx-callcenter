@@ -3,6 +3,7 @@
 .producto {
   display: flex;
   justify-content: stretch;
+  box-sizing: border-box;
 
   font-size: 14px;
   font-weight: bold;
@@ -77,13 +78,19 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  color: rgb(13, 60, 161);
   span:not(:first-child) {
     margin-left: 10px;
   }
   .instruccion {
-    font-size: 12px;
+    font-size: 14px;
   }
-  margin-bottom: 0px;
+
+  margin-top: 7px;
+  margin-bottom: 7px;
 }
 
 .actions {
