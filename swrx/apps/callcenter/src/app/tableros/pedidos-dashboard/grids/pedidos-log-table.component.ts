@@ -143,16 +143,28 @@ export class PedidosLogComponent implements OnInit {
             field: 'createUser',
             width: 120,
             pinned: 'left'
-          },
-          {
-            headerName: 'Cerrado por:',
-            field: 'cerradoUser',
-            width: 120,
-            pinned: 'left'
           }
         ]
       },
-
+      {
+        headerName: 'Cierre',
+        children: [
+          {
+            headerName: 'Usuario:',
+            field: 'cerradoUser',
+            width: 120,
+            pinned: 'left'
+          },
+          {
+            headerName: 'Cerrado',
+            field: 'cerrado',
+            width: 120,
+            pinned: 'left',
+            valueFormatter: params =>
+              this.transformDate(params.value, 'dd/MM/yy HH:mm')
+          }
+        ]
+      },
       {
         headerName: 'Atención en Sucursal',
         children: [
@@ -174,7 +186,7 @@ export class PedidosLogComponent implements OnInit {
               this.transformDate(params.value, 'dd-MMM (HH:mm)')
           },
           {
-            headerName: 'Retraso',
+            headerName: 'Retraso 1',
             colId: 'retrasoAtencion',
             field: 'atendido',
             width: 110,
@@ -183,11 +195,13 @@ export class PedidosLogComponent implements OnInit {
               const pedidoLog = params.data;
               const atendido = pedidoLog.atendido;
               const t_cerrado = pedidoLog.lastUpdated;
+              const cerrado = pedidoLog.cerrado;
+
               if (!atendido) {
-                return this.minutesFromNow(t_cerrado); // AQUI
+                return this.minutesFromNow(cerrado);
               } else {
                 const t_atendido = atendido;
-                let ret = (t_atendido - t_cerrado) / (1000 * 60);
+                let ret = (t_atendido - cerrado) / (1000 * 60);
                 if (ret < 0) {
                   ret = 0;
                 }
