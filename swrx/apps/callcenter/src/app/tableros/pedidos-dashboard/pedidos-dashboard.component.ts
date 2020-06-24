@@ -29,9 +29,6 @@ export class PedidosDashboardComponent implements OnInit, OnDestroy {
       // tap(data => console.log('Logs detected: ', data)),
       map(logs =>
         logs.filter(logItem => {
-          if (logItem.envio) {
-            console.log('Item: ', logItem);
-          }
           if (logItem.envio && logItem.embarqueLog) {
             if (logItem.embarqueLog) {
               const embarqueLog = logItem.embarqueLog;
