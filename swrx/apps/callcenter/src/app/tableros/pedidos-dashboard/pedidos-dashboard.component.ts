@@ -20,7 +20,7 @@ export class PedidosDashboardComponent implements OnInit, OnDestroy {
   constructor(private facade: LogsFacade, private service: LogService) {}
 
   ngOnInit() {
-    // this.load();
+    this.load();
   }
 
   load() {
