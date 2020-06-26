@@ -120,7 +120,8 @@ export class DepositosTableComponent implements OnInit {
         field: 'fecha',
         width: 110,
         pinned: 'left',
-        valueFormatter: params => this.transformDate(params.value)
+        valueFormatter: params =>
+          this.transformDate(params.value, 'dd/MM/yyyy HH:mm')
       },
       {
         headerName: 'Sucursal',
