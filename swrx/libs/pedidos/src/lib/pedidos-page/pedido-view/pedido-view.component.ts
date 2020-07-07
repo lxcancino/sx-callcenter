@@ -18,6 +18,7 @@ export class PedidoViewComponent implements OnInit {
   pedido: Pedido;
   pedido$: Observable<Pedido>;
   pdf$: Observable<string>;
+  xml$: Observable<string>;
 
   destroy$ = new Subject<boolean>();
   displayedColumns: string[] = [
@@ -68,28 +69,5 @@ export class PedidoViewComponent implements OnInit {
 
   print(pedido: Pedido) {
     this.reportService.runReport(`pedidos/print/${pedido.id}`, {});
-
-    // const { facturaSerie, facturaFolio } = pedido;
-    // const ref = this.storage.ref('cfdis/TAFACCON-83707.pdf');
-
-    // ref.getDownloadURL().subscribe(url => {
-    //   console.log('Url: ', url);
-    //   if (url) {
-    //     const headers = new HttpHeaders().set(
-    //       'Content-type',
-    //       'application/pdf'
-    //     );
-    //     this.http.get(url, { headers, responseType: 'blob' }).subscribe(
-    //       res => {
-    //         const blob = new Blob([res], {
-    //           type: 'application/pdf'
-    //         });
-    //         const fileUrl = window.URL.createObjectURL(blob);
-    //         window.open(fileUrl, '_blank');
-    //       },
-    //       error => console.error(error)
-    //     );
-    //   }
-    // });
   }
 }

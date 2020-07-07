@@ -25,12 +25,15 @@
           <strong>{{ item.importes.efectivo | currency }}</strong></span
         >
         <span
-          >Cheque: <strong>{{ item.importes.cheque | currency }}</strong></span
+          >Cheque: <strong>{{ item.importes.cheque | currency }}</strong>
+        </span>
+        <span *ngIf="item.importes && item.importes.cheque"
+          ><strong>(SBC)</strong></span
         >
-        <span
+        <!-- <span
           >Tarjeta:
           <strong>{{ item.importes.tarjeta | currency }}</strong></span
-        >
+        > -->
       </div>
     </div>
 
@@ -48,7 +51,7 @@
       <span>{{ item.fecha | date }}</span>
     </div>
 
-    <div class="property">
+    <div class="property fecha-deposito">
       <span>Fecha Deposito:</span>
       <span>{{ item.fechaDeposito | date }}</span>
     </div>
@@ -66,6 +69,11 @@
     <div class="property">
       <span>Vendedor:</span>
       <span>{{ item.updateUser }}</span>
+    </div>
+
+    <div class="property">
+      <span>Referencia:</span>
+      <span>{{ item.referencia }}</span>
     </div>
 
     <div class="property">

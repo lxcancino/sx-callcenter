@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  OnDestroy
+} from '@angular/core';
 
 import { MatDialog } from '@angular/material';
 
@@ -7,8 +12,11 @@ import { RechazarItemComponent } from '../rechazar-item/rechazar-item.component'
 
 import { DepositoService, Deposito } from '@swrx/depositos';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Update } from '@ngrx/entity';
+
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'swrx-pendientes-page',
@@ -16,13 +24,28 @@ import { Update } from '@ngrx/entity';
   styleUrls: ['./pendientes-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PendientesPageComponent implements OnInit {
+export class PendientesPageComponent implements OnInit, OnDestroy {
   pendientes$: Observable<Deposito[]>;
+  destroy$ = new Subject<boolean>();
+  user: any;
 
-  constructor(private dialog: MatDialog, private service: DepositoService) {}
+  constructor(
+    private dialog: MatDialog,
+    private service: DepositoService,
+    private firebaseAuth: AngularFireAuth
+  ) {}
 
   ngOnInit() {
+    this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
+      const { displayName, email } = usr;
+      this.user = { displayName, email };
+    });
     this.pendientes$ = this.service.fetchDepositosByStatus('PENDIENTE');
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
   onAutorizar(event: Deposito) {
@@ -34,9 +57,13 @@ export class PendientesPageComponent implements OnInit {
       .afterClosed()
       .subscribe(auth => {
         if (auth && auth.uuid) {
+          const autorizacion = {
+            ...auth,
+            user: this.user ? this.user.displayName : ''
+          };
           const update: Update<Deposito> = {
             id: event.id,
-            changes: { autorizacion: auth, estado: 'AUTORIZADO' }
+            changes: { autorizacion, estado: 'AUTORIZADO' }
           };
           // console.log('Autorizando deposito/transfrerencia: ', update);
           this.service.update(update);
@@ -47,14 +74,19 @@ export class PendientesPageComponent implements OnInit {
   onRechazar(event: any) {
     this.dialog
       .open(RechazarItemComponent, {
-        data: { transaccion: event }
+        data: { transaccion: event },
+        width: '550px'
       })
       .afterClosed()
       .subscribe(res => {
         if (res) {
+          const rechazo = {
+            ...res,
+            user: this.user ? this.user.displayName : ''
+          };
           const update: Update<Deposito> = {
             id: event.id,
-            changes: { rechazo: res, estado: 'RECHAZADO' }
+            changes: { rechazo, estado: 'RECHAZADO' }
           };
           // console.log('Rechazar: ', update);
           this.service.update(update);
