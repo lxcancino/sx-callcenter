@@ -17,7 +17,11 @@ import org.json.JSONObject
 class MailJetService {
 
 
-  /**
+  /* *
+  * Datos de prueba:
+  * def pdfPath = "https://firebasestorage.googleapis.com/v0/b/siipapx-51354.appspot.com/o/cfdis%2FTAFACCON-89265.pdf?alt=media&token=c9b1a93d-ea0e-47d6-9804-ee0d5fafd845"
+  * URL url = new URL(path);
+  * url.getBytes().encodeBase64()
   *
   *
   */
