@@ -26,7 +26,7 @@ export class FacturadosComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.periodo = Periodo.fromStorage(this.STORAGE_KEY, Periodo.fromNow(30));
+    this.periodo = Periodo.fromStorage(this.STORAGE_KEY, Periodo.fromNow(60));
     this.reload();
   }
 

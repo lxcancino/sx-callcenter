@@ -32,6 +32,7 @@ export class PedidosTableComponent implements OnInit {
   @Input() partidas: Pedido[] = [];
   @Output() selection = new EventEmitter();
   @Output() quickView = new EventEmitter<Pedido>();
+  @Output() print = new EventEmitter();
 
   gridOptions: GridOptions;
   gridApi: GridApi;
@@ -64,6 +65,8 @@ export class PedidosTableComponent implements OnInit {
     this.gridOptions.onCellDoubleClicked = event => {
       if (event.colDef.field === 'folio') {
         this.quickView.emit(event.data);
+      } else if (event.colDef.colId === 'print') {
+        this.print.emit(event.data);
       } else {
         this.selection.emit(event.data);
       }
@@ -205,6 +208,12 @@ export class PedidosTableComponent implements OnInit {
         field: 'vendedor',
         width: 150,
         valueGetter: params => params.data.updateUser
+      },
+      {
+        headerName: 'Imprimir',
+        colId: 'print',
+        width: 100,
+        valueGetter: params => 'IMPRIMIR'
       }
     ];
   }

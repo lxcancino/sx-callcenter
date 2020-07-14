@@ -18,6 +18,7 @@
         [partidas]="pedidos$ | async"
         (selection)="onSelection($event)"
         (quickView)="onView($event)"
+        (print)="onPrint($event)"
       ></swrx-pedidos-table>
     </div>
   </mat-tab>

@@ -162,6 +162,14 @@
           <mat-icon>picture_as_pdf</mat-icon>
           <mat-label>Factura</mat-label>
         </a>
+        <button
+          mat-stroked-button
+          (click)="enviarPorCorreo(pdfUrl)"
+          color="primary"
+        >
+          <mat-icon>mail</mat-icon>
+          <span>Enviar</span>
+        </button>
       </ng-container>
     </mat-card-actions>
   </ng-container>

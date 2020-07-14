@@ -6,6 +6,7 @@ import * as fromPedidos from './pedidos.reducer';
 import * as PedidosSelectors from './pedidos.selectors';
 import * as PedidosActions from './pedidos.actions';
 import { Pedido } from '@swrx/core-model';
+import { ReportService } from '@swrx/reports';
 
 @Injectable()
 export class PedidosFacade {
@@ -14,7 +15,10 @@ export class PedidosFacade {
   allPedidos$ = this.store.pipe(select(PedidosSelectors.getAllPedidos));
   selectedPedidos$ = this.store.pipe(select(PedidosSelectors.getSelected));
 
-  constructor(private store: Store<fromPedidos.PedidosPartialState>) {}
+  constructor(
+    private store: Store<fromPedidos.PedidosPartialState>,
+    private reportService: ReportService
+  ) {}
 
   loadAll() {
     this.store.dispatch(PedidosActions.loadPedidos());
@@ -38,5 +42,9 @@ export class PedidosFacade {
     if (pedido.status === 'COTIZACION') {
       this.store.dispatch(PedidosActions.deletePedido({ pedido }));
     }
+  }
+
+  imprimirPedido(pedido: Partial<Pedido>) {
+    this.reportService.runReport(`pedidos/print/${pedido.id}`, {});
   }
 }

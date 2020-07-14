@@ -85,4 +85,9 @@ export class PedidosPageComponent implements OnInit {
     });
     */
   }
+
+  onPrint(event: Partial<Pedido>) {
+    alert('Imprimiendo pedido...');
+    this.facade.imprimirPedido(event);
+  }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Pedido } from '@swrx/core-model';
 import { ActivatedRoute } from '@angular/router';
 import { PedidoService } from '../../services/pedido.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, forkJoin } from 'rxjs';
 import { map, switchMap, takeUntil, tap, catchError } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ReportService } from '@swrx/reports';
@@ -47,7 +47,7 @@ export class PedidoViewComponent implements OnInit {
     this.pedido$ = this.route.paramMap.pipe(
       map(params => params.get('id')),
       switchMap(id => this.service.get(id)),
-      tap(p => console.log('Pedido: ', p.partidas)),
+      // tap(p => console.log('Pedido: ', p.partidas)),
       takeUntil(this.destroy$)
     );
 
@@ -91,5 +91,97 @@ export class PedidoViewComponent implements OnInit {
     //     );
     //   }
     // });
+  }
+
+  enviarPorCorreo(pdfUrl: string, xmlUrl: string) {
+    console.log('PDF: ', pdfUrl);
+
+    const pdfBlob$ = this.http.get(pdfUrl, { responseType: 'blob' }).pipe(
+      map(
+        res =>
+          new Blob([res], {
+            type: 'application/pdf'
+          })
+      )
+
+      /*
+      map(blob => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        let base64data;
+        reader.onloadend = function() {
+          base64data = reader.result;
+          console.log('BASE64', base64data);
+          return reader.result;
+        };
+        return base64data;
+      })
+      */
+    );
+
+    const xmlBlob$ = this.http.get(pdfUrl, { responseType: 'blob' }).pipe(
+      map(
+        res =>
+          new Blob([res], {
+            type: 'text/xml'
+          })
+      )
+    );
+
+    // pdfBlob$.subscribe(res => console.log('MY: ', res));
+    const both$ = forkJoin(pdfBlob$, xmlBlob$);
+    both$.subscribe(([pdfBlob, xmlBlob]) => {
+      console.log('PDF BLOB: ', pdfBlob);
+      console.log('XML BLOB: ', xmlBlob);
+
+      const reader = new FileReader();
+      reader.readAsDataURL(pdfBlob);
+      let base64data;
+      reader.onloadend = function() {
+        base64data = reader.result;
+        console.log('PDF_BASE64', base64data);
+      };
+    });
+
+    // const headers = new HttpHeaders().set(
+    //   'Content-type',
+    //   'application/pdf'
+    // );
+  }
+
+  enviarPorCorreo2(pedido: Partial<Pedido>) {
+    const { facturaSerie, facturaFolio } = pedido;
+    console.log(facturaSerie, facturaFolio);
+    const ref = this.storage.ref(`cfdis/${facturaSerie}-${facturaFolio}.pdf`);
+
+    ref.getDownloadURL().subscribe(url => {
+      console.log('URL: ', url);
+      this.http.get(url, { responseType: 'blob' }).subscribe(
+        res => {
+          const headers = new HttpHeaders().set(
+            'Content-type',
+            'application/pdf'
+          );
+          const blob = new Blob([res], {
+            type: 'application/pdf'
+          });
+          this.http.post('mailJetURL', blob, { headers });
+          // const fileUrl = window.URL.createObjectURL(blob);
+          // window.open(fileUrl, '_blank');
+        },
+        error => console.error(error)
+      );
+      /*
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = function(event) {
+        const blob = xhr.response;
+        console.log('Blob: ', blob);
+      };
+      xhr.open('GET', url);
+      xhr.send();
+      */
+    });
+    // const ref = this.storage.ref('cfdis/TAFACCON-83707.pdf');
   }
 }
