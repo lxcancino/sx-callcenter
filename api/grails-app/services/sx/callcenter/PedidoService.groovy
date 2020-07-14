@@ -112,6 +112,13 @@ class PedidoService implements FolioLog {
         
     }
 
+    void enviarFactura(Pedido pedido, String pdfPath, String xmlPath ) {
+        URL pdfUrl = new URL(pdfPath)
+        URL xmlUrl = new URL(xmlPath)
+        def pdf = pdfUrl.getBytes()
+        def xml = xmlUrl.getBytes()
+    }
+
     def  findRegistro(String sql,List params){
         Sql db = getSql()
         try {

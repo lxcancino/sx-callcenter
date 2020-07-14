@@ -179,6 +179,18 @@ class PedidoController extends RestfulController<Pedido> {
         respond pedido
     }
 
+    @CompileDynamic
+    def enviarFactura(Pedido pedido){
+        if(pedido == null){
+            notFound()
+            return
+        }
+        def target = params.email
+        def pdfUrl = params.pdfUrl
+        def xmlUrl = params.xmlUrl
+        
+    }
+
      @CompileDynamic
     def buscarSucursal(String codigoPostal) {
         def row = pedidoService.buscarSucursal(codigoPostal)
