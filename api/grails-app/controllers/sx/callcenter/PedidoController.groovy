@@ -213,3 +213,17 @@ class SearchPedido {
     Date fechaFinal
 }
 
+@ToString(includeNames=true, includePackage=false)
+class EnvioDeFactura {
+
+    String sourceEmail 
+    String targetEmail 
+    String factura
+    String pdfPath 
+    String xmlPath
+
+    static constraints = {
+        sourceEmail nullable: true
+    }
+}
+
