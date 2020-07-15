@@ -16,6 +16,8 @@ import sx.reports.ReportService
 import sx.utils.Periodo
 import sx.utils.ImporteALetra
 
+import sx.cloud.MailJetService
+
 @Slf4j
 @GrailsCompileStatic
 // @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
@@ -24,6 +26,7 @@ class PedidoController extends RestfulController<Pedido> {
 
     ReportService reportService
     PedidoService pedidoService
+    MailJetService mailJetService
 
     PedidoController() {
         super(Pedido)
@@ -180,15 +183,52 @@ class PedidoController extends RestfulController<Pedido> {
     }
 
     @CompileDynamic
-    def enviarFactura(Pedido pedido){
+    def enviarFactura(){
+        log.info('Enviar factura: {}', params)
+        
+        def target = params.target
+        def factura = params.factura
+        def pdfUrl = params.pdfUrl
+        def xmlUrl = params.xmlUrl
+        def targetName = params.targetName
+
+        def res = mailJetService.enviarCfdi(target, factura, pdfUrl, xmlUrl, targetName)
+        if(res.status == 200) {
+            respond (status: 200)
+            return
+        } else {
+            respond( [res.data.toString()], status: 500)
+        }
+        
+    }
+
+    @CompileDynamic
+    def enviarCotizacion(Pedido pedido ) {
+
         if(pedido == null){
             notFound()
             return
         }
-        def target = params.email
-        def pdfUrl = params.pdfUrl
-        def xmlUrl = params.xmlUrl
+        Map repParams = [id: pedido.id]
+        repParams.IMP_CON_LETRA = ImporteALetra.aLetra(pedido.total)
+        repParams.TELEFONOS = pedido.cliente.getTelefonos().toString()
+
         
+        def pdf =  reportService.run('CCPedido.jrxml', repParams)
+        
+        def encodedData = pdf.toByteArray().encodeBase64().toString()
+        String target = params.target
+
+        def res = mailJetService.enviarCotizacion(target, pedido.folio.toString(), encodedData, pedido.nombre)
+        
+        if(res.status == 200) {
+            respond (status: 200)
+            return
+        } else {
+            respond( [res.data.toString()], status: 500)
+        }
+        
+        respond status: 200
     }
 
      @CompileDynamic

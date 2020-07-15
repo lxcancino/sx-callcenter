@@ -55,6 +55,7 @@ import {
 } from '@angular/material-moment-adapter';
 
 import * as moment from 'moment';
+import { EnvioMailComponent } from './envio-mail/envio-mail.component';
 
 @NgModule({
   imports: [
@@ -112,7 +113,8 @@ import * as moment from 'moment';
     MatSnackBarModule,
     AgGridModule,
     NgxMaskModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    EnvioMailComponent
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX' },
@@ -124,7 +126,10 @@ import * as moment from 'moment';
     // { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {} },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
     // { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-  ]
+  ],
+  declarations: [EnvioMailComponent],
+
+  entryComponents: [EnvioMailComponent]
 })
 export class UiCoreModule {
   constructor() {

@@ -149,7 +149,10 @@
       <div class="row">
         <span>Comentario: {{ ped.comentario }}</span>
       </div>
-      <div class="row">Factura URL: {{ pdf$ | async }}</div>
+      <div class="urls">
+        <span class="pdf"> PDF: {{ pdf$ | async }} </span>
+        <span> XML: {{ xml$ | async }} </span>
+      </div>
     </div>
 
     <mat-card-actions>
@@ -162,14 +165,20 @@
           <mat-icon>picture_as_pdf</mat-icon>
           <mat-label>Factura</mat-label>
         </a>
-        <button
-          mat-stroked-button
-          (click)="enviarPorCorreo(pdfUrl)"
-          color="primary"
-        >
-          <mat-icon>mail</mat-icon>
-          <span>Enviar</span>
-        </button>
+        <ng-container *ngIf="xml$ | async as xmlUrl">
+          <a mat-stroked-button [href]="xmlUrl" target="_blank" color="accent">
+            <mat-icon>code</mat-icon>
+            <mat-label>XML</mat-label>
+          </a>
+          <button
+            mat-stroked-button
+            (click)="enviarPorCorreo(pdfUrl, xmlUrl, ped)"
+            color="primary"
+          >
+            <mat-icon>mail</mat-icon>
+            <span>Enviar</span>
+          </button>
+        </ng-container>
       </ng-container>
     </mat-card-actions>
   </ng-container>

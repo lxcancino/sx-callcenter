@@ -14,7 +14,7 @@ class ReportService {
     JasperService jasperService
 
     ByteArrayOutputStream run(String reportName, Map params ) {
-        log.debug("Ejecutando reporte ${reportName} con parametros: ${params}")
+        log.info("Ejecutando reporte ${reportName} con parametros: ${params}")
         def reportDef= new JasperReportDef(
                 name: reportName,
                 fileFormat: JasperExportFormat.PDF_FORMAT,
@@ -25,7 +25,7 @@ class ReportService {
     }
 
     ByteArrayOutputStream run(String reportName, Map params, Collection data){
-        log.debug("Ejecutando reporte ${reportName} con parametros: ${params} y data: ${data}")
+        log.info("Ejecutando reporte ${reportName} con parametros: ${params} y data: ${data}")
         def reportDef=new JasperReportDef(
                 name:reportName,
                 fileFormat: JasperExportFormat.PDF_FORMAT,

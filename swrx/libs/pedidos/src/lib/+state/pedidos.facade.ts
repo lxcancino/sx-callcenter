@@ -7,6 +7,7 @@ import * as PedidosSelectors from './pedidos.selectors';
 import * as PedidosActions from './pedidos.actions';
 import { Pedido } from '@swrx/core-model';
 import { ReportService } from '@swrx/reports';
+import { PedidoService } from '../services/pedido.service';
 
 @Injectable()
 export class PedidosFacade {
@@ -17,7 +18,8 @@ export class PedidosFacade {
 
   constructor(
     private store: Store<fromPedidos.PedidosPartialState>,
-    private reportService: ReportService
+    private reportService: ReportService,
+    private service: PedidoService
   ) {}
 
   loadAll() {
@@ -46,5 +48,9 @@ export class PedidosFacade {
 
   imprimirPedido(pedido: Partial<Pedido>) {
     this.reportService.runReport(`pedidos/print/${pedido.id}`, {});
+  }
+
+  enviarCotizacion(target: string, pedido: Partial<Pedido>) {
+    return this.service.enviarCotizacion(target, pedido);
   }
 }

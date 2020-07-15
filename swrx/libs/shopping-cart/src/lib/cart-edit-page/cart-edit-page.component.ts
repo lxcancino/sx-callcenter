@@ -26,6 +26,9 @@ import {
 import { AngularFireAuth } from '@angular/fire/auth';
 import { PedidosFacade } from '@swrx/pedidos';
 
+import { MatDialog } from '@angular/material';
+import { EnvioMailComponent } from '@swrx/ui-core';
+
 @Component({
   selector: 'swrx-cart-edit-page',
   templateUrl: './cart-edit-page.component.html',
@@ -45,7 +48,8 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     private firebaseAuth: AngularFireAuth,
     private clientes: ClientesFacade,
     private productoServie: ProductosUiService,
-    private pedidosFacade: PedidosFacade
+    private pedidosFacade: PedidosFacade,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -294,10 +298,6 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
     this.facade.cancelarMantenimiento();
   }
 
-  enviarPorEmail(pedido: Pedido) {
-    console.log('Enviar por correo: ', pedido.folio);
-  }
-
   deletePedido(pedido: Pedido) {
     if (pedido.status === 'COTIZACION') {
       if (confirm('Seguro que desa eliminar éste pedido? ')) {
@@ -307,4 +307,29 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   }
 
   canCerrar() {}
+
+  enviarPorEmail(pedido: Pedido) {
+    this.dialog
+      .open(EnvioMailComponent, {
+        data: { email: pedido.cliente.cfdiMail },
+        width: '400px'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.doEnviarPorCorreo(res, pedido);
+        }
+      });
+  }
+
+  doEnviarPorCorreo(target: string, ped: Partial<Pedido>) {
+    this.pedidosFacade.enviarCotizacion(target, ped).subscribe(
+      res => {
+        alert('Correo enviado satisfactoriamente');
+      },
+      error => {
+        console.error('Error enviando mail: ', error);
+      }
+    );
+  }
 }

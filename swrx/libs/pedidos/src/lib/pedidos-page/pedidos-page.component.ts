@@ -33,6 +33,7 @@ export class PedidosPageComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.facade.loading$;
     this.pedidos$ = this.facade.allPedidos$;
+    this.reload();
   }
 
   reload() {
@@ -63,31 +64,9 @@ export class PedidosPageComponent implements OnInit {
     const ref = this.storage.ref('cfdis/TAFACCON-83707.pdf');
     console.log('Ref: ', ref);
     ref.getMetadata().subscribe(meta => console.log('Metadata: ', meta));
-
-    /*
-    ref.getDownloadURL().subscribe(url => {
-      if (url) {
-        const headers = new HttpHeaders().set(
-          'Content-type',
-          'application/pdf'
-        );
-        this.http.get(url, { headers, responseType: 'blob' }).subscribe(
-          res => {
-            const blob = new Blob([res], {
-              type: 'application/pdf'
-            });
-            const fileUrl = window.URL.createObjectURL(blob);
-            window.open(fileUrl, '_blank');
-          },
-          error => console.error(error)
-        );
-      }
-    });
-    */
   }
 
   onPrint(event: Partial<Pedido>) {
-    alert('Imprimiendo pedido...');
     this.facade.imprimirPedido(event);
   }
 }

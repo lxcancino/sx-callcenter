@@ -29,6 +29,9 @@ class UrlMappings {
         "/api/pedidos/historico"(controller: 'pedido', action: 'historico', method: 'GET')
         "/api/pedidos/search"(controller: 'pedido', action: 'search', method: 'GET')
 
+        "/api/pedidos/enviarFactura"(controller: 'pedido', action: 'enviarFactura', method: 'GET')
+        "/api/pedidos/enviarCotizacion/$id"(controller: 'pedido', action: 'enviarCotizacion', method: 'GET')
+
         "/api/zip"(controller: 'zip', action: 'find', method: 'GET')
         "/api/transportes"(resources: 'transporte', excludes: ['create', 'edit', 'delete'])
 

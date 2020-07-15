@@ -154,29 +154,6 @@ class LxPedidoService {
             .whereEqualTo("pedido.id", id)
             .limit(1)
     }
-
-
-    /**
-
-    /// Retrieve Pedido and update fields
-            Map pedidoChanges = buildToFirebase(pedido)
-            transaction.update(pedidoRef, pedidoChanges);
-            log.debug('Pedido cerrado')
-
-            /// Retrieve PedidoLog and update fields
-            Map logChanges = [cerrado: pedido.cerrado, status: 'CERRADO']
-            transaction.update(pedidoLogRef, pedidoChanges);
-            log.debug('PedidoLog actualizado')
-
-            // Retrive Depositos
-            Query depositosQuery = findDepositoRef(pedido.id)
-            ApiFuture<QuerySnapshot> future = transaction.get(depositosQuery)
-            List<QueryDocumentSnapshot> depositos = future.get().getDocuments()
-            depositos.each { depositoSnapshot ->
-                DocumentReference docRef = depositoSnapshot.getReference()
-                Map canges = [cerrado: new Date(), estado: 'CERRADO']
-                log.debug('Deposito relacionado: {} actualizado', depositoSnapshot.getLong('folio'))
-            }
-    **/
+    
 
 }

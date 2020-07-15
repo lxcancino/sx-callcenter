@@ -107,4 +107,31 @@ export class PedidoService {
       .get<Pedido[]>(url, { params: params })
       .pipe(catchError((error: any) => throwError(error)));
   }
+
+  enviarFactura(
+    pdfUrl: string,
+    xmlUrl: string,
+    target: string,
+    ped: Partial<Pedido>
+  ) {
+    const url = `${this.apiUrl}/enviarFactura`;
+    const factura = `${ped.facturaSerie}-${ped.facturaFolio}`;
+    const params = new HttpParams()
+      .set('pdfUrl', pdfUrl)
+      .set('xmlUrl', xmlUrl)
+      .set('target', target)
+      .set('targetName', ped.nombre)
+      .set('factura', factura);
+    return this.http
+      .get<Pedido[]>(url, { params: params })
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  enviarCotizacion(target: string, ped: Partial<Pedido>) {
+    const url = `${this.apiUrl}/enviarCotizacion/${ped.id}`;
+    const params = new HttpParams().set('target', target);
+    return this.http
+      .get<Pedido[]>(url, { params: params })
+      .pipe(catchError((error: any) => throwError(error)));
+  }
 }

@@ -59,12 +59,10 @@ class LxPedidosFacturadosListenerService implements EventListener<QuerySnapshot>
 
   @Transactional()
   void updatePedido(String id, Map data) {
-    log.info('Actualizando pedido Folio: {} Id: {}', data.folio, id)
-    
     /// log.info('Data: {}', data.facturacion)
     Pedido pedido = Pedido.get(id)
     if(pedido) {
-      
+      log.info('Actualizando pedido Folio: {} Id: {}', data.folio, id)
       pedido.status = data.status
       def factura = data.facturacion
       if(factura) {
@@ -84,14 +82,6 @@ class LxPedidosFacturadosListenerService implements EventListener<QuerySnapshot>
       }
       
     }
-    
-
-    ///if(pedido == null)
-      ///return
-    
-    
-
-    
     
   }
 
