@@ -55,7 +55,7 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectUser();
     this.buildForm();
-    this.addListeners();
+
     this.pedido$ = this.facade.currentPedido;
     this.pedido$.pipe(takeUntil(this.destroy$)).subscribe(value => {
       if (value) {
@@ -65,6 +65,7 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
         }
       }
     });
+    this.addListeners();
     this.registerStateForm();
   }
 
@@ -111,10 +112,7 @@ export class CartEditPageComponent implements OnInit, OnDestroy {
 
   private registerStateForm() {
     this.facade.cartStateForm$
-      .pipe(
-        take(1),
-        tap(state => console.log('CartState: ', state))
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(formState => {
         this.cartForm.patchValue(formState, { emitEvent: false });
       });
