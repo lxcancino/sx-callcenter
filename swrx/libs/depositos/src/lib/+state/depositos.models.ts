@@ -22,6 +22,7 @@ export interface Deposito {
   referencia?: string;
   createUser?: string;
   updateUser?: string;
+  lastUpdated?: string;
 }
 
 /**

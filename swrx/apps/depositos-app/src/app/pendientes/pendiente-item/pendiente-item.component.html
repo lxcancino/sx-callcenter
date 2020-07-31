@@ -76,10 +76,10 @@
       <span>{{ item.referencia }}</span>
     </div>
 
-    <div class="property">
+    <div class="property" *ngIf="item.lastUpdated">
       <span>Retraso:</span>
-      <span [ngClass]="getWarningClass(item.fechaDeposito)">{{
-        fromNow(item.fechaDeposito)
+      <span [ngClass]="getWarningClass(item.lastUpdated)">{{
+        fromNow(item.lastUpdated)
       }}</span>
     </div>
   </div>

@@ -59,3 +59,16 @@ swrx-deposito-importes-field {
   display: flex;
   margin: 6px 0;
 }
+
+.rechazo {
+  grid-column: 1 / 5;
+  background-color: rgba(216, 32, 63, 0.959);
+  color: white;
+  height: 2rem;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  .item {
+    flex: 1;
+  }
+}

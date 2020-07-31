@@ -190,6 +190,7 @@ export class DepositoCreateComponent implements OnInit, OnDestroy {
   submit() {
     if (this.form.valid) {
       const d: Deposito = this.buildDeposito();
+      d.lastUpdated = new Date().toISOString();
       this.dialogRef.close(d);
     }
   }

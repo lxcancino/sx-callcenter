@@ -1,6 +1,6 @@
 <h3 *ngIf="item; else addItem">
   Partida:{{ index + 1 }} {{ producto?.clave }} ({{
-    tipo === 'CON' ? 'CONTADO' : 'CEREDITO'
+    tipo === 'CON' ? 'CONTADO' : 'CREDITO'
   }})
 </h3>
 <ng-template #addItem>

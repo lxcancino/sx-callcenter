@@ -57,6 +57,18 @@
         <mat-error>Total incorrecto</mat-error>
       </swrx-numeric-field>
     </div>
+
+    <div class="rechazo" *ngIf="deposito.rechazo as re">
+      <span class="item"
+        >Rechazado por: {{ re.user }} ({{
+          re.fecha | date: 'dd/MM/yyyy: HH:mm'
+        }})
+      </span>
+      <span class="item"
+        >Motivo: {{ re.motivo }}
+        <span *ngIf="re.comentario"> ({{ re.comentario }}) </span>
+      </span>
+    </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>

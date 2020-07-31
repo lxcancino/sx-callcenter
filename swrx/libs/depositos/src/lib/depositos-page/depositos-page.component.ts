@@ -52,6 +52,7 @@ export class DepositosPageComponent implements OnInit {
         if (res) {
           // console.log('Salvando cambios: ', res);
           res.updateUser = this.user.displayName;
+          res.lastUpdated = new Date().toISOString();
           this.service.update(res);
         }
       });

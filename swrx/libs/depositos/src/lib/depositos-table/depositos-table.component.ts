@@ -171,7 +171,11 @@ export class DepositosTableComponent implements OnInit {
         width: 150,
         valueGetter: params =>
           params.data.rechazo
-            ? params.data.rechazo.motivo
+            ? `${params.data.rechazo.motivo} ${
+                params.data.rechazo.comentario
+                  ? '(' + params.data.rechazo.comentario + ')'
+                  : ''
+              }`
             : params.data.comentario
       }
     ];
