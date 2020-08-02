@@ -59,12 +59,20 @@ class LxPedidosListenerService implements EventListener<QuerySnapshot> {
 
 	@Transactional()
 	void updatePedido(String id, QueryDocumentSnapshot document) {
+
 		Pedido pedido = Pedido.get(id)
-		pedido.status = 'COTIZACION'
-		pedido.save failOnError: true, flush: true
-		log.debug('Status de pedido: {} actualizado a: {}', pedido.folio, pedido.status)
-		firebaseService.deleteDocumet(document.getReference())
-		lxPedidoLogService.updateLog(pedido.id, [status: 'COTIZACION', cerrado: null])
+		if(pedido) {
+			log.info('actualizado el pedido en DB Callcenter (MySql)')
+			pedido.status = 'COTIZACION'
+			pedido.save failOnError: true, flush: true
+			log.debug('Status de pedido: {} actualizado a: {}', pedido.folio, pedido.status)
+			firebaseService.deleteDocumet(document.getReference())
+			lxPedidoLogService.updateLog(pedido.id, [status: 'COTIZACION', cerrado: null])
+
+		} else {
+			log.info('No Existe el pedido.....')
+		}
+		
 		
 	}
 
