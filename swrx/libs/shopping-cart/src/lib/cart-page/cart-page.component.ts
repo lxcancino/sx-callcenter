@@ -8,7 +8,7 @@ import {
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, take, tap } from 'rxjs/operators';
 
 import { CartFacade } from '../+state/cart.facade';
 import { ClientesFacade } from '@swrx/clientes';
@@ -48,7 +48,9 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.buildForm();
+    console.log('Form value BEFORE: ', this.cartForm.value);
     this.registerStateForm();
+    console.log('Form value AFTER: ', this.cartForm.value);
     this.addListeners();
     this.firebaseAuth.user.pipe(takeUntil(this.destroy$)).subscribe(usr => {
       const { displayName, email } = usr;
@@ -79,10 +81,12 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   private registerStateForm() {
     this.facade.cartStateForm$
-      .pipe(take(1))
-      .subscribe(formState =>
-        this.cartForm.patchValue(formState, { emitEvent: false })
-      );
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(formState => {
+        const newState = { ...formState, comprador: null };
+        this.cartForm.patchValue(newState, { emitEvent: false });
+      });
+
     this.facade.sucursal$
       .pipe(takeUntil(this.destroy$))
       .subscribe(sucursal =>

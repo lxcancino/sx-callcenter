@@ -181,6 +181,7 @@ const cartReducer = createReducer(
     dirty: true
   })),
   on(CartActions.recalcularPartidas, state => {
+    console.log('Recalculando partidas state: ', state);
     const partidas = values(state.items);
 
     const partidasActualizadas = aplicarDescuentos(
@@ -188,7 +189,7 @@ const cartReducer = createReducer(
       state.tipo,
       state.formaDePago,
       state.cliente,
-      0
+      state.descuentoEspecial || 0.0
     );
 
     //const partidasActualizadas = recalcularPartidas(state);
@@ -211,7 +212,7 @@ const cartReducer = createReducer(
     if (corteItem) {
       items = { ...items, [corteItem.id]: corteItem };
     }
-    const clone = { ...state, descuentoEspecial: 0 };
+    const clone = { ...state, descuentoEspecial: state.descuentoEspecial };
     return { ...clone, items };
   }),
 
@@ -233,7 +234,7 @@ const cartReducer = createReducer(
       socio: pedido.socio,
       descuentoEspecial: pedido.descuentoEspecial,
       comentario: pedido.comentario,
-      comprador: pedido.comprador,
+      comprador: pedido.comprador || null,
       autorizacionesRequeridas: pedido.autorizacionesRequeridas
     };
   }),

@@ -24,7 +24,7 @@ class MailJetService {
   @Value('${MJ_APIKEY_PRIVATE}')
   String mailJetPrivateKey;
 
-  @Value('${MJ_SENDER:luxsoft.cancino@gmail.com}')
+  @Value('${MJ_SENDER:facturacion@papelsa.mobi}')
   String mailJetDefaultSender;
 
 

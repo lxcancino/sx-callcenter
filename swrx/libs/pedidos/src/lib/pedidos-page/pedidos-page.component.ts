@@ -8,9 +8,6 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { AltPedidoComponent } from '../alt-pedido/alt-pedido.component';
 
-import { AngularFireStorage } from '@angular/fire/storage';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
 @Component({
   selector: 'swrx-pedidos-page',
   templateUrl: './pedidos-page.component.html',
@@ -25,9 +22,7 @@ export class PedidosPageComponent implements OnInit {
   constructor(
     private facade: PedidosFacade,
     private router: Router,
-    private dialog: MatDialog,
-    private storage: AngularFireStorage,
-    private http: HttpClient
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -55,15 +50,8 @@ export class PedidosPageComponent implements OnInit {
       });
   }
 
-  cambiarPeriodo(event: Event) {
-    console.log('Event: ', event);
-    event.stopPropagation();
-  }
-
-  mostrarFactura() {
-    const ref = this.storage.ref('cfdis/TAFACCON-83707.pdf');
-    console.log('Ref: ', ref);
-    ref.getMetadata().subscribe(meta => console.log('Metadata: ', meta));
+  cambiarPeriodo() {
+    console.log('Cambiar periodo');
   }
 
   onPrint(event: Partial<Pedido>) {

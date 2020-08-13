@@ -121,6 +121,7 @@ export function recalcularPartidas(
   state: CartState
 ): { [id: string]: Partial<CartItem> } {
   const partidas = values(state.items);
+  console.log('Recalculando partidas state: ', state);
   const partidasActualizadas = aplicarDescuentos(
     partidas,
     state.tipo,
@@ -165,11 +166,14 @@ export function aplicarDescuentos(
   cliente: Partial<Cliente>,
   descuentoEspecial: number
 ): CartItem[] {
-  // const items = normalize(partidas);
   const items = filtrarPartidasAutomaticas(partidas);
   let descuento = calcularDescuento(items, tipo, cliente);
   const descuentoOriginal = descuento;
-  // descuentoEspecial = 0;
+
+  console.group('Descuentos');
+  console.log('Calculado: ', descuento);
+  console.log('Especial: ', descuentoEspecial);
+  console.log('Original: ', descuentoOriginal);
 
   if (tipo === TipoDePedido.CREDITO) {
     descuentoEspecial = 0;
@@ -177,13 +181,16 @@ export function aplicarDescuentos(
 
   if (descuentoEspecial > 0) {
     descuento = descuentoEspecial;
+  } else {
+    if (fpago === FormaDePago.TARJETA_CRE && descuento > 2) {
+      descuento = descuento - 2;
+    }
+    if (fpago === FormaDePago.TARJETA_DEB && descuento > 1) {
+      descuento = descuento - 1;
+    }
   }
 
-  if (fpago === FormaDePago.TARJETA_CRE) {
-    descuento = descuento - 2;
-  } else if (fpago === FormaDePago.TARJETA_DEB) {
-    descuento = descuento - 1;
-  }
+  console.log('Aplicado: ', descuento);
 
   const res: CartItem[] = [];
   items.map(item => {
@@ -193,21 +200,18 @@ export function aplicarDescuentos(
     } else {
       if (item.modoVenta === 'B') {
         rdesc = descuento;
-        // descuentoOriginal = descuentoOriginal;
         descuentoEspecial = 0;
       } else {
         rdesc = 0;
-        //descuentoOriginal = 0;
         descuentoEspecial = 0;
       }
-      // rdesc = item.modoVenta === 'B' ? descuento : 0;
     }
     const det: PedidoDet = recalculaPartida(item, tipo, rdesc);
     det.descuentoOriginal = descuentoOriginal;
     det.descuentoEspecial = descuentoEspecial > 0 ? descuentoEspecial : 0;
-    // res.push(recalculaPartida(item, tipo, rdesc));
     res.push(det);
   });
+  console.groupEnd();
   return res;
 }
 
@@ -310,7 +314,7 @@ export function buildPedidoEntity(
       partidas: items,
       kilos: sumBy(items, 'kilos'),
       envio: state.envio,
-      comprador: state.comprador,
+      comprador: state.comprador || null,
       comentario: state.comentario,
       socio: state.socio,
       descuentoEspecial: state.descuentoEspecial || 0.0,
@@ -328,6 +332,7 @@ export function buildPedidoEntity(
 export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
   const cliente = state.cliente;
   const items = Object.values(state.items);
+  console.log('Preparando un pedido nuevo: ', state);
   return {
     fecha: new Date().toISOString(),
     sucursal: state.sucursal,
@@ -344,7 +349,7 @@ export function buildNewPedido(state: CartState, sumary: CartSumary): Pedido {
     kilos: sumBy(items, 'kilos'),
     status: 'COTIZACION',
     envio: state.envio,
-    comprador: state.comprador,
+    comprador: null,
     comentario: state.comentario,
     socio: state.socio,
     descuentoEspecial: state.descuentoEspecial || 0.0,

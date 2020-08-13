@@ -9,7 +9,7 @@
     font-size: 18px;
     justify-content: stretch;
     label {
-      flex: 1;
+      flex: 2;
       text-transform: capitalize;
       padding-left: 0px;
       text-align: left;
@@ -29,6 +29,9 @@
   .percent {
     font-size: 14px;
   }
+}
+.small-dscto {
+  font-size: 14px;
 }
 .total {
   font-size: 16px;

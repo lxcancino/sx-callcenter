@@ -13,7 +13,10 @@
       <span *ngIf="!descuentoEspecial">
         <small> ( {{ sumary.descuento / 100 | percent }} ) </small>
       </span>
-      <span *ngIf="descuentoEspecial && descuentoEspecial > 0">
+      <span
+        *ngIf="descuentoEspecial && descuentoEspecial > 0"
+        class="small-dscto"
+      >
         [
         <small>
           {{ sumary.descuentoOriginal / 100 | percent }} -
