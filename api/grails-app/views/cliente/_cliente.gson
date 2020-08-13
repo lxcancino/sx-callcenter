@@ -4,7 +4,7 @@ model {
 	Cliente cliente
 }
 
-json g.render(cliente, [excludes: ['credito', 'cobrador', 'medios'], resolveTemplate: false]) {
+json g.render(cliente, [excludes: ['credito', 'medios', 'cobrador', 'direccines'], resolveTemplate: false]) {
 	credito g.render(cliente.credito)
 	medios g.render(cliente.medios)
 	direcciones g.render(cliente.selectDirecciones())

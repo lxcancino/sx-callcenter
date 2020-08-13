@@ -10,7 +10,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import sx.reports.ReportService
 
 @Slf4j
-@GrailsCompileStatic
+// @GrailsCompileStatic
 @Secured("permitAll")
 class ClienteController extends RestfulController<Cliente> {
     
