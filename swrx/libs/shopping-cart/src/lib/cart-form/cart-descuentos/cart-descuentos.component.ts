@@ -29,8 +29,8 @@ export class CartDescuentosComponent implements OnInit {
     { descuento: 15.0, de: 12001.0, hasta: 21500.0 },
     { descuento: 16.0, de: 21501.0, hasta: 46000.0 },
     { descuento: 17.0, de: 46001.0, hasta: 82000.0 },
-    { descuento: 18.0, de: 82001.0, hasta: 150000.0 },
-    { descuento: 19.0, de: 82001.0, hasta: 30000000.0 }
+    { descuento: 18.0, de: 82001.0, hasta: 150000.0 }
+    // { descuento: 19.0, de: 82001.0, hasta: 30000000.0 }
   ];
   displayedColumns: string[] = ['de', 'hasta', 'descuento'];
   constructor(@Inject(MAT_DIALOG_DATA) private data: any) {
