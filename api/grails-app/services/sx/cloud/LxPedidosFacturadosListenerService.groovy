@@ -45,7 +45,7 @@ class LxPedidosFacturadosListenerService implements EventListener<QuerySnapshot>
     Firestore db = firebaseService.getFirestore()
     registration = db.collection(COLLECTION)
     .whereIn("status", Arrays.asList("FACTURADO_TIMBRADO"))
-    .limit(2000)
+    .limit(4000)
     .addSnapshotListener(this)
   }
 
