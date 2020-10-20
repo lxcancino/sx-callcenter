@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-buttons slot="start">
+      <ion-back-button defaultHref="/productos"></ion-back-button>
+    </ion-buttons> -->
+    <ion-title>Productos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="productos$ | async as productos">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Productos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+
+    <ion-item *ngFor="let prod of productos" detail [color]="!prod.activo ? 'warning': ''">
+      <ion-label>
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+            <ion-col>
+              <h2>{{prod.descripcion}}</h2>
+            </ion-col>
+            <ion-col size="2">
+              <ion-text>
+                <h2>
+                  Exi:
+                </h2>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-align-items-end">
+            <ion-col>
+              <ion-text color="secondary">
+                <h4>{{prod.clave}}</h4>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

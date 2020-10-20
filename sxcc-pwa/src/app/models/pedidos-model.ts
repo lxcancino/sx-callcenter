@@ -3,11 +3,13 @@ import { Direccion } from './direccion';
 import { Producto } from './producto';
 import { Transporte } from './transporte';
 
+export class PedidoCreateDto {}
+
 export interface Pedido {
   id?: string;
   fecha: string;
   sucursal: string;
-  folio?: string;
+  folio?: number;
   cliente: Partial<Cliente>;
   nombre: string;
   rfc: string;

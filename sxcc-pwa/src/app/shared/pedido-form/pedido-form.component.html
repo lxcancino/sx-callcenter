@@ -1,0 +1,35 @@
+<ion-grid [formGroup]="form">
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">Cliente:</ion-label>
+        <ion-input
+          formControlName="nombre"
+          [clearInput]="true"
+          autocapitalize="characters"
+        ></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">Fecha:</ion-label>
+        <ion-datetime
+          formControlName="fecha"
+          displayFormat="MMMM DD,  YYYY"
+          [value]="form.get('fecha').value"
+        ></ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <sxcc-tipo-de-pedido [parent]="form"></sxcc-tipo-de-pedido>
+    </ion-col>
+    <ion-col>
+      <sxcc-forma-de-pago [parent]="form"></sxcc-forma-de-pago>
+    </ion-col>
+    <ion-col>
+      <sxcc-sucursal [parent]="form" [sucursales]="sucursales"></sxcc-sucursal>
+    </ion-col>
+  </ion-row>
+</ion-grid>

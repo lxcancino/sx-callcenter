@@ -1,32 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Productos
+      SX-POS Call Center
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content [fullscreen]="true" *ngIf="productos$ | async as productos">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Productos</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-list-header>
-    <ion-label>Header</ion-label>
-  </ion-list-header>
-  <ion-list>
-    
-    <ion-item *ngFor="let prod of productos" detail [color]="!prod.activo ? 'warning': ''">
-      <ion-label>
-        <ion-text>
-          <h2>{{prod.descripcion}}</h2>
-        </ion-text>
-        <ion-text color="secondary" >
-          {{prod.clave}}
-        </ion-text>
-      </ion-label>
+<ion-content >
+  <ion-list >
+    <ion-item detail routerLink="/productos">
+      Productos
+    </ion-item>
+    <ion-item detail routerLink="/pedidos">
+      Pedidos
     </ion-item>
   </ion-list>
+  <!-- <ion-button routerLink="/productos">
+    Productos
+   </ion-button> -->
 </ion-content>
+
+
