@@ -104,7 +104,7 @@ class PedidoService implements FolioLog {
         
         if( codigoPostal && (codigoPostal.size() > 2) ){
             String clave = codigoPostal[0..1]
-            def row = findRegistro("select * from zona where cp_ini=?", [codigoPostal[0..1]])
+            def row = findRegistro("select * from zona where ? between cp_ini and cp_fin", [clave])
             if(row)
                 return row.sucursal   
         }
