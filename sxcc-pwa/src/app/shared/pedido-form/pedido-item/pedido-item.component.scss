@@ -1,0 +1,25 @@
+.corte-row {
+  font-size: 0.9rem;
+}
+.corte-ion-chip {
+  padding: 5px 12px;
+}
+.corte-label {
+  font-size: 12px;
+}
+
+ion-col {
+  border-color: wheat;
+}
+.col-cantidad {
+  border-color: wheat;
+}
+ion-grid {
+  ion-row {
+    ion-col {
+      // font-size: 10px;
+      // border: dotted 0.5px white;
+      text-align: end;
+    }
+  }
+}

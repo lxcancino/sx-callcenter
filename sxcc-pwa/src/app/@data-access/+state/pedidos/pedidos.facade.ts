@@ -16,34 +16,23 @@ export class PedidosFacade {
   constructor(private firestore: AngularFirestore) {}
 
   async saveToCart(pedido: Pedido) {
-    /*
-    const id = this.firestore.createId();
-    const data = {
-      ...pedido,
-      folio: 100,
-      id,
-      dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
-      lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-    };
-    const docRef = this.firestore.collection<Pedido>('carts').doc(id);
-
-    await docRef.set(data);
-    console.log('Save: ', docRef);
-    */
-    this.firestore.collection('pedidos').add(pedido);
+    const docRef = await this.firestore.collection('pedidos').add(pedido);
+    const snap = await docRef.get();
+    console.log('Pedido registrado: ', snap.data());
   }
 
-  async savePedido(pedido: Pedido) {
+  async saveToCart2(pedido: Pedido) {
     console.log('Salvando pedido: ', pedido);
 
     const collectionRef = this.firestore.collection<Pedido>('carts').ref;
     const foliosRef = this.firestore.collection('config').doc('folios').ref;
+
     const id = this.firestore.createId();
 
     this.firestore.firestore.runTransaction((transaction) => {
       return transaction
         .get(foliosRef)
-        .then((sfDoc) => {
+        .then(async (sfDoc) => {
           if (!sfDoc.exists) {
             throw 'No existe registro de folios en la coleccion config';
           }
@@ -53,12 +42,13 @@ export class PedidosFacade {
             .update(foliosRef, { pedidos: nextFolio })
             .set(collectionRef.doc(id), {
               ...pedido,
+              id,
               folio: currentFolio,
               dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
               lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
             });
         })
-        .then((res) => {
+        .then(() => {
           console.log('Pedido registrado: ', id);
         });
     });

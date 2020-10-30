@@ -7,18 +7,27 @@ import { catchError, map, shareReplay } from 'rxjs/operators';
 import { Producto } from 'src/app/models';
 import { AngularFirestore } from '@angular/fire/firestore';
 
+import sortBy from 'lodash-es/sortBy';
+import keyBy from 'lodash-es/keyBy';
+
 @Injectable({ providedIn: 'root' })
 export class ProductoService {
   private productosUrl = 'assets/data/productos.json';
   private lineasUrl = 'assets/data/lineas.json';
   private marcasUrl = 'assets/data/marcas.json';
 
-  productos2$: Observable<Producto[]> = this.http
+  productos$: Observable<Producto[]> = this.http
     .get<Producto[]>(this.productosUrl)
     .pipe(
       shareReplay(),
+      map((productos) => sortBy(productos, 'linea')),
       catchError((error: any) => throwError(error))
     );
+
+  productosMap$: Observable<{ [key: string]: Producto }> = this.productos$.pipe(
+    map((productos) => keyBy(productos, 'clave'))
+  );
+
   lineas$: Observable<any> = this.http
     .get<any>(this.lineasUrl)
     .pipe(catchError((error: any) => throwError(error)));
@@ -26,7 +35,7 @@ export class ProductoService {
     .get<any>(this.marcasUrl)
     .pipe(catchError((error: any) => throwError(error)));
 
-  productos$ = this.firestore
+  productos2$ = this.firestore
     .collection<Producto>('productos', (ref) =>
       ref.where('linea', '==', 'BOND').limit(10)
     )

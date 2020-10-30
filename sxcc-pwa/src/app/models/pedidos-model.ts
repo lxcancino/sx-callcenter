@@ -1,9 +1,7 @@
-import { Cliente } from './cliente';
+import { Cliente, ClienteCredito } from './cliente';
 import { Direccion } from './direccion';
 import { Producto } from './producto';
 import { Transporte } from './transporte';
-
-export class PedidoCreateDto {}
 
 export interface Pedido {
   id?: string;
@@ -77,9 +75,9 @@ export interface PedidoDet {
   total: number;
   kilos: number;
   // Valores historicos
-  precioOriginal: number;
-  precioLista: number;
-  descuentoOriginal: number; // % Calculado por el sistema
+  precioOriginal?: number;
+  precioLista?: number;
+  descuentoOriginal?: number; // % Calculado por el sistema
   descuentoEspecial?: number;
   importeCortes?: number;
   faltante?: number;
@@ -96,6 +94,7 @@ export interface PedidoDet {
 export interface Corte {
   tantos: number;
   instruccion: string;
+  instruccionEspecial?: string;
   cantidad: number;
   precio: number;
   importe: number;
@@ -202,4 +201,28 @@ export interface RecepcionDeEnvio {
   recepcion: Date;
   recibio?: string;
   comentario?: string;
+}
+
+/*
+ * Interface group together all properties of a Invoice/Cart/CartItem
+ */
+export interface PedidoImportes {
+  importeBruto: number;
+  descuento: number;
+  descuentoImporte: number;
+  subtotal: number;
+  impuesto: number;
+  total: number;
+}
+
+/**
+ * Parametros normalmente requeridos para la
+ * altas, bajas y cambios de un PedidoDet
+ */
+export interface PedidoItemParams {
+  tipo: TipoDePedido;
+  formaDePago: FormaDePago;
+  clienteCredito?: ClienteCredito; // Cuando hay descuento fijo
+  descuento: number;
+  descuentoEspecial?: number;
 }

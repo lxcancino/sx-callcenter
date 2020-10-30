@@ -33,3 +33,29 @@
     </ion-col>
   </ion-row>
 </ion-grid>
+<!-- Default Segment -->
+<ion-toolbar>
+  <ion-segment
+    (ionChange)="segmentChanged($event)"
+    value="partidas"
+    scrollable="true"
+  >
+    <ion-segment-button value="partidas" layout="icon-start">
+      <ion-icon name="list"></ion-icon>
+      <ion-label>Partidas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="cortes" layout="icon-start">
+      <ion-icon name="cut"></ion-icon>
+      <ion-label>Cortes</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="envio" layout="icon-start">
+      <ion-icon name="airplane"></ion-icon>
+      <ion-label>Envío</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="resumen" layout="icon-start">
+      <ion-icon name="cart"></ion-icon>
+      <ion-label>Resumen</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+<sxcc-pedido-items-list [tipo]="tipo$ | async"></sxcc-pedido-items-list>

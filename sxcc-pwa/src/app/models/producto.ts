@@ -27,15 +27,16 @@ export interface Producto {
   imageUrl?: string;
   productoSat?: string;
   unidadSat?: string;
-  existencias: Existencia[];
+  existencias?: { [key: string]: Almacen };
+  existenciaTotal?: number;
   dateCreated: string;
   lastUpdated: string;
   createUser: string;
   updateUser: string;
 }
 
-export interface Existencia {
-  almacen: string;
+export interface Almacen {
+  nombre: string;
   cantidad: number;
   apartados: number;
   disponible: number;

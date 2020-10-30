@@ -1,24 +1,37 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
 import { CreatePageRoutingModule } from './create-routing.module';
 
-import { CreatePage } from './create.page';
+import { SharedModule } from 'src/app/shared/shared.moduel';
 import { PedidoFormComponentModule } from 'src/app/shared/pedido-form/pedido-form.module';
 import { ClientesSharedModule } from 'src/app/shared/clientes/clientes-shared.module';
+// Componentes
+import { CreatePage } from './create.page';
+import { AddPartidaComponent } from './add-partida/add-partida.component';
+import { InstruccionDeCorteComponent } from './add-partida/instruccion/instruccion.component';
+import { PedidoItemExistenciaComponent } from './add-partida/existencia/pedido-item-existencia.component';
+import { PedidoItemCorteComponent } from './add-partida/corte/pedido-item-corte.component';
+import { PedidoItemDescripcionComponent } from './add-partida/descripcion/pedido-item-descripcion.component';
+import { PedidoItemValidationComponent } from './add-partida/validation/pedido-item-validation.component';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
     IonicModule,
+    SharedModule,
     PedidoFormComponentModule,
     ClientesSharedModule,
     CreatePageRoutingModule,
   ],
-  declarations: [CreatePage],
+  declarations: [
+    CreatePage,
+    AddPartidaComponent,
+    InstruccionDeCorteComponent,
+    PedidoItemExistenciaComponent,
+    PedidoItemCorteComponent,
+    PedidoItemDescripcionComponent,
+    PedidoItemValidationComponent,
+  ],
 })
 export class CreatePageModule {}

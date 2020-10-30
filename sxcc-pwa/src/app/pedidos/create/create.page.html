@@ -1,59 +1,49 @@
-<ion-header *ngIf="pedido$ | async as pedido">
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/pedidos"></ion-back-button>
     </ion-buttons>
     <ion-title>{{title$ | async}}</ion-title>
     <ion-buttons slot="end">
-      <sxcc-lookup-cliente-btn
-        (selection)="onClienteSelection($event)"
-      ></sxcc-lookup-cliente-btn>
+      <sxcc-lookup-cliente-btn (selection)="onClienteSelection($event)"></sxcc-lookup-cliente-btn>
       <ion-button (click)="showOptions()">
-        <ion-icon name="options" slot="icon-only"></ion-icon>
+        <ion-icon name="options"
+          slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" *ngIf="pedido$ | async as pedido">
+<ion-content [fullscreen]="true"
+  *ngIf="pedido$ | async as pedido">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">{{title$ | async}}</ion-title>
+      <ion-title>{{title$ | async}}</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-  <sxcc-pedido-form
-    [sucursales]="sucursales$ | async"
-    #form
-    [pedido]="pedido"
-  ></sxcc-pedido-form>
-  <!-- Otras opciones -->
-  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="share"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button><ion-icon name="logo-vimeo"></ion-icon></ion-fab-button>
-      <ion-fab-button
-        ><ion-icon name="logo-facebook"></ion-icon
-      ></ion-fab-button>
-      <ion-fab-button
-        ><ion-icon name="logo-instagram"></ion-icon
-      ></ion-fab-button>
-      <ion-fab-button><ion-icon name="logo-twitter"></ion-icon></ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
+
+  <ng-container *ngIf="vm$ | async as vm">
+    <sxcc-pedido-form [sucursales]="vm.sucursales"
+      #form
+      [pedido]="pedido"></sxcc-pedido-form>
+    <ion-fab vertical="bottom"
+      horizontal="end"
+      slot="fixed">
+      <ion-fab-button (click)="addPartida(vm.productosMap)">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ng-container>
+
+
 </ion-content>
 <ion-footer *ngIf="pedido$ | async as pedido">
   <ion-toolbar>
     <ion-title>Totales</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="onSave(pedido)">
-        <ion-icon name="save" slot="icon-only"></ion-icon>
+        <ion-icon name="save"
+          slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

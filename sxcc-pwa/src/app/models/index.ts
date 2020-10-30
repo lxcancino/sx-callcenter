@@ -8,3 +8,4 @@ export * from './cliente';
 export * from './producto';
 export * from './pedidos-model';
 export * from './transporte';
+export * from './audit-log';

@@ -1,4 +1,5 @@
 import { Cliente, FormaDePago, Pedido, TipoDePedido } from 'src/app/models';
+import { DummyItem } from './dummy';
 
 export function buildNewPedido(): Pedido {
   const cliente = getClienteMostrador();
@@ -16,9 +17,10 @@ export function buildNewPedido(): Pedido {
     formaDePago: FormaDePago.EFECTIVO,
     envio: null,
     comprador: null,
-    partidas: [],
+    partidas: [DummyItem],
     importe: 0.0,
     descuento: 0.0,
+    descuentoEspecial: 10.0,
     descuentoImporte: 0.0,
     subtotal: 0,
     impuesto: 0,

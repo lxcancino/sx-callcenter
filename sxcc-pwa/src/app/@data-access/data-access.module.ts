@@ -7,7 +7,7 @@ import { AngularFirestoreModule, SETTINGS } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 
-import { environment } from '../../environments/environment';
+import { environment } from '@environment/environment';
 
 @NgModule({
   declarations: [],

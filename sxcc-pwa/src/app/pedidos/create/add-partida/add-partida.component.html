@@ -1,0 +1,115 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title size="small">{{ getTitle() }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-no-padding">
+  <ion-grid [formGroup]="form">
+    <ion-row>
+      <ion-col>
+        <ion-item formGroupName="corte">
+          <ion-label position="floating">Tamaños</ion-label>
+          <ion-input
+            #tantosComponent
+            type="number"
+            autofocus
+            inputmode="numeric"
+            formControlName="tantos"
+            clearOnEdit="true"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item>
+          <ion-label position="floating"> Buscar por clave </ion-label>
+          <ion-input
+            class="ion-text-uppercase"
+            placeholder="Clave"
+            (keyup.enter)="findProductByClave(claveField.value)"
+            clearOnEdit="false"
+            #claveField
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <sxcc-pedido-item-descripcion
+          [parent]="form"
+        ></sxcc-pedido-item-descripcion>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="stacked">Cantidad</ion-label>
+          <ion-input type="number" formControlName="cantidad"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Precio</ion-label>
+          <ion-input
+            color="primary"
+            value="{{ form.get('precio').value || 0.0 | currency }}"
+            readonly
+            tabindex="-1"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating"
+            >Descuento
+            <ion-text color="warning"
+              >({{ form.get('descuento').value / 100 | percent }})</ion-text
+            >
+          </ion-label>
+          <ion-input
+            color="primary"
+            value="{{ form.get('descuentoImporte').value || 0.0 | currency }}"
+            readonly
+            tabindex="-1"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Subtotal</ion-label>
+          <ion-input
+            color="primary"
+            value="{{ form.get('subtotal').value | currency }}"
+            readonly
+            tabindex="-1"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <sxcc-pedido-item-corte
+    [parent]="form"
+    *ngIf="controls.tantos.value > 0"
+  ></sxcc-pedido-item-corte>
+  <sxcc-pedido-item-exis [producto]="producto$ | async"></sxcc-pedido-item-exis>
+  <sxcc-pedido-item-validation [parent]="form"></sxcc-pedido-item-validation>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+        Cancelar
+      </ion-button>
+      <ion-button
+        color="primary"
+        [disabled]="form.pristine || form.invalid"
+        (click)="onSubmit()"
+      >
+        <ion-icon slot="start" name="save"></ion-icon>
+        Salvar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,161 @@
+<ion-item-sliding>
+  <ion-item button
+    detail="false">
+    <ion-chip slot="start"
+      class="ion-hide-md-down">
+      {{ index + 1 }}
+    </ion-chip>
+    <ion-label>
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+
+          <!-- 1 Clave -->
+          <ion-col size="3"
+            size-sm="2"
+            size-md="2"
+            size-lg="1"
+            class="ion-text-start">
+            <ion-note color="warning">
+              <h3>({{ item.clave }})</h3>
+            </ion-note>
+          </ion-col>
+
+          <!-- 2 Producto -->
+          <ion-col size="9"
+            size-sm="8"
+            size-md="4"
+            size-lg="3"
+            class="ion-text-wrap ion-text-start">
+            <h3>
+              {{ item.descripcion }}
+            </h3>
+          </ion-col>
+
+          <!-- 3 Cantidad -->
+          <ion-col size="4"
+            size-sm="2"
+            size-md="2"
+            size-lg="1">
+            <h4>
+              {{ item.cantidad }}
+            </h4>
+          </ion-col>
+
+          <!-- 4 Precio -->
+          <ion-col size="4"
+            size-sm="3"
+            size-md="2"
+            size-lg="1">
+            <ion-text>
+              <h3>
+                {{ item.precio | currency }}
+              </h3>
+            </ion-text>
+          </ion-col>
+
+          <!-- 5 Importe -->
+          <ion-col size="4"
+            size-sm="3"
+            size-md="2">
+            <ion-text>
+              <h3>
+                {{ item.importe | currency }}
+              </h3>
+            </ion-text>
+          </ion-col>
+
+          <!-- 6 Descuento -->
+          <ion-col size="4"
+            offset="4"
+            offset-sm="0"
+            size-sm="3"
+            offset-md="7"
+            size-md="3"
+            offset-lg="0"
+            size-lg="2">
+            <h4>
+              <small>
+                <ion-text color="warning">
+                  ({{ item.descuento / 100 | percent }})
+                </ion-text>
+              </small>
+
+              {{ item.descuentoImporte | currency }}
+            </h4>
+          </ion-col>
+
+          <!-- 7 Subtotal -->
+          <ion-col size="4"
+            size-sm="3"
+            size-md="2"
+            size-lg="2">
+            <ion-text [color]="getPrecioColor()">
+              <h3>
+                {{ item.subtotal | currency }}
+              </h3>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+
+        <!-- <ion-row>
+          <ion-col size="2">
+            <small>Contado:</small>
+            <ion-note [color]="contadoColor">
+              {{ precioContado | currency }}
+            </ion-note>
+          </ion-col>
+          <ion-col size="2">
+            <small>Crédito:</small>
+            <ion-note [color]="creditoColor">
+              {{ precioCredito | currency }}
+            </ion-note>
+          </ion-col>
+        </ion-row> -->
+
+        <!-- Corte 
+        <ion-row
+          *ngIf="item.corte as corte"
+          class="corte-row ion-align-items-center"
+        >
+          <ion-col>
+            <ion-chip class="corte-ion-chip">
+              <ion-icon name="cut" color="tertiary" size="small"></ion-icon>
+              <ion-label class="corte-label">
+                {{
+                  corte.instruccionEspecial
+                    ? corte.instruccionEspecial
+                    : corte.instruccion
+                }}
+              </ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+        -->
+      </ion-grid>
+    </ion-label>
+
+    <!-- <ion-button
+      color="primary"
+      slot="end"
+      expand="block"
+      fill="clear"
+      size="undefined"
+    >
+      {{ item.subtotal | currency }}
+      <ion-icon name="menu" slot="end"></ion-icon>
+    </ion-button> -->
+    <ion-icon name="menu"
+      slot="end"></ion-icon>
+  </ion-item>
+  <ion-item-options>
+    <ion-item-option>
+      Editar
+      <ion-icon name="pencil"
+        slot="start"></ion-icon>
+    </ion-item-option>
+    <ion-item-option color="danger">
+      Eliminar <ion-icon name="trash"
+        slot="start"></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>
