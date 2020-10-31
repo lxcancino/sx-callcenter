@@ -8,7 +8,22 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { Pedido, PedidoDet, PedidoItemParams } from 'src/app/models';
+import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
+import { map, withLatestFrom, tap } from 'rxjs/operators';
+
+import {
+  Pedido,
+  PedidoDet,
+  PedidoParams,
+  PedidoItemParams,
+  TipoDePedido,
+  FormaDePago,
+  Cliente,
+  PedidoImportes,
+} from 'src/app/models';
+
+import sumBy from 'lodash-es/sumBy';
+import maxBy from 'lodash-es/maxBy';
 
 export interface PedidoControls {
   id?: AbstractControl;
@@ -18,44 +33,87 @@ export interface PedidoControls {
   formaDePago: AbstractControl;
 }
 
+const toParams = (form: FormGroup): PedidoParams => {
+  return {
+    tipo: form.value.tipo,
+    formaDePago: form.value.formaDePago,
+    cliente: form.value.cliente,
+    credito: form.value.cliente.credito,
+    descuentoEspecial: form.value.descuentoEspecial,
+  };
+};
+
 @Injectable()
 export class PedidoFormBuilderService {
+  form: FormGroup = this.buildForm();
+  tipo$ = this.form.get('tipo').valueChanges;
+  formaDePago$ = this.form.get('formaDePago').valueChanges;
+  partidas$: Observable<PedidoDet[]> = this.form.get('partidas').valueChanges;
+
+  recalaulo$ = combineLatest([this.tipo$, this.formaDePago$]).pipe(
+    map(([tipo, formaDePago]) => ({ tipo, formaDePago }))
+  );
+
+  params$: Observable<PedidoParams> = merge(
+    this.tipo$.pipe(map((value) => ({ tipo: value }))),
+    this.formaDePago$.pipe(map((value) => ({ formaDePago: value })))
+  ).pipe(
+    map((source) => ({ ...toParams(this.form), ...source })),
+    tap((params) => this.recalcular(params))
+  );
+
+  descuento$ = this.partidas$.pipe(
+    tap((partidas) => {
+      console.log('Calcular el descuento');
+      return 0.0;
+    })
+  );
+
+  sumary$: Observable<PedidoImportes> = combineLatest([this.partidas$]).pipe(
+    map(([partidas]) => ({
+      importe: sumBy(partidas, 'importe'),
+      descuentoImporte: sumBy(partidas, 'descuentoImporte'),
+      subtotal: sumBy(partidas, 'subtotal'),
+      impuesto: sumBy(partidas, 'impuesto'),
+      total: sumBy(partidas, 'total'),
+      kilos: sumBy(partidas, 'kilos'),
+    })),
+    tap((totales) => this.form.patchValue({ ...totales }))
+  );
+
   constructor(private fb: FormBuilder) {}
 
-  build(pedido: Partial<Pedido>): FormGroup {
-    const {
-      cliente,
-      nombre,
-      fecha,
-      tipo,
-      formaDePago,
-      sucursal,
-      descuentoEspecial,
-    } = pedido;
-    const f = this.fb.group({
-      sucursal: [sucursal, [Validators.required]],
-      cliente: [cliente, [Validators.required]],
+  private buildForm(): FormGroup {
+    return this.fb.group({
+      sucursal: [null, [Validators.required]],
+      cliente: [null, [Validators.required]],
       nombre: [
-        nombre,
+        null,
         [
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(255),
         ],
       ],
-      fecha: [{ value: fecha, disabled: true }, [Validators.required]],
-      tipo: [tipo, [Validators.required]],
-      formaDePago: [formaDePago, [Validators.required]],
-      descuentoEspecial: [descuentoEspecial],
+      fecha: [
+        { value: new Date().toISOString(), disabled: true },
+        [Validators.required],
+      ],
+      tipo: [null, [Validators.required]],
+      formaDePago: [null, [Validators.required]],
+      descuentoEspecial: [0.0],
       partidas: this.fb.array([]),
+      importe: [],
+      descuentoImporte: [],
+      subtotal: [],
+      impuesto: [],
+      total: [],
     });
-    // this.buildPartidas(f, pedido);
-    return f;
   }
 
-  buildPartidas(form: FormGroup, pedido: Partial<Pedido>) {
-    const partidas = form.get('partidas') as FormArray;
-    pedido.partidas.forEach((item) => partidas.push(new FormControl(item)));
+  addPartidas(...items: PedidoDet[]) {
+    const partidas = this.form.get('partidas') as FormArray;
+    items.forEach((item) => partidas.push(new FormControl(item)));
   }
 
   /**
@@ -80,5 +138,9 @@ export class PedidoFormBuilderService {
       descuento: 0.0,
       descuentoEspecial: form.get('descuentoEspecial').value,
     };
+  }
+
+  recalcular(params: PedidoParams) {
+    console.log('Recalcular importes: ', params);
   }
 }

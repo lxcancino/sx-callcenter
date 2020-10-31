@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Sucursal } from 'src/app/models';
 
@@ -20,7 +25,7 @@ import { Sucursal } from 'src/app/models';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SucursalComponent {
+export class SucursalComponent implements OnInit {
   @Input() parent: FormGroup;
   @Input() sucursales: Sucursal[] = [];
   @Input() property = 'sucursal';
@@ -33,4 +38,6 @@ export class SucursalComponent {
   };
 
   constructor() {}
+
+  ngOnInit() {}
 }

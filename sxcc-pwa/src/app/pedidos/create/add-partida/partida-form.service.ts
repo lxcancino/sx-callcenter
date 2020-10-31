@@ -110,8 +110,7 @@ export class PartidaFormService {
   ): PedidoImportes {
     if (!producto) {
       return {
-        importeBruto: 0,
-        descuento: 0,
+        importe: 0,
         descuentoImporte: 0,
         subtotal: 0,
         impuesto: 0,
@@ -135,8 +134,7 @@ export class PartidaFormService {
     const impuesto = round(subtotal * 0.16, 2);
     const total = subtotal + impuesto;
     return {
-      importeBruto,
-      descuento,
+      importe: importeBruto,
       descuentoImporte,
       subtotal,
       impuesto,

@@ -3,13 +3,14 @@ import { ModalController } from '@ionic/angular';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Cliente, Pedido, PedidoDet, Producto } from '@models';
+import { Cliente, Pedido, PedidoDet, PedidoImportes, Producto } from '@models';
 import { CatalogosService } from '@data-access/services/catalogos.service';
 import { PedidosFacade } from '@data-access/+state/pedidos/pedidos.facade';
 
 import { PedidoFormComponent } from '../../shared/pedido-form/pedido-form.component';
 import { AddPartidaComponent } from './add-partida/add-partida.component';
 import { ProductoService } from '@data-access/services/producto.service';
+import { DummyItem } from '@data-access/+state/pedidos/dummy';
 
 @Component({
   selector: 'app-create',
@@ -24,6 +25,7 @@ export class CreatePage implements OnInit {
 
   title$ = new BehaviorSubject('Nuevo pedido');
   pedido$ = this.facade.newPedido$;
+  sumary: PedidoImportes;
 
   @ViewChild('form') pedidoForm: PedidoFormComponent;
 
@@ -46,7 +48,11 @@ export class CreatePage implements OnInit {
     this.facade.saveToCart(pedido);
   }
 
-  async addPartida(dictionary?: { [key: string]: Producto }) {
+  addPartida() {
+    this.pedidoForm.addPartida(DummyItem);
+  }
+
+  async addPartida2(dictionary?: { [key: string]: Producto }) {
     const params = this.pedidoForm.getEditItemParams();
     const modal = await this.modalCtrl.create({
       component: AddPartidaComponent,
@@ -64,5 +70,9 @@ export class CreatePage implements OnInit {
     const result = await modal.onWillDismiss();
     const item: PedidoDet = result.data;
     console.log('Partida por agregar: ', item);
+  }
+
+  onSumaryChanged(sumary: PedidoImportes) {
+    this.sumary = sumary;
   }
 }

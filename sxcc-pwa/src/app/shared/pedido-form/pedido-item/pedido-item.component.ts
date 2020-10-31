@@ -21,10 +21,7 @@ export class PedidoItemComponent implements OnInit {
   @Input() creditoColor = 'secondary';
   constructor() {}
 
-  ngOnInit() {
-    console.log('Tipo: ', this.tipo);
-    console.log('Precio color: ', this.getPrecioColor());
-  }
+  ngOnInit() {}
 
   get precioCredito() {
     return this.item.producto.precioCredito;

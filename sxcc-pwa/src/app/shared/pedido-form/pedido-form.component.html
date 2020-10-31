@@ -3,11 +3,9 @@
     <ion-col>
       <ion-item>
         <ion-label position="floating">Cliente:</ion-label>
-        <ion-input
-          formControlName="nombre"
+        <ion-input formControlName="nombre"
           [clearInput]="true"
-          autocapitalize="characters"
-        ></ion-input>
+          autocapitalize="characters"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -15,11 +13,9 @@
     <ion-col>
       <ion-item>
         <ion-label position="floating">Fecha:</ion-label>
-        <ion-datetime
-          formControlName="fecha"
+        <ion-datetime formControlName="fecha"
           displayFormat="MMMM DD,  YYYY"
-          [value]="form.get('fecha').value"
-        ></ion-datetime>
+          [value]="form.get('fecha').value"></ion-datetime>
       </ion-item>
     </ion-col>
     <ion-col>
@@ -29,33 +25,121 @@
       <sxcc-forma-de-pago [parent]="form"></sxcc-forma-de-pago>
     </ion-col>
     <ion-col>
-      <sxcc-sucursal [parent]="form" [sucursales]="sucursales"></sxcc-sucursal>
+      <sxcc-sucursal [parent]="form"
+        [sucursales]="sucursales"></sxcc-sucursal>
     </ion-col>
   </ion-row>
 </ion-grid>
 <!-- Default Segment -->
 <ion-toolbar>
-  <ion-segment
-    (ionChange)="segmentChanged($event)"
+  <ion-segment (ionChange)="segmentChanged($event)"
     value="partidas"
-    scrollable="true"
-  >
-    <ion-segment-button value="partidas" layout="icon-start">
+    scrollable="true">
+    <ion-segment-button value="partidas"
+      layout="icon-start">
       <ion-icon name="list"></ion-icon>
       <ion-label>Partidas</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="cortes" layout="icon-start">
+    <ion-segment-button value="cortes"
+      layout="icon-start">
       <ion-icon name="cut"></ion-icon>
       <ion-label>Cortes</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="envio" layout="icon-start">
+    <ion-segment-button value="envio"
+      layout="icon-start">
       <ion-icon name="airplane"></ion-icon>
       <ion-label>Envío</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="resumen" layout="icon-start">
+    <ion-segment-button value="resumen"
+      layout="icon-start">
       <ion-icon name="cart"></ion-icon>
       <ion-label>Resumen</ion-label>
     </ion-segment-button>
   </ion-segment>
 </ion-toolbar>
-<sxcc-pedido-items-list [tipo]="tipo$ | async"></sxcc-pedido-items-list>
+
+<div [style.display]="segment === 'partidas' ? 'block': 'none'">
+  <sxcc-pedido-items-list [tipo]="controls.tipo.value"
+    [partidas]="partidas$ | async"></sxcc-pedido-items-list>
+</div>
+<div [style.display]="segment === 'resumen' ? 'block': 'none'"
+  *ngIf="sumary$ | async as totales">
+  <ion-grid>
+    <ion-row>
+      <ion-col offset-md="2"
+        size-md="8">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              Resumen
+            </ion-card-title>
+            <ion-card-subtitle>
+              Información adicional del pedido
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-item href="#"
+            class="ion-activated">
+            <ion-icon name="wifi"
+              slot="start"></ion-icon>
+            <ion-label>Card Link Item 1 activated</ion-label>
+          </ion-item>
+          <ion-card-content>
+            <ion-list>
+              <ion-item-group>
+                <ion-item-divider>Totales</ion-item-divider>
+                <ion-item>
+                  <ion-label>Importe bruto:</ion-label>
+                  <ion-label>{{totales.importe | currency}}</ion-label>
+                </ion-item>
+              </ion-item-group>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</div>
+<!-- <ng-container [ngSwitch]="segment">
+  
+  <ng-container *ngSwitchCase="'partidas'">
+    <sxcc-pedido-items-list [tipo]="controls.tipo.value"
+      [partidas]="partidas$ | async"></sxcc-pedido-items-list>
+  </ng-container>
+
+  <div *ngSwitchCase="'cortes'">
+    <h2>Cortes</h2>
+  </div>
+  <div *ngSwitchCase="'resumen'">
+    <ion-grid>
+      <ion-row>
+        <ion-col offset-md="2"
+          size-md="8">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                Resumen
+              </ion-card-title>
+              <ion-card-subtitle>
+                Información adicional del pedido
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              {{sumary$ | async | json}}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+  </div>
+  <div *ngSwitchDefault>
+    <h1>PENDIENTE</h1>
+    <pre>
+      {{segment}}
+    </pre>
+  </div>
+
+</ng-container> -->

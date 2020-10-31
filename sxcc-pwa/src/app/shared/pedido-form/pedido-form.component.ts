@@ -5,10 +5,18 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
-import { Cliente, Pedido, Sucursal, TipoDePedido } from 'src/app/models';
+import {
+  Cliente,
+  Pedido,
+  PedidoDet,
+  PedidoImportes,
+  Sucursal,
+  TipoDePedido,
+} from 'src/app/models';
 import {
   PedidoControls,
   PedidoFormBuilderService,
@@ -27,31 +35,48 @@ export class PedidoFormComponent extends BaseComponent implements OnInit {
   @Input() pedido: Pedido;
   @Input() sucursales: Sucursal[] = [];
   @Output() save = new EventEmitter<Pedido>();
-  form: FormGroup;
+  @Output() sumaryChanged = new EventEmitter<PedidoImportes>();
 
-  controls: PedidoControls;
-  tipo$: Observable<TipoDePedido>;
+  form = this.formService.form;
+  // form: FormGroup;
+  controls = this.formService.buildPedidoFormControls(this.form);
 
-  constructor(private pfb: PedidoFormBuilderService) {
+  partidas$ = this.formService.partidas$;
+  sumary$ = this.formService.sumary$;
+  segment = 'partidas';
+
+  constructor(
+    private formService: PedidoFormBuilderService,
+    private cd: ChangeDetectorRef
+  ) {
     super();
   }
 
   ngOnInit() {
-    console.group(`${this.pedido.id ? 'Editando pedido:' : 'Pedido nuevo:'}`);
-    console.log(this.pedido);
-    console.groupEnd();
-
-    this.form = this.pfb.build(this.pedido);
-    this.controls = this.pfb.buildPedidoFormControls(this.form);
-    this.tipo$ = this.controls.tipo.valueChanges;
-
+    this.form.patchValue(this.pedido);
     this.addListeners();
   }
 
   addListeners() {
-    this.form.valueChanges
+    // this.formService.recalaulo$
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((params) => {
+    //     console.log('Recalcular con parametros: ', params);
+    //   });
+
+    this.formService.params$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((value) => console.log('Value: ', value));
+      .subscribe((params) => {
+        // console.log('Recalcular con parametros: ', params);
+      });
+    this.formService.descuento$.subscribe((descuento) =>
+      console.log('Descuento calcularo: ', descuento)
+    );
+    this.sumary$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((totales) => this.sumaryChanged.emit(totales));
+
+    // this.partidas$.subscribe((items) => console.log('Items: ', items));
   }
 
   setCliente(cliente: Cliente) {
@@ -61,8 +86,15 @@ export class PedidoFormComponent extends BaseComponent implements OnInit {
   }
 
   getEditItemParams() {
-    return this.pfb.getEditParams(this.form);
+    return this.formService.getEditParams(this.form);
   }
 
-  segmentChanged(event: any) {}
+  segmentChanged({ detail: { value } }) {
+    this.segment = value;
+    this.cd.markForCheck();
+  }
+
+  addPartida(item: PedidoDet) {
+    this.formService.addPartidas(item);
+  }
 }

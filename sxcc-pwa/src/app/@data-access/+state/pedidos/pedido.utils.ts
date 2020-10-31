@@ -7,7 +7,11 @@ export function buildNewPedido(): Pedido {
   return {
     folio: 0,
     fecha: new Date().toISOString(),
-    sucursal: 'CF5FEBRERO',
+    sucursal: {
+      id: '402880fc5e4ec411015e4ec64e70012e',
+      clave: '12',
+      nombre: 'TACUBA',
+    },
     moneda: 'MXN',
     tipoDeCambio: 1.0,
     cliente,

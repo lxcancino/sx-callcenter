@@ -1,12 +1,13 @@
 import { Cliente, ClienteCredito } from './cliente';
 import { Direccion } from './direccion';
 import { Producto } from './producto';
+import { Sucursal } from './sucursal';
 import { Transporte } from './transporte';
 
 export interface Pedido {
   id?: string;
   fecha: string;
-  sucursal: string;
+  sucursal: string | Partial<Sucursal>;
   folio?: number;
   cliente: Partial<Cliente>;
   nombre: string;
@@ -207,12 +208,24 @@ export interface RecepcionDeEnvio {
  * Interface group together all properties of a Invoice/Cart/CartItem
  */
 export interface PedidoImportes {
-  importeBruto: number;
-  descuento: number;
+  importe: number;
   descuentoImporte: number;
   subtotal: number;
   impuesto: number;
   total: number;
+  kilos?: number;
+}
+
+/**
+ * Parametros basicos para calcular importes y condiciones de un pedido
+ *
+ */
+export interface PedidoParams {
+  tipo: TipoDePedido;
+  formaDePago: FormaDePago;
+  cliente: Cliente;
+  credito?: ClienteCredito;
+  descuentoEspecial?: number;
 }
 
 /**
