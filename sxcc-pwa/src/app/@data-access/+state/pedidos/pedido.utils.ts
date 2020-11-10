@@ -24,7 +24,7 @@ export function buildNewPedido(): Pedido {
     partidas: [DummyItem],
     importe: 0.0,
     descuento: 0.0,
-    descuentoEspecial: 10.0,
+    descuentoEspecial: 0.0,
     descuentoImporte: 0.0,
     subtotal: 0,
     impuesto: 0,

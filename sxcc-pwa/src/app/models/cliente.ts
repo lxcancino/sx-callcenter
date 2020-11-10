@@ -1,12 +1,12 @@
-
 import { Direccion } from './direccion';
-
+import { FormaDePago } from './pedidos-model';
 
 export interface Cliente {
   id: string;
   nombre: string;
   clave: string;
   rfc: string;
+  formaDePago?: string | number | FormaDePago;
   cfdiMail?: string;
   email?: string;
   credito?: ClienteCredito;
@@ -14,14 +14,14 @@ export interface Cliente {
   folioRFC: number;
   chequeDevuelto: number;
   activo: true;
-  juridico: false;
+  juridico: boolean;
   medios?: Partial<MedioDeContacto[]>;
   direccion: Direccion;
   direcciones?: ClienteDireccion[];
   direccionesEntrega?: ClienteDireccion[];
   dateCreated?: string;
   lastUpdated?: string;
-  telefonos?: string | number;
+  telefonos?: string[];
   createUser?: string;
   updateUser?: string;
   socios?: Partial<Socio>[];
@@ -42,8 +42,8 @@ export interface ClienteCredito {
   saldo: number;
   atrasoMaximo: number;
   operador: number;
-  cobrador?: {id: string};
-  socio: Partial<Socio>;
+  cobrador?: { id: string };
+  socio?: Partial<Socio>;
   usoDeCfdi?: string;
   createUser?: string;
   updateUser?: string;
@@ -64,13 +64,16 @@ export interface MedioDeContacto {
   descripcion: string;
   cfdi?: boolean;
   cliente: Partial<Cliente>;
+  activo: boolean;
+  validado?: boolean;
+  createUser?: string;
+  updateUser?: string;
 }
 
 export interface Socio {
-    id: string;
-    clave?: string;
-    nombre: string;
-    direccion?: string;
-    direccionFiscal: Direccion;
-  }
-  
+  id: string;
+  clave?: string;
+  nombre: string;
+  direccion?: string;
+  direccionFiscal: Direccion;
+}

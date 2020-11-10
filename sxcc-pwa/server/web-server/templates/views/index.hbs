@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible'
+    content='IE=edge'>
+  <title>Weather APP</title>
+  <link rel="icon" href="/img/weather.png">
+  <meta name='viewport'
+    content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet"
+    href="/css/styles.css">
+  
+
+</head>
+
+<body>
+  <div class="main-content">
+    {{>header}}
+    <h3>Welcome to Weather App</h3>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa quis ipsa earum quod soluta necessitatibus illum error amet, vero consequatur iusto enim, a officia, quia deleniti laboriosam voluptatibus fugit fugiat.</p>
+
+    <form >
+      <input type="text" placeholder="Set location">
+      <button>Search</button>
+    </form>
+
+    <p id="messageOne"></p>
+    <p id="messageTwo"></p>
+
+  </div>
+  {{>footer}}
+
+  <script src="/js/core.js"></script>
+</body>
+
+</html>

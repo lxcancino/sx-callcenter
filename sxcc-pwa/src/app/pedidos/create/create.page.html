@@ -6,63 +6,62 @@
     <ion-title>{{title$ | async}}</ion-title>
     <ion-buttons slot="end">
       <sxcc-lookup-cliente-btn (selection)="onClienteSelection($event)"></sxcc-lookup-cliente-btn>
-      <ion-button (click)="showOptions()">
-        <ion-icon name="options"
-          slot="icon-only"></ion-icon>
-      </ion-button>
+      <sxcc-create-options [params]="params"></sxcc-create-options>
+
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true"
-  *ngIf="pedido$ | async as pedido">
+<ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title>{{title$ | async}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ng-container *ngIf="vm$ | async as vm">
-    <sxcc-pedido-form [sucursales]="vm.sucursales"
-      #form
-      [pedido]="pedido"
-      (sumaryChanged)="onSumaryChanged($event)"></sxcc-pedido-form>
-    <ion-fab vertical="bottom"
-      horizontal="end"
-      slot="fixed">
-      <ion-fab-button (click)="addPartida(vm.productosMap)">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-  </ng-container>
+  <sxcc-pedido-form #form
+    [pedido]="pedido"
+    (paramsChanged)="onParamsChanged($event)"
+    (sumaryChanged)="onSumaryChanged($event)"
+    (errors)="onErrors($event)"
+    (descuentoAlert)="onDescuentoAlert($event)"></sxcc-pedido-form>
+
+  <ion-fab vertical="bottom"
+    horizontal="end"
+    slot="fixed">
+    <ion-fab-button (click)="addPartida()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 
 
 </ion-content>
-<ion-footer *ngIf="pedido$ | async as pedido">
+<ion-footer>
   <ion-toolbar>
     <ion-grid class="ion-no-padding"
-      *ngIf="sumary">
+      *ngIf="summary">
       <ion-row>
         <ion-col size-md="2"
           offset-md="4">
           <ion-chip>
-            <ion-label color="secondary">Desto: {{sumary.descuentoImporte || 0.0 | currency}}</ion-label>
+            <ion-label color="secondary">Desto: {{summary.descuentoImporte || 0.0 | currency}}</ion-label>
           </ion-chip>
         </ion-col>
         <ion-col size-md="2">
           <ion-chip>
-            <ion-label color="secondary">Sub: {{sumary.subtotal || 0.0 | currency}}</ion-label>
+            <ion-label color="secondary">Sub: {{summary.subtotal || 0.0 | currency}}</ion-label>
           </ion-chip>
 
         </ion-col>
         <ion-col size-md="2">
           <ion-chip>
-            <ion-label color="secondary">IVA: {{sumary.impuesto | currency}}</ion-label>
+            <ion-label color="secondary">IVA: {{summary.impuesto | currency}}</ion-label>
           </ion-chip>
         </ion-col>
         <ion-col size-md="2">
           <ion-chip>
-            <ion-label color="primary">Total: {{sumary.total | currency}}</ion-label>
+            <ion-label color="primary">Total: {{summary.total | currency}}</ion-label>
           </ion-chip>
 
         </ion-col>
@@ -71,9 +70,16 @@
 
 
     <ion-buttons slot="start">
-      <ion-button (click)="onSave(pedido)"
+      <ion-button (click)="form.submit()"
+        [disabled]="canSave()"
         size="small">
         <ion-icon name="save"
+          slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button color="danger"
+        *ngIf="errors"
+        (click)="form.showValidation()">
+        <ion-icon name="warning"
           slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>

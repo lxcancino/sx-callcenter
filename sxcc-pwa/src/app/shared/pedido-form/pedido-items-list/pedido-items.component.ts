@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 
 import { ItemReorderEventDetail } from '@ionic/core';
 import { PedidoDet, TipoDePedido } from '@models';
@@ -14,6 +20,7 @@ import { PedidoDet, TipoDePedido } from '@models';
             [tipo]="tipo"
             [index]="idx"
             [odd]="odd"
+            (delete)="delete.emit(idx)"
           ></sxcc-pedido-item>
         </ion-reorder>
       </ion-reorder-group>
@@ -25,6 +32,7 @@ export class PedidoItemsListComponent {
   // @Input() partidas: PedidoDet[] = [];
   private _partidas: PedidoDet[] = [];
   @Input() tipo: TipoDePedido;
+  @Output() delete = new EventEmitter<number>();
   constructor() {}
 
   @Input()

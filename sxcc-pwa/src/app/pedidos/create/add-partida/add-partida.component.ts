@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProductoService } from '@data-access/services/producto.service';
 import { IonInput, ModalController } from '@ionic/angular';
 
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
@@ -57,7 +58,8 @@ export class AddPartidaComponent extends BaseComponent implements OnInit {
   @ViewChild('tantosComponent') tantosElement: IonInput;
   constructor(
     private modalController: ModalController,
-    private formService: PartidaFormService
+    private formService: PartidaFormService,
+    private productosService: ProductoService
   ) {
     super();
   }
@@ -93,9 +95,13 @@ export class AddPartidaComponent extends BaseComponent implements OnInit {
   }
 
   findProductByClave(clave: string) {
-    const found = this.lookup(clave.toUpperCase());
-    // this.producto$.next(found);
-    this.setNewProduct(found);
+    this.productosService
+      .findByClave(clave)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (prod) => this.setNewProduct(prod),
+        (err) => console.log('Error: ', err)
+      );
   }
 
   private setNewProduct(prod: Partial<Producto>) {

@@ -9,3 +9,4 @@ export * from './producto';
 export * from './pedidos-model';
 export * from './transporte';
 export * from './audit-log';
+export * from './descuento-por-volumen';

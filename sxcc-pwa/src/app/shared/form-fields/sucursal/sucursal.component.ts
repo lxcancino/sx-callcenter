@@ -5,6 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { CatalogosService } from '@data-access/services/catalogos.service';
 import { Sucursal } from 'src/app/models';
 
 @Component({
@@ -16,8 +17,9 @@ import { Sucursal } from 'src/app/models';
         placeholder="Sucursal"
         interface="popover"
         [formControlName]="property"
+        [compareWith]="compareWith"
       >
-        <ion-select-option [value]="s.id" *ngFor="let s of sucursales">
+        <ion-select-option [value]="s" *ngFor="let s of sucursales$ | async">
           {{ s.nombre }}
         </ion-select-option>
       </ion-select>
@@ -27,9 +29,10 @@ import { Sucursal } from 'src/app/models';
 })
 export class SucursalComponent implements OnInit {
   @Input() parent: FormGroup;
-  @Input() sucursales: Sucursal[] = [];
   @Input() property = 'sucursal';
   @Input() label = 'Sucursal';
+
+  sucursales$ = this.service.sucursales$;
 
   customPopoverOptions: any = {
     header: 'Sucursal',
@@ -37,7 +40,14 @@ export class SucursalComponent implements OnInit {
     message: 'Message ??',
   };
 
-  constructor() {}
+  constructor(private service: CatalogosService) {}
 
   ngOnInit() {}
+
+  compareWith(currentValue: any, compareValue: any) {
+    if (!compareValue) {
+      return false;
+    }
+    return currentValue.id === compareValue.id;
+  }
 }

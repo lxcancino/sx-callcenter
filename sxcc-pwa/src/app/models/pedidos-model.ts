@@ -204,16 +204,15 @@ export interface RecepcionDeEnvio {
   comentario?: string;
 }
 
-/*
- * Interface group together all properties of a Invoice/Cart/CartItem
- */
-export interface PedidoImportes {
+export interface PedidoSummary {
   importe: number;
+  descuento: number;
   descuentoImporte: number;
   subtotal: number;
   impuesto: number;
   total: number;
   kilos?: number;
+  descuentoPorVolumen?: number;
 }
 
 /**
@@ -226,6 +225,7 @@ export interface PedidoParams {
   cliente: Cliente;
   credito?: ClienteCredito;
   descuentoEspecial?: number;
+  partidas: PedidoDet[];
 }
 
 /**

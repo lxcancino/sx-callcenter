@@ -1,8 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
 import { PedidoDet, TipoDePedido } from '@models';
 
@@ -19,6 +21,7 @@ export class PedidoItemComponent implements OnInit {
   @Input() tipo: TipoDePedido;
   @Input() contadoColor = 'primary';
   @Input() creditoColor = 'secondary';
+  @Output() delete = new EventEmitter<number>();
   constructor() {}
 
   ngOnInit() {}

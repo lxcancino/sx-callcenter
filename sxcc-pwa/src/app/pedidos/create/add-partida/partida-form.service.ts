@@ -9,7 +9,7 @@ import {
   PedidoItemParams,
   Producto,
   TipoDePedido,
-  PedidoImportes,
+  PedidoSummary,
   PedidoDet,
   Corte,
 } from '@models';
@@ -54,7 +54,7 @@ export class PartidaFormService {
   producto$ = this.form.get('producto').valueChanges;
   liveProducto$ = new BehaviorSubject<Producto>(null);
   editParams$ = new BehaviorSubject<PedidoItemParams>(null);
-  totales$: Observable<PedidoImportes> = combineLatest([
+  totales$: Observable<PedidoSummary> = combineLatest([
     this.producto$,
     this.cantidad$,
     this.editParams$,
@@ -79,7 +79,7 @@ export class PartidaFormService {
         { value: null, disabled: true },
         [Validators.required, Validators.min(1.0)],
       ],
-      importeBruto: [{ value: 0.0, disabled: true }],
+      importe: [{ value: 0.0, disabled: true }],
       descuento: [{ value: 0.0, disabled: true }],
       descuentoEspecial: [{ value: 0.0, disabled: true }],
       descuentoImporte: [{ value: 0.0, disabled: true }],
@@ -107,14 +107,16 @@ export class PartidaFormService {
     producto: Producto,
     cantidad: number,
     params: PedidoItemParams
-  ): PedidoImportes {
+  ): PedidoSummary {
     if (!producto) {
       return {
         importe: 0,
+        descuento: 0,
         descuentoImporte: 0,
         subtotal: 0,
         impuesto: 0,
         total: 0,
+        kilos: 0.0,
       };
     }
     const { tipo, descuento, descuentoEspecial } = params;
@@ -122,23 +124,26 @@ export class PartidaFormService {
     const factor = unidad === 'MIL' ? 1 / 1000 : 1;
     const precio =
       tipo === TipoDePedido.CREDITO ? precioCredito : precioContado;
-    const importeBruto = round(cantidad * factor * precio);
+    const importe = round(cantidad * factor * precio);
     const descuentoFinal =
       modoVenta === 'N'
         ? 0.0
         : descuentoEspecial > 0
         ? descuentoEspecial
         : descuento;
-    const descuentoImporte = round(importeBruto * (descuentoFinal / 100), 2);
-    const subtotal = importeBruto - descuentoImporte;
+    const descuentoImporte = round(importe * (descuentoFinal / 100), 2);
+    const subtotal = importe - descuentoImporte;
     const impuesto = round(subtotal * 0.16, 2);
     const total = subtotal + impuesto;
+    const kilos = this.calcularKilos(cantidad, producto);
     return {
-      importe: importeBruto,
+      importe: importe,
+      descuento,
       descuentoImporte,
       subtotal,
       impuesto,
       total,
+      kilos,
     };
   }
 
@@ -158,7 +163,7 @@ export class PartidaFormService {
       descripcion: [{ value: null, disabled: true }],
       cantidad: 0,
       precio: 0,
-      importeBruto: 0,
+      importe: 0,
       descuento: 0,
       descuentoEspecial: 0,
       descuentoImporte: 0,
@@ -179,6 +184,7 @@ export class PartidaFormService {
 
   getPedidoItemData(params: PedidoItemParams): Partial<PedidoDet> {
     const formData: any = this.form.getRawValue();
+    const corte: Corte = formData;
     const producto: Producto = formData.producto;
     const cantidad: number = formData.cantidad;
 
@@ -194,16 +200,17 @@ export class PartidaFormService {
           : producto.precioContado,
     };
 
-    const corteForm = this.form.get('corte') as FormGroup;
-    const corteData = corteForm.value;
+    // const corteData = corteForm.value;
 
-    if (corteData.tantos > 0) {
-      const corte: Corte = { ...corteData };
+    if (corte.tantos > 0) {
       if (corte.instruccion !== 'ESPECIAL') {
         corte.instruccionEspecial = null;
       }
       item.corte = corte;
       item.importeCortes = round(corte.cantidad * corte.precio, 2);
+    } else {
+      item.corte = null;
+      item.importeCortes = 0.0;
     }
     return item;
   }

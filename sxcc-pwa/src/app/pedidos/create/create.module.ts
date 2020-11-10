@@ -16,6 +16,9 @@ import { PedidoItemCorteComponent } from './add-partida/corte/pedido-item-corte.
 import { PedidoItemDescripcionComponent } from './add-partida/descripcion/pedido-item-descripcion.component';
 import { PedidoItemValidationComponent } from './add-partida/validation/pedido-item-validation.component';
 
+import { PedidoItemService } from './add-partida/pedido-item.service';
+import { CreateOptionsComponent } from './create-options.component';
+
 @NgModule({
   imports: [
     IonicModule,
@@ -26,6 +29,7 @@ import { PedidoItemValidationComponent } from './add-partida/validation/pedido-i
   ],
   declarations: [
     CreatePage,
+    CreateOptionsComponent,
     AddPartidaComponent,
     InstruccionDeCorteComponent,
     PedidoItemExistenciaComponent,
@@ -33,5 +37,6 @@ import { PedidoItemValidationComponent } from './add-partida/validation/pedido-i
     PedidoItemDescripcionComponent,
     PedidoItemValidationComponent,
   ],
+  providers: [PedidoItemService],
 })
 export class CreatePageModule {}

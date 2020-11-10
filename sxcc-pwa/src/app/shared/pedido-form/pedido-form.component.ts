@@ -6,14 +6,17 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  ViewChild,
 } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 
 import {
   Cliente,
+  DescuentoPorVolumen,
   Pedido,
   PedidoDet,
-  PedidoImportes,
+  PedidoParams,
+  PedidoSummary,
   Sucursal,
   TipoDePedido,
 } from 'src/app/models';
@@ -22,8 +25,10 @@ import {
   PedidoFormBuilderService,
 } from './pedido-form.builder.service';
 import { BaseComponent } from '../common';
-import { takeUntil } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { PedidoValidationComponent } from './validation/pedido-validation.component';
+import { getClienteMostrador } from '@data-access/+state/pedidos/pedido.utils';
 
 @Component({
   selector: 'sxcc-pedido-form',
@@ -33,17 +38,25 @@ import { Observable } from 'rxjs';
 })
 export class PedidoFormComponent extends BaseComponent implements OnInit {
   @Input() pedido: Pedido;
-  @Input() sucursales: Sucursal[] = [];
+
   @Output() save = new EventEmitter<Pedido>();
-  @Output() sumaryChanged = new EventEmitter<PedidoImportes>();
+  @Output() sumaryChanged = new EventEmitter<PedidoSummary>();
+  @Output() paramsChanged = new EventEmitter<PedidoParams>();
+  @Output() descuentoAlert = new EventEmitter<any>();
+  @Output() errors = new EventEmitter<ValidationErrors | null>();
 
   form = this.formService.form;
+
   // form: FormGroup;
   controls = this.formService.buildPedidoFormControls(this.form);
 
   partidas$ = this.formService.partidas$;
-  sumary$ = this.formService.sumary$;
+  summary$ = this.formService.summary$;
+
   segment = 'partidas';
+
+  @ViewChild(PedidoValidationComponent)
+  validationComponent: PedidoValidationComponent;
 
   constructor(
     private formService: PedidoFormBuilderService,
@@ -53,36 +66,53 @@ export class PedidoFormComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form.patchValue(this.pedido);
+    this.formService.setPedido(this.pedido, false);
+    this.form.markAsPristine();
     this.addListeners();
   }
 
   addListeners() {
-    // this.formService.recalaulo$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((params) => {
-    //     console.log('Recalcular con parametros: ', params);
-    //   });
+    this.formService.recalcular$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((params) => {});
 
     this.formService.params$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((params) => {
-        // console.log('Recalcular con parametros: ', params);
-      });
-    this.formService.descuento$.subscribe((descuento) =>
-      console.log('Descuento calcularo: ', descuento)
-    );
-    this.sumary$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((totales) => this.sumaryChanged.emit(totales));
+      .subscribe((params) => this.paramsChanged.emit(params));
 
-    // this.partidas$.subscribe((items) => console.log('Items: ', items));
+    this.formService.summary$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((summary) => this.sumaryChanged.emit(summary));
+
+    this.formService.proximoDescuento$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        if (data) {
+          const { faltantePorcentual } = data;
+          if (faltantePorcentual < 10) {
+            this.descuentoAlert.emit(data);
+          }
+        }
+      });
+
+    // Errors notification
+    this.form.statusChanges
+      .pipe(takeUntil(this.destroy$), startWith('VALID'))
+      .subscribe((status) => {
+        this.errors.next(this.form.errors);
+      });
+
+    this.formService.pedidoChanges$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {});
   }
 
-  setCliente(cliente: Cliente) {
-    console.log('Cliente:  ', cliente.nombre);
-    this.controls.cliente.setValue(cliente);
-    this.controls.nombre.setValue(cliente.nombre);
+  setCliente(cliente: Partial<Cliente>) {
+    this.formService.setCliente(cliente);
+  }
+
+  setDescuentoEspecial(descuento: number) {
+    this.formService.setDescuentoEspecial(descuento);
   }
 
   getEditItemParams() {
@@ -96,5 +126,37 @@ export class PedidoFormComponent extends BaseComponent implements OnInit {
 
   addPartida(item: PedidoDet) {
     this.formService.addPartidas(item);
+  }
+
+  removePartida(index: number) {
+    this.formService.removePartida(index);
+  }
+
+  submit() {
+    console.log('PedidoId: ', this.pedido.id);
+    console.log('Changes: ', this.form.getRawValue());
+  }
+
+  /**
+   *
+   */
+  showValidation() {
+    this.validationComponent.setVisible();
+  }
+
+  get params$() {
+    return this.formService.params$;
+  }
+
+  get valid() {
+    return this.form.valid;
+  }
+
+  get pristine() {
+    return this.form.pristine;
+  }
+
+  get canSave() {
+    return this.form.pristine;
   }
 }

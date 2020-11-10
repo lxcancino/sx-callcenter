@@ -57,4 +57,10 @@ export class ProductoService {
         console.log('Actions: ', actions);
       });
   }
+
+  findByClave(clave: string): Observable<Producto> {
+    return this.productosMap$.pipe(
+      map((productos) => productos[clave.toUpperCase()])
+    );
+  }
 }

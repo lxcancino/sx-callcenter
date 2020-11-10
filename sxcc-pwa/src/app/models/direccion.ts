@@ -7,8 +7,8 @@ export interface Direccion {
   municipio?: string;
   estado: string;
   pais: 'MEXICO' | 'Mexico' | 'México' | 'ESTADOS UNIDOS' | 'CANADA';
-  latitud?: string;
-  longitud?: string;
+  latitud?: number;
+  longitud?: number;
 }
 
 export function buildDireccionKey(direccion: Direccion) {

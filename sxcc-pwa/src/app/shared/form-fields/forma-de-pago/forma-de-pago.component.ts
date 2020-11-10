@@ -1,5 +1,15 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
+
+import { FormaDePago } from '@models';
+
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'sxcc-forma-de-pago',
@@ -15,27 +25,35 @@ import { FormGroup } from '@angular/forms';
           {{ t.descripcion }}
         </ion-select-option>
       </ion-select>
+      <ion-note color="danger" *ngIf="validoEnCod$ | async">
+        Inválido en COD
+      </ion-note>
+      <ion-note color="danger" *ngIf="postFechadoNoPermitido$ | async">
+        PSF No permitido
+      </ion-note>
     </ion-item>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormaDePagoComponent {
+export class FormaDePagoComponent implements OnInit {
   @Input() parent: FormGroup;
 
   @Input() tipos = [
-    { clave: 'EFECTIVO', descripcion: 'Efectivo' },
-    { clave: 'TRANSFERENCIA', descripcion: 'Transferencia' },
-    { clave: 'DEPOSITO_EFECTIVO', descripcion: 'Dep efectivo' },
-    { clave: 'DEPOSITO_CHEQUE', descripcion: 'Dep cheque' },
-    { clave: 'DEPOSITO_MIXTO', descripcion: 'Dep mixto' },
-    { clave: 'TARJETA_CRE', descripcion: 'Tarjeta (Cre)' },
-    { clave: 'TARJETA_DEB', descripcion: 'Tarjeta (Dev)' },
-    { clave: 'CHEQUE', descripcion: 'Cheque' },
-    { clave: 'CHEQUE_PSTF', descripcion: 'Cheque (PSF)' },
-    { clave: 'NO_DEFINIDO', descripcion: 'No definido' },
+    { clave: FormaDePago.EFECTIVO, descripcion: 'Efectivo' },
+    { clave: FormaDePago.TRANSFERENCIA, descripcion: 'Transferencia' },
+    { clave: FormaDePago.DEPOSITO_EFECTIVO, descripcion: 'Dep efectivo' },
+    { clave: FormaDePago.DEPOSITO_CHEQUE, descripcion: 'Dep cheque' },
+    { clave: FormaDePago.DEPOSITO_MIXTO, descripcion: 'Dep mixto' },
+    { clave: FormaDePago.TARJETA_CRE, descripcion: 'Tarjeta (Cre)' },
+    { clave: FormaDePago.TARJETA_DEB, descripcion: 'Tarjeta (Dev)' },
+    { clave: FormaDePago.CHEQUE, descripcion: 'Cheque' },
+    { clave: FormaDePago.CHEQUE_PSTF, descripcion: 'Cheque (PSF)' },
+    { clave: FormaDePago.NO_DEFINIDO, descripcion: 'No definido' },
   ];
   @Input() property = 'formaDePago';
   @Input() label = 'Forma de pago';
+  validoEnCod$: Observable<boolean>;
+  postFechadoNoPermitido$: Observable<boolean>;
 
   customPopoverOptions: any = {
     header: 'Tipo de pedido',
@@ -44,4 +62,18 @@ export class FormaDePagoComponent {
   };
 
   constructor() {}
+
+  ngOnInit() {
+    this.validoEnCod$ = this.parent.statusChanges.pipe(
+      map(() => this.parent.hasError('formaDePagoInvalidaEnCod'))
+    );
+
+    this.postFechadoNoPermitido$ = this.parent.statusChanges.pipe(
+      map(() => this.parent.hasError('postFechadoNoPermitido'))
+    );
+  }
+
+  hasErrorInCod() {
+    return this.parent.hasError('formaDePagoInvalidaEnCod');
+  }
 }

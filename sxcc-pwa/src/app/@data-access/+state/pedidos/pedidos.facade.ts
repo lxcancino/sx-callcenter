@@ -10,9 +10,7 @@ import * as firebase from 'firebase/app';
 @Injectable({ providedIn: 'root' })
 export class PedidosFacade {
   current$: Observable<Pedido>;
-  newPedido$ = new BehaviorSubject<Pedido>(buildNewPedido()).pipe(
-    shareReplay()
-  );
+
   constructor(private firestore: AngularFirestore) {}
 
   async saveToCart(pedido: Pedido) {
@@ -52,5 +50,13 @@ export class PedidosFacade {
           console.log('Pedido registrado: ', id);
         });
     });
+  }
+
+  createNewPedido(): Pedido {
+    return buildNewPedido();
+  }
+
+  createId(): string {
+    return this.firestore.createId();
   }
 }

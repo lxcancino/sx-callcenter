@@ -24,7 +24,7 @@ export class TipoDePedidoComponent {
   @Input() tipos = [
     { clave: 'CON', descripcion: 'Contado' },
     { clave: 'CRE', descripcion: 'Crédito' },
-    { clave: 'COD', descripcion: 'Envio' },
+    { clave: 'COD', descripcion: 'Envio (COD)' },
   ];
   @Input() property = 'tipo';
   @Input() label = 'Tipo';
