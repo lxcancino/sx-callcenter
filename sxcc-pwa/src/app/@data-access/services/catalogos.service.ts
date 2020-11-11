@@ -4,17 +4,28 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 
-import { Producto, Sucursal } from 'src/app/models';
+import { Producto, Sucursal, Transporte } from 'src/app/models';
 import { AngularFirestore } from '@angular/fire/firestore';
+
+import sortBy from 'lodash-es/sortBy';
 
 @Injectable({ providedIn: 'root' })
 export class CatalogosService {
   private sucursalesUrl = 'assets/data/sucursales.json';
+  private transportesUrl = 'assets/data/transportes.json';
 
   sucursales$: Observable<Sucursal[]> = this.http
     .get<Sucursal[]>(this.sucursalesUrl)
     .pipe(
       shareReplay(),
+      catchError((error: any) => throwError(error))
+    );
+
+  transportes$: Observable<Transporte[]> = this.http
+    .get<Transporte[]>(this.transportesUrl)
+    .pipe(
+      shareReplay(),
+      map((data) => sortBy(data, 'nombre')),
       catchError((error: any) => throwError(error))
     );
 

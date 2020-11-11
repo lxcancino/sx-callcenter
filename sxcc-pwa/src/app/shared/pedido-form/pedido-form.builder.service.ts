@@ -43,6 +43,7 @@ import {
 import { DescuentosService } from '@data-access/services/descuentos.service';
 import { PedidoValidators } from './validation/pedido-validators';
 import { CreditoValidators } from './validation/credito.validators';
+import { buildDireccionForm } from '@utils';
 
 export interface PedidoControls {
   id?: AbstractControl;
@@ -163,7 +164,21 @@ export class PedidoFormBuilderService {
         kilos: [],
         corteImporte: [],
         cargosPorManiobra: [],
-        envio: this.fb.group({}),
+        envio: this.fb.group(
+          {
+            tipo: ['ENVIO', [Validators.required]],
+            transporte: [{ value: null, disabled: false }],
+            contacto: [null, [Validators.required]],
+            telefono: [null, [Validators.required]],
+            horario: [null, [Validators.required]],
+            horarioInicial: ['2020-11-10T09:00:59.265-06:00'],
+            horarioFinal: ['2020-11-10T19:00:23.461-06:00'],
+            comentario: [],
+            fechaDeEntrega: [new Date().toISOString()],
+            direccion: [{ value: null, disabled: true }],
+          },
+          { updateOn: 'blur' }
+        ),
       },
       {
         validators: [

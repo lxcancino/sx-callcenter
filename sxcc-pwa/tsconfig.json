@@ -16,7 +16,8 @@
       "@environment/*": ["src/environments/*"],
       "@models": ["src/app/models"],
       "@data-access/*": ["src/app/@data-access/*"],
-      "@shared/*": ["src/app/shared/*"]
+      "@shared/*": ["src/app/shared/*"],
+      "@utils": ["src/app/utils"]
     }
   },
   "angularCompilerOptions": {

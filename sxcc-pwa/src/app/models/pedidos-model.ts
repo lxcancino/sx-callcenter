@@ -136,6 +136,13 @@ export interface InstruccionDeEnvio {
   sucursal?: string;
 }
 
+// export enum TipoDeEnvio {
+//   Envio = 'ENVIO',
+//   Foraneo = 'FORANEO',
+//   Ocurre = 'OCURRE',
+//   EnvioCarto = 'ENVIO_CARGO'
+// }
+
 export interface PedidoAutorizacion {
   sucursal: string;
   tags: string;
