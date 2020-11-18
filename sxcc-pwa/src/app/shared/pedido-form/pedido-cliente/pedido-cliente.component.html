@@ -1,0 +1,43 @@
+<ion-grid class="ion-no-padding">
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">Cliente:</ion-label>
+        <ion-input [formControl]="form.controls.nombre"
+          [clearInput]="true"
+          autocapitalize="characters"></ion-input>
+      </ion-item>
+      <ion-note color="danger"
+        *ngIf="form.getError('creditoRequerido')">
+        Cliente no es de crédito
+      </ion-note>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item [color]="creditoPanelColor">
+        <ion-label position="floating">Crédito</ion-label>
+        <ion-input [value]="lineaDeCredito"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item [color]="creditoPanelColor">
+        <ion-label position="floating">Saldo</ion-label>
+        <ion-input [value]="saldo"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item [color]="creditoPanelColor">
+        <ion-label position="floating">Atraso máximp</ion-label>
+        <ion-input color="warning"
+          [value]="atrasoMaximo"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <!-- <ion-item [color]="creditoPanelColor">
+        <ion-label>Suspendido</ion-label>
+        <ion-toggle disabled></ion-toggle>
+      </ion-item> -->
+    </ion-col>
+  </ion-row>
+</ion-grid>

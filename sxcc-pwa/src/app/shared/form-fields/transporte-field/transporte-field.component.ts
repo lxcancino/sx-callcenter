@@ -11,7 +11,11 @@ import { Transporte } from 'src/app/models';
 @Component({
   selector: 'sxcc-transporte',
   template: `
-    <ion-item [formGroup]="parent">
+    <ion-item
+      [formGroup]="parent"
+      [disabled]="parent.get('transporte').disabled"
+    >
+      <ion-icon slot="start" color="dark" name="trail-sign"></ion-icon>
       <ion-label position="floating">{{ label }}</ion-label>
       <ion-select
         placeholder="Transporte"

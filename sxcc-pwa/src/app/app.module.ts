@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DataAccessModule } from './@data-access/data-access.module';
+import { CoreModule } from './@core/core.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { DataAccessModule } from './@data-access/data-access.module';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    CoreModule,
     DataAccessModule,
   ],
   providers: [

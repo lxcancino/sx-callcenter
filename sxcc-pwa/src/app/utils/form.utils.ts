@@ -1,4 +1,9 @@
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ValidationErrors,
+} from '@angular/forms';
 
 export const buildDireccionForm = (fb: FormBuilder): FormGroup => {
   return fb.group(
@@ -27,3 +32,21 @@ export const getDireccionKey = (dd: any): string => {
   }`;
   return key;
 };
+
+export function getFormValidationErrors(form: FormGroup) {
+  const result = [];
+  Object.keys(form.controls).forEach((key) => {
+    const controlErrors: ValidationErrors = form.get(key).errors;
+    if (controlErrors) {
+      Object.keys(controlErrors).forEach((keyError) => {
+        result.push({
+          control: key,
+          error: keyError,
+          value: controlErrors[keyError],
+        });
+      });
+    }
+  });
+
+  return result;
+}

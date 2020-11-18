@@ -8,7 +8,9 @@ import { FormFieldsModule } from '@shared/form-fields/form-fields.module';
 
 import { EnvioComponent } from './envio.component';
 import { EnvioTipoComponent } from './envio-tipo.component';
-import { EnvioDireccionesComponent } from './envio-direciones.component';
+import { EnvioHorarioFieldComponent } from './envio-horario-field.component';
+import { EnvioDireccionComponent } from './envio-direccion.component';
+import { DireccionModule } from '@shared/direccion/direccion.module';
 
 @NgModule({
   imports: [
@@ -17,8 +19,14 @@ import { EnvioDireccionesComponent } from './envio-direciones.component';
     ReactiveFormsModule,
     IonicModule,
     FormFieldsModule,
+    DireccionModule,
   ],
-  declarations: [EnvioComponent, EnvioTipoComponent, EnvioDireccionesComponent],
+  declarations: [
+    EnvioComponent,
+    EnvioTipoComponent,
+    EnvioDireccionComponent,
+    EnvioHorarioFieldComponent,
+  ],
   providers: [],
   exports: [EnvioComponent],
 })

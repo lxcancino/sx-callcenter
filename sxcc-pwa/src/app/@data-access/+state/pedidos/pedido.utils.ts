@@ -31,7 +31,8 @@ export function buildNewPedido(): Pedido {
     total: 0,
     kilos: 0.0,
     status: 'COTIZACION',
-    usoDeCfdi: '03',
+    usoDeCfdi: null,
+    //usoDeCfdi: '03',
   };
 }
 

@@ -8,32 +8,35 @@ import {
   ChangeDetectorRef,
   ViewChild,
 } from '@angular/core';
-import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { ValidationErrors, FormGroup } from '@angular/forms';
+
+import {
+  catchError,
+  startWith,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import {
   Cliente,
-  DescuentoPorVolumen,
   Pedido,
   PedidoDet,
   PedidoParams,
   PedidoSummary,
-  Sucursal,
-  TipoDePedido,
 } from 'src/app/models';
-import {
-  PedidoControls,
-  PedidoFormBuilderService,
-} from './pedido-form.builder.service';
+import { PedidoFormBuilderService } from './pedido-form.builder.service';
 import { BaseComponent } from '../common';
-import { startWith, takeUntil } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { PedidoValidationComponent } from './validation/pedido-validation.component';
-import { getClienteMostrador } from '@data-access/+state/pedidos/pedido.utils';
+import { ClientesService } from '@data-access/services/clientes.service';
+import { getFormValidationErrors } from '@utils';
 
 @Component({
   selector: 'sxcc-pedido-form',
   templateUrl: './pedido-form.component.html',
   styleUrls: ['./pedido-form.component.scss'],
+  providers: [PedidoFormBuilderService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PedidoFormComponent extends BaseComponent implements OnInit {
@@ -69,6 +72,18 @@ export class PedidoFormComponent extends BaseComponent implements OnInit {
     this.formService.setPedido(this.pedido, false);
     this.form.markAsPristine();
     this.addListeners();
+    this.connectFirebase();
+  }
+
+  connectFirebase() {
+    this.formService.firebaseCliente$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ nombre, direccionesEntrega, direccion, direcciones }) => {
+        // console.log('Cliente :', nombre);
+        // console.log('Direccion: ', direccion);
+        // console.log('Direcciones: ', direcciones);
+        // console.log('Direcciones de engrega: ', direccionesEntrega);
+      });
   }
 
   addListeners() {
@@ -97,9 +112,10 @@ export class PedidoFormComponent extends BaseComponent implements OnInit {
 
     // Errors notification
     this.form.statusChanges
-      .pipe(takeUntil(this.destroy$), startWith('VALID'))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((status) => {
-        this.errors.next(this.form.errors);
+        console.log('PedidoForm.STATUS: ', status);
+        this.errors.next(this.getErrors());
       });
 
     this.formService.pedidoChanges$
@@ -107,8 +123,12 @@ export class PedidoFormComponent extends BaseComponent implements OnInit {
       .subscribe(() => {});
   }
 
+  clienteId$: BehaviorSubject<string>;
+  firebaseCliente$: Observable<Cliente>;
+
   setCliente(cliente: Partial<Cliente>) {
     this.formService.setCliente(cliente);
+    this.clienteId$.next(cliente.id);
   }
 
   setDescuentoEspecial(descuento: number) {
@@ -142,6 +162,23 @@ export class PedidoFormComponent extends BaseComponent implements OnInit {
    */
   showValidation() {
     this.validationComponent.setVisible();
+  }
+
+  getErrors() {
+    // const errores = Object.keys(this.form.errors || {});
+    // return errores;
+    return this.form.errors;
+  }
+
+  getPedidoControlsErrors() {
+    const errors = getFormValidationErrors(this.form);
+    return errors.map((err) => `pedido.${err.control}.${err.error}`);
+  }
+
+  getEnvioControlsErrors() {
+    const eform = this.form.get('envio') as FormGroup;
+    const errors = getFormValidationErrors(eform);
+    return errors.map((err) => `envio.${err.control}.${err.error}`);
   }
 
   get params$() {

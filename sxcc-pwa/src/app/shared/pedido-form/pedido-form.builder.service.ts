@@ -27,7 +27,6 @@ import {
   TipoDePedido,
   FormaDePago,
   Cliente,
-  DescuentoPorVolumen,
   PedidoSummary,
 } from 'src/app/models';
 
@@ -43,7 +42,7 @@ import {
 import { DescuentosService } from '@data-access/services/descuentos.service';
 import { PedidoValidators } from './validation/pedido-validators';
 import { CreditoValidators } from './validation/credito.validators';
-import { buildDireccionForm } from '@utils';
+import { ClientesService } from '@data-access/services/clientes.service';
 
 export interface PedidoControls {
   id?: AbstractControl;
@@ -91,6 +90,7 @@ const toSummary = (items: PedidoDet[]): PedidoSummary => {
 export class PedidoFormBuilderService {
   // Form an Form related state
   form: FormGroup = this.buildForm();
+  cliente$: Observable<Cliente> = this.form.get('cliente').valueChanges;
   tipo$: Observable<TipoDePedido> = this.form.get('tipo').valueChanges;
   formaDePago$ = this.form.get('formaDePago').valueChanges;
   descuentoEspecial$ = this.form.get('descuentoEspecial').valueChanges;
@@ -124,12 +124,19 @@ export class PedidoFormBuilderService {
 
   pedidoChanges$ = this.form.valueChanges.pipe(
     map((data) => ({ ...data })),
-    tap((data) => console.log('Current Value: ', data))
+    withLatestFrom(this.form.statusChanges),
+    tap(([data, status]) => console.log('Current Value: ', data, status))
+  );
+
+  firebaseCliente$: Observable<Cliente> = this.cliente$.pipe(
+    tap((cte) => console.log('CLIENTE:', cte.nombre)),
+    switchMap((cte) => this.clienteService.findById(cte.id))
   );
 
   constructor(
     private fb: FormBuilder,
-    private descuentoService: DescuentosService
+    private descuentoService: DescuentosService,
+    private clienteService: ClientesService
   ) {}
 
   private buildForm(): FormGroup {
@@ -164,20 +171,45 @@ export class PedidoFormBuilderService {
         kilos: [],
         corteImporte: [],
         cargosPorManiobra: [],
+        comprador: [null, [Validators.maxLength(50)]],
+        comentario: [
+          null,
+          { validators: [Validators.maxLength(255)], updateOn: 'blur' },
+        ],
+        usoDeCfdi: [null, [Validators.required]],
+        cfdiMail: [null, [Validators.email]],
         envio: this.fb.group(
           {
             tipo: ['ENVIO', [Validators.required]],
             transporte: [{ value: null, disabled: false }],
-            contacto: [null, [Validators.required]],
-            telefono: [null, [Validators.required]],
-            horario: [null, [Validators.required]],
-            horarioInicial: ['2020-11-10T09:00:59.265-06:00'],
-            horarioFinal: ['2020-11-10T19:00:23.461-06:00'],
+            contacto: [
+              null,
+              {
+                validators: [
+                  Validators.required,
+                  Validators.minLength(5),
+                  Validators.maxLength(50),
+                ],
+                updateOn: 'blur', // Required to capitalize de value
+              },
+            ],
+            telefono: [
+              null,
+              [
+                Validators.required,
+                Validators.minLength(10),
+                Validators.maxLength(10),
+              ],
+            ],
+            horario: [
+              { horaInicial: '08:00', horaFinal: '19:00' },
+              [Validators.required],
+            ],
             comentario: [],
             fechaDeEntrega: [new Date().toISOString()],
             direccion: [{ value: null, disabled: true }],
           },
-          { updateOn: 'blur' }
+          { updateOn: 'change' }
         ),
       },
       {
@@ -189,6 +221,7 @@ export class PedidoFormBuilderService {
           PedidoValidators.EnJuridico,
           PedidoValidators.ChequesDevueltos,
           PedidoValidators.SocioRequerido,
+          PedidoValidators.EnvioRequerido,
           CreditoValidators.CreditoRequired,
           CreditoValidators.PostFechadoRequerido,
           CreditoValidators.PostFechadoNoPermitido,
@@ -249,10 +282,11 @@ export class PedidoFormBuilderService {
   }
 
   setCliente(cliente: Partial<Cliente>) {
-    const { credito, nombre, rfc } = cliente;
-    this.form.patchValue({ cliente, nombre });
-    this.controls.credito.patchValue(credito);
+    const { credito, rfc, id } = cliente;
+    this.controls.cliente.setValue(cliente);
+    this.controls.credito.setValue(credito);
     this.enableNombre(rfc);
+    this.firebaseCliente$ = this.clienteService.findById(id);
     this.params.next(toParams(this.form));
   }
 

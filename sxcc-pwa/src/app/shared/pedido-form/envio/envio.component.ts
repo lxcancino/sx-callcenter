@@ -1,96 +1,149 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { BaseComponent } from '@shared/common';
 
-import { buildDireccionForm } from '@utils';
+import capitalize from 'lodash-es/capitalize';
+import words from 'lodash-es/words';
+import { takeUntil, map, startWith } from 'rxjs/operators';
+import { differenceInHours } from 'date-fns/fp';
+import { PedidoFormBuilderService } from '../pedido-form.builder.service';
+import { Observable } from 'rxjs';
+import { ClienteDireccion } from '@models';
+
+const hourToDate = (value: string): Date => {
+  const [hours, minutes] = value.split(':').map((item) => parseFloat(item));
+  const now = new Date();
+  now.setHours(hours);
+  now.setMinutes(minutes);
+  now.setSeconds(0);
+  now.setMinutes(0);
+  return now;
+};
+
+const HorarioValidator = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const horario = control.value;
+  const horaInicial = hourToDate(horario.horaInicial);
+  const horaFinal = hourToDate(horario.horaFinal);
+  const diff = differenceInHours(horaInicial, horaFinal);
+  return diff < 1 ? { tooEarly: true } : null;
+};
 
 @Component({
   selector: 'sxcc-envio',
   template: `
     <ion-grid>
-      <ion-row>
-        <ion-col size="12" size-md="6">
-          <sxcc-envio-tipo [parent]="form"></sxcc-envio-tipo>
+      <ion-row class="ion-align-items-stretch">
+        <ion-col size="12" size-sm="4" push-sm="8">
+          <ion-item>
+            <ion-label position="stacked"> Habilitar</ion-label>
+            <ion-toggle (ionChange)="setEnvio($event)"></ion-toggle>
+          </ion-item>
         </ion-col>
-        <ion-col size="12" size-md="6">
-          <sxcc-transporte [parent]="form"></sxcc-transporte>
+        <ion-col size="12" size-sm="8" pull-sm="4">
+          <sxcc-envio-tipo [parent]="form" class="tipo"></sxcc-envio-tipo>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <sxcc-envio-direcciones [parent]="form"></sxcc-envio-direcciones>
+          <sxcc-transporte [parent]="form"></sxcc-transporte>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col [formGroup]="form">
+          <sxcc-envio-direccion
+            formControlName="direccion"
+            [direcciones]="direcciones$ | async"
+          ></sxcc-envio-direccion>
         </ion-col>
       </ion-row>
       <ion-row [formGroup]="form">
         <ion-col size="12" size-md="6">
-          <ion-item>
+          <ion-item [disabled]="form.get('contacto').disabled">
+            <ion-icon name="person-circle" slot="start" color="dark"></ion-icon>
+
             <ion-label position="floating">Contacto *</ion-label>
             <ion-input
               formControlName="contacto"
               class="ion-text-capitalize"
+              autocapitalize="on"
             ></ion-input>
           </ion-item>
           <ion-note
             color="danger"
             *ngIf="controls.contacto.hasError('required') && form.dirty"
           >
-            Se reqyiere el nombre del contacto
+            Se requiere el nombre del contacto
+          </ion-note>
+          <ion-note
+            class="ion-padding-start ion-padding-top"
+            *ngIf="controls.contacto.hasError('minlength')"
+          >
+            Mínimo 5 caracteres
+          </ion-note>
+          <ion-note
+            class="ion-padding-start ion-padding-top"
+            *ngIf="controls.contacto.hasError('maxlength')"
+          >
+            Máximo 50 caracteres
           </ion-note>
         </ion-col>
         <ion-col size="12" size-md="6">
-          <ion-item>
+          <ion-item [disabled]="controls.telefono.disabled">
+            <ion-icon name="call" color="dark" slot="start"></ion-icon>
             <ion-label position="floating">Teléfono</ion-label>
-            <ion-input type="tel" formControlName="telefono"></ion-input>
+            <ion-input
+              type="tel"
+              formControlName="telefono"
+              inputmode="tel"
+            ></ion-input>
+            <ion-icon
+              name="checkmark"
+              color="success"
+              slot="end"
+              *ngIf="controls.telefono.valid && form.dirty"
+            ></ion-icon>
           </ion-item>
+          <ion-note
+            class="ion-padding-start"
+            color="danger"
+            *ngIf="
+              (controls.telefono.hasError('minlength') ||
+                controls.telefono.hasError('maxlength') ||
+                controls.telefono.hasError('required')) &&
+              form.dirty
+            "
+          >
+            Se requiere número a 10 digitos
+          </ion-note>
         </ion-col>
       </ion-row>
 
       <ion-row [formGroup]="form">
         <ion-col size="12" size-md="6">
-          <ion-item>
-            <ion-label position="floating">Fecha de entrega</ion-label>
-            <ion-datetime
-              cancelText="Cancelar"
-              doneText="Seleccionar"
-              displayFormat="DD, MMM YYYY "
-              [dayShortNames]="customDayShortNames"
-              [monthShortNames]="monthShortNames"
-              formControlName="fechaDeEntrega"
-            ></ion-datetime>
-          </ion-item>
+          <sxcc-date-field
+            formControlName="fechaDeEntrega"
+            label="Entrega"
+          ></sxcc-date-field>
         </ion-col>
-        <ion-col size="6" size-md="3">
-          <ion-item>
-            <ion-label position="floating">Entregar de:</ion-label>
-            <ion-datetime
-              mode="ios"
-              displayFormat="hh:mm A"
-              pickerFormat="HH:mm"
-              doneText="Aceptar"
-              cancelText="Cancelar"
-              minuteValues="0,15,30,45"
-              formControlName="horarioInicial"
-            ></ion-datetime>
-          </ion-item>
-        </ion-col>
-        <ion-col size="6" size-md="3">
-          <ion-item>
-            <ion-label position="floating">a:</ion-label>
-            <ion-datetime
-              mode="ios"
-              displayFormat="hh:mm A"
-              pickerFormat="HH:mm"
-              doneText="Aceptar"
-              cancelText="Cancelar"
-              minuteValues="0,15,30,45"
-              formControlName="horarioFinal"
-            ></ion-datetime>
-          </ion-item>
+        <ion-col>
+          <sxcc-envio-horario-field
+            formControlName="horario"
+          ></sxcc-envio-horario-field>
+          <ion-note
+            color="danger"
+            class="ion-padding-start ion-padding-top"
+            *ngIf="controls.horario.hasError('tooEarly')"
+          >
+            Debe haber al menos 1 hora de intervalo
+          </ion-note>
         </ion-col>
       </ion-row>
 
@@ -107,56 +160,105 @@ import { buildDireccionForm } from '@utils';
       </ion-row>
     </ion-grid>
   `,
+  styles: [
+    `
+      .tipo-panel {
+        display: flex;
+        .tipo {
+          flex: 1;
+        }
+      }
+      .tipo {
+        width: 100%;
+        flex: 1;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EnvioComponent implements OnInit {
+export class EnvioComponent extends BaseComponent implements OnInit {
   @Input() parent: FormGroup;
   form: FormGroup;
-  customDayShortNames = ['lun', 'mar', 'mie', 'jue', 'vie', 'sab', 'dom'];
-  monthShortNames = [
-    'ene',
-    'feb',
-    'mar',
-    'abr',
-    'may',
-    'jun',
-    'jul',
-    'ago',
-    'sep',
-    'oct',
-    'nov',
-    'dec',
-  ];
 
-  horarioOptions: any;
-  customPickerOption: any;
-  controls: any;
-  horaroIni: string;
+  controls: { [key: string]: AbstractControl };
 
-  constructor(private fb: FormBuilder) {
-    this.horarioOptions = {
-      text: 'Log',
-      handler: () => console.log(''),
-    };
+  direcciones$: Observable<ClienteDireccion[]>;
+
+  constructor(private pedidoService: PedidoFormBuilderService) {
+    super();
   }
 
   ngOnInit() {
+    this.initForm();
+    this.setControls();
+    this.setupHorarioControl();
+    this.registerContactoListener();
+    this.registerTipoListener();
+
+    ///
+    this.direcciones$ = this.pedidoService.firebaseCliente$.pipe(
+      map((cte) => cte.direccionesEntrega)
+    );
+  }
+
+  private initForm() {
     this.form = this.parent.get('envio') as FormGroup;
+    this.form.status === 'INVALID' ? this.form.disable() : this.form.enable();
+  }
+
+  private setControls() {
     this.controls = {
       tipo: this.form.controls.tipo,
+      transporte: this.form.controls.transporte,
       contacto: this.form.controls.contacto,
+      telefono: this.form.controls.telefono,
+      horario: this.form.controls.horario,
+      fechaDeEntrega: this.form.controls.fechaDeEntrega,
     };
-
-    const now = new Date();
-    now.setHours(9, 0);
-    this.horaroIni = now.toISOString();
   }
 
-  setHorario(event: any) {
-    console.log('Horario: ', event);
+  private setupHorarioControl() {
+    const horario: AbstractControl = this.form.get('horario');
+    horario.setValidators(HorarioValidator);
+    horario.updateValueAndValidity();
   }
 
-  setFechaDeEngrega({ detail }) {
-    console.log('Fecha de entrega: ', detail);
+  private registerContactoListener() {
+    this.contacto.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        const res = words(val)
+          .map((item) => capitalize(item))
+          .join(' ');
+        this.form.patchValue(
+          { contacto: res },
+          { emitEvent: false, onlySelf: true }
+        );
+      });
+  }
+
+  private registerTipoListener() {
+    this.tipo.valueChanges
+      .pipe(
+        map((t) => t === 'FORANEO' || t === 'OCURRE'),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((valid) =>
+        valid ? this.transporte.enable() : this.transporte.disable()
+      );
+  }
+
+  setEnvio({ detail: { checked } }) {
+    checked ? this.form.enable() : this.form.disable();
+  }
+
+  get tipo(): AbstractControl {
+    return this.controls.tipo;
+  }
+  get transporte(): AbstractControl {
+    return this.controls.transporte;
+  }
+  get contacto(): AbstractControl {
+    return this.controls.contacto;
   }
 }

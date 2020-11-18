@@ -1,26 +1,12 @@
 <ion-grid [formGroup]="form">
   <ion-row>
     <ion-col>
-      <ion-item>
-        <ion-label position="floating">Cliente:</ion-label>
-        <ion-input formControlName="nombre"
-          [clearInput]="true"
-          autocapitalize="characters"></ion-input>
-      </ion-item>
-      <ion-note color="danger"
-        *ngIf="form.getError('creditoRequerido')">
-        Cliente no es de crédito
-      </ion-note>
+      <sxcc-pedido-cliente [form]="form"></sxcc-pedido-cliente>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-item>
-        <ion-label position="floating">Fecha:</ion-label>
-        <ion-datetime formControlName="fecha"
-          displayFormat="MMMM DD,  YYYY"
-          [value]="form.get('fecha').value"></ion-datetime>
-      </ion-item>
+      <sxcc-date-field formControlName="fecha"></sxcc-date-field>
     </ion-col>
     <ion-col>
       <sxcc-tipo-de-pedido [parent]="form"></sxcc-tipo-de-pedido>
@@ -60,18 +46,22 @@
     </ion-segment-button>
   </ion-segment>
 </ion-toolbar>
-
+<!-- Partidas -->
 <div [style.display]="segment === 'partidas' ? 'block': 'none'">
   <sxcc-pedido-items-list [tipo]="controls.tipo.value"
     (delete)="removePartida($event)"
     [partidas]="partidas$ | async"></sxcc-pedido-items-list>
 </div>
+<!-- Cortes -->
 <div [style.display]="segment === 'cortes' ? 'block': 'none'">
-  Corte importe: {{form.get('corteImporte').value | currency}}
+  <sxcc-cortes-list [partidas]="partidas$ | async"
+    [parent]="form"></sxcc-cortes-list>
 </div>
+<!-- Envio -->
 <div [style.display]="segment === 'envio' ? 'block': 'none'">
   <sxcc-envio [parent]="form"></sxcc-envio>
 </div>
+<!-- Resumen -->
 <div [style.display]="segment === 'resumen' ? 'block': 'none'"
   *ngIf="summary$ | async as summary">
   <ion-grid>

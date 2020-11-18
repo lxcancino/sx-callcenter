@@ -1,39 +1,36 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Input,
   OnInit,
 } from '@angular/core';
-import { FormGroup, ValidationErrors } from '@angular/forms';
-import { BaseComponent } from '@shared/common';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 
-import { takeUntil, startWith, map, filter, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { startWith, map, tap } from 'rxjs/operators';
+
+import { BaseComponent } from '@shared/common';
+import { getFormValidationErrors } from '@utils';
 
 @Component({
   selector: 'sxcc-pedido-validation',
   template: `
-    <ion-grid *ngIf="errors$ | async as errores">
-      <ion-row>
-        <ion-col *ngIf="errores.length" size-md="6">
-          <ion-list class="ion-no-padding" *ngIf="visible$ | async">
-            <ion-list-header>
-              <ion-label>Errores</ion-label>
-              <ion-button color="tertiary" (click)="close()">
-                <ion-icon name="close"></ion-icon>
-                Cerrar
-              </ion-button>
-            </ion-list-header>
-            <ion-item *ngFor="let e of errores">
-              <ion-label color="danger">
-                {{ getDescripcion(e) }}
-              </ion-label>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ng-container *ngIf="errors$ | async as errors">
+      <ion-list class="ion-no-padding" *ngIf="visible$ | async">
+        <ion-list-header>
+          <ion-label>Errores</ion-label>
+          <ion-button color="tertiary" (click)="close()">
+            <ion-icon name="close"></ion-icon>
+            Cerrar
+          </ion-button>
+        </ion-list-header>
+        <ion-item *ngFor="let e of errors">
+          <ion-label color="danger">
+            {{ getDescripcion(e) }}
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -41,6 +38,7 @@ export class PedidoValidationComponent extends BaseComponent implements OnInit {
   @Input() parent: FormGroup;
   visible$ = new BehaviorSubject<boolean>(true); // Required to use OnPush detection esasy
   errors$: Observable<string[]>;
+  // envioErrors$: Observable<string[]>;
 
   constructor() {
     super();
@@ -51,8 +49,20 @@ export class PedidoValidationComponent extends BaseComponent implements OnInit {
       startWith('VALID'),
       map(() => this.parent.errors || {}),
       map((errors) => Object.keys(errors)),
+      map((errors) => [...errors, ...this.getEnvioErrores()]),
       tap((errors) => this.visible$.next(errors.length > 0))
     );
+
+    // this.envioErrors$ = this.parent.get('envio').statusChanges.pipe(
+    //   startWith('VALID'),
+    //   map(() => this.getEnvioErrores())
+    // );
+  }
+
+  getEnvioErrores() {
+    const eform = this.parent.get('envio') as FormGroup;
+    const errors = getFormValidationErrors(eform);
+    return errors.map((err) => `envio.${err.control}.${err.error}`);
   }
 
   setVisible() {
@@ -83,6 +93,8 @@ export class PedidoValidationComponent extends BaseComponent implements OnInit {
         return 'Cliente con cheque devuelto';
       case 'socioRequerido':
         return 'Socio de la union requerido';
+      case 'envioRequerido':
+        return 'Debe configurar el envio en COD';
       default:
         return key;
     }

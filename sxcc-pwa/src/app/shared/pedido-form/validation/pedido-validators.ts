@@ -77,4 +77,11 @@ export class PedidoValidators {
     const socio = form.value.socio;
     return union ? (isEmpty(socio) ? { socioRequerido: true } : null) : null;
   }
+
+  static EnvioRequerido(form: FormGroup): ValidationErrors | null {
+    const cod = form.value.tipo === TipoDePedido.COD;
+    if (!cod) return null; // Solo COD
+    const envio = form.get('envio');
+    return cod ? (envio.invalid ? { envioRequerido: true } : null) : null;
+  }
 }
