@@ -29,6 +29,7 @@ export function clienteMostrador(): Partial<Cliente> {
     activo: true
   };
 }
+
 /*
 71c52184-eb2b-11e7-b1f8-b4b52f67eab0	1	0.00	2017-12-27 11:29:08	1	100.00
 71c523be-eb2b-11e7-b1f8-b4b52f67eab0	1	10.00	2017-12-27 11:29:08	1	1000.00
@@ -40,17 +41,28 @@ export function clienteMostrador(): Partial<Cliente> {
 71c5249a-eb2b-11e7-b1f8-b4b52f67eab0	1	18.00	2017-12-27 11:29:08	1	150000.00
 71c524d6-eb2b-11e7-b1f8-b4b52f67eab0	1	19.00	2017-12-27 11:29:08	1	30000000.00
 */
+/*
+71c52184-eb2b-11e7-b1f8-b4b52f67eab0	1	0.00	2017-12-27 11:29:08	1	100.00
+71c523be-eb2b-11e7-b1f8-b4b52f67eab0	1	10.00	2017-12-27 11:29:08	1	1000.00
+71c523f0-eb2b-11e7-b1f8-b4b52f67eab0	1	11.00	2017-12-27 11:29:08	1	5000.00
+71c52418-eb2b-11e7-b1f8-b4b52f67eab0	1	13.00	2017-12-27 11:29:08	1	12000.00
+71c52436-eb2b-11e7-b1f8-b4b52f67eab0	1	14.00	2017-12-27 11:29:08	1	21500.00
+71c5245e-eb2b-11e7-b1f8-b4b52f67eab0	1	15.00	2017-12-27 11:29:08	1	46000.00
+71c5247c-eb2b-11e7-b1f8-b4b52f67eab0	1	16.00	2017-12-27 11:29:08	1	82000.00
+71c5249a-eb2b-11e7-b1f8-b4b52f67eab0	1	17.00	2017-12-27 11:29:08	1	150000.00
+71c524d6-eb2b-11e7-b1f8-b4b52f67eab0	1	18.00	2017-12-27 11:29:08	1	30000000.00
+*/
 
 export const DESCUENTOS = [
   { descuento: 0.0, importe: 100.0 },
   { descuento: 10.0, importe: 1000.0 },
-  { descuento: 12.0, importe: 5000.0 },
-  { descuento: 14.0, importe: 12000.0 },
-  { descuento: 15.0, importe: 21500.0 },
-  { descuento: 16.0, importe: 46000.0 },
-  { descuento: 17.0, importe: 82000.0 },
-  { descuento: 18.0, importe: 150000.0 },
-  { descuento: 19.0, importe: 30000000.0 }
+  { descuento: 11.0, importe: 5000.0 },
+  { descuento: 13.0, importe: 12000.0 },
+  { descuento: 14.0, importe: 21500.0 },
+  { descuento: 15.0, importe: 46000.0 },
+  { descuento: 16.0, importe: 82000.0 },
+  { descuento: 17.0, importe: 150000.0 },
+  { descuento: 18.0, importe: 30000000.0 }
 ];
 
 export function calcularImporteBruto(partidas: CartItem[]): number {
