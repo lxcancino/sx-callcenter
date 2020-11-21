@@ -75,7 +75,9 @@ export class CreatePage implements OnInit, AfterViewInit {
   async addPartida() {
     const params = this.pedidoForm.getEditItemParams();
     const item = await this.itemService.addPartida(params);
-    this.pedidoForm.addPartida({ ...item, id: this.facade.createId() });
+    if (item) {
+      this.pedidoForm.addPartida({ ...item, id: this.facade.createId() });
+    }
   }
 
   onSumaryChanged(summary: PedidoSummary) {

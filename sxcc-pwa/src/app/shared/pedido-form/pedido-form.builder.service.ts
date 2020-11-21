@@ -282,9 +282,10 @@ export class PedidoFormBuilderService {
   }
 
   setCliente(cliente: Partial<Cliente>) {
-    const { credito, rfc, id } = cliente;
+    const { nombre, credito, rfc, id } = cliente;
     this.controls.cliente.setValue(cliente);
     this.controls.credito.setValue(credito);
+    this.controls.nombre.setValue(nombre);
     this.enableNombre(rfc);
     this.firebaseCliente$ = this.clienteService.findById(id);
     this.params.next(toParams(this.form));

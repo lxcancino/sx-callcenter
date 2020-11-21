@@ -15,11 +15,11 @@ export class PedidoItemService {
     private service: ProductoService
   ) {}
 
-  async addPartida(params: PedidoItemParams) {
+  async addPartida2(params: PedidoItemParams) {
     return { ...DummyItem, ...params };
   }
 
-  async addPartida2(params: PedidoItemParams) {
+  async addPartida(params: PedidoItemParams) {
     const modal = await this.modalController.create({
       component: AddPartidaComponent,
       id: AddPartidaComponent.MODAL_ID,

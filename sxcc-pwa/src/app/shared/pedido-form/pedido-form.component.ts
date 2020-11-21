@@ -128,7 +128,8 @@ export class PedidoFormComponent extends BaseComponent implements OnInit {
 
   setCliente(cliente: Partial<Cliente>) {
     this.formService.setCliente(cliente);
-    this.clienteId$.next(cliente.id);
+    // this.clienteId$.next(cliente.id);
+    this.cd.markForCheck();
   }
 
   setDescuentoEspecial(descuento: number) {
