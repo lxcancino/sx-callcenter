@@ -101,10 +101,13 @@ class PedidoService implements FolioLog {
     
 
     String buscarSucursal(String codigoPostal) {
-        
+        log.info('Buscando Sucursal para cp: {}', codigoPostal)
         if( codigoPostal && (codigoPostal.size() > 2) ){
             String clave = codigoPostal[0..1]
-            def row = findRegistro("select * from zona where ? between cp_ini and cp_fin", [codigoPostal])
+            String select = "select * from zona where @D between cp_ini and cp_fin".replaceAll("@D", codigoPostal)
+            //def row = findRegistro("select * from zona where ? between cp_ini and cp_fin", [codigoPostal])
+            def row = findRegistro(select, [])
+            log.info('Found: {}', row)
             if(row)
                 return row.sucursal   
         }
