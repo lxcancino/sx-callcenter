@@ -53,6 +53,19 @@ export function clienteMostrador(): Partial<Cliente> {
 71c524d6-eb2b-11e7-b1f8-b4b52f67eab0	1	18.00	2017-12-27 11:29:08	1	30000000.00
 */
 
+/**
+ * AL 10 Febrero 2021
+ * 0.00	100.00
+ * 10.00	1000.00
+ * 11.00	5000.00
+ * 13.00	12000.00
+ * 14.00	21500.00
+ * 15.00	46000.00
+ * 16.00	82000.00
+ * 17.00	150000.00
+ * 18.00	30000000.00
+ */
+
 export const DESCUENTOS = [
   { descuento: 0.0, importe: 100.0 },
   { descuento: 10.0, importe: 1000.0 },
