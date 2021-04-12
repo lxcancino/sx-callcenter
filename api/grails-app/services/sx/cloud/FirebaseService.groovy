@@ -1,5 +1,7 @@
 package sx.cloud
 
+import com.google.cloud.storage.Bucket
+
 import javax.annotation.Nullable
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
@@ -96,6 +98,13 @@ class FirebaseService {
             initFirebase()
         }
         return FirestoreClient.getFirestore()
+    }
+
+   StorageClient getStorage() {
+      //if(!this.app) {
+       // initFirebase()
+      //}
+      return StorageClient.getInstance()
     }
 
 

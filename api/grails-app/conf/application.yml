@@ -78,13 +78,13 @@ environments:
     development:
         dataSource:
             dbCreate: update
-            url: jdbc:mysql://localhost/callcenter_dev?autoReconnect=false
+            url: jdbc:mysql://localhost/callcenter?autoReconnect=false
             #url: jdbc:mysql://10.10.1.229/callcenter?autoReconnect=false
             #url: jdbc:mysql://10.10.7.1/siipapx?autoReconnect=false
             #url: jdbc:mysql://localhost/siipapx_tacuba?autoReconnect=false
             #url: jdbc:mysql://${JDBC_CONNECTION_STRING}?autoReconnect=true
             username: root
-            password: sys
+            password: sys2
     test:
         dataSource:
             dbCreate: create-drop
@@ -154,9 +154,13 @@ environments:
   development:
     siipapx:
       firebase:
-        url: https://siipapx-436ce.firebaseio.com
-        bucket: siipapx-436ce.appspot.com
-        projectId: siipapx-436ce
+        url: https://siipapx-51354.firebaseio.com
+        bucket: siipapx-51354.appspot.com
+        projectId: siipapx-51354
+        #url: https://siipapx-436ce.firebaseio.com
+        #bucket: siipapx-436ce.appspot.com
+        #projectId: siipapx-436ce
+
   certificacion:
     siipapx:
       firebase:

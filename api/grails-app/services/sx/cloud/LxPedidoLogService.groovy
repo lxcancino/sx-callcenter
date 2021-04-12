@@ -19,7 +19,7 @@ import sx.callcenter.Pedido
 * TODO; Mover las reglas a Firebase utilizando Firebase Functions 
 **/
 @Slf4j
-@GrailsCompileStatic
+// @GrailsCompileStatic
 class LxPedidoLogService {
 
     FirebaseService firebaseService

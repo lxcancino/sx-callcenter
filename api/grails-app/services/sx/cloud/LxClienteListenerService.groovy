@@ -31,7 +31,7 @@ import sx.core.ClienteCredito
 // @GrailsCompileStatic
 class LxClienteListenerService implements EventListener<QuerySnapshot> {
 
-	static lazyInit = false
+	static lazyInit = Environment.isDevelopmentMode() ? true : false
 
 	FirebaseService firebaseService
 

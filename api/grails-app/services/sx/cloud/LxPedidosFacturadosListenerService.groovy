@@ -29,7 +29,7 @@ import sx.callcenter.Pedido
 // @GrailsCompileStatic
 class LxPedidosFacturadosListenerService implements EventListener<QuerySnapshot> {
   
-  static lazyInit = false
+  static lazyInit = Environment.isDevelopmentMode() ? true: false;
 
   FirebaseService firebaseService
 
