@@ -97,7 +97,7 @@ export class CartAddItemComponent implements OnInit, OnDestroy {
         instruccion: [null],
         cantidad: [0],
         tantos: [null],
-        precio: [10.0],
+        precio: [15.0],
         refinado: false,
         limpio: false
       })

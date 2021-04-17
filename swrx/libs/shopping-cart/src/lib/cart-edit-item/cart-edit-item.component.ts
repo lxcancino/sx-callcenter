@@ -91,7 +91,7 @@ export class CartEditItemComponent implements OnInit, OnDestroy {
       tantos: [null],
       instruccion: [null, [Validators.required]],
       cantidad: [null, [Validators.required, Validators.min(1)]],
-      precio: [10.0, [Validators.required, Validators.min(1)]],
+      precio: [15.0, [Validators.required, Validators.min(1)]],
       importe: [null, [Validators.required, Validators.min(1)]],
       refinado: false,
       limpio: false

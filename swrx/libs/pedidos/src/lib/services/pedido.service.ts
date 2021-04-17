@@ -14,7 +14,7 @@ export class PedidoService {
     this.apiUrl = `${api}/pedidos`;
   }
 
-  list(periodo: Periodo = Periodo.mesActual()): Observable<Pedido[]> {
+  list(periodo: Periodo = Periodo.fromNow(45)): Observable<Pedido[]> {
     const data = periodo.toApiJSON();
     const params = new HttpParams()
 
