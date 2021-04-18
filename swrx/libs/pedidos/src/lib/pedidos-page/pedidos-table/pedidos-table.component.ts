@@ -34,11 +34,11 @@ export class PedidosTableComponent implements OnInit {
   @Output() quickView = new EventEmitter<Pedido>();
   @Output() print = new EventEmitter();
 
+  localeText = spAgGridText;
   gridOptions: GridOptions;
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   defaultColDef: any;
-  localeText = spAgGridText;
 
   constructor(@Inject(LOCALE_ID) private locale: string) {}
 
@@ -59,7 +59,6 @@ export class PedidosTableComponent implements OnInit {
     this.gridOptions.getRowStyle = this.buildRowStyle.bind(this);
     this.gridOptions.onCellMouseOver = event => {
       if (event.colDef.field === 'folio') {
-        // console.log('Mouse over: ', event);
       }
     };
     this.gridOptions.onCellDoubleClicked = event => {
@@ -99,10 +98,7 @@ export class PedidosTableComponent implements OnInit {
     return {};
   }
 
-  onDoubleClick(event: RowDoubleClickedEvent) {
-    // console.log('DblClick: ', event);
-    // this.selection.emit(event.data);
-  }
+  onDoubleClick(event: RowDoubleClickedEvent) {}
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
@@ -111,7 +107,7 @@ export class PedidosTableComponent implements OnInit {
 
   onFirstDataRendered(params) {
     // this.autoSizeAll();
-    params.api.sizeColumnsToFit();
+    // params.api.sizeColumnsToFit();
   }
 
   autoSizeAll() {
@@ -218,14 +214,15 @@ export class PedidosTableComponent implements OnInit {
     ];
   }
 
-  transformCurrency(data: any) {
-    return formatCurrency(data, this.locale, '$');
-  }
   transformDate(data: any, format: string = 'dd/MM/yyyy') {
     if (data) {
       return formatDate(data, format, this.locale);
     } else {
       return '';
     }
+  }
+
+  transformCurrency(data: any) {
+    return formatCurrency(data, this.locale, '$');
   }
 }

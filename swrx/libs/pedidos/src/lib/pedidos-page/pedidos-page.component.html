@@ -13,6 +13,26 @@
     </ng-template>
 
     <div class="pedidos-panel mat-elevation-z4">
+      <!-- <ng-container *ngIf="pedidos$ | async as pedidos">
+        <div>Pedidos: {{ pedidos.length }}</div>
+        <div class="pedidos-table">
+          <ag-grid-angular
+            #agGrid
+            class="ag-theme-balham"
+            style="width: 100%; height: 100%;"
+            [rowData]="pedidos"
+            [gridOptions]="gridOptions"
+            [floatingFilter]="true"
+            rowSelection="single"
+          >
+          </ag-grid-angular>
+        </div>
+      </ng-container> -->
+      <!-- <mat-list>
+        <mat-list-item *ngFor="let pedido of pedidos$ | async as pedidos">
+          {{ pedido.folio }}
+        </mat-list-item>
+      </mat-list> -->
       <swrx-pedidos-table
         class="pedidos-table"
         [partidas]="pedidos$ | async"
@@ -28,6 +48,8 @@
   </mat-tab>
 
   <mat-tab label="Facturados">
-    <swrx-pedidos-facturados></swrx-pedidos-facturados>
+    <div class="pedidos-facturados">
+      <swrx-pedidos-facturados></swrx-pedidos-facturados>
+    </div>
   </mat-tab>
 </mat-tab-group>

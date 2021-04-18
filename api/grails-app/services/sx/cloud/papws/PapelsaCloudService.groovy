@@ -26,13 +26,13 @@ class PapelsaCloudService {
 
   private FirebaseApp papelws
 
-  @PostConstruct()
+  // @PostConstruct()
   init() {
     String dirPath = '.'
-    String fileName = 'papx-ws-firebase-sdk.json'
+    String fileName = 'papx-ws-prod-firebase-sdk.json'
     if(Environment.current == Environment.DEVELOPMENT) {
       dirPath = System.getProperty('user.home') + '/.firebase'
-      fileName="papx-ws-prod-firebase-sdk.json"
+      fileName="papx-ws-dev-firebase-sdk.json"
     }
     File file = new File(dirPath, fileName)
     FileInputStream serviceAccount = new FileInputStream(file)
@@ -62,7 +62,7 @@ class PapelsaCloudService {
   }
 
 
-  @PreDestroy()
+  // @PreDestroy()
   void close() {
     if(this.papelws) {
       String appName = this.papelws.name
