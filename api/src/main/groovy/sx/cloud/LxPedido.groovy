@@ -88,7 +88,12 @@ class LxPedido {
                 }
             ]
         } else {
-            this.cliente =  [id: cte.id]
+            this.cliente =  [
+                id: cte.id,
+                clave: cte.clave,
+                nombre: cte.nombre,
+                rfc: cte.rfc
+            ]
         }
         
     }

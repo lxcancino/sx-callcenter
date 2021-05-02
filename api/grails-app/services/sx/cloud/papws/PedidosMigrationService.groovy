@@ -1,5 +1,7 @@
 package sx.cloud.papws
 
+import java.text.SimpleDateFormat
+
 import com.google.api.core.ApiFuture
 import com.google.cloud.firestore.SetOptions
 import com.google.cloud.firestore.WriteResult
@@ -7,6 +9,8 @@ import com.google.cloud.storage.Blob
 import com.google.cloud.storage.Bucket
 import groovy.sql.Sql
 import groovy.util.logging.Slf4j
+
+import sx.core.Sucursal
 import sx.callcenter.Autorizacion
 import sx.callcenter.InstruccionDeEnvio
 import sx.callcenter.Pedido
@@ -22,6 +26,12 @@ class PedidosMigrationService {
   PapelsaCloudService papelsaCloudService
   FirebaseService firebaseService
   DataSource dataSource
+
+  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+
+  PedidosMigrationService() {
+    sdf.setTimeZone(TimeZone.getTimeZone("CET"))
+  }
 
   void migrarPedidosFacturados(String desde, String hasta) {
     List<Pedido> pedidos = fetchPedidosFacturados(desde, hasta)
@@ -88,16 +98,23 @@ class PedidosMigrationService {
       */
     return Pedido.findAll("""
       from Pedido p where p.fecha between :inicio and :hasta
-      and p.status in ('COTIZACION')
+      and p.status in ('CERRADO', 'COTIZACION')
       order by p.fecha
       """,
     [inicio: fechaIni, hasta: fechaFin])
   }
 
+  
+    
+
   Map mapPedido(Pedido p) {
     LxPedido pedido = new LxPedido(p)
     Map<String, Object> data = pedido.properties
     data = data.findAll{ k, v -> k != 'class'}
+    data.vigencia = data.fecha + 10
+    // data.fecha = sdf.format(data.fecha)
+    Sucursal sucursal = fetchSucursal(p.sucursal)
+    data.sucursalId = sucursal.id
     if(p.socio) {
       data.socio = p.socio.id
     }
@@ -118,11 +135,30 @@ class PedidosMigrationService {
       ]
       data.envio = envioMap
     }
-    def partidas = p.partidas.collect{new LxPedidoDet(it).toFirebaseMap()}
+    def partidas = p.partidas.collect{ det ->
+      def producto = det.producto
+      def item = new LxPedidoDet(det).toFirebaseMap()
+      item.productoId = det.producto.id
+      item.producto = [
+        id: producto.id,
+        clave: item.clave,
+        descripcion: item.descripcion,
+        precioCredito: item.precioCredito,
+        precioContado: item.precioContado,
+        unidad: producto.unidad,
+        kilos: producto.kilos,
+        gramos: producto.gramos,
+        modoVenta: producto.modoVenta,
+        presentacion: producto.presentacion
+      ]
+      return item
+    }
     data.partidas = partidas
     data.appVersion = 1
+    data.updateUser = data.updateUser
     data.updateUserId = data.updateUser
-    data.uid = data.createUser
+    data.createUser = data.createUser
+    data.createUserId = data.createUser
 
     if(p.autorizacion) {
       Autorizacion auth = p.autorizacion
@@ -137,11 +173,18 @@ class PedidosMigrationService {
     }
     if(p.status == 'FACTURADO_TIMBRADO' ) {
       Map factura = fetchCfdi(p)
+      // Map factura = fetchFromFirebase(p.id)
       log.info('Factura: {}', factura)
       data.factura = factura
     }
     return data
   }
+
+  Sucursal fetchSucursal(String nombre) {
+    String real = nombre == 'CALLE 4' ? 'CALLE4' : nombre
+    return Sucursal.findByNombre(real)
+  }
+
 
   Map toFirebaseMap(def source) {
     Map<String, Object> data = source.properties
@@ -160,16 +203,13 @@ class PedidosMigrationService {
       Map cfdi = new Sql(dataSource).firstRow("select * from siipapx.cfdi where uuid = ?"
         , [pedido.uuid])
       if(cfdi) {
-        this.firebaseService.getStorage().bucket().create()
-        this.firebaseService.getStorage().bucket()
-          .get("cfdis/${cfdi.serie}-${cfdi.folio}.pdf")
-        .getMetadata()
         return [
           serie: cfdi.serie,
           folio: cfdi.folio,
           uuid: cfdi.uuid,
           cfdi: cfdi.id,
-          creado: 'ND'
+          createUser: 'ND',
+          updateUser: 'ND'
         ]
       } else {
         log.info('Not found in MySql, fetching from firebase')
@@ -179,18 +219,21 @@ class PedidosMigrationService {
   }
 
   Map fetchFromFirebase(String pedidoId) {
-    Map payload =  this.firebaseService.getFirestore()
-    .document("pedidos/${pedidoId}")
+    log.info('Factura data from firebase para PedidoId: {}', pedidoId)
+    Map data =  this.firebaseService.getFirestore()
+    .document("pedidos_log/${pedidoId}")
       .get()
       .get()
-      .data.facturacion
+      .getData()
+    log.info('Data: {}', data)
+    def payload =   data.facturacion
     Map factura = [
       serie: payload.serie,
       folio: payload.folio,
       uuid: payload.cfdi.uuid,
       cfdi: payload.cfdi.id,
-      creado: payload.creado,
       createUser: 'ND',
+      updateUser: 'ND',
       // pdfUrl: getDownloadUrl(payload.serie, payload.folio, 'pdf'),
       // xmlUrl: getDownloadUrl(payload.serie, payload.folio, 'xml'),
     ]
