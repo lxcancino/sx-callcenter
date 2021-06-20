@@ -72,6 +72,7 @@ class LxPedido {
                 nombre: cte.nombre,
                 clave: cte.clave,
                 rfc: cte.rfc,
+                cfdiMail: cte.cfdiMail,
                 direccion: cte.direccion.toFirebaseMap(),
                 medios: cte.medios.collect{
                     return [
@@ -92,7 +93,9 @@ class LxPedido {
                 id: cte.id,
                 clave: cte.clave,
                 nombre: cte.nombre,
-                rfc: cte.rfc
+                rfc: cte.rfc,
+                cfdiMail: cte.cfdiMail,
+                direccion: cte.direccion.toFirebaseMap(),
             ]
         }
         

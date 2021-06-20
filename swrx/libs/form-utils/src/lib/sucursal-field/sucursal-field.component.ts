@@ -36,7 +36,8 @@ export class SucursalFieldComponent implements OnInit {
     'BOLIVAR',
     'CALLE 4',
     'CF5FEBRERO',
-    'TACUBA'
+    'TACUBA',
+    'VERTIZ 176'
   ];
   @Input() parent: FormGroup;
 
