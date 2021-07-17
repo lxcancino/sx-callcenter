@@ -107,7 +107,7 @@ export class PedidosTableComponent implements OnInit {
 
   onFirstDataRendered(params) {
     // this.autoSizeAll();
-    // params.api.sizeColumnsToFit();
+    params.api.sizeColumnsToFit();
   }
 
   autoSizeAll() {
